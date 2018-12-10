@@ -40,7 +40,7 @@ module.exports = (db, DataTypes) => {
       defaultValue: false
     },
     reviewed: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BOOLEAN,
       defaultValue: false
     },
     comment_until_unix: {
