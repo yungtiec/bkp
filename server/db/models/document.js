@@ -34,7 +34,27 @@ module.exports = (db, DataTypes) => {
     },
     latest_version: {
       type: DataTypes.INTEGER
-    }
+    },
+    submitted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    reviewed: {
+      type: DataTypes.INTEGER,
+      defaultValue: false
+    },
+    comment_until_unix: {
+      type: DataTypes.BIGINT
+    },
+    slug: {
+      type: DataTypes.STRING
+    },
+    content_html: {
+      type: DataTypes.STRING
+    },
+    category: {
+      type: DataTypes.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
+    },
   });
   Document.associate = function(models) {
     Document.hasMany(models.version, {
@@ -72,9 +92,9 @@ module.exports = (db, DataTypes) => {
   };
   Document.loadScopes = function(models) {
     Document.addScope("includeVersionsWithOutstandingIssues", function({
-      documentId,
-      versionWhereClause
-    }) {
+                                                                         documentId,
+                                                                         versionWhereClause
+                                                                       }) {
       return {
         where: { id: Number(documentId) },
         include: [
@@ -166,6 +186,32 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
+    Document.addScope("includeAllEngagements", {
+      include: [
+        {
+          model: models["user"],
+          as: "upvotesFrom",
+          attributes: ["name", "first_name", "last_name", "email", "id"]
+        },
+        {
+          model: models["user"],
+          as: "downvotesFrom",
+          attributes: ["name", "first_name", "last_name", "email", "id"]
+        },
+        {
+          model: models["user"],
+          as: "creator",
+          include: [
+            {
+              model: models.role
+            }
+          ]
+        },
+        {
+          model: models["project"]
+        }
+      ]
+    });
     Document.addScope("includeVersionsWithAllEngagements", {
       include: [
         {
@@ -245,9 +291,9 @@ module.exports = (db, DataTypes) => {
       ]
     });
     Document.addScope("includeVersions", function({
-      documentId,
-      versionWhereClause
-    }) {
+                                                    documentId,
+                                                    versionWhereClause
+                                                  }) {
       var versionIncludeClause = {
         model: models["version"]
       };
@@ -285,14 +331,14 @@ module.exports = (db, DataTypes) => {
 
   Document.getDocumentsWithStats = async function({ offset, limit }) {
     var documentQueryResult = await Document.scope(
-      "includeVersionsWithAllEngagements"
+      "includeAllEngagements"
     ).findAndCountAll({
       limit,
       offset
     });
     var count = documentQueryResult.count;
-    var documents = documentQueryResult.rows.map(computeDocumentStats);
-    return { count, documents };
+    //var documents = documentQueryResult.rows.map(computeDocumentStats);
+    return { count, documents: documentQueryResult };
   };
   return Document;
 };
@@ -310,8 +356,8 @@ function computeDocumentStats(document) {
     (replyArr, comment) =>
       comment.descendents && comment.descendents.length
         ? comment.descendents
-            .filter(d => d.reviewed !== "spam")
-            .concat(replyArr)
+        .filter(d => d.reviewed !== "spam")
+        .concat(replyArr)
         : replyArr,
     []
   );
