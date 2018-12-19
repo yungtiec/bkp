@@ -7,7 +7,8 @@ import { Helmet } from "react-helmet";
 const documentTypes = {
   general: "general",
   scorecard: "scorecard",
-  regulatory: "regulatory"
+  regulatory: "regulatory",
+  regulatoryForComment: "regulatory-for-comment"
 };
 
 const filterDocuments = (documentIds, documentsById) => {
@@ -17,6 +18,8 @@ const filterDocuments = (documentIds, documentsById) => {
   let thoughtLeadershipIds = [];
   let regulatoryById = [];
   let regulatoryIds = [];
+  let regulatoryForCommentById = [];
+  let regulatoryForCommentIds = [];
 
   for (let id in documentIds) {
     const docId = documentIds[id];
@@ -29,6 +32,9 @@ const filterDocuments = (documentIds, documentsById) => {
     } else if (document.document_type === documentTypes.regulatory) {
       regulatoryIds = [].concat(regulatoryIds).concat([docId]);
       regulatoryById = Object.assign({}, regulatoryById, documentObj);
+    } else if (document.document_type === documentTypes.regulatoryForComment) {
+      regulatoryForCommentIds  = [].concat(regulatoryForCommentIds).concat([docId]);
+      regulatoryForCommentById = Object.assign({}, regulatoryForCommentById, documentObj);
     } else {
       thoughtLeadershipIds = [].concat(thoughtLeadershipIds).concat([docId]);
       thoughtLeadershipById = Object.assign(
@@ -45,7 +51,9 @@ const filterDocuments = (documentIds, documentsById) => {
     thoughtLeadershipById,
     thoughtLeadershipIds,
     regulatoryById,
-    regulatoryIds
+    regulatoryIds,
+    regulatoryForCommentIds,
+    regulatoryForCommentById
   };
 };
 
@@ -64,7 +72,9 @@ export default ({
     thoughtLeadershipById,
     thoughtLeadershipIds,
     regulatoryById,
-    regulatoryIds
+    regulatoryIds,
+    regulatoryForCommentIds,
+    regulatoryForCommentById
   } = filterDocuments(documentIds, documentsById);
 
   return (
@@ -73,25 +83,67 @@ export default ({
         <title>The Brooklyn Project | Collaborate</title>
       </Helmet>
       <div className="main-container-collaborations">
+        <div className="projects-containers__collaboration-container">
+          <div className="projects-containers__collaboration-header-mobile">
+            <span className="collaborations-header">Open Collaborations</span>
+          </div>
+          <div className="btn-container-flex">
+            <div className="btn-container">
+              <button
+                className="btn btn-outline-primary btn-telegram"
+              >
+                <a
+                  href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
+                  target="_blank"
+                  className="navbar__nav-item"
+                >Telegram</a>
+              </button>
+              <button
+                className="btn btn-outline-primary btn-propose"
+                onClick={() =>
+                  loadModal("COLLABORATION_PROPOSAL_MODAL", {
+                    hideModal,
+                    notify
+                  })
+                }
+              >
+                Propose collaboration
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="collaborations-container col-md-7">
           <div className="projects-containers__collaboration-header">
             <span className="collaborations-header">Open Collaborations</span>
           </div>
+          {regulatoryForCommentIds && regulatoryForCommentIds.length ? (
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Regulatory Requests for Comment</div>
+                <div className="btn-propose-container">
+                  <button
+                    className="btn btn-outline-primary btn-propose"
+                    onClick={() =>
+                      loadModal("COLLABORATION_PROPOSAL_MODAL", {
+                        hideModal,
+                        notify
+                      })
+                    }
+                  >
+                    Propose collaboration
+                  </button>
+                </div>
+              </div>
+              <ListDocumentGrid
+                documentIds={regulatoryForCommentIds}
+                documentsById={regulatoryForCommentById}
+              />
+            </div>
+          ) : null}
           {regulatoryIds && regulatoryIds.length ? (
             <div className="project-row">
               <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                <div>Regulatory Notices</div>
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() =>
-                    loadModal("COLLABORATION_PROPOSAL_MODAL", {
-                      hideModal,
-                      notify
-                    })
-                  }
-                >
-                  Propose collaboration
-                </button>
+                <div className="collaborate-header">Regulatory Notices</div>
               </div>
               <ListDocumentGrid
                 documentIds={regulatoryIds}
@@ -100,10 +152,10 @@ export default ({
             </div>
           ) : null}
           {thoughtLeadershipIds && thoughtLeadershipIds.length ? (
-            <div>
-              <span className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                Thought Leadership
-              </span>
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Thought Leadership</div>
+              </div>
               <ListDocumentGrid
                 documentIds={thoughtLeadershipIds}
                 documentsById={thoughtLeadershipById}
@@ -111,10 +163,10 @@ export default ({
             </div>
           ) : null}
           {scorecardIds && scorecardIds.length ? (
-            <div>
-              <span className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                Transparency Scorecards
-              </span>
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Transparency Scorecards</div>
+              </div>
               <ListDocumentGrid
                 documentIds={scorecardIds}
                 documentsById={scorecardsById}

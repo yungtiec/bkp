@@ -17,15 +17,151 @@
   color: black;
   margin-top: 40px;
   margin-left: 30px;
+  margin-right: 30px;
 }
 
-@media only screen
-and (min-device-width: 320px)
-and (max-device-width: 568px)
-and (-webkit-min-device-pixel-ratio: 2) {
-  .projects-containers__collaboration-sub-header {
-    margin-left: 10px;
+.collaborate-header {
+  padding-left: 30px;
+}
+
+@media (min-width: 320px)
+and (max-width: 1024px) {
+  .collaborate-header {
+    padding-left: 0px;
   }
+  .projects-containers__collaboration-sub-header {
+    margin-right: 0px;
+  }
+  .projects-containers__collaboration-header {
+    display: none;
+  }
+  .btn-propose-container {
+    display: none;
+  }
+  .main-container-collaborations {
+    flex-direction: column;
+    .projects-containers__collaboration-container {
+      display: flex;
+      background-color: #FFFFFF;
+      padding: 40px 20px 0px 20px;
+      color: black;
+      border: 1px solid #e8e8e8;
+      border-bottom: 0;
+      margin-top: 30px;
+      .projects-containers__collaboration-header-mobile {
+        display: flex;
+        justify-content: center;
+      }
+      .collaborations-header {
+        font-size: 28px
+      }
+      .btn-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        .btn-propose {
+          color: #3697FF;
+          font-weight: 500;
+          max-height: 80px;
+          margin-top: 7.5px;
+          background: white;
+          border-radius: 2.5px 2.5px;
+        }
+        .btn-telegram {
+          color: #3697FF;
+          font-weight: 500;
+          max-height: 80px;
+          margin-top: 7.5px;
+          background: white;
+          padding: 0 25px;
+          border-radius: 2.5px 2.5px;
+        }
+      }
+    }
+    .collaborations-container {
+      margin-top: 0px !important;
+      padding-top: 0px !important;
+      border: 1px solid #e8e8e8;
+      border-top: 0;
+    }
+    .project-row {
+      .projects-containers__collaboration-sub-header {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 665px) {
+  .projects-containers__collaboration-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 668px) {
+  .collaborate-header {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 665px) {
+  .projects-containers__collaboration-container {
+    flex-direction: row;
+  }
+
+  .projects-containers__collaboration-header-mobile {
+    padding-top: 10px;
+    padding-left: 5px;
+    flex-direction: column;
+  }
+
+  .projects-containers__collaboration-container {
+    justify-content: space-between;
+  }
+
+  .collaborations-container {
+    max-width: 100%;
+  }
+
+  .btn-container-flex {
+    min-width: 320px;
+    margin-right: 20px;
+  }
+
+  .projects-containers__collaboration-sub-header {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .collaborations-container {
+    max-width: 100%;
+  }
+
+  .btn-container-flex {
+    min-width: 320px;
+    margin-right: 20px;
+  }
+
+  .collaborate-header {
+    padding-left: 20px;
+  }
+
+  .projects-containers__collaboration-header-mobile {
+    padding-left: 25px;
+  }
+
+  .projects-containers__collaboration-sub-header {
+    /* margin-left: 10px; */
+  }
+}
+
+.projects-containers__collaboration-header-mobile {
+  display: none;
+}
+
+.projects-containers__collaboration-container {
+  display: none;
 }
 
 .project-row {
@@ -48,4 +184,7 @@ and (-webkit-min-device-pixel-ratio: 2) {
   justify-content: center;
   background-color: #F4F5F6;
   padding-bottom: 160px;
+  .entity__action--bottom {
+    margin-top: 20px;
+  }
 }

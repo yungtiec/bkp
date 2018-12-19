@@ -32,6 +32,9 @@ module.exports = (db, DataTypes) => {
           return () => this.getDataValue("salt");
         }
       },
+      githubId: {
+        type: DataTypes.STRING
+      },
       googleId: {
         type: DataTypes.STRING
       },
@@ -303,12 +306,14 @@ module.exports = (db, DataTypes) => {
     userId,
     googleId,
     uportAddress,
+    githubId,
     forListing
   }) {
     var query;
     if (googleId) query = { googleId };
     if (uportAddress) query = { uportAddress };
     if (userId) query = { userId: Number(userId) };
+    if (githubId) query = { githubId };
     const user = await User.scope({
       method: ["basicInfo", query]
     }).findOne();
