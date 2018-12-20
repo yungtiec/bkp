@@ -86,11 +86,11 @@ module.exports = (db, DataTypes) => {
       foreignKey: "user_id"
     });
     User.belongsToMany(models.location, {
-      through: "locations",
+      through: "user_locations",
       foreignKey: "user_id"
     });
     User.belongsToMany(models.badge, {
-      through: "badges",
+      through: "user_badges",
       foreignKey: "user_id"
     });
     User.belongsToMany(models.role, {

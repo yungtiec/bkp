@@ -34,7 +34,6 @@ fs
   })
   .forEach(file => {
     const model = sequelize["import"](path.join(__dirname, file));
-
     db[model.name] = model;
     exportedDb[
       model.name
