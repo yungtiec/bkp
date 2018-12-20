@@ -419,7 +419,7 @@ module.exports = (inProduction, token) => `<!DOCTYPE html>
 
                                             <a href="https://${
                                               inProduction
-                                                ? "framework.thebkp.com"
+                                                ? "collaborate.thebkp.com"
                                                 : "localhost:8000"
                                             }/reset-password/${token}"
                                               target="_blank">Reset your password

@@ -210,3 +210,4 @@ router.put("/reset-password/:token", async (req, res, next) => {
 
 router.use("/google", require("./google"));
 router.use("/uport", require("./uport"));
+router.use("/github", require("./github"));

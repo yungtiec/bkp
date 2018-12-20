@@ -50,3 +50,38 @@
   color: white;
   font-size: 14px;
 }
+
+.sidebar__login-icon {
+  background-color: #FFFFFF;
+  background-position: 1em;
+  background-repeat: no-repeat;
+  background-size: 2em;
+  border-radius: 0.5em;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  height: 4em;
+  line-height: 1em;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+
+.sidebar__login-container-flex {
+  width: 340px;
+  display: flex;
+}
+
+.sidebar__login-container {
+  flex-direction: column;
+  align-self: center;
+}
+
+.btn-github {
+  width: 189px;
+  height: 43px;
+}
+
+.sidebar__signin-text {
+  margin-left: 5px;
+}
