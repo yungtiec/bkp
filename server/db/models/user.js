@@ -32,6 +32,9 @@ module.exports = (db, DataTypes) => {
           return () => this.getDataValue("salt");
         }
       },
+      user_handle: {
+        type: Sequelize.TEXT
+      },
       googleId: {
         type: DataTypes.STRING
       },
@@ -53,6 +56,24 @@ module.exports = (db, DataTypes) => {
       organization: {
         type: DataTypes.STRING
       },
+      profile_pic_url: {
+        type: Sequelize.TEXT
+      },
+      linkedin_url: {
+        type: Sequelize.TEXT
+      },
+      twitter_url: {
+        type: Sequelize.TEXT
+      },
+      github_url: {
+        type: Sequelize.TEXT
+      },
+      stackoverflow_url: {
+        type: Sequelize.TEXT
+      },
+      website_url: {
+        type: Sequelize.TEXT
+      },
       restricted_access: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
@@ -62,6 +83,10 @@ module.exports = (db, DataTypes) => {
         defaultValue: false
       },
       onboard: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
+      profile_update_prompted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
@@ -81,12 +106,8 @@ module.exports = (db, DataTypes) => {
     }
   );
   User.associate = function(models) {
-    User.belongsToMany(models.career_role, {
-      through: "user_career_roles",
-      foreignKey: "user_id"
-    });
-    User.belongsToMany(models.location, {
-      through: "user_locations",
+    User.belongsToMany(models.tag, {
+      through: "user_tags",
       foreignKey: "user_id"
     });
     User.belongsToMany(models.badge, {
