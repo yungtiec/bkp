@@ -6,19 +6,19 @@ module.exports = (db, DataTypes) => {
       allowNull: false
     },
     display_name: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     type: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     pic: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     city: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     country: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     }
   });
   Tag.associate = function(models) {
