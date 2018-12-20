@@ -81,11 +81,22 @@ module.exports = (db, DataTypes) => {
     }
   );
   User.associate = function(models) {
+    User.belongsToMany(models.career_role, {
+      through: "user_career_roles",
+      foreignKey: "user_id"
+    });
+    User.belongsToMany(models.location, {
+      through: "locations",
+      foreignKey: "user_id"
+    });
+    User.belongsToMany(models.badge, {
+      through: "badges",
+      foreignKey: "user_id"
+    });
     User.belongsToMany(models.role, {
       through: "user_roles",
       foreignKey: "user_id"
     });
-    User;
     User.hasMany(models.notification, {
       foreignKey: "recipient_id",
       as: "notifications",

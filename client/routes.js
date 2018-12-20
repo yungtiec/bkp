@@ -82,7 +82,7 @@ class Routes extends Component {
           />
           <RouteWithLayout
             layout={LayoutWithNav}
-            path="/documents/me"
+            path="/me/documents"
             component={MyDocuments}
           />
           <RouteWithLayout
