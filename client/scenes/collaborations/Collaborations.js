@@ -7,65 +7,50 @@ import { Helmet } from "react-helmet";
 const documentTypes = {
   general: "general",
   scorecard: "scorecard",
-  regulatory: "regulatory"
+  regulatory: "regulatory",
+  regulatoryForComment: "regulatory-for-comment"
 };
 
-const filterDocuments = (documentIds, documentsById) => {
-  let scorecardsById = [];
-  let scorecardIds = [];
-  let thoughtLeadershipById = [];
-  let thoughtLeadershipIds = [];
-  let regulatoryById = [];
-  let regulatoryIds = [];
+const filterDocuments = (documents) => {
+  let scorecardsArr = [];
+  let thoughtLeadershipArr = [];
+  let regulatoryArr = [];
+  let regulatoryForCommentArr = [];
 
-  for (let id in documentIds) {
-    const docId = documentIds[id];
-    const document = documentsById[docId];
-    const documentObj = {};
-    documentObj[docId] = document;
+  documents.forEach((document) => {
     if (document.document_type === documentTypes.scorecard) {
-      scorecardIds = [].concat(scorecardIds).concat([docId]);
-      scorecardsById = Object.assign({}, scorecardsById, documentObj);
+      scorecardsArr = [].concat(scorecardsArr).concat([document]);
     } else if (document.document_type === documentTypes.regulatory) {
-      regulatoryIds = [].concat(regulatoryIds).concat([docId]);
-      regulatoryById = Object.assign({}, regulatoryById, documentObj);
+      regulatoryArr = [].concat(regulatoryArr).concat([document]);
+    } else if (document.document_type === documentTypes.regulatoryForComment) {
+      regulatoryForCommentArr  = [].concat(regulatoryForCommentArr).concat([document]);
     } else {
-      thoughtLeadershipIds = [].concat(thoughtLeadershipIds).concat([docId]);
-      thoughtLeadershipById = Object.assign(
-        {},
-        thoughtLeadershipById,
-        documentObj
-      );
+      thoughtLeadershipArr = [].concat(thoughtLeadershipArr).concat([document]);
     }
-  }
+  });
 
   return {
-    scorecardsById,
-    scorecardIds,
-    thoughtLeadershipById,
-    thoughtLeadershipIds,
-    regulatoryById,
-    regulatoryIds
+    scorecardsArr,
+    regulatoryArr,
+    regulatoryForCommentArr,
+    thoughtLeadershipArr
   };
 };
 
 export default ({
   projectsBySymbol,
   projectSymbolArr,
-  documentsById,
-  documentIds,
+  documents,
   loadModal,
   hideModal,
   notify
 }) => {
   const {
-    scorecardsById,
-    scorecardIds,
-    thoughtLeadershipById,
-    thoughtLeadershipIds,
-    regulatoryById,
-    regulatoryIds
-  } = filterDocuments(documentIds, documentsById);
+    scorecardsArr,
+    regulatoryArr,
+    regulatoryForCommentArr,
+    thoughtLeadershipArr
+  } = filterDocuments(documents);
 
   return (
     <div>
@@ -73,51 +58,89 @@ export default ({
         <title>The Brooklyn Project | Collaborate</title>
       </Helmet>
       <div className="main-container-collaborations">
+        <div className="projects-containers__collaboration-container">
+          <div className="projects-containers__collaboration-header-mobile">
+            <span className="collaborations-header">Open Collaborations</span>
+          </div>
+          <div className="btn-container-flex">
+            <div className="btn-container">
+              <button
+                className="btn btn-outline-primary btn-telegram"
+              >
+                <a
+                  href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
+                  target="_blank"
+                  className="navbar__nav-item"
+                >Telegram</a>
+              </button>
+              <button
+                className="btn btn-outline-primary btn-propose"
+                onClick={() =>
+                  loadModal("COLLABORATION_PROPOSAL_MODAL", {
+                    hideModal,
+                    notify
+                  })
+                }
+              >
+                Propose collaboration
+              </button>
+            </div>
+          </div>
+        </div>
         <div className="collaborations-container col-md-7">
           <div className="projects-containers__collaboration-header">
             <span className="collaborations-header">Open Collaborations</span>
           </div>
-          {regulatoryIds && regulatoryIds.length ? (
+          {regulatoryForCommentArr.length ? (
             <div className="project-row">
               <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                <div>Regulatory Notices</div>
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() =>
-                    loadModal("COLLABORATION_PROPOSAL_MODAL", {
-                      hideModal,
-                      notify
-                    })
-                  }
-                >
-                  Propose collaboration
-                </button>
+                <div className="collaborate-header">Regulatory Requests for Comment</div>
+                <div className="btn-propose-container">
+                  <button
+                    className="btn btn-outline-primary btn-propose"
+                    onClick={() =>
+                      loadModal("COLLABORATION_PROPOSAL_MODAL", {
+                        hideModal,
+                        notify
+                      })
+                    }
+                  >
+                    Propose collaboration
+                  </button>
+                </div>
               </div>
               <ListDocumentGrid
-                documentIds={regulatoryIds}
-                documentsById={regulatoryById}
+                documents={scorecardsArr}
               />
             </div>
           ) : null}
-          {thoughtLeadershipIds && thoughtLeadershipIds.length ? (
-            <div>
-              <span className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                Thought Leadership
-              </span>
+          {regulatoryArr.length ? (
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Regulatory Notices</div>
+              </div>
               <ListDocumentGrid
-                documentIds={thoughtLeadershipIds}
-                documentsById={thoughtLeadershipById}
+                documents={regulatoryArr}
               />
             </div>
           ) : null}
-          {scorecardIds && scorecardIds.length ? (
-            <div>
-              <span className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                Transparency Scorecards
-              </span>
+          {thoughtLeadershipArr.length ? (
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Thought Leadership</div>
+              </div>
               <ListDocumentGrid
-                documentIds={scorecardIds}
-                documentsById={scorecardsById}
+                documents={thoughtLeadershipArr}
+              />
+            </div>
+          ) : null}
+          {scorecardsArr.length ? (
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Transparency Scorecards</div>
+              </div>
+              <ListDocumentGrid
+                documents={scorecardsArr}
               />
             </div>
           ) : null}

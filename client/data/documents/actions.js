@@ -11,12 +11,12 @@ export function fetchLastestDocumentsWithStats() {
         offset,
         limit
       });
-      const documentIds = documents.map(s => s.id);
-      const documentsById = keyBy(documents, "id");
+      console.log(documents);
+      //const documentIds = documents.map(s => s.id);
+      //const documentsById = keyBy(documents, "id");
       dispatch({
         type: types.DOCUMENT_LISTING_FETCH_SUCCESS,
-        documentsById,
-        documentIds,
+        documents: documents.rows,
         count,
         offset: offset + limit
       });

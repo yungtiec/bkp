@@ -286,23 +286,17 @@ function splitRangePath(path) {
 }
 
 function getStartAndEndIndexInDocumentQna(
-  versionQnaIds,
-  versionQnasById,
+  content_html,
   comment
 ) {
   try {
-    if (!versionQnaIds.length) return;
-    const documentQuestion = versionQnasById[comment.version_question_id];
-    const versionQnaContent =
-      documentQuestion.markdown +
-      documentQuestion.version_answers.reduce(
-        (string, answer) => answer.markdown + " ",
-        ""
-      );
-    const startIndex = versionQnaContent.indexOf(comment.quote);
+    const startIndex = content_html.indexOf(comment.quote);
     const endIndex = startIndex + comment.quote.length;
-    const order_in_version = documentQuestion.order_in_version;
-    return { startIndex, endIndex, order_in_version };
+    return {
+      startIndex,
+      endIndex,
+      //order_in_version
+    };
   } catch (err) {}
 }
 
@@ -312,7 +306,7 @@ function getStartAndEndIndexInDocumentQna(
  *
  */
 
-export function getAllComments(state) {
+export function getAllComments(state, content_html) {
   var filteredCommentIds;
   const verificationStatus = state.scenes.document.verificationStatus;
   const sortFn = sortFns[state.scenes.document.commentSortBy];
@@ -328,8 +322,7 @@ export function getAllComments(state) {
     versionQnaIds.map(id => versionQnasById[id].version_answers[0].id);
   const commentCollection = values(commentsById).map(comment => {
     const range = getStartAndEndIndexInDocumentQna(
-      versionQnaIds,
-      versionQnasById,
+      content_html,
       comment
     );
     return assignIn(

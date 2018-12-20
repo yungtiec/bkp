@@ -26,6 +26,7 @@ export default function reduce(state = initialState, action = {}) {
 }
 
 export function getDocumentMetadata(state) {
+  console.log(state.scenes.document.data.documentMetadata);
   return state.scenes.document.data.documentMetadata;
 }
 
@@ -39,12 +40,10 @@ export function getDocumentLatestVersion(state) {
 
 export function isClosedForComment(state) {
   if (!state.scenes.document.data.documentMetadata.id) return "";
+  console.log('state.scenes.document.data', state.scenes.document.data);
   return (
     Number(
-      maxBy(
-        state.scenes.document.data.documentMetadata.versions,
-        "hierarchyLevel"
-      ).comment_until_unix
+      state.scenes.document.data.documentMetadata.comment_until_unix
     ) -
       Number(moment().format("x")) <=
     0

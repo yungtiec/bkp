@@ -28,6 +28,7 @@ export default ({
   parent
 }) => {
   const { creator_id, collaborators } = documentMetadata;
+  console.log({documentMetadata});
   const collaboratorsArray = (collaborators || []).reduce(
     (acc, curr) => {
       return acc.concat([curr.id]);
@@ -56,7 +57,7 @@ export default ({
         commentIssueFilter={commentIssueFilter}
         updateIssueFilter={updateIssueFilter}
         tags={tags}
-        versionMetadata={versionMetadata}
+        documentMetadata={documentMetadata}
         addNewComment={addNewComment}
       />
       <SidebarContents

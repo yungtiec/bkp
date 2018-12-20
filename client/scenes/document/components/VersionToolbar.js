@@ -12,20 +12,6 @@ import { loadModal } from "../../../data/reducer";
 import policies from "../../../policies.js";
 import ReactTooltip from "react-tooltip";
 
-function getDocumentMarkdown({
-  documentTitle,
-  versionQnaIds,
-  versionQnasById
-}) {
-  const newline = "\n\n";
-  var documentMarkdown = "# " + documentTitle + newline;
-  versionQnaIds.forEach(sid => {
-    documentMarkdown += versionQnasById[sid].markdown;
-    documentMarkdown += versionQnasById[sid].version_answers[0].markdown;
-  });
-  return documentMarkdown;
-}
-
 class VersionToolbar extends Component {
   constructor(props) {
     super(props);
@@ -34,23 +20,14 @@ class VersionToolbar extends Component {
 
   render() {
     const {
-      projectMetadata,
       documentMetadata,
-      versionQnasById,
-      versionQnaIds,
       uploadMode,
       user,
       upvoteDocument,
       downvoteDocument
     } = this.props;
 
-    const document = documentMetadata.versions[0];
-
-    const documentMarkdown = getDocumentMarkdown({
-      documentTitle: documentMetadata.title,
-      versionQnaIds,
-      versionQnasById
-    });
+    const document = documentMetadata;
 
     const hasUpvoted = !!find(
       documentMetadata.upvotesFrom,
@@ -142,7 +119,7 @@ class VersionToolbar extends Component {
                     aria-expanded="false"
                   >
                     <Link
-                      to={`/s/${document.version_slug}/progress`}
+                      to={`/s/${document.slug}/progress`}
                     >
                       View progress
                     </Link>
@@ -152,13 +129,13 @@ class VersionToolbar extends Component {
                     aria-labelledby="versionProgressButton"
                   >
                     <Link
-                      to={`/s/${document.version_slug}/progress`}
+                      to={`/s/${document.slug}/progress`}
                       class="dropdown-item"
                     >
                       Milestone
                     </Link>
                     <Link
-                      to={`/s/${document.version_slug}/issues`}
+                      to={`/s/${document.slug}/issues`}
                       class="dropdown-item"
                     >
                       Issues
@@ -180,7 +157,7 @@ class VersionToolbar extends Component {
                 >
                   <button type="button" className="btn btn-outline-primary">
                     <Link
-                      to={`/s/${document.version_slug}/upload`}
+                      to={`/s/${document.slug}/upload`}
                     >
                       Import new version
                     </Link>

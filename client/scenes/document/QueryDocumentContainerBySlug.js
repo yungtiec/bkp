@@ -28,28 +28,23 @@ class QueryDocumentContainerBySlug extends Component {
   componentDidMount() {
     batchActions([
       this.props.fetchMetadataBySlug(this.props.match.params.slug),
-      this.props.fetchLatestQuestionsBySlug(
-        this.props.match.params.slug
-      )
+      //this.props.fetchLatestQuestionsBySlug(
+      //  this.props.match.params.slug
+      //)
     ]);
   }
 
   render() {
-    if (!this.props.documentMetadata.id || !this.props.versionQnaIds)
+    console.log('this.props', this.props);
+    if (!this.props.documentMetadata.id)
       return null;
     return <DocumentContainerBySlug {...this.props} />;
   }
 }
 
 const mapState = state => {
-  const { versionQnasById, versionQnaIds } = getAllDocumentQuestions(state);
-  const { versionMetadata, versionMetadataLoading } = getVersionMetadata(state);
   return {
-    versionQnasById,
-    versionQnaIds,
     documentMetadata: getDocumentMetadata(state),
-    latestVersionMetadata: getDocumentLatestVersion(state),
-    versionMetadata,
     isClosedForComment: isClosedForComment(state)
   };
 };

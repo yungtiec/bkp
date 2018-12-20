@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export function getCommentsByVersionId(versionId) {
-  return axios.get(`/api/versions/${versionId}/comments`).then(res => res.data);
+export function getCommentsByVersionId(doc_id) {
+  return axios.get(`/api/documents/${doc_id}/comments`).then(res => res.data);
 }
 
 export function postComment({

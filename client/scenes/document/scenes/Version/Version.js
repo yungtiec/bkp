@@ -270,10 +270,6 @@ class Document extends Component {
 
     if (
       !commentIds ||
-      !versionQnaIds ||
-      !versionMetadata.id ||
-      versionMetadataLoading ||
-      versionQnasLoading ||
       commentsLoading
     )
       return (
@@ -306,14 +302,6 @@ class Document extends Component {
             isLoggedIn={isLoggedIn}
             isClosedForComment={isClosedForComment}
             documentMetadata={documentMetadata}
-            versionQnasById={versionQnasById}
-            versionQnaIds={versionQnaIds}
-            editScorecard={editScorecard}
-            editQuestion={editQuestion}
-            editAnswer={editAnswer}
-            revertToPrevQuestion={revertToPrevQuestion}
-            revertToPrevAnswer={revertToPrevAnswer}
-            versionMetadata={versionMetadata}
             tags={tags}
             tagFilter={tagFilter}
             commentOnClick={this.commentOnClick}
@@ -353,8 +341,8 @@ class Document extends Component {
                 this.props.width < 767
                   ? "350px"
                   : this.props.width > 1300
-                    ? "450px"
-                    : "410px"
+                  ? "450px"
+                  : "410px"
               }
               scrollbarContainerHeight="calc(100% - 100px)"
               autoHide={true}
@@ -386,12 +374,12 @@ class Document extends Component {
                   parent={this}
                 />
               )}
-              {sidebarContext === "tableOfContents" && (
-                <SidebarTableOfContents
-                  versionQnasById={versionQnasById}
-                  versionQnaIds={versionQnaIds}
-                />
-              )}
+              {/*{sidebarContext === "tableOfContents" && (*/}
+                {/*<SidebarTableOfContents*/}
+                  {/*versionQnasById={versionQnasById}*/}
+                  {/*versionQnaIds={versionQnaIds}*/}
+                {/*/>*/}
+              {/*)}*/}
             </CustomScrollbar>
           </SidebarLayout>
         </div>
@@ -400,3 +388,58 @@ class Document extends Component {
 }
 
 export default Document;
+
+{/*<SidebarLayout*/}
+  {/*width={width}*/}
+  {/*selectedComments={selectedComments}*/}
+  {/*sidebarOpen={sidebarOpen}*/}
+  {/*toggleSidebar={toggleSidebar}*/}
+  {/*sidebarContext={sidebarContext}*/}
+  {/*toggleSidebarContext={toggleSidebarContext}*/}
+{/*>*/}
+  {/*<CustomScrollbar*/}
+    {/*scrollbarContainerWidth={*/}
+      {/*this.props.width < 767*/}
+        {/*? "350px"*/}
+        {/*: this.props.width > 1300*/}
+        {/*? "450px"*/}
+        {/*: "410px"*/}
+    {/*}*/}
+    {/*scrollbarContainerHeight="calc(100% - 100px)"*/}
+    {/*autoHide={true}*/}
+    {/*scrollbarThumbColor="rgb(233, 236, 239)"*/}
+  {/*>*/}
+    {/*{sidebarContext === "comments" && (*/}
+      {/*<SidebarComments*/}
+        {/*documentMetadata={documentMetadata}*/}
+        {/*isLoggedIn={isLoggedIn}*/}
+        {/*anonymity={anonymity}*/}
+        {/*commentIds={commentIds}*/}
+        {/*nonSpamCommentIds={nonSpamCommentIds}*/}
+        {/*commentsById={commentsById}*/}
+        {/*versionMetadata={versionMetadata}*/}
+        {/*projectMetadata={documentMetadata.project}*/}
+        {/*commentSortBy={commentSortBy}*/}
+        {/*sortCommentBy={sortCommentBy}*/}
+        {/*tags={tags}*/}
+        {/*tagFilter={tagFilter}*/}
+        {/*updateTagFilter={updateTagFilter}*/}
+        {/*tagsWithCountInDocument={tagsWithCountInDocument}*/}
+        {/*commentIssueFilter={commentIssueFilter}*/}
+        {/*updateIssueFilter={updateIssueFilter}*/}
+        {/*isClosedForComment={isClosedForComment}*/}
+        {/*addNewComment={addNewComment}*/}
+        {/*selectedComments={selectedComments}*/}
+        {/*selectedText={sidebarCommentContext.selectedText}*/}
+        {/*resetCommentSelection={this.resetSidebarCommentContext}*/}
+        {/*parent={this}*/}
+      {/*/>*/}
+    {/*)}*/}
+    {/*{sidebarContext === "tableOfContents" && (*/}
+      {/*<SidebarTableOfContents*/}
+        {/*versionQnasById={versionQnasById}*/}
+        {/*versionQnaIds={versionQnaIds}*/}
+      {/*/>*/}
+    {/*)}*/}
+  {/*</CustomScrollbar>*/}
+{/*</SidebarLayout>*/}

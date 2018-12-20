@@ -80,28 +80,23 @@ const LoadableVersion = Loadable({
 
 class MyComponent extends React.Component {
   componentDidMount() {
-    const versionId = this.props.documentMetadata.versions[0].id;
-    this.loadData({
-      versionId: versionId
-    });
+    this.loadData();
   }
 
-  componentDidUpdate(prevProps) {
-    const versionId = this.props.documentMetadata.versions[0].id;
-    const prevVersionId = prevProps.documentMetadata.versions[0].id;
-    if (
-      prevVersionId !== versionId
-    ) {
-      this.loadData({
-        versionId: versionId
-      });
-    }
-  }
+  //componentDidUpdate(prevProps) {
+  //  const versionId = this.props.documentMetadata.versions[0].id;
+  //  const prevVersionId = prevProps.documentMetadata.versions[0].id;
+  //  if (
+  //    prevVersionId !== versionId
+  //  ) {
+  //    this.loadData({
+  //      versionId: versionId
+  //    });
+  //  }
+  //}
 
-  loadData({ versionId }) {
-    this.props.fetchMetadataByVersionId(versionId);
-    this.props.fetchQuestionsByVersionId(versionId);
-    this.props.fetchCommentsByVersionId(versionId);
+  loadData() {
+    this.props.fetchCommentsByVersionId(this.props.documentMetadata.id);
   }
 
   render() {
@@ -110,18 +105,14 @@ class MyComponent extends React.Component {
 }
 
 const mapState = state => {
-  const {
-          versionQnasById,
-          versionQnaIds,
-          versionQnasLoading
-        } = getAllDocumentQuestions(state);
+  const documentMetadata = getDocumentMetadata(state);
   const {
           commentsById,
           commentIds,
           unfilteredCommentIds,
           nonSpamCommentIds,
           commentsLoading
-        } = getAllComments(state);
+        } = getAllComments(state, documentMetadata.content_html);
   const {
           sidebarOpen,
           annotationHighlight,
@@ -130,7 +121,6 @@ const mapState = state => {
           commentIssueFilter,
           sidebarContext
         } = state.scenes.document;
-  const { versionMetadata, versionMetadataLoading } = getVersionMetadata(state);
 
   return {
     // global
@@ -140,16 +130,10 @@ const mapState = state => {
     onboard: state.data.user.onboard,
     // metadata
     isClosedForComment:
-    Number(versionMetadata.comment_until_unix) -
+    Number(documentMetadata.comment_until_unix) -
     Number(moment().format("x")) <=
     0,
-    versionMetadataLoading,
-    versionMetadata,
     documentMetadata: getDocumentMetadata(state),
-    // qnas
-    versionQnasLoading,
-    versionQnasById,
-    versionQnaIds,
     // comments
     commentsLoading,
     commentsById,

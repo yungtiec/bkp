@@ -66,7 +66,7 @@ class SidebarHeader extends Component {
       updateTagFilter,
       commentIssueFilter,
       tags,
-      versionMetadata,
+      documentMetadata,
       addNewComment,
       isClosedForComment
     } = this.props;
@@ -101,7 +101,7 @@ class SidebarHeader extends Component {
             }`}
           >
             <Countdown
-              timeInUnix={Number(versionMetadata.comment_until_unix)}
+              timeInUnix={Number(documentMetadata.comment_until_unix)}
             />
             {!isClosedForComment && isLoggedIn ? (
               <CommentBoxWithTagField
@@ -110,7 +110,7 @@ class SidebarHeader extends Component {
                 tags={tags}
                 selectedTags={[]}
                 initialValue=""
-                versionId={versionMetadata.id}
+                versionId={documentMetadata.id}
                 onSubmit={addNewComment}
                 onCancel={null}
               />

@@ -89,14 +89,22 @@ module.exports = (db, DataTypes) => {
       foreignKey: "document_id",
       as: "collaborators"
     });
+    Document.hasMany(models.issue, {
+      foreignKey: "resolving_doc_id",
+      as: "resolvedIssues"
+    });
+    Document.hasMany(models.comment, {
+      foreignKey: "doc_id"
+    });
   };
   Document.loadScopes = function(models) {
-    Document.addScope("includeVersionsWithOutstandingIssues", function({
-                                                                         documentId,
-                                                                         versionWhereClause
-                                                                       }) {
+    Document.addScope("includeOutstandingIssues",
+      function({
+         slug,
+         versionWhereClause
+       }) {
       return {
-        where: { id: Number(documentId) },
+        where: { slug },
         include: [
           {
             model: models["project"],
@@ -114,51 +122,30 @@ module.exports = (db, DataTypes) => {
             ]
           },
           {
-            model: models["version"],
-            where: versionWhereClause,
-            attributes: [
-              "id",
-              "hierarchyLevel",
-              "version_number",
-              "creator_id",
-              "pdf_link",
-              "createdAt",
-              "version_slug"
-            ],
+            model: models["issue"],
+            as: "resolvedIssues", // use in SurveyProgress
+            required: false,
+            where: {
+              comment_id: {
+                [Sequelize.Op.not]: null
+              }
+            },
             include: [
-              { model: models["document"] },
               {
-                model: models["user"],
-                as: "creator"
-              },
+                model: models["comment"]
+              }
+            ]
+          },
+          {
+            model: models["comment"], // use in SurveyIssues
+            required: false,
+            include: [
               {
                 model: models["issue"],
-                as: "resolvedIssues", // use in SurveyProgress
                 required: false,
-                where: {
-                  comment_id: {
-                    [Sequelize.Op.not]: null
-                  }
-                },
-                include: [
-                  {
-                    model: models["comment"]
-                  }
-                ]
-              },
-              {
-                model: models["comment"], // use in SurveyIssues
-                required: false,
-                include: [
-                  {
-                    model: models["issue"],
-                    required: false,
-                    where: { open: true }
-                  }
-                ]
+                where: { open: true }
               }
-            ],
-            order: [[{ model: models["version"] }, "hierarchyLevel"]]
+            ]
           },
           {
             model: models["user"],

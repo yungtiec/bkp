@@ -13,20 +13,11 @@ const getLatestVersionDate = documentById => {
   return documentById.versions[0].createdAt;
 };
 
-const getLatestVersion = documentById => {
-  if (documentById.latest_version) {
-    return documentById.latest_version;
-  }
-  return documentById.versions;
-};
-
-export default ({ documentIds, documentsById }) => {
-  return documentIds.length ? (
+export default ({ documents }) => {
+  return documents.length ? (
     <div className="row">
-      {documentIds.map(id => {
-        const document = documentsById[id];
-        const latestVersion = getLatestVersion(document);
-        const date = moment(getLatestVersionDate(document)).format(
+      {documents.map(document => {
+        const date = moment(document.createdAt).format(
           "MMM DD YYYY"
         );
         const creatorRole =
@@ -46,8 +37,8 @@ export default ({ documentIds, documentsById }) => {
 
         return (
           <ListItemGrid
-            key={id}
-            cardHref={`/s/${document.versions[0].version_slug}`}
+            key={document.id}
+            cardHref={`/s/${document.slug}`}
             mainTitle={document.title}
             subtitle={`by ${document.creator.name}`}
             textUpperRight={date}

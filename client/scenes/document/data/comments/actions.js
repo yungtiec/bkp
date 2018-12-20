@@ -13,13 +13,13 @@ import { keyBy, omit, assignIn, pick, cloneDeep, values, maxBy } from "lodash";
 import { notify } from "reapop";
 import history from "../../../../history";
 
-export const fetchCommentsByVersionId = versionId => {
+export const fetchCommentsByVersionId = docId => {
   return async (dispatch, getState) => {
     try {
       dispatch({
         type: types.COMMENTS_FETCH_REQUEST
       });
-      const comments = await getCommentsByVersionId(versionId);
+      const comments = await getCommentsByVersionId(docId);
       const tags = await getAllTags();
       const commentsById = keyBy(comments, "id");
       dispatch({

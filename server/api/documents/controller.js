@@ -12,7 +12,8 @@ const {
   Issue,
   ProjectAdmin,
   ProjectEditor,
-  WizardSchema
+  WizardSchema,
+  Comment
 } = require("../../db/models");
 const { getEngagedUsers, createVersionSlug } = require("../utils");
 const moment = require("moment");
@@ -20,6 +21,26 @@ const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
 const crypto = require("crypto");
 Promise = require("bluebird");
+
+const getComments = async (req, res, next) => {
+  console.log(req.params);
+  try {
+    const comments = await Comment.scope({
+      method: [
+        "flatThreadByRootId",
+        {
+          where: {
+            doc_id: req.params.doc_id,
+            hierarchyLevel: 1
+          }
+        }
+      ]
+    }).findAll();
+    res.send(comments);
+  } catch (err) {
+    next(err);
+  }
+};
 
 const getDocuments = async (req, res, next) => {
   try {
@@ -75,13 +96,10 @@ const getPublishedDocuments = async (req, res, next) => {
 
 const getDocumentBySlug = async (req, res, next) => {
   try {
-    const version = await Version.findOne({
-      where: { version_slug: req.params.version_slug }
-    });
     const document = await Document.scope({
       method: [
-        "includeVersionsWithOutstandingIssues",
-        { documentId: version.document_id }
+        "includeOutstandingIssues",
+        { slug : req.params.version_slug }
       ]
     }).findOne();
     res.send(document);
@@ -571,6 +589,7 @@ const putDocument = async (req, res, next) => {
 };
 
 module.exports = {
+  getComments,
   getDocuments,
   getDrafts,
   getPublishedDocuments,

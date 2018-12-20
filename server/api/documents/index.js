@@ -45,6 +45,12 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
   }
 };
 
+router.get(
+  "/:doc_id/comments",
+  ensureDocumentSubmissionOrOwnership,
+  documentController.getComments
+);
+
 /**
  * Getting a list of documents
  *

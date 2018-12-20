@@ -35,8 +35,7 @@ class MyComponent extends React.Component {
   render() {
     if (
       !this.props.projectsBySymbol ||
-      !this.props.documentsById ||
-      !this.props.documentIds ||
+      !this.props.documents ||
       !this.props.projectSymbolArr
     )
       return null;
@@ -46,12 +45,11 @@ class MyComponent extends React.Component {
 
 const mapState = state => {
   const { projectsBySymbol, projectSymbolArr } = getAllProjects(state);
-  const { documentsById, documentIds } = getDocumentListing(state);
+  const { documents } = getDocumentListing(state);
   return {
     projectsBySymbol,
     projectSymbolArr,
-    documentsById,
-    documentIds
+    documents
   };
 };
 

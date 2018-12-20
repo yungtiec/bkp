@@ -27,6 +27,7 @@ class DocumentContainer extends Component {
   }
 
   componentDidMount() {
+    console.log()
     Events.scrollEvent.register("begin", () => {});
     Events.scrollEvent.register("end", () => {});
     scrollSpy.update();
@@ -48,15 +49,13 @@ class DocumentContainer extends Component {
   render() {
     const {
       documentMetadata,
-      latestVersionMetadata,
-      versionMetadata,
       isClosedForComment,
-      versionQnasById,
-      versionQnaIds,
       upvoteDocument,
       downvoteDocument,
       match
     } = this.props;
+
+    console.log({documentMetadata})
 
     return (
       <div className="main-container">
@@ -66,8 +65,6 @@ class DocumentContainer extends Component {
         />
         <VersionToolbar
           documentMetadata={documentMetadata}
-          versionQnasById={versionQnasById}
-          versionQnaIds={versionQnaIds}
           upvoteDocument={upvoteDocument}
           downvoteDocument={downvoteDocument}
         />
