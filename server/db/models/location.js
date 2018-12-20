@@ -6,7 +6,10 @@ module.exports = (db, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
+    city: {
+      type: DataTypes.TEXT
+    },
+    country: {
       type: DataTypes.TEXT
     }
   });

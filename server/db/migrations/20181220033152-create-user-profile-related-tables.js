@@ -19,7 +19,10 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         },
-        name: {
+        city: {
+          type: Sequelize.TEXT
+        },
+        country: {
           type: Sequelize.TEXT
         }
       }),
