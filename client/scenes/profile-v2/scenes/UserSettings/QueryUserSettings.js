@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
 
-const LoadableQueryProfile = Loadable({
-  loader: () => import("./Profile"),
+const LoadableQueryUserSettings = Loadable({
+  loader: () => import("./UserSettings"),
   loading: () => (
     <SquareLoader
       className="route__loader"
@@ -28,15 +28,10 @@ class MyComponent extends React.Component {
 
   componentDidMount() {}
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.match.params.userHandle !== nextProps.match.params.userHandle
-    ) {
-    }
-  }
+  componentWillReceiveProps(nextProps) {}
 
   render() {
-    return <LoadableQueryProfile {...this.props} />;
+    return <LoadableQueryUserSettings {...this.props} />;
   }
 }
 

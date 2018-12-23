@@ -31,7 +31,7 @@ class Navbar extends Component {
 
     return (
       <div className="header">
-        <nav className="navbar navbar-expand-md no-gutters navbar--logo">
+        <nav className="navbar navbar-expand-md no-gutters navbar--logo app-container">
           <div className="box--left">
             <Link className="logo-header my-0 ml-0" to="/">
               <img

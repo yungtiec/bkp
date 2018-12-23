@@ -7,6 +7,7 @@ import {
   Collaborations,
   Project,
   Profile,
+  ProfileV2,
   Admin,
   Unauthorized,
   Upload,
@@ -118,6 +119,13 @@ class Routes extends Component {
               layout={LayoutWithNav}
               path="/user/:userId"
               component={Profile}
+            />
+          )}
+          {isLoggedIn && (
+            <RouteWithLayout
+              layout={LayoutWithNav}
+              path="/profile/:userHandle"
+              component={ProfileV2}
             />
           )}
           {isLoggedIn && (
