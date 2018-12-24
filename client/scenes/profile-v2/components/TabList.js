@@ -2,8 +2,16 @@ import "./TabList.scss";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
-const Tab = ({ to, name, displayName, currentTab, stats, tabType }) => (
-  <Link to={to}>
+const Tab = ({
+  to,
+  name,
+  displayName,
+  currentTab,
+  stats,
+  tabType,
+  onSelect
+}) => (
+  <Link to={to} onClick={() => onSelect(name)}>
     <li className={`tab-list__item ${currentTab === name ? "active" : ""}`}>
       <span
         className={`tab-list__item-label ${
@@ -23,13 +31,18 @@ const Tab = ({ to, name, displayName, currentTab, stats, tabType }) => (
   </Link>
 );
 
-export default ({ tabs, defaultTab, onSelect, currentTab, tabType }) => {
+export default ({ tabs, onSelect, currentTab, tabType }) => {
   const activeTab = "about";
 
   return (
     <ul className="tab-list">
       {tabs.map(tab => (
-        <Tab {...tab} currentTab={currentTab} tabType={tabType} />
+        <Tab
+          {...tab}
+          currentTab={currentTab}
+          tabType={tabType}
+          onSelect={onSelect}
+        />
       ))}
     </ul>
   );
