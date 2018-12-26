@@ -38,15 +38,20 @@ const getUserContributions = async (req, res, next) => {
       where: { user_handle: req.params.userHandle }
     });
     const contributions = await db.sequelize
-      .query(`( SELECT "documents"."id","documents"."createdAt", "documents"."title", "documents"."description", null as comment, null as quote, count("document_upvotes"."user_id") as num_upvotes, count("document_downvotes"."user_id") as num_downvotes, count("versions.comments") as num_comments FROM documents LEFT OUTER JOIN document_upvotes ON documents.id = document_upvotes.document_id AND documents.creator_id = ${
-      user.id
-    } LEFT OUTER JOIN document_downvotes ON documents.id = document_downvotes.document_id INNER JOIN versions AS versions ON versions.document_id = documents.id AND versions.submitted = true LEFT OUTER JOIN comments AS "versions.comments" ON versions.id = "versions.comments"."version_id"
-    GROUP BY documents.id )
-      union
-    ( SELECT id,"comments"."createdAt", null as title, null as description, "comment", "quote", count(comment_upvotes.user_id) as num_upvotes, null as num_downvotes, count(commentsancestors) as num_comments FROM comments LEFT OUTER JOIN comment_upvotes ON comments.id = comment_upvotes.comment_id AND comments.owner_id = ${
-      user.id
-    } LEFT OUTER JOIN commentsancestors ON commentsancestors."ancestorId" = comments.id GROUP BY comments.id )
-    ORDER BY "createdAt" DESC OFFSET 0 LIMIT 10;`);
+        .query(`( SELECT 'document' as type, "documents"."id","documents"."createdAt" as "createdAt", "documents"."title", "documents"."description", null as comment, null as quote, count("document_upvotes"."user_id") as num_upvotes, count("document_downvotes"."user_id") as num_downvotes, count("versions.comments") as num_comments FROM documents LEFT OUTER JOIN document_upvotes ON documents.id = document_upvotes.document_id LEFT OUTER JOIN document_downvotes ON documents.id = document_downvotes.document_id INNER JOIN versions AS versions ON versions.document_id = documents.id AND versions.submitted = true LEFT OUTER JOIN comments AS "versions.comments" ON versions.id = "versions.comments"."version_id" WHERE documents.creator_id = ${
+        user.id
+      } GROUP BY documents.id )
+    union all
+      ( SELECT 'comment' as type, id,"comments"."createdAt" as "createdAt", null as title, null as description, "comment", "quote", count(comment_upvotes.user_id) as num_upvotes, null as num_downvotes, count(commentsancestors) as num_comments FROM comments LEFT OUTER JOIN comment_upvotes ON comments.id = comment_upvotes.comment_id LEFT OUTER JOIN commentsancestors ON commentsancestors."ancestorId" = comments.id WHERE comments.owner_id = ${
+        user.id
+      } GROUP BY comments.id )
+    union all ( SELECT 'upvote' as type, "documents"."id","document_upvotes"."createdAt" as "createdAt", "documents"."title", "documents"."description", null as comment, null as quote, null as num_upvotes, null as num_downvotes, null as num_comments FROM documents INNER JOIN document_upvotes ON documents.id = document_upvotes.document_id AND document_upvotes.user_id = ${
+        user.id
+      } )
+    union all ( SELECT 'downvote' as type, "documents"."id","document_downvotes"."createdAt" as "createdAt", "documents"."title", "documents"."description", null as comment, null as quote, null as num_downvotes, null as num_downvotes, null as num_comments FROM documents INNER JOIN document_downvotes ON documents.id = document_downvotes.document_id AND document_downvotes.user_id = ${
+        user.id
+      } )
+    ORDER BY "createdAt" DESC OFFSET ${req.query.offset} LIMIT ${req.query.limit};`);
     res.send(contributions);
   } catch (err) {
     next(err);

@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { fetchUserContributions } from "../../data/actions";
-import { getUserContributions } from "../../data/reducer";
+import { fetchUserContributions } from "./data/actions";
+import {
+  getUserContributions,
+  getUserContributionsOffsetAndLimit
+} from "./data/reducer";
 import AllContributions from "./AllContributions";
+import { animateScroll as scroll } from "react-scroll";
 
 class QueryAllContributions extends React.Component {
   constructor(props) {
@@ -18,6 +22,7 @@ class QueryAllContributions extends React.Component {
     if (this.props.profile.user_handle !== nextProps.profile.user_handle) {
       this.props.fetchUserContributions(nextProps.profile.user_handle);
     }
+    if (this.props.offset !== nextProps.offset) window.scrollTo(0, 0);
   }
 
   render() {
@@ -28,10 +33,12 @@ class QueryAllContributions extends React.Component {
 
 const mapState = (state, ownProps) => {
   const { contributionsById, contributionIds } = getUserContributions(state);
+  const { offset } = getUserContributionsOffsetAndLimit(state);
   return {
     ownProps,
     contributionsById,
-    contributionIds
+    contributionIds,
+    offset
   };
 };
 

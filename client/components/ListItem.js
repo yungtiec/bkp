@@ -22,7 +22,7 @@ export default ({
               {quote ? (
                 <div
                   className="entity__quote"
-                  class="pl-3 mb-4"
+                  class="pl-3 mb-3"
                   style={{ borderLeft: "3px solid grey" }}
                 >
                   <span>{quote}</span>
@@ -36,7 +36,10 @@ export default ({
             <p className="entity__text-upper-right">{textUpperRight}</p>
           </div>
           <div className="entity__description">{mainText}</div>
-          <div className="entity__action--bottom">
+          <div
+            className={`entity__action--bottom ${(tagArray || metadataArray) &&
+              "mt-3"}`}
+          >
             {(tagArray &&
               tagArray.map(tag => (
                 <div className="entity__metrics-stat">
