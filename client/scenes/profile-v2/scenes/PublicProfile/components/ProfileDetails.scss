@@ -1,0 +1,44 @@
+$text-sm-margin: 5px;
+$text-md-margin: 10px;
+$text-lg-margin: 16px;
+
+.profile-details__name {
+  font-weight: 600;
+  margin-bottom: $text-sm-margin;
+}
+
+.profile-details__user-handle {
+  color: #838383;
+  font-size: 13px;
+}
+
+.profile-details__current-career-role {
+  margin-bottom: $text-md-margin;
+}
+
+.profile-details--with-icons {
+  display: block;
+  font-size: 14px;
+  margin-bottom: $text-sm-margin;
+}
+
+.profile-details--with-icons .fas {
+  color: #838383;
+  width: 25px;
+}
+
+.profile-details--with-icons a {
+  color: #007bff;
+}
+
+.profile-details__social-media-container {
+  margin-top: $text-lg-margin;
+}
+
+.profile-details__social-media-link {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #565656;
+  color: white;
+  margin-right: 5px;
+}

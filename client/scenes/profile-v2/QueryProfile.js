@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
+import { fetchUserProfile } from "./data/actions";
+import { getUserProfile } from "./data/reducer";
 
 const LoadableQueryProfile = Loadable({
   loader: () => import("./Profile"),
@@ -26,26 +28,32 @@ class MyComponent extends React.Component {
     super(props);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetchUserProfile(this.props.match.params.userHandle);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (
       this.props.match.params.userHandle !== nextProps.match.params.userHandle
     ) {
+      this.props.fetchUserProfile(nextProps.match.params.userHandle);
     }
   }
 
   render() {
+    if (!this.props.profile) return null;
     return <LoadableQueryProfile {...this.props} />;
   }
 }
 
 const mapState = state => {
-  return {};
+  return {
+    profile: getUserProfile(state)
+  };
 };
 
-const actions = (dispatch, ownProps) => {
-  return {};
+const actions = {
+  fetchUserProfile
 };
 
 export default withRouter(

@@ -27,7 +27,10 @@ router.post("/login", async (req, res, next) => {
       } else {
         req.login(user, async err => {
           if (err) next(err);
-          user = await User.getContributions({ userId: user.id });
+          user = await User.getContributions({
+            includePrivateInfo: true,
+            userId: user.id
+          });
           res.send(user);
         });
       }
@@ -38,7 +41,10 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", (req, res, next) => {
   User.create(req.body)
     .then(async user => {
-      user = await User.getContributions({ userId: user.id });
+      user = await User.getContributions({
+        includePrivateInfo: true,
+        userId: user.id
+      });
       req.login(user, err => (err ? next(err) : res.json(user)));
     })
     .catch(err => {
@@ -59,7 +65,10 @@ router.post("/logout", (req, res) => {
 
 router.get("/me", async (req, res) => {
   if (req.user) {
-    const user = await User.getContributions({ userId: req.user.id });
+    const user = await User.getContributions({
+      includePrivateInfo: true,
+      userId: req.user.id
+    });
     res.send(user);
   } else {
     res.sendStatus(401);
@@ -115,12 +124,12 @@ router.put("/profile/update-password", async (req, res, next) => {
         password: req.body.newPassword
       });
       const message = {
-        to : userEmail,
-        from : "The Brooklyn Project <reset-password@thebkp.com>",
-        subject : "The Brooklyn Project - Password Change",
-        text :
-        "You are receiving this because you (or someone else) have changed the password for your account.\n\n" +
-        "If you did not request this, please contact an administrator immediately.\n",
+        to: userEmail,
+        from: "The Brooklyn Project <reset-password@thebkp.com>",
+        subject: "The Brooklyn Project - Password Change",
+        text:
+          "You are receiving this because you (or someone else) have changed the password for your account.\n\n" +
+          "If you did not request this, please contact an administrator immediately.\n"
       };
       await sgMail.send(message);
       res.send(200);
@@ -198,7 +207,10 @@ router.put("/reset-password/:token", async (req, res, next) => {
       req.logIn(user, async function(err) {
         if (err) res.sendStatus(400);
         else {
-          user = await User.getContributions({ userId: user.id });
+          user = await User.getContributions({
+            includePrivateInfo: true,
+            userId: user.id
+          });
           res.send(user);
         }
       });

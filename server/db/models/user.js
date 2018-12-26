@@ -243,25 +243,43 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
-    User.addScope("basicInfo", function({ userId, googleId, uportAddress }) {
+    User.addScope("basicInfo", function({
+      userHandle,
+      userId,
+      googleId,
+      uportAddress,
+      includePrivateInfo
+    }) {
       var query;
+      var attributes = [
+        "id",
+        "email",
+        "name",
+        "first_name",
+        "last_name",
+        "organization",
+        "restricted_access",
+        "short_profile_url",
+        "self_introduction",
+        "profile_pic_url",
+        "linkedin_url",
+        "twitter_url",
+        "stackoverflow_url",
+        "website_url",
+        "github_url",
+        "user_handle",
+        "createdAt"
+      ];
+      console.log(userHandle);
       if (userId) query = { id: userId };
       if (googleId) query = { googleId };
       if (uportAddress) query = { uportAddress };
+      if (userHandle) query = { user_handle: userHandle };
+      if (includePrivateInfo)
+        attributes.concat(["anonymity", "onboard", "profile_update_prompted"]);
       return {
         where: query,
-        attributes: [
-          "id",
-          "email",
-          "name",
-          "first_name",
-          "last_name",
-          "organization",
-          "restricted_access",
-          "anonymity",
-          "onboard",
-          "createdAt"
-        ],
+        attributes,
         include: [
           {
             model: models.role,
@@ -333,34 +351,42 @@ module.exports = (db, DataTypes) => {
 
   User.getContributions = async function({
     userId,
+    userHandle,
     googleId,
     uportAddress,
+    includePrivateInfo,
     forListing
   }) {
     var query;
     if (googleId) query = { googleId };
     if (uportAddress) query = { uportAddress };
     if (userId) query = { userId: Number(userId) };
+    if (userHandle) query = { userHandle };
+    if (includePrivateInfo) query.includePrivateInfo = true;
     const user = await User.scope({
       method: ["basicInfo", query]
     }).findOne();
-    const [comments, notifications] = await Promise.all([
-      user.getComments({
-        attributes: ["id", "reviewed"],
-        include: [
-          {
-            model: db.model("issue"),
-            required: false
-          },
-          {
-            model: db.model("user"),
-            as: "upvotesFrom",
-            attributes: ["name", "first_name", "last_name", "email"],
-            required: false
-          }
-        ]
-      }),
-      user.getNotifications({
+    if (!user) return null;
+    const comments = await user.getComments({
+      attributes: ["id", "reviewed"],
+      include: [
+        {
+          model: db.model("issue"),
+          required: false
+        },
+        {
+          model: db.model("user"),
+          as: "upvotesFrom",
+          attributes: ["name", "first_name", "last_name", "email"],
+          required: false
+        }
+      ]
+    });
+    const documents = await user.getDocuments({
+      attributes: ["id"]
+    });
+    if (includePrivateInfo) {
+      var notifications = await user.getNotifications({
         where: {
           status: {
             [Sequelize.Op.or]: [
@@ -369,26 +395,26 @@ module.exports = (db, DataTypes) => {
             ]
           }
         }
-      })
-    ]);
+      });
+    }
     const numCommentIssues = comments.filter(item => item.issue).length;
     const numCommentUpvotes = comments.reduce(
       (count, item) =>
         item.upvotesFrom ? item.upvotesFrom.length + count : count,
       0
     );
-
     const numCommentSpam = comments.filter(item => item.reviewed === "spam")
       .length;
-
+    var results = {
+      num_documents: documents.length,
+      num_comments: comments.length,
+      num_issues: numCommentIssues,
+      num_upvotes: numCommentUpvotes,
+      num_spam: numCommentSpam
+    };
+    if (includePrivateInfo) results.num_notifications = notifications.length;
     return assignIn(
-      {
-        num_comments: comments.length,
-        num_issues: numCommentIssues,
-        num_upvotes: numCommentUpvotes,
-        num_spam: numCommentSpam,
-        num_notifications: notifications.length
-      },
+      results,
       forListing ? omit(user.toJSON(), ["roles"]) : user.toJSON()
     );
   };

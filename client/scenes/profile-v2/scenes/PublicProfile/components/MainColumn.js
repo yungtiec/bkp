@@ -10,9 +10,15 @@ const TAB_OPTIONS = {
   likes: Likes
 };
 
-const MainColumn = ({ match }) => {
+const MainColumn = ({ match, profile, gridClassnames }) => {
   const Tab = TAB_OPTIONS[match.params.tab];
-  return <Tab tab={match.params.tab} />;
+  return (
+    <Tab
+      gridClassnames={`${gridClassnames}`}
+      tab={match.params.tab}
+      profile={profile}
+    />
+  );
 };
 
 export default withRouter(MainColumn);

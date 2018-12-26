@@ -23,17 +23,17 @@ const ensureCorrectRole = (req, res, next) => {
 router.get("/", ensureAuthentication, userController.getUsers);
 
 /**
- * Getting user by id
+ * Getting user by handle
  *
  * @name Get user
- * @route {GET} /api/users/:userId
+ * @route {GET} /api/users/:userHandle
  * @authentication
- * @routeparam {Number} userId
+ * @routeparam {Number} userHandle
  * @todo pagination
  *
  */
 router.get(
-  "/:userId",
+  "/:userHandle",
   ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUser
@@ -53,6 +53,22 @@ router.get(
   ensureAuthentication,
   ensureCorrectRole,
   userController.getUserProjects
+);
+
+/**
+ * Getting a list of user's contributions
+ *
+ * @name Get user's contributions
+ * @route {GET} /api/users/:userHandle/contributions
+ * @authentication
+ * @routeparam {Number} userHandle
+ *
+ */
+router.get(
+  "/:userHandle/contributions",
+  ensureAuthentication,
+  ensureCorrectRole,
+  userController.getUserContributions
 );
 
 /**

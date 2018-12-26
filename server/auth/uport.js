@@ -10,13 +10,19 @@ router.post("/", async (req, res, next) => {
       where: { uportAddress: req.body.address }
     });
     if (user)
-      user = await User.getContributions({ uportAddress: req.body.address });
+      user = await User.getContributions({
+        includePrivateInfo: true,
+        uportAddress: req.body.address
+      });
     else
       user = await User.create({
         name: req.body.name,
         uportAddress: req.body.address
       }).then(user =>
-        User.getContributions({ uportAddress: req.body.address })
+        User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: req.body.address
+        })
       );
     req.login(user, async err => {
       if (err) next(err);
@@ -39,13 +45,19 @@ router.post("/mobile", async (req, res, next) => {
       where: { uportAddress: decoded.payload.nad }
     });
     if (user)
-      user = await User.getContributions({ uportAddress: decoded.payload.nad });
+      user = await User.getContributions({
+        includePrivateInfo: true,
+        uportAddress: decoded.payload.nad
+      });
     else
       user = await User.create({
         name: decoded.payload.own.name,
         uportAddress: decoded.payload.nad
       }).then(user =>
-        User.getContributions({ uportAddress: decoded.payload.nad })
+        User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: decoded.payload.nad
+        })
       );
     req.login(user, async err => {
       if (err) next(err);

@@ -51,7 +51,10 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
                 }
               }).spread(async (user, created) => {
                 if (!created) user = await user.update({ googleId });
-                user = await User.getContributions({ googleId });
+                user = await User.getContributions({
+                  googleId,
+                  includePrivateInfo: true
+                });
                 return done(null, user);
               });
         })

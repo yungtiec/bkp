@@ -24,9 +24,30 @@ const getUsers = async (req, res, next) => {
 const getUser = async (req, res, next) => {
   try {
     const profile = await User.getContributions({
-      userId: Number(req.params.userId)
+      userHandle: req.params.userHandle && req.params.userHandle.slice(1)
     });
     res.send(profile);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getUserContributions = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { user_handle: req.params.userHandle }
+    });
+    const contributions = await db.sequelize
+      .query(`( SELECT "documents"."id","documents"."createdAt", "documents"."title", "documents"."description", null as comment, null as quote, count("document_upvotes"."user_id") as num_upvotes, count("document_downvotes"."user_id") as num_downvotes, count("versions.comments") as num_comments FROM documents LEFT OUTER JOIN document_upvotes ON documents.id = document_upvotes.document_id AND documents.creator_id = ${
+      user.id
+    } LEFT OUTER JOIN document_downvotes ON documents.id = document_downvotes.document_id INNER JOIN versions AS versions ON versions.document_id = documents.id AND versions.submitted = true LEFT OUTER JOIN comments AS "versions.comments" ON versions.id = "versions.comments"."version_id"
+    GROUP BY documents.id )
+      union
+    ( SELECT id,"comments"."createdAt", null as title, null as description, "comment", "quote", count(comment_upvotes.user_id) as num_upvotes, null as num_downvotes, count(commentsancestors) as num_comments FROM comments LEFT OUTER JOIN comment_upvotes ON comments.id = comment_upvotes.comment_id AND comments.owner_id = ${
+      user.id
+    } LEFT OUTER JOIN commentsancestors ON commentsancestors."ancestorId" = comments.id GROUP BY comments.id )
+    ORDER BY "createdAt" DESC OFFSET 0 LIMIT 10;`);
+    res.send(contributions);
   } catch (err) {
     next(err);
   }
@@ -218,6 +239,7 @@ const getUserComments = async (req, res, next) => {
 module.exports = {
   getUsers,
   getUser,
+  getUserContributions,
   getUserProjects,
   getUserDocuments,
   getUserComments
