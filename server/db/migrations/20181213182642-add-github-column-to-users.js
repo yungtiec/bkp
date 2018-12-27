@@ -2,16 +2,15 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return [
+    return Promise.all([
       queryInterface.addColumn("users", "githubId", {
         type: Sequelize.STRING
       })
-    ];
+    ]);
   },
 
   down: (queryInterface, Sequelize) => {
-    return [queryInterface.removeColumn("users", "githubId")];
+    return Promise.all([queryInterface.removeColumn("users", "githubId")]);
   }
 };
 
-// merge

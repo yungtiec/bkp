@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return [
+    return Promise.all([
       queryInterface.addColumn("comments", "doc_id", {
         type: Sequelize.INTEGER,
         references: {
@@ -17,13 +17,13 @@ module.exports = {
           key: "id"
         }
       })
-    ];
+    ]);
   },
 
   down: (queryInterface, Sequelize) => {
-    return [
+    return Promise.all([
       queryInterface.removeColumn("comments", "doc_id"),
       queryInterface.removeColumn("issues", "resolving_doc_id")
-    ]
+    ]);
   }
 };

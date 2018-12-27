@@ -8,7 +8,8 @@ const documentTypes = {
   general: "general",
   scorecard: "scorecard",
   regulatory: "regulatory",
-  regulatoryForComment: "regulatory-for-comment"
+  regulatoryForComment: "regulatory-for-comment",
+  proposedLawsRegulations: "proposed-laws-regulations"
 };
 
 const filterDocuments = (documents) => {
@@ -16,6 +17,7 @@ const filterDocuments = (documents) => {
   let thoughtLeadershipArr = [];
   let regulatoryArr = [];
   let regulatoryForCommentArr = [];
+  let proposedLawsRegulationsArr = [];
 
   documents.forEach((document) => {
     if (document.document_type === documentTypes.scorecard) {
@@ -24,6 +26,8 @@ const filterDocuments = (documents) => {
       regulatoryArr = [].concat(regulatoryArr).concat([document]);
     } else if (document.document_type === documentTypes.regulatoryForComment) {
       regulatoryForCommentArr  = [].concat(regulatoryForCommentArr).concat([document]);
+    } else if (document.document_type === documentTypes.proposedLawsRegulations) {
+      proposedLawsRegulationsArr  = [].concat(proposedLawsRegulationsArr).concat([document]);
     } else {
       thoughtLeadershipArr = [].concat(thoughtLeadershipArr).concat([document]);
     }
@@ -33,7 +37,8 @@ const filterDocuments = (documents) => {
     scorecardsArr,
     regulatoryArr,
     regulatoryForCommentArr,
-    thoughtLeadershipArr
+    thoughtLeadershipArr,
+    proposedLawsRegulationsArr
   };
 };
 
@@ -49,7 +54,8 @@ export default ({
     scorecardsArr,
     regulatoryArr,
     regulatoryForCommentArr,
-    thoughtLeadershipArr
+    thoughtLeadershipArr,
+    proposedLawsRegulationsArr
   } = filterDocuments(documents);
 
   return (
@@ -91,10 +97,10 @@ export default ({
           <div className="projects-containers__collaboration-header">
             <span className="collaborations-header">Open Collaborations</span>
           </div>
-          {regulatoryForCommentArr.length ? (
+          {proposedLawsRegulationsArr.length ? (
             <div className="project-row">
               <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
-                <div className="collaborate-header">Regulatory Requests for Comment</div>
+                <div className="collaborate-header">Proposed Laws And Regulations</div>
                 <div className="btn-propose-container">
                   <button
                     className="btn btn-outline-primary btn-propose"
@@ -110,7 +116,17 @@ export default ({
                 </div>
               </div>
               <ListDocumentGrid
-                documents={scorecardsArr}
+                documents={proposedLawsRegulationsArr}
+              />
+            </div>
+          ) : null}
+          {regulatoryForCommentArr.length ? (
+            <div className="project-row">
+              <div className="projects-containers__collaboration-sub-header d-flex justify-content-between">
+                <div className="collaborate-header">Regulatory Requests for Comment</div>
+              </div>
+              <ListDocumentGrid
+                documents={regulatoryForCommentArr}
               />
             </div>
           ) : null}
