@@ -5,7 +5,7 @@ import { MainColumn, LeftColumn } from "./components";
 
 const PublicProfile = ({ match, profile }) => {
   return (
-    <div className="app-container mt-3 d-flex">
+    <div className="app-container mt-3 pb-4 d-flex">
       <LeftColumn profile={profile} gridClassnames="w-25" />
       <Switch>
         <Route

@@ -19,7 +19,8 @@ if (config.use_env_variable) {
     config.database,
     config.username,
     config.password,
-    _.assignIn(config, { logging: console.log })
+    config
+    // _.assignIn(config, { logging: console.log })
   );
 }
 

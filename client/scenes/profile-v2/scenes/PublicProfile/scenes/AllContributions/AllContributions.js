@@ -9,6 +9,7 @@ const AllContribution = ({
   contributionsById,
   contributionIds,
   offset,
+  endOfResult,
   profile,
   fetchUserContributions
 }) => {
@@ -81,21 +82,24 @@ const AllContribution = ({
             );
         }
       })}
-      <div className="my-3">
-        <button
-          className="btn btn-outline-primary mr-2"
-          disabled={offset === 0}
-          onClick={() => fetchUserContributions(profile.user_handle, -1)}
-        >
-          back
-        </button>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => fetchUserContributions(profile.user_handle, 1)}
-        >
-          next
-        </button>
-      </div>
+      {!(offset === 0 && endOfResult) && (
+        <div className="my-3">
+          <button
+            className="btn btn-outline-primary mr-2"
+            disabled={offset === 0}
+            onClick={() => fetchUserContributions(profile.user_handle, -1)}
+          >
+            back
+          </button>
+          <button
+            className="btn btn-outline-primary"
+            disabled={endOfResult}
+            onClick={() => fetchUserContributions(profile.user_handle, 1)}
+          >
+            next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

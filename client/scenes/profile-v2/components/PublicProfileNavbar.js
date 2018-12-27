@@ -41,9 +41,9 @@ const PublicProfileNavbar = ({ tab, switchTab, match, location }) => {
           },
           {
             displayName: "Likes",
-            name: "likes",
+            name: "votes",
             stats: 10,
-            to: `${match.url}/likes`
+            to: `${match.url}/votes`
           }
         ]}
         currentTab={routeParams.tab}

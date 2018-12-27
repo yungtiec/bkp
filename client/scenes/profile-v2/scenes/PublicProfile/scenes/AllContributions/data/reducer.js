@@ -5,7 +5,8 @@ const initialState = {
   contributionsById: null,
   contributionIds: null,
   offset: 0,
-  limit: 10
+  limit: 10,
+  endOfResult: false
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -36,5 +37,8 @@ export const getUserContributionsOffsetAndLimit = state => ({
       .limit,
   offset:
     state.scenes.profileV2.scenes.publicProfile.scenes.allContributions.data
-      .offset
+      .offset,
+  endOfResult:
+    state.scenes.profileV2.scenes.publicProfile.scenes.allContributions.data
+      .endOfResult
 });

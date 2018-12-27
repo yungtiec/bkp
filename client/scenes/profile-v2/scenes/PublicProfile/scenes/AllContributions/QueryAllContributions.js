@@ -33,12 +33,13 @@ class QueryAllContributions extends React.Component {
 
 const mapState = (state, ownProps) => {
   const { contributionsById, contributionIds } = getUserContributions(state);
-  const { offset } = getUserContributionsOffsetAndLimit(state);
+  const { offset, endOfResult } = getUserContributionsOffsetAndLimit(state);
   return {
-    ownProps,
+    ...ownProps,
     contributionsById,
     contributionIds,
-    offset
+    offset,
+    endOfResult
   };
 };
 

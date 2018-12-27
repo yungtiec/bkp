@@ -72,7 +72,7 @@ router.get(
 );
 
 /**
- * Getting a list of documents user has access to
+ * Getting a list of user's documents
  *
  * @name Get user's document
  * @route {GET} /api/users/:userId/documents
@@ -81,10 +81,26 @@ router.get(
  *
  */
 router.get(
-  "/:userId/documents",
+  "/:userHandle/documents",
   ensureAuthentication,
   ensureCorrectRole,
   userController.getUserDocuments
+);
+
+/**
+ * Getting a list of documents user has access to
+ *
+ * @name Get user's document
+ * @route {GET} /api/users/:userId/authorized-documents
+ * @authentication
+ * @routeparam {Number} userId
+ *
+ */
+router.get(
+  "/:userId/authorized-documents",
+  ensureAuthentication,
+  ensureCorrectRole,
+  userController.getUserAuthorizedDocuments
 );
 
 /**
@@ -102,8 +118,24 @@ router.get(
  *
  */
 router.get(
-  "/:userId/comments",
+  "/:userHandle/comments",
   ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUserComments
+);
+
+/**
+ * Getting a list of user's votes
+ *
+ * @name Get user's upvotes and downvotes
+ * @route {GET} /api/users/:userId/votes
+ * @authentication
+ * @routeparam {Number} userId
+ *
+ */
+router.get(
+  "/:userHandle/votes",
+  ensureAuthentication,
+  ensureCorrectRole,
+  userController.getUserVotes
 );

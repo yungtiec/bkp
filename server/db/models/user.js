@@ -174,7 +174,7 @@ module.exports = (db, DataTypes) => {
 
   User.loadScopes = function(models) {
     User.addScope("comments", function({
-      userId,
+      userHandle,
       limit,
       offset,
       reviewStatus,
@@ -183,7 +183,7 @@ module.exports = (db, DataTypes) => {
     }) {
       var commentQueryObj = getCommentQueryObj({
         queryObj: {
-          userId,
+          userHandle,
           limit,
           offset,
           reviewStatus,
@@ -193,7 +193,7 @@ module.exports = (db, DataTypes) => {
         order: true
       });
       return {
-        where: { id: userId },
+        where: { user_handle: userHandle },
         attributes: [
           "id",
           "email",
@@ -270,7 +270,6 @@ module.exports = (db, DataTypes) => {
         "user_handle",
         "createdAt"
       ];
-      console.log(userHandle);
       if (userId) query = { id: userId };
       if (googleId) query = { googleId };
       if (uportAddress) query = { uportAddress };
@@ -430,9 +429,6 @@ module.exports = (db, DataTypes) => {
     const user = await User.scope({
       method: ["comments", cloneDeep(queryObj)]
     }).findOne();
-    var { comments } = await User.scope({
-      method: ["commentCount", cloneDeep(queryObj)]
-    }).findOne();
     var pagedComments = user.comments
       .filter(comment => comment.version)
       .map(comment => {
@@ -445,7 +441,7 @@ module.exports = (db, DataTypes) => {
         }
         return comment;
       });
-    return { pagedComments, commentCount: comments.length };
+    return pagedComments;
   };
 
   /**

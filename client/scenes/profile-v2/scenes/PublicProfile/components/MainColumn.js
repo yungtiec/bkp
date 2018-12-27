@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { AllContributions, Documents, Comments, Likes } from "../scenes";
+import { AllContributions, Documents, Comments, Votes } from "../scenes";
 
 const TAB_OPTIONS = {
   "all-contributions": AllContributions,
   documents: Documents,
   comments: Comments,
-  likes: Likes
+  votes: Votes
 };
 
 const MainColumn = ({ match, profile, gridClassnames }) => {
