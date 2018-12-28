@@ -1,7 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ListItem } from "../../../../../../components";
+import {
+  ListItemBase,
+  ListItemAttached,
+  ContributionActionBtn
+} from "../../components";
 import moment from "moment";
 
 const AllContribution = ({
@@ -19,65 +24,107 @@ const AllContribution = ({
         switch (contributionsById[cid].type) {
           case "comment":
             return (
-              <ListItem
-                cardKey={cid}
-                cardHref=""
-                mainTitle={contributionsById[cid].comment}
-                quote={contributionsById[cid].quote}
-                subtitle={""}
-                textUpperRight={moment(
-                  contributionsById[cid].createdAt
-                ).fromNow()}
-                mainText={""}
-                tagArray={[
-                  `comments (${Number(contributionsById[cid].num_comments) ||
-                    0})`,
-                  `upvotes (${contributionsById[cid].num_upvotes || 0})`
-                ]}
-              />
+              <Fragment>
+                <ListItemBase
+                  key={cid}
+                  icon="comment"
+                  subtitleElements={[
+                    <Fragment>
+                      <a className="text-primary">@{profile.user_handle}</a>
+                      <span>commented on</span>
+                      <a className="text-dark">
+                        {contributionsById[cid].title}
+                      </a>
+                    </Fragment>,
+                    <Fragment>
+                      <span>Posted by</span>
+                      <a className="text-primary">
+                        @{contributionsById[cid].documentPostedBy}
+                      </a>
+                      <span>
+                        {moment(contributionsById[cid].createdAt).fromNow()}
+                      </span>
+                    </Fragment>
+                  ]}
+                />
+                <ListItemAttached
+                  verticalDivider={true}
+                  quote={contributionsById[cid].quote}
+                  text={contributionsById[cid].comment}
+                  actionElements={
+                    <Fragment>
+                      <ContributionActionBtn
+                        icon="reply"
+                        stat={Number(contributionsById[cid].num_comments) || 0}
+                        label="replies"
+                      />
+                    </Fragment>
+                  }
+                />
+              </Fragment>
             );
           case "document":
             return (
-              <ListItem
-                cardKey={cid}
-                cardHref=""
-                mainTitle={contributionsById[cid].title}
-                subtitle={""}
-                textUpperRight={moment(
-                  contributionsById[cid].createdAt
-                ).fromNow()}
-                mainText={""}
-                tagArray={[
-                  `comments (${contributionsById[cid].num_comments || 0})`,
-                  `upvotes (${contributionsById[cid].num_upvotes || 0})`,
-                  `downvotes (${contributionsById[cid].num_downvotes || 0})`
+              <ListItemBase
+                key={cid}
+                icon="file"
+                titleElement={<a>{contributionsById[cid].title}</a>}
+                subtitleElements={[
+                  <Fragment>
+                    <span>Posted by</span>
+                    <a className="text-primary">
+                      @{contributionsById[cid].documentPostedBy}
+                    </a>
+                    <span>
+                      {moment(contributionsById[cid].createdAt).fromNow()}
+                    </span>
+                  </Fragment>
                 ]}
+                actionElements={
+                  <Fragment>
+                    <ContributionActionBtn
+                      icon="thumbs-up"
+                      stat={Number(contributionsById[cid].num_upvotes) || 0}
+                      label=""
+                    />
+                    <ContributionActionBtn
+                      icon="thumbs-down"
+                      stat={Number(contributionsById[cid].num_downvotes) || 0}
+                      label=""
+                    />
+                    <ContributionActionBtn
+                      icon="comment"
+                      stat={Number(contributionsById[cid].num_comments) || 0}
+                      label="comments"
+                    />
+                  </Fragment>
+                }
               />
             );
           case "upvote":
-            return (
-              <ListItem
-                cardKey={cid}
-                cardHref=""
-                mainTitle={`upvoted ${contributionsById[cid].title}`}
-                subtitle={""}
-                textUpperRight={moment(
-                  contributionsById[cid].createdAt
-                ).fromNow()}
-                mainText={""}
-              />
-            );
           case "downvote":
             return (
-              <ListItem
-                cardKey={cid}
-                cardHref=""
-                mainTitle={`downvoted ${contributionsById[cid].title}`}
-                subtitle={""}
-                textUpperRight={moment(
-                  contributionsById[cid].createdAt
-                ).fromNow()}
-                mainText={""}
+              <ListItemBase
+                key={cid}
+                icon={`thumbs-${
+                  contributionsById[cid].type === "upvote" ? "up" : "down"
+                }`}
+                subtitleElements={[
+                  <Fragment>
+                    <a className="text-primary">@{profile.user_handle}</a>
+                    <span>{contributionsById[cid].type}d</span>
+                    <a className="text-dark">{contributionsById[cid].title}</a>
+                  </Fragment>,
+                  <Fragment>
+                    <span>Posted by</span>
+                    <a className="text-primary">
+                      @{contributionsById[cid].documentPostedBy}
+                    </a>
+                    <span>
+                      {moment(contributionsById[cid].createdAt).fromNow()}
+                    </span>
+                  </Fragment>
+                ]}
               />
             );
         }

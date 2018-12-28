@@ -1,6 +1,8 @@
 import "./TabList.scss";
 import React, { Component } from "react";
 import { withRouter, matchPath } from "react-router-dom";
+import { connect } from "react-redux";
+import { getUserContributionStats } from "../data/reducer";
 
 import { TabList } from "./index";
 
@@ -13,7 +15,15 @@ const getParams = pathname => {
   return (match && match.params) || {};
 };
 
-const PublicProfileNavbar = ({ tab, switchTab, match, location }) => {
+const PublicProfileNavbar = ({
+  tab,
+  switchTab,
+  match,
+  location,
+  num_documents,
+  num_comments,
+  num_votes
+}) => {
   const routeParams = getParams(location.pathname);
   return (
     <div className="profile-navbar app-container d-flex justify-content-between align-items-center">
@@ -24,25 +34,25 @@ const PublicProfileNavbar = ({ tab, switchTab, match, location }) => {
           {
             displayName: "All",
             name: "all-contributions",
-            stats: 10,
+            stats: num_votes + num_documents + num_comments,
             to: `${match.url}/all-contributions`
           },
           {
             displayName: "Documents",
             name: "documents",
-            stats: 10,
+            stats: num_documents,
             to: `${match.url}/documents`
           },
           {
             displayName: "Comments",
             name: "comments",
-            stats: 10,
+            stats: num_comments,
             to: `${match.url}/comments`
           },
           {
             displayName: "Likes",
             name: "votes",
-            stats: 10,
+            stats: num_votes,
             to: `${match.url}/votes`
           }
         ]}
@@ -55,4 +65,15 @@ const PublicProfileNavbar = ({ tab, switchTab, match, location }) => {
   );
 };
 
-export default withRouter(PublicProfileNavbar);
+const mapState = state => ({
+  ...getUserContributionStats(state)
+});
+
+const actions = {};
+
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(PublicProfileNavbar)
+);

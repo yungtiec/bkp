@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { cloneDeep } from "lodash";
+import { cloneDeep, pick } from "lodash";
 
 const initialState = {};
 
@@ -17,3 +17,10 @@ export default function reduce(state = initialState, action = {}) {
 }
 
 export const getUserProfile = state => state.scenes.profileV2.data.profile;
+
+export const getUserContributionStats = state =>
+  pick(state.scenes.profileV2.data.profile, [
+    "num_documents",
+    "num_comments",
+    "num_votes"
+  ]);

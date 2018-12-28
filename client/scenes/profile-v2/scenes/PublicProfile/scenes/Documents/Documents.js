@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import { ListItem } from "../../../../../../components";
+import { ListItemBase, ContributionActionBtn } from "../../components";
 import moment from "moment";
 
 const Documents = ({
@@ -16,18 +17,36 @@ const Documents = ({
   return (
     <div className={`${gridClassnames}`}>
       {documentIds.map(id => (
-        <ListItem
-          cardKey={id}
-          cardHref=""
-          mainTitle={documentsById[id].title}
-          subtitle={""}
-          textUpperRight={moment(documentsById[id].createdAt).fromNow()}
-          mainText={""}
-          tagArray={[
-            `comments (${documentsById[id].num_comments || 0})`,
-            `upvotes (${documentsById[id].num_upvotes || 0})`,
-            `downvotes (${documentsById[id].num_downvotes || 0})`
+        <ListItemBase
+          key={id}
+          icon="file"
+          titleElement={<a>{documentsById[id].title}</a>}
+          subtitleElements={[
+            <Fragment>
+              <span>Posted by</span>
+              <a className="text-primary">@{profile.user_handle}</a>
+              <span>{moment(documentsById[id].createdAt).fromNow()}</span>
+            </Fragment>
           ]}
+          actionElements={
+            <Fragment>
+              <ContributionActionBtn
+                icon="thumbs-up"
+                stat={documentsById[id].num_upvotes || 0}
+                label=""
+              />
+              <ContributionActionBtn
+                icon="thumbs-down"
+                stat={documentsById[id].num_downvotes || 0}
+                label=""
+              />
+              <ContributionActionBtn
+                icon="comment"
+                stat={documentsById[id].num_comments || 0}
+                label="comments"
+              />
+            </Fragment>
+          }
         />
       ))}
       {!(offset === 0 && endOfResult) && (

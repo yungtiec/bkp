@@ -384,6 +384,15 @@ module.exports = (db, DataTypes) => {
     const documents = await user.getDocuments({
       attributes: ["id"]
     });
+    const [
+      commentUpvotes,
+      documentUpvotes,
+      documentDownvotes
+    ] = await Promise.all([
+      user.getUpvotedComments(),
+      user.getUpvotedDocuments(),
+      user.getDownvotedDocuments()
+    ]);
     if (includePrivateInfo) {
       var notifications = await user.getNotifications({
         where: {
@@ -408,7 +417,7 @@ module.exports = (db, DataTypes) => {
       num_documents: documents.length,
       num_comments: comments.length,
       num_issues: numCommentIssues,
-      num_upvotes: numCommentUpvotes,
+      num_votes: commentUpvotes.length + documentUpvotes.length + documentDownvotes.length,
       num_spam: numCommentSpam
     };
     if (includePrivateInfo) results.num_notifications = notifications.length;
