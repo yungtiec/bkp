@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return [
-      queryInterface.createTable("tag_link", {
+      queryInterface.createTable("tag_links", {
         table: {
           type: Sequelize.STRING,
           allowNull: false
@@ -32,6 +32,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return [queryInterface.dropTable("tag_link")];
+    return [queryInterface.dropTable("tag_links")];
   }
 };
