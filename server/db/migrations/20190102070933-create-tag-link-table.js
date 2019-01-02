@@ -3,13 +3,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return [
-      queryInterface.createTable("user_tags", {
-        user_id: {
+      queryInterface.createTable("tag_link", {
+        table: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
+        foreign_key: {
           type: Sequelize.INTEGER,
-          references: {
-            model: "users",
-            key: "id"
-          }
+          allowNull: false
         },
         tag_id: {
           type: Sequelize.INTEGER,
@@ -31,6 +32,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return [queryInterface.dropTable("user_tags")];
+    return [queryInterface.dropTable("tag_link")];
   }
 };

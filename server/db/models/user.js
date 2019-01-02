@@ -106,16 +106,8 @@ module.exports = (db, DataTypes) => {
     }
   );
   User.associate = function(models) {
-    User.belongsToMany(models.tag, {
-      through: "user_tags",
-      foreignKey: "user_id"
-    });
     User.belongsToMany(models.badge, {
       through: "user_badges",
-      foreignKey: "user_id"
-    });
-    User.belongsToMany(models.role, {
-      through: "user_roles",
       foreignKey: "user_id"
     });
     User.hasMany(models.notification, {

@@ -21,15 +21,36 @@ module.exports = (db, DataTypes) => {
       type: DataTypes.TEXT
     }
   });
+  Tag.polymorphicAssociate = function(models) {
+    const ModelsTobeAssociate = [models.user, models.document, models.comment];
+    for (const Model of ModelsTobeAssociate) {
+      Model.belongsToMany(Tag, {
+        foreignKey: "foreign_key",
+        constraints: false,
+        through: {
+          model: models.tag_link,
+          unique: false,
+          scope: {
+            table: Model.name
+          }
+        }
+      });
+      Tag.belongsToMany(Model, {
+        foreign_key: "tag_id",
+        through: {
+          model: models.tag_link,
+          unique: false
+        }
+      });
+    }
+  };
   Tag.associate = function(models) {
     Tag.belongsToMany(models.comment, {
       through: "comment_tags",
       foreignKey: "tag_id"
     });
-    Tag.belongsToMany(models.user, {
-      through: "user_tags",
-      foreignKey: "tag_id"
-    });
+    Tag.polymorphicAssociate(models);
   };
+
   return Tag;
 };
