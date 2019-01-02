@@ -9,11 +9,12 @@ export function fetchUserDocuments(userHandle, direction) {
     try {
       var { offset, limit } = getUserDocumentsOffsetAndLimit(getState());
       if (direction) {
-        offset = direction > 0 ? offset + limit : offset - limit;
+        offset = direction > 0 ? (offset + limit) : (offset - limit);
       }
-      const documents = await getUserDocuments({ userHandle, offset, limit });
-      const documentsById = keyBy(documents, "id");
-      const documentIds = documents.map(i => i.id);
+      const results = await getUserDocuments({ userHandle, offset, limit });
+      const documents = results[0];
+      const documentsById = keyBy(documents, "document_id");
+      const documentIds = documents.map(i => i.document_id);
       if (documentIds.length)
         dispatch({
           type: types.USER_DOCUMENTS_FETCH_SUCCESS,

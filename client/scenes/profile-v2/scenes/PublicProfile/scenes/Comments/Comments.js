@@ -1,7 +1,11 @@
-import React, { Component } from "react";
+import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ListItem } from "../../../../../../components";
+import {
+  ListItemBase,
+  ListItemAttached,
+  ContributionActionBtn
+} from "../../components";
 import moment from "moment";
 
 const Comments = ({
@@ -16,18 +20,40 @@ const Comments = ({
   return (
     <div className={`${gridClassnames}`}>
       {commentIds.map(id => (
-        <ListItem
-          cardKey={id}
-          cardHref=""
-          mainTitle={commentsById[id].comment}
-          quote={commentsById[id].quote}
-          textUpperRight={moment(commentsById[id].createdAt).fromNow()}
-          mainText={""}
-          tagArray={[
-            `replies (${commentsById[id].num_comments || 0})`,
-            `upvotes (${commentsById[id].num_upvotes || 0})`
-          ]}
-        />
+        <Fragment>
+          <ListItemBase
+            key={id}
+            icon="comment"
+            subtitleElements={[
+              <Fragment>
+                <a className="text-primary">@{profile.user_handle}</a>
+                <span>commented on</span>
+                <a className="text-dark">{commentsById[id].title}</a>
+              </Fragment>,
+              <Fragment>
+                <span>Posted by</span>
+                <a className="text-primary">
+                  @{commentsById[id].documentPostedBy}
+                </a>
+                <span>{moment(commentsById[id].createdAt).fromNow()}</span>
+              </Fragment>
+            ]}
+          />
+          <ListItemAttached
+            verticalDivider={true}
+            quote={commentsById[id].quote}
+            text={commentsById[id].comment}
+            actionElements={
+              <Fragment>
+                <ContributionActionBtn
+                  icon="reply"
+                  stat={Number(commentsById[id].num_comments) || 0}
+                  label="replies"
+                />
+              </Fragment>
+            }
+          />
+        </Fragment>
       ))}
       {!(offset === 0 && endOfResult) && (
         <div className="my-3">

@@ -11,9 +11,10 @@ export function fetchUserComments(userHandle, direction) {
       if (direction) {
         offset = direction > 0 ? offset + limit : offset - limit;
       }
-      const comments = await getUserComments({ userHandle, offset, limit });
-      const commentsById = keyBy(comments, "id");
-      const commentIds = comments.map(i => i.id);
+      const results = await getUserComments({ userHandle, offset, limit });
+      const comments = results[0];
+      const commentsById = keyBy(comments, "comment_id");
+      const commentIds = comments.map(i => i.comment_id);
       if (commentIds.length)
         dispatch({
           type: types.USER_COMMENTS_FETCH_SUCCESS,

@@ -32,17 +32,17 @@ const Documents = ({
             <Fragment>
               <ContributionActionBtn
                 icon="thumbs-up"
-                stat={documentsById[id].num_upvotes || 0}
+                stat={Number(documentsById[id].num_upvotes) || 0}
                 label=""
               />
               <ContributionActionBtn
                 icon="thumbs-down"
-                stat={documentsById[id].num_downvotes || 0}
+                stat={Number(documentsById[id].num_downvotes) || 0}
                 label=""
               />
               <ContributionActionBtn
                 icon="comment"
-                stat={documentsById[id].num_comments || 0}
+                stat={Number(documentsById[id].num_comments) || 0}
                 label="comments"
               />
             </Fragment>

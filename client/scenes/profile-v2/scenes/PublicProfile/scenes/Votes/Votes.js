@@ -1,7 +1,11 @@
-import React, { Component } from "react";
+import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ListItem } from "../../../../../../components";
+import {
+  ListItemBase,
+  ListItemAttached,
+  ContributionActionBtn
+} from "../../components";
 import moment from "moment";
 
 const Votes = ({
@@ -15,30 +19,75 @@ const Votes = ({
 }) => {
   return (
     <div className={`${gridClassnames}`}>
-      {voteIds.map(id => {
+      {voteIds.map(cid => {
         var mainTitle;
-        switch (votesById[id].type) {
+        switch (votesById[cid].type) {
           case "upvoteDocument":
-            mainTitle = `upvoted ${votesById[id].title}`;
-            break;
           case "downvoteDocument":
-            mainTitle = `downvoted ${votesById[id].title}`;
-            break;
+            return (
+              <ListItemBase
+                key={cid}
+                icon={`thumbs-${
+                  votesById[cid].type === "upvoteDocument" ? "up" : "down"
+                }`}
+                subtitleElements={[
+                  <Fragment>
+                    <a className="text-primary">@{profile.user_handle}</a>
+                    <span>
+                      {votesById[cid].type === "upvoteDocument"
+                        ? "upvote"
+                        : "downvote"}d
+                    </span>
+                    <a className="text-dark">{votesById[cid].title}</a>
+                  </Fragment>,
+                  <Fragment>
+                    <span>Posted by</span>
+                    <a className="text-primary">
+                      @{votesById[cid].documentPostedBy}
+                    </a>
+                    <span>{moment(votesById[cid].createdAt).fromNow()}</span>
+                  </Fragment>
+                ]}
+              />
+            );
           case "upvoteComment":
-            mainTitle = `upvoted a comment`;
-            break;
-          default:
-            mainTitle = "";
+            return (
+              <Fragment>
+                <ListItemBase
+                  key={cid}
+                  icon="thumbs-up"
+                  subtitleElements={[
+                    <Fragment>
+                      <a className="text-primary">@{profile.user_handle}</a>
+                      <span>upvoted a comment in</span>
+                      <a className="text-dark">{votesById[cid].title}</a>
+                    </Fragment>,
+                    <Fragment>
+                      <span>Posted by</span>
+                      <a className="text-primary">
+                        @{votesById[cid].documentPostedBy}
+                      </a>
+                      <span>{moment(votesById[cid].createdAt).fromNow()}</span>
+                    </Fragment>
+                  ]}
+                />
+                <ListItemAttached
+                  verticalDivider={true}
+                  quote={votesById[cid].quote}
+                  text={votesById[cid].comment}
+                  actionElements={
+                    <Fragment>
+                      <ContributionActionBtn
+                        icon="reply"
+                        stat={Number(votesById[cid].num_comments) || 0}
+                        label="replies"
+                      />
+                    </Fragment>
+                  }
+                />
+              </Fragment>
+            );
         }
-        return (
-          <ListItem
-            cardKey={id}
-            cardHref=""
-            mainTitle={mainTitle}
-            textUpperRight={moment(votesById[id].createdAt).fromNow()}
-            mainText={""}
-          />
-        );
       })}
       {!(offset === 0 && endOfResult) && (
         <div className="my-3">

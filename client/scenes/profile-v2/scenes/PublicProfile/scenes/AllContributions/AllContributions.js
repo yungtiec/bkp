@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ListItem } from "../../../../../../components";
 import {
   ListItemBase,
   ListItemAttached,
@@ -101,18 +100,24 @@ const AllContribution = ({
                 }
               />
             );
-          case "upvote":
-          case "downvote":
+          case "upvoteDocument":
+          case "downvoteDocument":
             return (
               <ListItemBase
                 key={cid}
                 icon={`thumbs-${
-                  contributionsById[cid].type === "upvote" ? "up" : "down"
+                  contributionsById[cid].type === "upvoteDocument"
+                    ? "up"
+                    : "down"
                 }`}
                 subtitleElements={[
                   <Fragment>
                     <a className="text-primary">@{profile.user_handle}</a>
-                    <span>{contributionsById[cid].type}d</span>
+                    <span>
+                      {contributionsById[cid].type === "upvoteDocument"
+                        ? "upvote"
+                        : "downvote"}d
+                    </span>
                     <a className="text-dark">{contributionsById[cid].title}</a>
                   </Fragment>,
                   <Fragment>
@@ -126,6 +131,47 @@ const AllContribution = ({
                   </Fragment>
                 ]}
               />
+            );
+          case "upvoteComment":
+            return (
+              <Fragment>
+                <ListItemBase
+                  key={cid}
+                  icon="thumbs-up"
+                  subtitleElements={[
+                    <Fragment>
+                      <a className="text-primary">@{profile.user_handle}</a>
+                      <span>upvoted a comment in</span>
+                      <a className="text-dark">
+                        {contributionsById[cid].title}
+                      </a>
+                    </Fragment>,
+                    <Fragment>
+                      <span>Posted by</span>
+                      <a className="text-primary">
+                        @{contributionsById[cid].documentPostedBy}
+                      </a>
+                      <span>
+                        {moment(contributionsById[cid].createdAt).fromNow()}
+                      </span>
+                    </Fragment>
+                  ]}
+                />
+                <ListItemAttached
+                  verticalDivider={true}
+                  quote={contributionsById[cid].quote}
+                  text={contributionsById[cid].comment}
+                  actionElements={
+                    <Fragment>
+                      <ContributionActionBtn
+                        icon="reply"
+                        stat={Number(contributionsById[cid].num_comments) || 0}
+                        label="replies"
+                      />
+                    </Fragment>
+                  }
+                />
+              </Fragment>
             );
         }
       })}

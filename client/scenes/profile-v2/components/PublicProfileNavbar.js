@@ -1,6 +1,6 @@
 import "./TabList.scss";
 import React, { Component } from "react";
-import { withRouter, matchPath } from "react-router-dom";
+import { withRouter, matchPath, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUserContributionStats } from "../data/reducer";
 
@@ -29,7 +29,6 @@ const PublicProfileNavbar = ({
     <div className="profile-navbar app-container d-flex justify-content-between align-items-center">
       <TabList
         tabType="stats"
-        onSelect={() => {}}
         tabs={[
           {
             displayName: "All",
@@ -59,7 +58,9 @@ const PublicProfileNavbar = ({
         currentTab={routeParams.tab}
       />
       <div className="">
-        <i class="fas fa-cog profile__setting-btn" />
+        <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
+          <i class="fas fa-cog profile__setting-btn" />
+        </Link>
       </div>
     </div>
   );

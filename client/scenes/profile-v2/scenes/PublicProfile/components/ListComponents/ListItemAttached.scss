@@ -34,9 +34,18 @@
   padding-bottom: 16px;
 }
 
+.list-item-attached__text {
+  margin: 10px 0;
+  display: inline-block;
+}
+
 .list-item-attached__quote {
   padding-left: 10px;
   border-left: 3px solid grey;
+  font-style: italic;
+  font-weight: 100;
+  display: inline-block;
+  margin: 10px 0;
 }
 
 .list-item-attached__action-elements {
