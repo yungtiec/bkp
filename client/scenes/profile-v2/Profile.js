@@ -11,7 +11,10 @@ const Profile = ({ profile, match, location }) => {
     <div className="profile">
       <ProfileHeader profileContext={profileContext} />
       <Switch>
-        <Route path={`${match.url}/settings`} component={UserSettings} />
+        <Route
+          path={`${match.url}/settings`}
+          render={() => <UserSettings profile={profile} />}
+        />
         <Route
           path={`${match.url}`}
           render={() => <PublicProfile profile={profile} />}

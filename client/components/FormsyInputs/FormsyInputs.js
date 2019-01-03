@@ -9,6 +9,12 @@ function createInputWithType(type) {
       autoBind(this);
     }
 
+    componentDidMount() {
+      if (this.props.defaultValue) {
+        this.props.setValue(this.props.defaultValue);
+      }
+    }
+
     changeValue(event) {
       // setValue() will set the value of the component, which in
       // turn will validate it and the rest of the form
@@ -44,6 +50,6 @@ function createInputWithType(type) {
   return withFormsy(InputTemplate);
 }
 
-export const InputEmail = createInputWithType("email");
-export const InputPassword = createInputWithType("password");
-export const InputText = createInputWithType("text");
+export const FormsyInputEmail = createInputWithType("email");
+export const FormsyInputPassword = createInputWithType("password");
+export const FormsyInputText = createInputWithType("text");

@@ -1,7 +1,7 @@
 import "./Password.scss";
 import React, { Component } from "react";
 import autoBind from "react-autobind";
-import { InputPassword } from "./../../../../components/index.js";
+import { FormsyInputPassword } from "./../../../../components/index.js";
 import Formsy from "formsy-react";
 
 class ProfilePassword extends Component {
@@ -81,7 +81,7 @@ class ProfilePassword extends Component {
             <label htmlFor="currentPassword">
               <small>Current Password</small>
             </label>
-            <InputPassword
+            <FormsyInputPassword
               name="currentPassword"
               validations="minLength:8"
               validationError="Password must have a minimum length of 8 characters"
@@ -92,7 +92,7 @@ class ProfilePassword extends Component {
             <label htmlFor="newPassword">
               <small>Password</small>
             </label>
-            <InputPassword
+            <FormsyInputPassword
               name="newPassword"
               validations="minLength:8"
               validationError="Password must have a minimum length of 8 characters"
@@ -103,7 +103,7 @@ class ProfilePassword extends Component {
             <label htmlFor="newPassword">
               <small>Confirm password</small>
             </label>
-            <InputPassword
+            <FormsyInputPassword
               name="confirm"
               validations="equalsField:newPassword"
               validationError="Password and confirmation password do not match"

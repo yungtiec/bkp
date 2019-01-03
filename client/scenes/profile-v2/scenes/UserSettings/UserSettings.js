@@ -7,8 +7,14 @@ const UserSettings = ({ match, profile }) => {
   return (
     <div className="app-container mt-3 pb-4 d-flex">
       <Switch>
-        <Route path={`${match.url}/account`} component={Account} />
-        <Route path={`${match.url}/edit`} component={EditProfile} />
+        <Route
+          path={`${match.url}/account`}
+          render={() => <Account profile={profile} />}
+        />
+        <Route
+          path={`${match.url}/edit`}
+          render={() => <EditProfile profile={profile} />}
+        />
         <Redirect from={match.url} exact to={`${match.url}/account`} />
       </Switch>
     </div>

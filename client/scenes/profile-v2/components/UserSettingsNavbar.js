@@ -32,14 +32,9 @@ const UserSettingsNavbar = ({ tab, match, location }) => {
         ]}
         currentTab={routeParams.tab}
       />
-      {routeParams.tab === "edit" ? (
-        <div className="">
-          <button className="btn btn-outline-danger mr-2">Cancel</button>
-          <button className="btn btn-primary">Save</button>
-        </div>
-      ) : (
-        <button className="btn btn-outline-primary">View my profile</button>
-      )}
+      <Link className="btn btn-outline-primary" to={`${match.url}`}>
+        View my profile
+      </Link>
     </div>
   );
 };

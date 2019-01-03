@@ -28,8 +28,13 @@ export { default as ListIssue } from "./ListIssue";
 export { default as ListItem } from "./ListItem";
 export { default as ListItemGrid } from "./ListItemGrid";
 export { default as SidebarLayout } from "./SidebarLayout";
-export { InputEmail, InputPassword, InputText } from "./FormsyInputs/Inputs";
-export { default as ScoreInput } from "./FormsyInputs/ScoreInput";
+export {
+  FormsyInputEmail,
+  FormsyInputPassword,
+  FormsyInputText
+} from "./FormsyInputs/FormsyInputs";
+export { default as FormsyScoreInput } from "./FormsyInputs/FormsyScoreInput";
+export { default as FormsyTextArea } from "./FormsyInputs/FormsyTextArea";
 export { default as ProjectScorecardInputs } from "./ProjectScorecardInputs";
 export { default as FeedbackModal } from "./FeedbackModal";
 export {

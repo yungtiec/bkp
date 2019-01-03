@@ -35,8 +35,8 @@ class MyComponent extends React.Component {
   }
 }
 
-const mapState = state => {
-  return {};
+const mapState = (state, ownProps) => {
+  return { ...ownProps };
 };
 
 const actions = (dispatch, ownProps) => {
