@@ -17,7 +17,7 @@ describe("Tag", () => {
         display_name: "Web Designer",
         type: "role"
       });
-      await user.addTag(tag);
+      var res = await user.addTag(tag);
       user = await User.findOne({
         where: { email: "cody@puppybook.com" },
         include: [
@@ -27,7 +27,6 @@ describe("Tag", () => {
         ]
       });
     });
-
     it("includes tags in the user instance", () => {
       expect(user.tags.length).to.be.equal(1);
       expect(user.tags[0].name).to.be.equal("web designer");

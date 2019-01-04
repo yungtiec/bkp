@@ -1,10 +1,17 @@
 const router = require("express").Router();
-const { User, Role, ProjectAdmin, ProjectEditor } = require("../db/models");
+const {
+  User,
+  Role,
+  ProjectAdmin,
+  ProjectEditor,
+  Tag
+} = require("../db/models");
 const _ = require("lodash");
 const generateForgetPasswordHtml = require("./generateForgetPasswordHtml.js");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 const moment = require("moment");
+Promise = require("bluebird");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = router;
@@ -78,10 +85,26 @@ router.get("/me", async (req, res) => {
 router.put("/profile", async (req, res, next) => {
   if (!req.user) res.sendStatus(401);
   else {
-    const user = await User.findById(req.user.id).then(user =>
-      user.update(req.body)
-    );
-    res.send(user);
+    try {
+      const user = await User.findById(req.user.id).then(user => {
+        var locationPromise = Promise.map(req.body.location, async l => {
+          const tag = await Tag.findById(l.value);
+          return user.addTag(tag);
+        });
+        var careerRolePromise = Promise.map(req.body.careerRole, async l => {
+          const tag = await Tag.findById(l.value);
+          return user.addTag(tag);
+        });
+        return Promise.all([
+          user.update(req.body),
+          locationPromise,
+          careerRolePromise
+        ]);
+      });
+      res.send(user);
+    } catch (err) {
+      next(err);
+    }
   }
 });
 

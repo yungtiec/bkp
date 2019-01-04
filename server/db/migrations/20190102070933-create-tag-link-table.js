@@ -12,7 +12,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false
         },
-        tag_id: {
+        tagId: {
           type: Sequelize.INTEGER,
           references: {
             model: "tags",

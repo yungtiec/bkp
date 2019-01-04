@@ -2,16 +2,19 @@ import "./EditProfile.scss";
 import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
+import axios from "axios";
 import {
   FormsyInputEmail,
   FormsyInputText,
-  FormsyTextArea
+  FormsyTextArea,
+  FormsyAsyncSelect
 } from "../../../../../../components";
 import Formsy from "formsy-react";
 
 const FORMSY_INPUT_TYPE = {
   input: FormsyInputText,
-  textarea: FormsyTextArea
+  textarea: FormsyTextArea,
+  asyncSelect: FormsyAsyncSelect
 };
 
 const ProfileInput = ({ type, label, name, ...props }) => {
@@ -31,6 +34,7 @@ const ProfileInput = ({ type, label, name, ...props }) => {
 };
 
 const EditProfile = ({ match, profile, updateProfile }) => {
+
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -61,8 +65,57 @@ const EditProfile = ({ match, profile, updateProfile }) => {
               name="organization"
               value={profile.organization}
             />
+            <ProfileInput
+              type="asyncSelect"
+              label="Location"
+              name="location"
+              value={(profile.location || []).map(tag => ({
+                value: tag.id,
+                label: tag.display_name
+              }))}
+              multi={true}
+              loadOptions={input => {
+                return axios
+                  .get("/api/tags/search?q=" + input + "&type=location")
+                  .then(res => {
+                    if (!input || input.length < 3) {
+                      return Promise.resolve({ options: [] });
+                    }
+                    return {
+                      options: res.data.map(tag => ({
+                        value: tag.id,
+                        label: tag.display_name
+                      }))
+                    };
+                  });
+              }}
+            />
+            <ProfileInput
+              type="asyncSelect"
+              label="Role"
+              name="careerRole"
+              value={(profile.careerRole || []).map(tag => ({
+                value: tag.id,
+                label: tag.display_name
+              }))}
+              multi={true}
+              loadOptions={input => {
+                return axios
+                  .get("/api/tags/search?q=" + input + "&type=role")
+                  .then(res => {
+                    if (!input || input.length < 3) {
+                      return Promise.resolve({ options: [] });
+                    }
+                    return {
+                      options: res.data.map(tag => ({
+                        value: tag.id,
+                        label: tag.display_name
+                      }))
+                    };
+                  });
+              }}
+            />
             <ProfileInput type="input" label="Role" name="role" />
-            <ProfileInput type="input" label="Location" name="location" />
           </div>
           <div className="w-50 pl-4">
             <ProfileInput

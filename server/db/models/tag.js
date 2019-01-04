@@ -36,7 +36,7 @@ module.exports = (db, DataTypes) => {
         }
       });
       Tag.belongsToMany(Model, {
-        foreign_key: "tag_id",
+        foreign_key: "tagId",
         through: {
           model: models.tag_link,
           unique: false
@@ -45,10 +45,6 @@ module.exports = (db, DataTypes) => {
     }
   };
   Tag.associate = function(models) {
-    Tag.belongsToMany(models.comment, {
-      through: "comment_tags",
-      foreignKey: "tag_id"
-    });
     Tag.polymorphicAssociate(models);
   };
 

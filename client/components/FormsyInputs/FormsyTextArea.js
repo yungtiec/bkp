@@ -8,12 +8,6 @@ class FormsyTextArea extends React.Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    if (this.props.defaultValue) {
-      this.props.setValue(this.props.defaultValue);
-    }
-  }
-
   changeValue(event) {
     // setValue() will set the value of the component, which in
     // turn will validate it and the rest of the form

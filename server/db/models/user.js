@@ -281,7 +281,10 @@ module.exports = (db, DataTypes) => {
             attributes: ["name"]
           },
           { model: models.project, as: "managedProjects" },
-          { model: models.project, as: "editedProjects" }
+          { model: models.project, as: "editedProjects" },
+          {
+            model: models.tag
+          }
         ]
       };
     });
