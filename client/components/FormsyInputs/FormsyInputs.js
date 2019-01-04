@@ -9,12 +9,6 @@ function createInputWithType(type) {
       autoBind(this);
     }
 
-    componentDidMount() {
-      if (this.props.defaultValue) {
-        this.props.setValue(this.props.defaultValue);
-      }
-    }
-
     changeValue(event) {
       // setValue() will set the value of the component, which in
       // turn will validate it and the rest of the form
@@ -29,7 +23,14 @@ function createInputWithType(type) {
 
     render() {
       // An error message is returned only if the component is invalid
-      var errorMessage = this.props.getErrorMessage();
+      const errorMessage = this.props.getErrorMessage(),
+        isPristine = this.props.isPristine(),
+        isValid = this.props.isValid(),
+        showRequired = this.props.showRequired(),
+        showError = _.isBoolean(this.props.showError)
+          ? this.props.showError
+          : this.props.showError(),
+        showRequiredMessage = !isPristine && !isValid && showRequired;
 
       return (
         <div style={{ margin: 0, width: "100%" }}>
@@ -37,9 +38,15 @@ function createInputWithType(type) {
             onChange={this.changeValue}
             onBlur={this.validateValue}
             type={type}
-            className="form-control"
+            className={`form-control ${showRequiredMessage &&
+              "form-control--invalid"}`}
             value={this.props.getValue() || ""}
           />
+          {showRequired && (
+            <span className="text-danger" style={{ fontSize: "12px" }}>
+              This is required
+            </span>
+          )}
           <span className="text-danger" style={{ fontSize: "12px" }}>
             {errorMessage}
           </span>

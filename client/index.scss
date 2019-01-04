@@ -6,6 +6,7 @@
 @import "./global-scss/markdown-body";
 @import "./global-scss/upload-accordion";
 @import "./global-scss/comment-box";
+@import "./global-scss/bootstrap-extension";
 @import "./global-scss/modal";
 
 html,
@@ -39,7 +40,6 @@ li {
     padding-left: 5px;
     padding-right: 5px;
   }
-
 }
 
 .main-container {

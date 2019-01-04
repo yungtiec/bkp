@@ -31,7 +31,6 @@ const ProfileInput = ({ type, label, name, ...props }) => {
 };
 
 const EditProfile = ({ match, profile }) => {
-  console.log(profile);
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -49,27 +48,20 @@ const EditProfile = ({ match, profile }) => {
               type="input"
               label="Name"
               name="name"
-              defaultValue={profile.name}
-              required
-            />
-            <ProfileInput
-              type="input"
-              label="User handle"
-              name="user_handle"
-              defaultValue={profile.user_handle}
+              value={profile.name}
               required
             />
             <ProfileInput
               type="textarea"
               label="Self Introduction"
               name="self_introduction"
-              defaultValue={profile.self_introduction}
+              value={profile.self_introduction}
             />
             <ProfileInput
               type="input"
               label="Organization"
               name="organization"
-              defaultValue={profile.organization}
+              value={profile.organization}
             />
             <ProfileInput type="input" label="Role" name="role" />
             <ProfileInput type="input" label="Location" name="location" />
@@ -79,32 +71,32 @@ const EditProfile = ({ match, profile }) => {
               type="input"
               label="LinkedIn"
               name="linkedin_url"
-              defaultValue={profile.linkedin_url}
+              value={profile.linkedin_url}
             />
             <ProfileInput
               type="input"
               label="Twitter"
               name="twitter_url"
-              defaultValue={profile.twitter_url}
+              value={profile.twitter_url}
             />
             <ProfileInput
               type="input"
               label="Github"
               name="github_url"
-              defaultValue={profile.github_url}
+              value={profile.github_url}
             />
             <ProfileInput
               type="input"
               label="Stack Overflow"
               name="stack-overflow_url"
-              defaultValue={profile.stackoverflow_url}
+              value={profile.stackoverflow_url}
             />
             <ProfileInput type="input" label="Website" name="website_url" />
           </div>
         </div>
         <div className="">
           <button className="btn btn-primary" type="submit">
-            Save
+            Save settings
           </button>
         </div>
       </Formsy>
