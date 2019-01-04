@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { getUserProfile, getUserContributions } from "./service";
+import { getUserProfile, putUserProfile } from "./service";
 
 export function fetchUserProfile(userHandle) {
   return async (dispatch, getState) => {
@@ -15,4 +15,16 @@ export function fetchUserProfile(userHandle) {
   };
 }
 
-
+export function updateProfile(profile) {
+  return async (dispatch, getState) => {
+    try {
+      profile = await putUserProfile(profile);
+      dispatch({
+        type: types.USER_PROFILE_UPDATED,
+        profile
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}

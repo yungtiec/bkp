@@ -30,14 +30,12 @@ const ProfileInput = ({ type, label, name, ...props }) => {
   );
 };
 
-const EditProfile = ({ match, profile }) => {
+const EditProfile = ({ match, profile, updateProfile }) => {
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
         className="user-profile__form"
-        onValidSubmit={model => {
-          console.log(model);
-        }}
+        onValidSubmit={updateProfile}
         name="user-profile"
         onValid={() => {}}
         onInvalid={() => {}}

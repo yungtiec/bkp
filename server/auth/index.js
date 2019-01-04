@@ -76,15 +76,10 @@ router.get("/me", async (req, res) => {
 });
 
 router.put("/profile", async (req, res, next) => {
-  if (!req.user || req.user.id !== req.body.id) res.sendStatus(401);
+  if (!req.user) res.sendStatus(401);
   else {
     const user = await User.findById(req.user.id).then(user =>
-      user.update({
-        first_name: req.body.firstName,
-        last_name: req.body.lastName,
-        name: req.body.name,
-        organization: req.body.organization
-      })
+      user.update(req.body)
     );
     res.send(user);
   }
