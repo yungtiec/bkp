@@ -4,7 +4,8 @@ const {
   Role,
   ProjectAdmin,
   ProjectEditor,
-  Tag
+  Tag,
+  TagLink
 } = require("../db/models");
 const _ = require("lodash");
 const generateForgetPasswordHtml = require("./generateForgetPasswordHtml.js");
@@ -86,21 +87,29 @@ router.put("/profile", async (req, res, next) => {
   if (!req.user) res.sendStatus(401);
   else {
     try {
-      const user = await User.findById(req.user.id).then(user => {
-        var locationPromise = Promise.map(req.body.location, async l => {
-          const tag = await Tag.findById(l.value);
-          return user.addTag(tag);
-        });
-        var careerRolePromise = Promise.map(req.body.careerRole, async l => {
-          const tag = await Tag.findById(l.value);
-          return user.addTag(tag);
-        });
-        return Promise.all([
-          user.update(req.body),
-          locationPromise,
-          careerRolePromise
-        ]);
+      const user = await User.findOne({
+        where: { id: req.user.id },
+        include: [{ model: Tag }]
       });
+      const updatedTagIds = (req.body.location || [])
+        .concat(req.body.careerRole || [])
+        .map(tag => tag.value);
+      const removeTagPromises = Promise.map(
+        user.tags.filter(tag => updatedTagIds.indexOf(tag.id) === -1),
+        removedTag =>
+          TagLink.destroy({
+            where: { tagId: removedTag.id, foreign_key: user.id, table: "user" }
+          })
+      );
+      const addTagPromises = Promise.map(updatedTagIds, async tagId => {
+        const tag = await Tag.findById(tagId);
+        return user.addTag(tag);
+      });
+      await Promise.all([
+        user.update(req.body),
+        removeTagPromises,
+        addTagPromises
+      ]);
       res.send(user);
     } catch (err) {
       next(err);
@@ -132,11 +141,28 @@ router.put("/profile/onboard", async (req, res, next) => {
   }
 });
 
-router.put("/profile/update-password", async (req, res, next) => {
+router.put("/accounts/update-account", async (req, res, next) => {
   try {
-    const user = await User.findById(req.body.id);
+    var user = await User.findById(req.user.id);
+    var putQuery = {};
+    if (user.email !== req.body.email) {
+      putQuery.email = req.body.email;
+      putQuery.email_verified = false;
+    }
+    if (user.user_handle !== req.body.user_handle)
+      putQuery.user_handle = req.body.user_handle;
+    user = await user.update(putQuery);
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/accounts/update-password", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
     const userEmail = user.dataValues.email;
-    const isCorrectPassword = user.correctPassword(req.body.currentPassword);
+    const isCorrectPassword = user.correctPassword(req.body.password);
     if (isCorrectPassword) {
       await user.update({
         password: req.body.newPassword

@@ -11,9 +11,11 @@ const ProfileDetails = ({ match, profile }) => {
     <div className="profile-details">
       <h5 className="profile-details__name ">{profile.name}</h5>
       <p className="profile-details__user-handle">@{profile.user_handle}</p>
-      <p className="profile-details__self-introduction">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-      </p>
+      {profile.self_introduction ? (
+        <p className="profile-details__self-introduction">
+          {profile.self_introduction}
+        </p>
+      ) : null}
       <p className="profile-details__current-career-role">
         Product manager at Consensys
       </p>

@@ -1,21 +1,9 @@
-import "./EditProfile.scss";
 import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
-import {
-  FormsyInputEmail,
-  FormsyInputText,
-  FormsyTextArea,
-  FormsyAsyncSelect
-} from "../../../../../../components";
+import { InputGrid } from "../../components";
 import Formsy from "formsy-react";
-
-const FORMSY_INPUT_TYPE = {
-  input: FormsyInputText,
-  textarea: FormsyTextArea,
-  asyncSelect: FormsyAsyncSelect
-};
 
 const ProfileInput = ({ type, label, name, ...props }) => {
   const Input = FORMSY_INPUT_TYPE[type];
@@ -34,7 +22,6 @@ const ProfileInput = ({ type, label, name, ...props }) => {
 };
 
 const EditProfile = ({ match, profile, updateProfile }) => {
-
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -46,33 +33,38 @@ const EditProfile = ({ match, profile, updateProfile }) => {
       >
         <div className=" d-flex w-100">
           <div className="w-50 pr-4">
-            <ProfileInput
+            <InputGrid
               type="input"
               label="Name"
               name="name"
               value={profile.name}
               required
             />
-            <ProfileInput
+            <InputGrid
               type="textarea"
               label="Self Introduction"
               name="self_introduction"
               value={profile.self_introduction}
             />
-            <ProfileInput
+            <InputGrid
               type="input"
               label="Organization"
               name="organization"
               value={profile.organization}
             />
-            <ProfileInput
+            <InputGrid
               type="asyncSelect"
               label="Location"
               name="location"
-              value={(profile.location || []).map(tag => ({
-                value: tag.id,
-                label: tag.display_name
-              }))}
+              value={(profile.location || []).map(
+                tag =>
+                  "id" in tag
+                    ? {
+                        value: tag.id,
+                        label: tag.display_name
+                      }
+                    : tag
+              )}
               multi={true}
               loadOptions={input => {
                 return axios
@@ -90,14 +82,19 @@ const EditProfile = ({ match, profile, updateProfile }) => {
                   });
               }}
             />
-            <ProfileInput
+            <InputGrid
               type="asyncSelect"
               label="Role"
               name="careerRole"
-              value={(profile.careerRole || []).map(tag => ({
-                value: tag.id,
-                label: tag.display_name
-              }))}
+              value={(profile.careerRole || []).map(
+                tag =>
+                  "id" in tag
+                    ? {
+                        value: tag.id,
+                        label: tag.display_name
+                      }
+                    : tag
+              )}
               multi={true}
               loadOptions={input => {
                 return axios
@@ -115,34 +112,34 @@ const EditProfile = ({ match, profile, updateProfile }) => {
                   });
               }}
             />
-            <ProfileInput type="input" label="Role" name="role" />
+            <InputGrid type="input" label="Role" name="role" />
           </div>
           <div className="w-50 pl-4">
-            <ProfileInput
+            <InputGrid
               type="input"
               label="LinkedIn"
               name="linkedin_url"
               value={profile.linkedin_url}
             />
-            <ProfileInput
+            <InputGrid
               type="input"
               label="Twitter"
               name="twitter_url"
               value={profile.twitter_url}
             />
-            <ProfileInput
+            <InputGrid
               type="input"
               label="Github"
               name="github_url"
               value={profile.github_url}
             />
-            <ProfileInput
+            <InputGrid
               type="input"
               label="Stack Overflow"
               name="stack-overflow_url"
               value={profile.stackoverflow_url}
             />
-            <ProfileInput type="input" label="Website" name="website_url" />
+            <InputGrid type="input" label="Website" name="website_url" />
           </div>
         </div>
         <div className="">

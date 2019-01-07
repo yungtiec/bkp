@@ -40,6 +40,22 @@ router.get(
 );
 
 /**
+ * Check if an user handle exists already
+ *
+ * @name Check user handle
+ * @route {GET} /api/users/:userHandle/check-handle
+ * @authentication
+ * @routeparam {Number} userHandle
+ * @todo pagination
+ *
+ */
+router.get(
+  "/:userHandle/check-handle",
+  ensureAuthentication,
+  userController.checkUserHandle
+);
+
+/**
  * Getting a list of projects user has access to
  *
  * @name Get user's project
@@ -114,7 +130,7 @@ router.get(
  * @queryparam {Number} offset
  * @queryparam {Array} reviewStatus is the review status (pending, spam, or verified) selected by user
  * @queryparam {Array} projects is the project filter selected by user
-* @queryparam {Array} issueStatus is the issues status (open or closed) selected by user
+ * @queryparam {Array} issueStatus is the issues status (open or closed) selected by user
  *
  */
 router.get(

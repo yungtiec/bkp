@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
+import { updateAccount, updateUserPassword } from "../../../../data/actions";
 
 const LoadableQueryAccount = Loadable({
   loader: () => import("./Account"),
@@ -35,12 +36,13 @@ class MyComponent extends React.Component {
   }
 }
 
-const mapState = state => {
-  return {};
+const mapState = (state, ownProps) => {
+  return { ...ownProps };
 };
 
-const actions = (dispatch, ownProps) => {
-  return {};
+const actions = {
+  updateUserPassword,
+  updateAccount
 };
 
 export default withRouter(

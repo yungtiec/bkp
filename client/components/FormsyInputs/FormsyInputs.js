@@ -1,6 +1,7 @@
 import { withFormsy } from "formsy-react";
 import React from "react";
 import autoBind from "react-autobind";
+import { isEmpty } from "lodash";
 
 function createInputWithType(type) {
   class InputTemplate extends React.Component {
@@ -15,6 +16,8 @@ function createInputWithType(type) {
       // Important: Don't skip this step. This pattern is required
       // for Formsy to work.
       this.props.setValue(event.currentTarget.value, false);
+      if (this.props.onChangeCallback)
+        this.props.onChangeCallback(event.currentTarget.value);
     }
 
     validateValue(event) {
@@ -32,6 +35,8 @@ function createInputWithType(type) {
           : this.props.showError(),
         showRequiredMessage = !isPristine && !isValid && showRequired;
 
+      console.log(this.props.name, this.props.getValue())
+
       return (
         <div style={{ margin: 0, width: "100%" }}>
           <input
@@ -42,14 +47,24 @@ function createInputWithType(type) {
               "form-control--invalid"}`}
             value={this.props.getValue() || ""}
           />
-          {showRequired && (
-            <span className="text-danger" style={{ fontSize: "12px" }}>
-              This is required
-            </span>
+          {!isEmpty(this.props.message) && (
+            <div
+              className={`text-${this.props.message.status} mr-2`}
+              style={{ fontSize: "12px" }}
+            >
+              {this.props.message.text}
+            </div>
           )}
-          <span className="text-danger" style={{ fontSize: "12px" }}>
-            {errorMessage}
-          </span>
+          {showRequiredMessage && (
+            <div className="text-danger mr-2" style={{ fontSize: "12px" }}>
+              This is required
+            </div>
+          )}
+          {errorMessage && (
+            <div className="text-danger mr-2" style={{ fontSize: "12px" }}>
+              {errorMessage}
+            </div>
+          )}
         </div>
       );
     }

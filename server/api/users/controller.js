@@ -298,6 +298,17 @@ const getUserVotes = async (req, res, next) => {
   }
 };
 
+const checkUserHandle = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { user_handle: req.query.q }
+    });
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getUsers,
   getUser,
@@ -307,5 +318,6 @@ module.exports = {
   getUserDocuments,
   getUserComments,
   getUserCommentsWithFilter,
-  getUserVotes
+  getUserVotes,
+  checkUserHandle
 };

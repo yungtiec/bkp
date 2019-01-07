@@ -7,8 +7,8 @@ export default function reduce(state = initialState, action = {}) {
   var newState;
   switch (action.type) {
     case types.USER_PROFILE_FETCH_SUCCESS:
-
     case types.USER_PROFILE_UPDATED:
+    case types.USER_ACCOUNT_UPDATED:
       return {
         ...state,
         profile: action.profile
