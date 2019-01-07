@@ -120,26 +120,40 @@ const EditProfile = ({ match, profile, updateProfile }) => {
               label="LinkedIn"
               name="linkedin_url"
               value={profile.linkedin_url}
+              validations="isUrl"
+              validationError="Please provide a valid url."
             />
             <InputGrid
               type="input"
               label="Twitter"
               name="twitter_url"
               value={profile.twitter_url}
+              validations="isUrl"
+              validationError="Please provide a valid url."
             />
             <InputGrid
               type="input"
               label="Github"
               name="github_url"
               value={profile.github_url}
+              validations="isUrl"
+              validationError="Please provide a valid url."
             />
             <InputGrid
               type="input"
               label="Stack Overflow"
               name="stack-overflow_url"
               value={profile.stackoverflow_url}
+              validations="isUrl"
+              validationError="Please provide a valid url."
             />
-            <InputGrid type="input" label="Website" name="website_url" />
+            <InputGrid
+              type="input"
+              label="Website"
+              name="website_url"
+              validations="isUrl"
+              validationError="Please provide a valid url."
+            />
           </div>
         </div>
         <div className="">

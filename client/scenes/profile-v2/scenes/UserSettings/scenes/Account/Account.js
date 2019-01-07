@@ -68,7 +68,9 @@ class Account extends React.Component {
                           this.setState({
                             userHandleRequestMessage: {
                               status: "success",
-                              text: "this handle has not been taken."
+                              text: `${
+                                window.location.host
+                              }/profile/@${newHandle}`
                             }
                           });
                       });
@@ -82,10 +84,7 @@ class Account extends React.Component {
               </div>
             </Formsy>
             <Formsy
-              onValidSubmit={model => {
-                console.log(model)
-                updateUserPassword(model)
-              }}
+              onValidSubmit={updateUserPassword}
               name="user-password"
               onValid={() => {}}
               onInvalid={() => {}}

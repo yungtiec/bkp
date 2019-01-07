@@ -35,8 +35,6 @@ function createInputWithType(type) {
           : this.props.showError(),
         showRequiredMessage = !isPristine && !isValid && showRequired;
 
-      console.log(this.props.name, this.props.getValue())
-
       return (
         <div style={{ margin: 0, width: "100%" }}>
           <input

@@ -87,7 +87,7 @@ router.put("/profile", async (req, res, next) => {
   if (!req.user) res.sendStatus(401);
   else {
     try {
-      const user = await User.findOne({
+      var user = await User.findOne({
         where: { id: req.user.id },
         include: [{ model: Tag }]
       });
@@ -106,10 +106,14 @@ router.put("/profile", async (req, res, next) => {
         return user.addTag(tag);
       });
       await Promise.all([
-        user.update(req.body),
+        user.update(_.omit(req.body, ["careerRole", "location"])),
         removeTagPromises,
         addTagPromises
       ]);
+      user = await User.findOne({
+        where: { id: req.user.id },
+        include: [{ model: Tag }]
+      });
       res.send(user);
     } catch (err) {
       next(err);

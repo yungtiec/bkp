@@ -29,7 +29,7 @@ export function fetchUserProfile(userHandle) {
 export function updateProfile(profile) {
   return async (dispatch, getState) => {
     try {
-      await putUserProfile(profile);
+      profile = await putUserProfile(profile);
       dispatch({
         type: types.USER_PROFILE_UPDATED,
         profile
@@ -82,7 +82,6 @@ export function updateAccount(account) {
 
 export function updateUserPassword(passwordObject) {
   return async (dispatch, getState) => {
-    console.log("here", passwordObject);
     try {
       const res = await putUserPassword(passwordObject);
       dispatch({

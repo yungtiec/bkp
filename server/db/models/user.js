@@ -56,6 +56,9 @@ module.exports = (db, DataTypes) => {
       organization: {
         type: DataTypes.STRING
       },
+      self_introduction: {
+        type: Sequelize.TEXT
+      },
       profile_pic_url: {
         type: Sequelize.TEXT
       },
