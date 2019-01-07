@@ -41,9 +41,14 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
+    const requestedUser = await User.findById(req.user.id);
     const profile = await User.getContributions({
-      userHandle: req.params.userHandle && req.params.userHandle.slice(1)
+      userHandle: req.params.userHandle && req.params.userHandle.slice(1),
+      includePrivateInfo:
+        req.params.userHandle &&
+        req.params.userHandle.slice(1) === requestedUser.user_handle
     });
+    console.log(profile)
     res.send(profile);
   } catch (err) {
     next(err);

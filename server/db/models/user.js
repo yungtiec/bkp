@@ -38,8 +38,20 @@ module.exports = (db, DataTypes) => {
       googleId: {
         type: DataTypes.STRING
       },
+      googleConnected: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return !!this.getDataValue("googleId");
+        }
+      },
       uportAddress: {
         type: DataTypes.STRING
+      },
+      uportConnected: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return !!this.getDataValue("uportAddress");
+        }
       },
       first_name: {
         type: DataTypes.STRING
@@ -274,7 +286,15 @@ module.exports = (db, DataTypes) => {
       if (uportAddress) query = { uportAddress };
       if (userHandle) query = { user_handle: userHandle };
       if (includePrivateInfo)
-        attributes.concat(["anonymity", "onboard", "profile_update_prompted"]);
+        attributes = attributes.concat([
+          "anonymity",
+          "onboard",
+          "profile_update_prompted",
+          "googleId",
+          "uportAddress",
+          "googleConnected",
+          "uportConnected"
+        ]);
       return {
         where: query,
         attributes,

@@ -78,9 +78,11 @@ class Account extends React.Component {
                   message={this.state.userHandleRequestMessage}
                   required
                 />
-                <button type="submit" className="btn btn-outline-primary">
-                  Submit
-                </button>
+                <div className="px-1">
+                  <button type="submit" className="btn btn-outline-primary">
+                    Submit
+                  </button>
+                </div>
               </div>
             </Formsy>
             <Formsy
@@ -122,11 +124,36 @@ class Account extends React.Component {
                   validationError="Please make sure your passwords match."
                   required
                 />
-                <button type="submit" className="btn btn-outline-primary">
-                  Submit
-                </button>
+                <div className="px-1">
+                  <button type="submit" className="btn btn-outline-primary">
+                    Submit
+                  </button>
+                </div>
               </div>
             </Formsy>
+            <div className="user-account__fieldset-header">
+              <h6 className="font-weight-bold mb-0">Connect accounts</h6>
+            </div>
+            <div className="user-account__fieldset">
+              {profile.googleConnected ? (
+                <div className="mb-4 px-2">
+                  <p>You're logged in using Google</p>
+                </div>
+              ) : (
+                <a
+                  className="mb-4 px-1"
+                  href={`/auth/google?state=${encodeURI(
+                    window.location.pathname
+                  )}`}
+                >
+                  <img
+                    width="191px"
+                    height="46px"
+                    src="/assets/btn_google_signin_dark_normal_web.png"
+                  />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

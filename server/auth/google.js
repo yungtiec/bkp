@@ -1,6 +1,6 @@
 const passport = require("passport");
 const router = require("express").Router();
-const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const { User, Role } = require("../db/models");
 module.exports = router;
 
@@ -24,22 +24,36 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   const googleConfig = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK
+    callbackURL: process.env.GOOGLE_CALLBACK,
+    passReqToCallback: true
   };
 
   const strategy = new GoogleStrategy(
     googleConfig,
-    async (token, refreshToken, profile, done) => {
+    async (req, token, refreshToken, profile, done) => {
       const googleId = profile.id;
       const name = profile.displayName;
       const email = profile.emails[0].value;
       const firstName = profile.name ? profile.name.givenName : "";
       const lastName = profile.name ? profile.name.familyName : "";
+      var user;
 
-      User.find({ where: { googleId }, include: [{ model: Role }] })
-        .then(foundUser => {
-          return foundUser
-            ? done(null, foundUser)
+      if (req.user) {
+        try {
+          user = await User.findById(req.user.id);
+          user = await user.update({ googleId });
+          done(null, user);
+        } catch (err) {
+          done(err);
+        }
+      } else {
+        try {
+          user = await User.find({
+            where: { googleId },
+            include: [{ model: Role }]
+          });
+          user
+            ? done(null, user)
             : User.findOrCreate({
                 where: { email },
                 defaults: {
@@ -57,8 +71,10 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
                 });
                 return done(null, user);
               });
-        })
-        .catch(done);
+        } catch (err) {
+          done(err);
+        }
+      }
     }
   );
 
@@ -79,8 +95,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
       failureRedirect: "/login"
     }),
     (req, res) => {
-      if (!req.user.name.trim()) res.redirect("/user/profile/about");
-      else res.redirect(req.session.authRedirectPath);
+      res.redirect(req.session.authRedirectPath);
     }
   );
 }
