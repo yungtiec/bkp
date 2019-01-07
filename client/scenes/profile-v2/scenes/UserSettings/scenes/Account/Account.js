@@ -17,7 +17,13 @@ class Account extends React.Component {
   componentWillReceiveProps(nextProps) {}
 
   render() {
-    const { match, profile, updateAccount, updateUserPassword } = this.props;
+    const {
+      match,
+      profile,
+      updateAccount,
+      updateUserPassword,
+      signinWithUport
+    } = this.props;
 
     return (
       <div className="user-settings__edit-account w-100 mt-3">
@@ -136,12 +142,12 @@ class Account extends React.Component {
             </div>
             <div className="user-account__fieldset">
               {profile.googleConnected ? (
-                <div className="mb-4 px-2">
+                <div className="mb-2 px-2">
                   <p>You're logged in using Google</p>
                 </div>
               ) : (
                 <a
-                  className="mb-4 px-1"
+                  className="mb-2 px-1 d-block"
                   href={`/auth/google?state=${encodeURI(
                     window.location.pathname
                   )}`}
@@ -150,6 +156,19 @@ class Account extends React.Component {
                     width="191px"
                     height="46px"
                     src="/assets/btn_google_signin_dark_normal_web.png"
+                  />
+                </a>
+              )}
+              {profile.uportConnected ? (
+                <div className="mb-2 px-2">
+                  <p>You're logged in using Uport</p>
+                </div>
+              ) : (
+                <a className="mb-2 px-1 d-block" onClick={signinWithUport}>
+                  <img
+                    width="191px"
+                    height="46px"
+                    src="/assets/btn_uport_signin_dark_normal_web.png"
                   />
                 </a>
               )}

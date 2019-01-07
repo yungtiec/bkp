@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
 import { updateAccount, updateUserPassword } from "../../../../data/actions";
+import { signinWithUport } from "../../../../../../data/reducer";
 
 const LoadableQueryAccount = Loadable({
   loader: () => import("./Account"),
@@ -42,7 +43,8 @@ const mapState = (state, ownProps) => {
 
 const actions = {
   updateUserPassword,
-  updateAccount
+  updateAccount,
+  signinWithUport
 };
 
 export default withRouter(

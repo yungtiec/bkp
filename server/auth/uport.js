@@ -6,24 +6,35 @@ module.exports = router;
 
 router.post("/", async (req, res, next) => {
   try {
-    var user = await User.findOne({
-      where: { uportAddress: req.body.address }
-    });
-    if (user)
-      user = await User.getContributions({
-        includePrivateInfo: true,
-        uportAddress: req.body.address
-      });
-    else
-      user = await User.create({
-        name: req.body.name,
-        uportAddress: req.body.address
-      }).then(user =>
+    var user;
+    if (req.user) {
+      user = await User.findById(req.user.id);
+      user = await user.update({ uportAddress: req.body.address }).then(user =>
         User.getContributions({
           includePrivateInfo: true,
           uportAddress: req.body.address
         })
       );
+    } else {
+      user = await User.findOne({
+        where: { uportAddress: req.body.address }
+      });
+      if (user)
+        user = await User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: req.body.address
+        });
+      else
+        user = await User.create({
+          name: req.body.name,
+          uportAddress: req.body.address
+        }).then(user =>
+          User.getContributions({
+            includePrivateInfo: true,
+            uportAddress: req.body.address
+          })
+        );
+    }
     req.login(user, async err => {
       if (err) next(err);
       res.send({ user, authRedirectPath: req.session.authRedirectPath });
