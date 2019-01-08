@@ -4,7 +4,18 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
       "badges",
-      [{ name: "Top Telegram Contributor" }, { name: "Authenticated User" }],
+      [
+        {
+          name: "Top Telegram Contributor",
+          createdAt: Sequelize.fn("NOW"),
+          updatedAt: Sequelize.fn("NOW")
+        },
+        {
+          name: "Authenticated User",
+          createdAt: Sequelize.fn("NOW"),
+          updatedAt: Sequelize.fn("NOW")
+        }
+      ],
       {},
       {}
     );
