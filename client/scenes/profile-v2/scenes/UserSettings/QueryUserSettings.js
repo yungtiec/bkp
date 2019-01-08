@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
+import { getUserProfile } from "../../data/reducer";
 
 const LoadableQueryUserSettings = Loadable({
   loader: () => import("./UserSettings"),
@@ -36,7 +37,7 @@ class MyComponent extends React.Component {
 }
 
 const mapState = (state, ownProps) => {
-  return { ...ownProps };
+  return { profile: getUserProfile(state), ...ownProps };
 };
 
 const actions = (dispatch, ownProps) => {

@@ -3,6 +3,8 @@ import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { connect } from "react-redux";
+import { getUserProfile } from "../../../data/reducer";
 
 const renderTags = (tags, icon) =>
   tags && (

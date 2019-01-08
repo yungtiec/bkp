@@ -9,7 +9,9 @@ export function fetchUserDocuments(userHandle, direction) {
     try {
       var { offset, limit } = getUserDocumentsOffsetAndLimit(getState());
       if (direction) {
-        offset = direction > 0 ? (offset + limit) : (offset - limit);
+        offset = direction > 0 ? offset + limit : offset - limit;
+      } else {
+        offset = 0;
       }
       const results = await getUserDocuments({ userHandle, offset, limit });
       const documents = results[0];
@@ -23,20 +25,29 @@ export function fetchUserDocuments(userHandle, direction) {
           offset,
           endOfResult: documentIds.length < limit
         });
-      else {
+      else if (!documentIds.length && !direction) {
+        // empty profile page where user has no document
+        dispatch({
+          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+          documentsById: null,
+          documentIds: null,
+          endOfResult: true
+        });
+      } else {
         dispatch({
           type: types.USER_DOCUMENTS_FETCH_SUCCESS,
           endOfResult: true
         });
-        dispatch(
-          notify({
-            title: "You've reached the end of results",
-            message: "",
-            status: "info",
-            dismissible: true,
-            dismissAfter: 3000
-          })
-        );
+        if (direction)
+          dispatch(
+            notify({
+              title: "You've reached the end of results",
+              message: "",
+              status: "info",
+              dismissible: true,
+              dismissAfter: 3000
+            })
+          );
       }
     } catch (error) {
       console.error(error);

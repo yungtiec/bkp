@@ -85,6 +85,7 @@ router.get("/me", async (req, res) => {
 
 router.put("/profile", async (req, res, next) => {
   if (!req.user) res.sendStatus(401);
+  if (req.user.user_handle !== req.body.user_handle) res.sendStatus(401);
   else {
     try {
       var user = await User.findOne({
@@ -147,6 +148,8 @@ router.put("/profile/onboard", async (req, res, next) => {
 
 router.put("/accounts/update-account", async (req, res, next) => {
   try {
+    if (req.user.user_handle !== req.body.current_user_handle)
+      res.sendStatus(401);
     var user = await User.findById(req.user.id);
     var putQuery = {};
     if (user.email !== req.body.email) {

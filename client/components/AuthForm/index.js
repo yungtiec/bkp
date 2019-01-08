@@ -101,7 +101,7 @@ class AuthForm extends Component {
             href={`/auth/google?state=${encodeURI(
               this.props.location.state
                 ? this.props.location.state.lastPath
-                : "/landing"
+                : "/"
             )}`}
           >
             <img

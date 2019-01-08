@@ -14,7 +14,9 @@ const Tab = ({ to, name, displayName, currentTab, stats, tabType }) => (
       </span>
       <span
         className={`tab-list__item-stats ${
-          stats ? "" : "tab-list__item-stats--hidden"
+          !stats && !Number.isInteger(stats)
+            ? "tab-list__item-stats--hidden"
+            : ""
         }`}
       >
         {stats ? stats : 0}

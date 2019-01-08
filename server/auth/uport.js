@@ -37,7 +37,11 @@ router.post("/", async (req, res, next) => {
     }
     req.login(user, async err => {
       if (err) next(err);
-      res.send({ user, authRedirectPath: req.session.authRedirectPath });
+      res.send({
+        user,
+        authRedirectPath:
+          req.session.authRedirectPath || req.body.authRedirectPath
+      });
     });
   } catch (err) {
     next(err);

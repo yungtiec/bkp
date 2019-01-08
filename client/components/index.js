@@ -31,7 +31,8 @@ export { default as SidebarLayout } from "./SidebarLayout";
 export {
   FormsyInputEmail,
   FormsyInputPassword,
-  FormsyInputText
+  FormsyInputText,
+  FormsyInputFile
 } from "./FormsyInputs/FormsyInputs";
 export { default as FormsyScoreInput } from "./FormsyInputs/FormsyScoreInput";
 export { default as FormsyTextArea } from "./FormsyInputs/FormsyTextArea";

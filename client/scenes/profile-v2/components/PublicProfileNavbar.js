@@ -16,8 +16,7 @@ const getParams = pathname => {
 };
 
 const PublicProfileNavbar = ({
-  tab,
-  switchTab,
+  isMyProfile,
   match,
   location,
   num_documents,
@@ -58,16 +57,19 @@ const PublicProfileNavbar = ({
         currentTab={routeParams.tab}
       />
       <div className="">
-        <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
-          <i class="fas fa-cog profile__setting-btn" />
-        </Link>
+        {isMyProfile && (
+          <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
+            <i class="fas fa-cog profile__setting-btn" />
+          </Link>
+        )}
       </div>
     </div>
   );
 };
 
-const mapState = state => ({
-  ...getUserContributionStats(state)
+const mapState = (state, ownProps) => ({
+  ...getUserContributionStats(state),
+  ...ownProps
 });
 
 const actions = {};

@@ -37,6 +37,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
       const firstName = profile.name ? profile.name.givenName : "";
       const lastName = profile.name ? profile.name.familyName : "";
       var user;
+      req.session.googleToken = token;
 
       if (req.user) {
         try {
@@ -96,6 +97,29 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     }),
     (req, res) => {
       res.redirect(req.session.authRedirectPath);
+    }
+  );
+
+  router.get(
+    "/connect",
+    passport.authorize("google", { failureRedirect: "/login", scope: "email" })
+  );
+
+  router.get(
+    "/connect/callback",
+    passport.authorize("google", { failureRedirect: "/login" }),
+    function(req, res) {
+      var user = req.user;
+      var account = req.account;
+      console.log(account);
+      // Associate the Twitter account with the logged-in user.
+      account.userId = user.id;
+      account.save(function(err) {
+        if (err) {
+          return self.error(err);
+        }
+        self.redirect("/");
+      });
     }
   );
 }

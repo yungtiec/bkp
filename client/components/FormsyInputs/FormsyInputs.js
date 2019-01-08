@@ -73,3 +73,4 @@ function createInputWithType(type) {
 export const FormsyInputEmail = createInputWithType("email");
 export const FormsyInputPassword = createInputWithType("password");
 export const FormsyInputText = createInputWithType("text");
+export const FormsyInputFile = createInputWithType("file");

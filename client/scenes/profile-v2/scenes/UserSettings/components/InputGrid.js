@@ -5,7 +5,8 @@ import {
   FormsyInputPassword,
   FormsyInputText,
   FormsyTextArea,
-  FormsyAsyncSelect
+  FormsyAsyncSelect,
+  FormsyInputFile
 } from "../../../../../components";
 
 const FORMSY_INPUT_TYPE = {
@@ -13,7 +14,8 @@ const FORMSY_INPUT_TYPE = {
   password: FormsyInputPassword,
   email: FormsyInputEmail,
   textarea: FormsyTextArea,
-  asyncSelect: FormsyAsyncSelect
+  asyncSelect: FormsyAsyncSelect,
+  file: FormsyInputFile
 };
 
 const InputGrid = ({ type, label, name, ...props }) => {

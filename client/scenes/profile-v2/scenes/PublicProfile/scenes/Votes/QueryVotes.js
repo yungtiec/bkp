@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserVotes } from "./data/actions";
-import {
-  getUserVotes,
-  getUserVotesOffsetAndLimit
-} from "./data/reducer";
+import { getUserVotes, getUserVotesOffsetAndLimit } from "./data/reducer";
 import Votes from "./Votes";
 import { animateScroll as scroll } from "react-scroll";
 
@@ -15,18 +12,42 @@ class QueryVotes extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserVotes(this.props.profile.user_handle);
+    const match = matchPath(this.props.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    match &&
+      match.params &&
+      this.props.fetchUserVotes(match.params.userHandle.slice(1));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.profile.user_handle !== nextProps.profile.user_handle) {
-      this.props.fetchUserVotes(nextProps.profile.user_handle);
+  componentDidUpdate(prevProps) {
+    const prevMatch = matchPath(prevProps.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    const match = matchPath(this.props.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    if (
+      match &&
+      match.params &&
+      prevMatch &&
+      prevMatch.params &&
+      prevMatch.params.userHandle !== match.params.userHandle
+    ) {
+      this.props.fetchUserVotes(match.params.userHandle.slice(1));
     }
-    if (this.props.offset !== nextProps.offset) window.scrollTo(0, 0);
+    if (prevProps.offset !== this.props.offset) window.scrollTo(0, 0);
   }
 
   render() {
-    if (!this.props.voteIds) return "loading";
+    if (!this.props.voteIds && !this.props.endOfResult) return "loading";
+    if (!this.props.voteIds && this.props.endOfResult) return null;
     return <Votes {...this.props} />;
   }
 }

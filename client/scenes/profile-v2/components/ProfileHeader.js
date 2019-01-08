@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { PublicProfileNavbar, UserSettingsNavbar } from "./index";
 
-export default ({ profileContext }) => {
+export default ({ profileContext, isMyProfile }) => {
   return (
     <div className="profile-header profile-header--with-nav">
       <div className="profile-banner">
@@ -16,7 +16,7 @@ export default ({ profileContext }) => {
       {profileContext === "settings" ? (
         <UserSettingsNavbar />
       ) : (
-        <PublicProfileNavbar />
+        <PublicProfileNavbar isMyProfile={isMyProfile} />
       )}
     </div>
   );

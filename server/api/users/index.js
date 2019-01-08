@@ -83,7 +83,7 @@ router.get(
 router.get(
   "/:userHandle/contributions",
   ensureAuthentication,
-  ensureCorrectRole,
+  // ensureCorrectRole,
   userController.getUserContributions
 );
 
@@ -99,7 +99,7 @@ router.get(
 router.get(
   "/:userHandle/documents",
   ensureAuthentication,
-  ensureCorrectRole,
+  // ensureCorrectRole,
   userController.getUserDocuments
 );
 
@@ -152,6 +152,6 @@ router.get(
 router.get(
   "/:userHandle/votes",
   ensureAuthentication,
-  ensureCorrectRole,
+  // ensureCorrectRole,
   userController.getUserVotes
 );

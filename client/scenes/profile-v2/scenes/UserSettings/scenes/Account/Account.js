@@ -109,7 +109,7 @@ class Account extends React.Component {
                   message={{
                     status: "primary",
                     text: (
-                      <Link to="/request-password-reset">forget password?</Link>
+                      <Link to="/request-password-reset">forget password? or don't have password set up yet?</Link>
                     )
                   }}
                   required

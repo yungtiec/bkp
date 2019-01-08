@@ -47,6 +47,24 @@ const EditProfile = ({ match, profile, updateProfile }) => {
               value={profile.self_introduction}
             />
             <InputGrid
+              type="file"
+              label="Profile picture"
+              name="profile_pic"
+              message={
+                profile.googleConnected
+                  ? {
+                      status: "primary",
+                      text: (
+                        <p className="mt-1 mb-0">
+                          Sync your profile picture with{" "}
+                          <a class="badge badge-secondary text-white" href="/auth/google/connect">Google</a>
+                        </p>
+                      )
+                    }
+                  : null
+              }
+            />
+            <InputGrid
               type="input"
               label="Organization"
               name="organization"

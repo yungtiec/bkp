@@ -10,6 +10,8 @@ export function fetchUserVotes(userHandle, direction) {
       var { offset, limit } = getUserVotesOffsetAndLimit(getState());
       if (direction) {
         offset = direction > 0 ? offset + limit : offset - limit;
+      } else {
+        offset = 0;
       }
       var results = await getUserVotes({ userHandle, offset, limit });
       const votes = results[0].map((c, i) => assignIn(c, { cid: i }));
@@ -23,20 +25,29 @@ export function fetchUserVotes(userHandle, direction) {
           offset,
           endOfResult: voteIds.length < limit
         });
-      else {
+      else if (!voteIds.length && !direction) {
+        // empty profile page where user has no vote
+        dispatch({
+          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+          votesById: null,
+          voteIds: null,
+          endOfResult: true
+        });
+      } else {
         dispatch({
           type: types.USER_VOTES_FETCH_SUCCESS,
           endOfResult: true
         });
-        dispatch(
-          notify({
-            title: "You've reached the end of results",
-            message: "",
-            status: "info",
-            dismissible: true,
-            dismissAfter: 3000
-          })
-        );
+        if (direction)
+          dispatch(
+            notify({
+              title: "You've reached the end of results",
+              message: "",
+              status: "info",
+              dismissible: true,
+              dismissAfter: 3000
+            })
+          );
       }
     } catch (error) {
       console.error(error);

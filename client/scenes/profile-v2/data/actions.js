@@ -29,7 +29,10 @@ export function fetchUserProfile(userHandle) {
 export function updateProfile(profile) {
   return async (dispatch, getState) => {
     try {
-      profile = await putUserProfile(profile);
+      var userHandle = getState().scenes.profileV2.data.profile.user_handle;
+      profile = await putUserProfile(
+        assignIn(profile, { user_handle: userHandle })
+      );
       dispatch({
         type: types.USER_PROFILE_UPDATED,
         profile
@@ -58,7 +61,9 @@ export function updateAccount(account) {
         true
       );
       if (accountFormIsPristine) return;
-      var updatedProfile = await putUserAccount(account);
+      var updatedProfile = await putUserAccount(
+        assignIn(account, { current_user_handle: profile.user_handle })
+      );
       if (profile.user_handle !== account.user_handle)
         history.push(`/profile/@${account.user_handle}/settings/account`);
       dispatch({

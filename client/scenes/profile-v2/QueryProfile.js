@@ -29,14 +29,14 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserProfile(this.props.match.params.userHandle);
+    this.props.fetchUserProfile(this.props.match.params.userHandle.slice(1));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (
-      this.props.match.params.userHandle !== nextProps.match.params.userHandle
+      prevProps.match.params.userHandle !== this.props.match.params.userHandle
     ) {
-      this.props.fetchUserProfile(nextProps.match.params.userHandle);
+      this.props.fetchUserProfile(this.props.match.params.userHandle.slice(1));
     }
   }
 
@@ -48,7 +48,8 @@ class MyComponent extends React.Component {
 
 const mapState = state => {
   return {
-    profile: getUserProfile(state)
+    profile: getUserProfile(state),
+    me: state.data.user
   };
 };
 

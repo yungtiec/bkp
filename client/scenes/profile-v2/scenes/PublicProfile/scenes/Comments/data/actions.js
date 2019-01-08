@@ -10,6 +10,8 @@ export function fetchUserComments(userHandle, direction) {
       var { offset, limit } = getUserCommentsOffsetAndLimit(getState());
       if (direction) {
         offset = direction > 0 ? offset + limit : offset - limit;
+      } else {
+        offset = 0;
       }
       const results = await getUserComments({ userHandle, offset, limit });
       const comments = results[0];
@@ -23,20 +25,29 @@ export function fetchUserComments(userHandle, direction) {
           offset,
           endOfResult: commentIds.length < limit
         });
-      else {
+      if (!commentIds.length && !direction) {
+        // empty profile page where user has no contribution
+        dispatch({
+          type: types.USER_COMMENTS_FETCH_SUCCESS,
+          commentsById: null,
+          commentIds: null,
+          endOfResult: true
+        });
+      } else {
         dispatch({
           type: types.USER_COMMENTS_FETCH_SUCCESS,
           endOfResult: true
         });
-        dispatch(
-          notify({
-            title: "You've reached the end of results",
-            message: "",
-            status: "info",
-            dismissible: true,
-            dismissAfter: 3000
-          })
-        );
+        if (direction)
+          dispatch(
+            notify({
+              title: "You've reached the end of results",
+              message: "",
+              status: "info",
+              dismissible: true,
+              dismissAfter: 3000
+            })
+          );
       }
     } catch (error) {
       console.error(error);

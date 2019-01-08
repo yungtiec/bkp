@@ -6,7 +6,7 @@ import moment from "moment";
 
 const isDev = process.env.NODE_ENV === "development";
 
-const LeftColumn = ({ match, profile, gridClassnames }) => {
+const LeftColumn = ({ gridClassnames, profile }) => {
   return (
     <div className={`${gridClassnames} py-4 px-1`}>
       <ProfileDetails profile={profile} />

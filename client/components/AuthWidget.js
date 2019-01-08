@@ -80,7 +80,7 @@ class AuthWidget extends Component {
           {this.state.dropdown && (
             <div className={`${className}__dropdown`}>
               <Link
-                to="/user/profile/about"
+                to={`/profile/@${user.user_handle}`}
                 style={{ display: "block", margin: "0px" }}
               >
                 <div className={`${className}__dropdown-item`}>profile</div>
@@ -93,26 +93,6 @@ class AuthWidget extends Component {
                 ""
               )}
               {width < 600 ? (
-                <Link
-                  to="/project/BKP/document/1/version/2"
-                  style={{ display: "block", margin: "0px" }}
-                >
-                  <div className={`${className}__dropdown-item`}>framework</div>
-                </Link>
-              ) : (
-                ""
-              )}
-              {width < 600 ? (
-                <Link
-                  to="/project/CVL/document/2/version/3"
-                  style={{ display: "block", margin: "0px" }}
-                >
-                  <div className={`${className}__dropdown-item`}>Civil Scorecard</div>
-                </Link>
-              ) : (
-                ""
-              )}
-              {width < 600 ? (
                 <a
                   href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
                   target="_blank"
@@ -120,18 +100,6 @@ class AuthWidget extends Component {
                 >
                   <div className={`${className}__dropdown-item`}>discuss</div>
                 </a>
-              ) : (
-                ""
-              )}
-              {width < 600 && isAdmin ? (
-                <Link
-                  to="/activity-board"
-                  style={{ display: "block", margin: "0px" }}
-                >
-                  <div className={`${className}__dropdown-item`}>
-                    activity board
-                  </div>
-                </Link>
               ) : (
                 ""
               )}
@@ -201,4 +169,7 @@ const actions = {
   logout
 };
 
-export default connect(mapState, actions)(AuthWidget);
+export default connect(
+  mapState,
+  actions
+)(AuthWidget);

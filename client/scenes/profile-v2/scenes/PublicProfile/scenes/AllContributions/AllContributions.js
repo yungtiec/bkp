@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { withRouter, Switch, Route, Redirect } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   ListItemBase,
@@ -29,7 +29,12 @@ const AllContribution = ({
                   icon="comment"
                   subtitleElements={[
                     <Fragment>
-                      <a className="text-primary">@{profile.user_handle}</a>
+                      <Link
+                        className="text-primary"
+                        to={`/profile/@${profile.user_handle}`}
+                      >
+                        @{profile.user_handle}
+                      </Link>
                       <span>commented on</span>
                       <a className="text-dark">
                         {contributionsById[cid].title}
@@ -37,9 +42,14 @@ const AllContribution = ({
                     </Fragment>,
                     <Fragment>
                       <span>Posted by</span>
-                      <a className="text-primary">
+                      <Link
+                        className="text-primary"
+                        to={`/profile/@${
+                          contributionsById[cid].documentPostedBy
+                        }`}
+                      >
                         @{contributionsById[cid].documentPostedBy}
-                      </a>
+                      </Link>
                       <span>
                         {moment(contributionsById[cid].createdAt).fromNow()}
                       </span>
@@ -71,9 +81,14 @@ const AllContribution = ({
                 subtitleElements={[
                   <Fragment>
                     <span>Posted by</span>
-                    <a className="text-primary">
+                    <Link
+                      className="text-primary"
+                      to={`/profile/@${
+                        contributionsById[cid].documentPostedBy
+                      }`}
+                    >
                       @{contributionsById[cid].documentPostedBy}
-                    </a>
+                    </Link>
                     <span>
                       {moment(contributionsById[cid].createdAt).fromNow()}
                     </span>
@@ -112,7 +127,12 @@ const AllContribution = ({
                 }`}
                 subtitleElements={[
                   <Fragment>
-                    <a className="text-primary">@{profile.user_handle}</a>
+                    <Link
+                      className="text-primary"
+                      to={`/profile/@${profile.user_handle}`}
+                    >
+                      @{profile.user_handle}
+                    </Link>
                     <span>
                       {contributionsById[cid].type === "upvoteDocument"
                         ? "upvote"
@@ -122,9 +142,14 @@ const AllContribution = ({
                   </Fragment>,
                   <Fragment>
                     <span>Posted by</span>
-                    <a className="text-primary">
+                    <Link
+                      className="text-primary"
+                      to={`/profile/@${
+                        contributionsById[cid].documentPostedBy
+                      }`}
+                    >
                       @{contributionsById[cid].documentPostedBy}
-                    </a>
+                    </Link>
                     <span>
                       {moment(contributionsById[cid].createdAt).fromNow()}
                     </span>
@@ -140,7 +165,12 @@ const AllContribution = ({
                   icon="thumbs-up"
                   subtitleElements={[
                     <Fragment>
-                      <a className="text-primary">@{profile.user_handle}</a>
+                      <Link
+                        className="text-primary"
+                        to={`/profile/@${profile.user_handle}`}
+                      >
+                        @{profile.user_handle}
+                      </Link>
                       <span>upvoted a comment in</span>
                       <a className="text-dark">
                         {contributionsById[cid].title}

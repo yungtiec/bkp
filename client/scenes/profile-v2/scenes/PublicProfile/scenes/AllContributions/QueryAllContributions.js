@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserContributions } from "./data/actions";
 import {
   getUserContributions,
@@ -15,18 +15,43 @@ class QueryAllContributions extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserContributions(this.props.profile.user_handle);
+    const match = matchPath(this.props.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    match &&
+      match.params &&
+      this.props.fetchUserContributions(match.params.userHandle.slice(1));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.profile.user_handle !== nextProps.profile.user_handle) {
-      this.props.fetchUserContributions(nextProps.profile.user_handle);
+  componentDidUpdate(prevProps) {
+    const prevMatch = matchPath(prevProps.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    const match = matchPath(this.props.match.url, {
+      path: "/profile/:userHandle/:tab",
+      exact: true,
+      strict: false
+    });
+    if (
+      match &&
+      match.params &&
+      prevMatch &&
+      prevMatch.params &&
+      prevMatch.params.userHandle !== match.params.userHandle
+    ) {
+      this.props.fetchUserContributions(match.params.userHandle.slice(1));
     }
-    if (this.props.offset !== nextProps.offset) window.scrollTo(0, 0);
+    if (prevProps.offset !== this.props.offset) window.scrollTo(0, 0);
   }
 
   render() {
-    if (!this.props.contributionIds) return "loading";
+    if (!this.props.contributionIds && !this.props.endOfResult)
+      return "loading";
+    if (!this.props.contributionIds && this.props.endOfResult) return null;
     return <AllContributions {...this.props} />;
   }
 }

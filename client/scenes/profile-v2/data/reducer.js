@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { assignIn, pick } from "lodash";
+import { assignIn, pick, cloneDeep } from "lodash";
 
 const initialState = {};
 
@@ -11,7 +11,7 @@ export default function reduce(state = initialState, action = {}) {
     case types.USER_ACCOUNT_UPDATED:
       return {
         ...state,
-        profile: assignIn(state.profile, action.profile)
+        profile: assignIn(cloneDeep(state.profile), action.profile)
       };
     default:
       return state;
