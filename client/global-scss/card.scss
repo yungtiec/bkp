@@ -23,7 +23,6 @@
 
 .entity__block * {
   color: rgba(0, 0, 0, 0.7);
-  letter-spacing: 0.04rem;
   color: #555;
 }
 
@@ -32,6 +31,7 @@
 }
 
 .entity__block {
+  word-break: break-word;
   border: none;
   text-decoration: none !important;
   background-color: #fff;
@@ -149,7 +149,6 @@
 
 .entity__header {
   display: flex;
-  text-transform: uppercase;
 }
 
 .entity__header p {

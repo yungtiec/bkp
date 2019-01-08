@@ -13,7 +13,11 @@ import {
   verifyUportOnMobile
 } from "../../data/reducer";
 import { Link } from "react-router-dom";
-import { InputEmail, InputPassword, InputText } from "../index";
+import {
+  FormsyInputEmail,
+  FormsyInputPassword,
+  FormsyInputText
+} from "../index";
 import Formsy from "formsy-react";
 
 /**
@@ -98,7 +102,11 @@ class AuthForm extends Component {
       >
         <div className="d-flex oauth-btns flex-md-row flex-column">
           <a
-            href={`/auth/google?state=${encodeURI("/")}`}
+            href={`/auth/google?state=${encodeURI(
+              this.props.location.state
+                ? this.props.location.state.lastPath
+                : "/"
+            )}`}
           >
             <img
               width="150px"
@@ -124,7 +132,8 @@ class AuthForm extends Component {
             <img
               width="145px"
               height="39px"
-              src="/assets/btn-github-dark.png" />
+              src="/assets/btn-github-dark.png"
+            />
           </a>
         </div>
         <div
@@ -155,13 +164,13 @@ class AuthForm extends Component {
               <label htmlFor="firstName">
                 <small>First Name</small>
               </label>
-              <InputText name="firstName" required />
+              <FormsyInputText name="firstName" required />
             </div>
             <div style={{ margin: "0 0 0 1%", width: "49%" }}>
               <label htmlFor="lastName">
                 <small>Last Name</small>
               </label>
-              <InputText name="lastName" required />
+              <FormsyInputText name="lastName" required />
             </div>
           </div>
         )}
@@ -170,14 +179,14 @@ class AuthForm extends Component {
             <label htmlFor="organization">
               <small>Organization</small>
             </label>
-            <InputText name="organization" />
+            <FormsyInputText name="organization" />
           </div>
         )}
         <div className="form-group row d-flex flex-column">
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <InputEmail
+          <FormsyInputEmail
             name="email"
             validations="isEmail"
             validationError="This is not a valid email"
@@ -188,7 +197,7 @@ class AuthForm extends Component {
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <InputPassword
+          <FormsyInputPassword
             name="password"
             validations="minLength:8"
             validationError="Password must have a minimum length of 8 characters"
@@ -205,7 +214,7 @@ class AuthForm extends Component {
             <label htmlFor="password">
               <small>Confirm password</small>
             </label>
-            <InputPassword
+            <FormsyInputPassword
               name="confirm"
               validations="equalsField:password"
               validationError="Password and confirmation password do not match"
@@ -236,7 +245,7 @@ class AuthForm extends Component {
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <InputEmail
+          <FormsyInputEmail
             name="email"
             validations="isEmail"
             validationError="This is not a valid email"
@@ -267,7 +276,7 @@ class AuthForm extends Component {
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <InputPassword
+          <FormsyInputPassword
             name="password"
             validations="minLength:8"
             validationError="Password must have a minimum length of 8 characters"
@@ -278,7 +287,7 @@ class AuthForm extends Component {
           <label htmlFor="password">
             <small>Confirm password</small>
           </label>
-          <InputPassword
+          <FormsyInputPassword
             name="confirm"
             validations="equalsField:password"
             validationError="Password and confirmation password do not match"

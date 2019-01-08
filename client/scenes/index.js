@@ -2,11 +2,14 @@ export {
   default as Collaborations
 } from "./collaborations/QueryCollaborations";
 export { default as Profile } from "./profile/QueryProfile";
+export { default as ProfileV2 } from "./profile-v2/QueryProfile";
 export { default as Upload } from "./upload/QueryUpload";
 export { default as Projects } from "./projects/QueryProjects";
 export { default as Project } from "./project/QueryProject";
 export { default as Document } from "./document/QueryDocumentContainer";
-export { default as DocumentBySlug } from "./document/QueryDocumentContainerBySlug";
+export {
+  default as DocumentBySlug
+} from "./document/QueryDocumentContainerBySlug";
 export { default as Dashboard } from "./dashboard/QueryDashboard";
 export { default as Unauthorized } from "./errors/Unauthorized";
 export { default as Landing } from "./landing/Landing";

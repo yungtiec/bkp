@@ -1,9 +1,9 @@
-import "./ScoreInput.scss";
+import "./FormsyScoreInput.scss";
 import { withFormsy } from "formsy-react";
 import React from "react";
 import autoBind from "react-autobind";
 
-class ScoreInput extends React.Component {
+class FormsyScoreInput extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -56,4 +56,4 @@ class ScoreInput extends React.Component {
     );
   }
 }
-export default withFormsy(ScoreInput);
+export default withFormsy(FormsyScoreInput);
