@@ -9,12 +9,11 @@ module.exports = {
     const cities = await rp.get(
       "https://pkgstore.datahub.io/core/world-cities/world-cities_csv/data/6cc66692f0e82b18216a48443b6b95da/world-cities_csv.csv"
     );
-    const citiesArray = await parsePromise(cities.slice(0, 100), {
-      columns: true
-    });
+    const citiesArray = await parsePromise(cities, { columns: true });
     return queryInterface.bulkInsert(
       "tags",
       citiesArray
+        .slice(0, 100)
         .map(data => ({
           name: `${data.name}, ${data.country}`.toLowerCase(),
           display_name: `${data.name}, ${data.country}`,
