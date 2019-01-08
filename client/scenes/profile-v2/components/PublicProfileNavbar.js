@@ -1,9 +1,10 @@
 import "./TabList.scss";
-import React, { Component } from "react";
+import React, { Fragment } from "react";
 import { withRouter, matchPath, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUserContributionStats } from "../data/reducer";
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { notify } from "reapop";
 import { TabList } from "./index";
 
 const getParams = pathname => {
@@ -21,7 +22,8 @@ const PublicProfileNavbar = ({
   location,
   num_documents,
   num_comments,
-  num_votes
+  num_votes,
+  notify
 }) => {
   const routeParams = getParams(location.pathname);
   return (
@@ -56,11 +58,31 @@ const PublicProfileNavbar = ({
         ]}
         currentTab={routeParams.tab}
       />
-      <div className="">
+      <div className="d-flex">
         {isMyProfile && (
-          <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
-            <i class="fas fa-cog profile__setting-btn" />
-          </Link>
+          <Fragment>
+            <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
+              <i className="fas fa-cog profile__setting-btn" />
+            </Link>
+            <CopyToClipboard
+              text={`${window.location.origin}/profile/${
+                routeParams.userhandle
+              }`}
+              onCopy={() =>
+                notify({
+                  title: "Profile link copied to clipboard",
+                  message: "",
+                  status: "success",
+                  dismissible: true,
+                  dismissAfter: 3000
+                })
+              }
+            >
+              <button className="btn btn-outline-primary ml-2">
+                Share my profile
+              </button>
+            </CopyToClipboard>
+          </Fragment>
         )}
       </div>
     </div>
@@ -72,7 +94,9 @@ const mapState = (state, ownProps) => ({
   ...ownProps
 });
 
-const actions = {};
+const actions = {
+  notify
+};
 
 export default withRouter(
   connect(
