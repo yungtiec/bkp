@@ -35,6 +35,9 @@ module.exports = (db, DataTypes) => {
       user_handle: {
         type: Sequelize.TEXT
       },
+      githubId: {
+        type: DataTypes.STRING
+      },
       googleId: {
         type: DataTypes.STRING
       },
@@ -376,6 +379,7 @@ module.exports = (db, DataTypes) => {
     googleId,
     uportAddress,
     includePrivateInfo,
+    githubId,
     forListing
   }) {
     var query;
@@ -384,6 +388,7 @@ module.exports = (db, DataTypes) => {
     if (userId) query = { userId: Number(userId) };
     if (userHandle) query = { userHandle };
     if (includePrivateInfo) query.includePrivateInfo = true;
+    if (githubId) query = { githubId };
     const user = await User.scope({
       method: ["basicInfo", query]
     }).findOne();

@@ -31,9 +31,30 @@ export default ({
     comment.upvotesFrom,
     upvotedUser => upvotedUser.id === user.id
   );
-  const embeddedUrls = Array.from(getUrls(comment.comment));
+  const regex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+  let embeddedUrls = Array.from(getUrls(comment.comment));
+
+  // Check for URL formatting issues
+  // If URL is surrounded by parenthesis, find the URL
+  // If URL cannot be parsed, don't add to embeddedUrls array
+  embeddedUrls = embeddedUrls.map((url) => {
+    if (url.includes('.)') || url.includes(')')) {
+      const matchedUrl = url.match(regex);
+      if (matchedUrl) {
+        const urlToReturn = matchedUrl[0];
+        if (urlToReturn[urlToReturn.length-1] === '.') {
+          return urlToReturn.slice(0, urlToReturn.length - 1);
+        }
+        return urlToReturn;
+      }
+      return null;
+    }
+    return url;
+  }).filter((url) => url !== null);
+
   const commentText = embeddedUrls.reduce(
-    (comment, url) => comment.replace(new RegExp(url, "g"), `[${url}](${url})`),
+    (comment, url) =>
+      comment.replace(new RegExp(url, "g"), `[${url}](${url})`),
     comment.comment
   );
   const isAdmin = collaboratorsArray ? collaboratorsArray.includes(comment.owner.id) : false;
