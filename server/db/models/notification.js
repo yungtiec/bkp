@@ -44,6 +44,7 @@ module.exports = (db, DataTypes) => {
     parent,
     messageFragment
   }) {
+    console.log({comment});
     const uri = getContextUri(comment);
     var notification = {
       sender_id: sender ? sender.id : null,
@@ -121,7 +122,7 @@ function getContextUri(comment) {
     comment.ancestors && comment.ancestors.length
       ? comment.ancestors[0]
       : comment;
-  return `/project/${comment.version.document.project.symbol}/document/${
-    comment.version.document.id
-  }/version/${comment.version.id}/comment/${rootItem.id}`;
+  return `/project/${comment.document.project.symbol}/document/${
+    comment.document.id
+  }/comment/${rootItem.id}`;
 }

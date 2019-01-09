@@ -1,6 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
-const db = require("../../../db");
-const permission = require("../../../access-control")["Comment"];
+const db = require("../../db/index");
+const permission = require("../../access-control")["Comment"];
 const {
   Comment,
   User,
@@ -8,11 +8,10 @@ const {
   Tag,
   Issue,
   Notification,
-  Version,
   Project,
   ProjectAdmin,
   ProjectEditor
-} = require("../../../db/models");
+} = require("../../db/models/index");
 const _ = require("lodash");
 Promise = require("bluebird");
 
@@ -23,7 +22,7 @@ const getComments = async (req, res, next) => {
         "flatThreadByRootId",
         {
           where: {
-            version_id: req.params.versionId,
+            doc_id: req.params.doc_id,
             hierarchyLevel: 1
           }
         }
@@ -39,7 +38,7 @@ const postComment = async (req, res, next) => {
   try {
     var [issue, comment] = await Comment.create({
       owner_id: req.user.id,
-      version_id: Number(req.params.versionId),
+      doc_id: Number(req.params.doc_id),
       comment: req.body.newComment
     }).then(comment =>
       Promise.all([
@@ -47,7 +46,7 @@ const postComment = async (req, res, next) => {
           open: true,
           comment_id: comment.id
         }),
-        Comment.scope("withVersions").findOne({
+        Comment.scope("withDocuments").findOne({
           where: { id: comment.id }
         })
       ])
@@ -56,7 +55,7 @@ const postComment = async (req, res, next) => {
       "AutoVerify",
       {
         comment,
-        project: comment.version.document.project
+        project: comment.document.project
       },
       req.user
     );
@@ -129,7 +128,7 @@ const postReply = async (req, res, next) => {
       sender: user,
       comment: _.assignIn(reply.toJSON(), {
         ancestors,
-        version: ancestry.version
+        document: ancestry.document
       }),
       parent,
       messageFragment: "replied to your post"
@@ -268,14 +267,14 @@ const putTags = async (req, res, next) => {
 
 const putCommentStatus = async (req, res, next) => {
   try {
-    var comment = await Comment.scope("withVersions").findOne({
+    var comment = await Comment.scope("withDocuments").findOne({
       where: { id: req.params.commentId }
     });
     const canVerify = permission(
       "Verify",
       {
         comment,
-        project: comment.version.document.project
+        project: comment.document.project
       },
       req.user
     );
@@ -293,7 +292,7 @@ const putCommentStatus = async (req, res, next) => {
 const putCommentIssueStatus = async (req, res, next) => {
   try {
     var comment = await Comment.scope({
-      method: ["withVersions", { model: Issue }]
+      method: ["withDocuments", { model: Issue }]
     }).findOne({
       where: { id: req.params.commentId }
     });
@@ -301,7 +300,7 @@ const putCommentIssueStatus = async (req, res, next) => {
       "Issue",
       {
         comment,
-        project: comment.version.document.project
+        project: comment.document.project
       },
       req.user
     );
@@ -327,8 +326,8 @@ const putCommentIssueStatus = async (req, res, next) => {
         sender: "",
         comment,
         messageFragment: `${req.user.name} closed your issue in ${
-          comment.version.document.project.symbol
-        }/${comment.version.document.title}.`
+          comment.doc.document.project.symbol
+        }/${comment.doc.document.title}.`
       });
     }
     if (req.body.open && req.user.id !== comment.owner_id) {
@@ -336,8 +335,8 @@ const putCommentIssueStatus = async (req, res, next) => {
         sender: "",
         comment,
         messageFragment: `${req.user.name} opened an issue on your comment in ${
-          comment.version.document.project.symbol
-        }/${comment.version.document.title}.`
+          comment.doc.document.project.symbol
+        }/${comment.doc.document.title}.`
       });
     }
 

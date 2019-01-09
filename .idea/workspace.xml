@@ -2,26 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f74e508f-9bbb-455f-bcd7-3d24b1cd86fb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/markdown/A Guide To Digital Token Offerings.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/markdown/CFTC.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/markdown/COMMODITY FUTURES TRADING COMMISSION.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/DocumentContainerBySlug.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/DocumentContainerBySlug.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/QueryDocumentContainerBySlug.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/QueryDocumentContainerBySlug.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/components/DocumentHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/components/DocumentHeader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/components/VersionToolbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/components/VersionToolbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/comments/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/comments/actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/comments/reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/comments/reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/comments/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/comments/service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/scenes/Version/QueryVersionBySlug.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/scenes/Version/QueryVersionBySlug.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/scenes/Version/Version.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/scenes/Version/Version.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/SidebarComments/SidebarHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/SidebarComments/SidebarHeader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/SidebarComments/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/SidebarComments/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/global-scss/html-content-body.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/markdown/Token-Taxonomy-Act-2018.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/components/CkEditor/CkEditor.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/components/CkEditor/CkEditor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/actionTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/actionTypes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/data/documentMetadata/service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/VersionContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/scenes/document/scenes/Version/components/VersionContent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api/documents/controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/documents/controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/api/documents/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/documents/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/db/models/comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/db/models/comment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/db/models/document.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/db/models/document.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/public/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -37,9 +27,9 @@
     <session id="-906986510">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.1" value="2" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.1" value="3" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -54,7 +44,7 @@
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="ESLintLanguageService" value="1" />
+          <entry key="ESLintLanguageService" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -70,7 +60,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/db/models/document.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -80,20 +70,18 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/api/documents/controller.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="16" column="31" lean-forward="true" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/api/versions/controllers/version-controller.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-61" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -113,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/api/versions/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
+            <state relative-caret-position="2580">
               <caret line="172" selection-start-line="172" selection-end-line="176" selection-end-column="2" />
             </state>
           </provider>
@@ -122,16 +110,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/api/versions/controllers/comment-controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
+            <state relative-caret-position="315">
               <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/api/documents/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
+            <state relative-caret-position="204">
               <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
             </state>
           </provider>
@@ -287,7 +275,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21338156" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -303,7 +290,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32857144" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32857144" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -316,32 +303,10 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/server/db/models/version_answer.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/api/versions/controllers/version-controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-61" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/api/versions/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="172" selection-start-line="172" selection-end-line="176" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/db/models/comment.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="177" column="18" lean-forward="true" selection-start-line="177" selection-start-column="18" selection-end-line="177" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/db/models/version.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -352,16 +317,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/api/documents/index.js">
+    <entry file="file://$PROJECT_DIR$/server/api/versions/controllers/version-controller.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/db/models/version_answer.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/db/models/version.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
+        <state relative-caret-position="60">
+          <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/api/versions/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2580">
+          <caret line="172" selection-start-line="172" selection-end-line="176" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/api/versions/controllers/comment-controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
+        <state relative-caret-position="315">
           <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
         </state>
       </provider>
@@ -369,7 +347,14 @@
     <entry file="file://$PROJECT_DIR$/server/api/documents/controller.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="16" column="31" lean-forward="true" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+          <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/api/documents/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="50" column="28" selection-start-line="50" selection-start-column="28" selection-end-line="50" selection-end-column="28" />
         </state>
       </provider>
     </entry>

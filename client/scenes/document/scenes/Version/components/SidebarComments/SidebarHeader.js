@@ -113,7 +113,7 @@ class SidebarHeader extends Component {
                 tags={tags}
                 selectedTags={[]}
                 initialValue=""
-                versionId={documentMetadata.id}
+                documentId={documentMetadata.id}
                 onSubmit={addNewComment}
                 onCancel={null}
               />

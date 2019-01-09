@@ -49,7 +49,7 @@ export default class CommentBoxWithTagField extends Component {
       ...argObj,
       tags: this.state.selectedTags,
       issueOpen: this.state.issueOpen,
-      versionId: this.props.versionId
+      documentId: this.props.documentId
     };
     onSubmit(newArgObj);
     this.setState({

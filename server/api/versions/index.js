@@ -2,7 +2,7 @@ const router = require("express").Router({ mergeParams: true });
 const versionController = require("./controllers/version-controller");
 const questionController = require("./controllers/question-controller");
 const answerController = require("./controllers/answer-controller");
-const commentController = require("./controllers/comment-controller");
+const commentController = require("../documents/comment-controller");
 const annotatorController = require("./controllers/annotator-controller");
 const {
   ensureAuthentication,

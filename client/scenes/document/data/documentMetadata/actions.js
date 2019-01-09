@@ -4,7 +4,8 @@ import {
   getMetadataByDocumentId,
   getMetadataBySlug,
   postUpvoteToDocument,
-  postDownvoteToDocument
+  postDownvoteToDocument,
+  putContentHTMLBySlug
 } from "./service";
 import { loadModal } from "../../../../data/reducer";
 
@@ -28,6 +29,20 @@ export function fetchMetadataBySlug(slug, versionId) {
       var documentMetadata = await getMetadataBySlug(slug);
       dispatch({
         type: types.DOCUMENT_METADATA_FETCH_SUCCESS,
+        documentMetadata
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+export function updateContentHTMLBySlug(slug, contentHTML) {
+  return async (dispatch, getState) => {
+    try {
+      var documentMetadata = await putContentHTMLBySlug(slug, contentHTML);
+      dispatch({
+        type: types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS,
         documentMetadata
       });
     } catch (error) {

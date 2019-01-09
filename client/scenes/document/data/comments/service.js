@@ -5,14 +5,13 @@ export function getCommentsByVersionId(doc_id) {
 }
 
 export function postComment({
-  projectSymbol,
-  versionId,
+  documentId,
   newComment,
   tags,
   issueOpen
 }) {
   return axios
-    .post(`/api/versions/${versionId}/comments`, {
+    .post(`/api/documents/${documentId}/comments`, {
       newComment,
       tags,
       issueOpen
@@ -22,13 +21,13 @@ export function postComment({
 
 export function postReplyToComment({
   projectSymbol,
-  versionId,
+  documentId,
   rootId,
   parentId,
   newComment
 }) {
   return axios
-    .post(`/api/versions/${versionId}/comments/${parentId}/reply`, {
+    .post(`/api/documents/${documentId}/comments/${parentId}/reply`, {
       rootId,
       newComment
     })
@@ -37,12 +36,12 @@ export function postReplyToComment({
 
 export function postUpvoteToComment({
   projectSymbol,
-  versionId,
+  documentId,
   commentId,
   hasUpvoted
 }) {
   return axios
-    .post(`/api/versions/${versionId}/comments/${commentId}/upvote`, {
+    .post(`/api/documents/${documentId}/comments/${commentId}/upvote`, {
       commentId,
       hasUpvoted
     })
@@ -51,14 +50,14 @@ export function postUpvoteToComment({
 
 export function updateComment({
   projectSymbol,
-  versionId,
+  documentId,
   commentId,
   newComment,
   tags,
   issueOpen
 }) {
   return axios
-    .put(`/api/versions/${versionId}/comments/${commentId}/edit`, {
+    .put(`/api/documents/${documentId}/comments/${commentId}/edit`, {
       newComment,
       tags,
       issueOpen
@@ -67,13 +66,13 @@ export function updateComment({
 }
 
 export function postPendingCommentStatus({ comment, reviewed }) {
-  return axios.put(`/api/versions/-/comments/${comment.id}/verify`, {
+  return axios.put(`/api/documents/-/comments/${comment.id}/verify`, {
     reviewed
   });
 }
 
 export function updateCommentIssueStatus({ comment, open }) {
-  return axios.put(`/api/versions/-/comments/${comment.id}/issue`, {
+  return axios.put(`/api/documents/-/comments/${comment.id}/issue`, {
     open
   });
 }

@@ -112,7 +112,7 @@ const getDocument = async (req, res, next) => {
   try {
     const document = await Document.scope({
       method: [
-        "includeVersionsWithOutstandingIssues",
+        "includeOutstandingIssues",
         { documentId: req.params.documentId }
       ]
     }).findOne();
@@ -193,6 +193,19 @@ const addHistory = versionQuestionOrAnswer => {
   delete versionQuestionOrAnswer["ancestors"];
   delete versionQuestionOrAnswer["descendents"];
   return versionQuestionOrAnswer;
+};
+
+const putDocumentContentHTMLBySlug = async (req, res, next) => {
+  try {
+    console.log('slug', req.params);
+    const documentToUpdate = await Document.findOne({ where: { slug : req.params.slug } });
+    console.log({documentToUpdate});
+    documentToUpdate.content_html = req.body.contentHTML;
+    const document = await documentToUpdate.save();
+    res.send(document);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const postDocument = async (req, res, next) => {
@@ -602,5 +615,6 @@ module.exports = {
   postUpvote,
   postDownvote,
   postNewVersion,
-  putDocument
+  putDocument,
+  putDocumentContentHTMLBySlug
 };

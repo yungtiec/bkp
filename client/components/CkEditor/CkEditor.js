@@ -10,9 +10,10 @@ class CkEditor extends Component {
     super(props);
     this.updateContent = this.updateContent.bind(this);
     this.onChange      = this.onChange.bind(this);
+    this.contentHtml   = this.props.documentMetadata.content_html;
     this.state         = {
-      content : '',
-      renderHtml : false
+      content : this.props.documentMetadata.content_html || '',
+      renderHtml : this.contentHtml && this.contentHtml.length !== 0
     };
     autoBind(this);
   }
@@ -31,7 +32,12 @@ class CkEditor extends Component {
     })
   }
 
-  onButtonPress() {
+  async onButtonPress() {
+    const {
+      documentMetadata,
+      updateContentHTMLBySlug
+    } = this.props;
+    await updateContentHTMLBySlug(documentMetadata.slug, this.state.content);
     this.setState({
       renderHtml : !this.state.renderHtml
     })
@@ -48,7 +54,7 @@ class CkEditor extends Component {
           scriptUrl={scriptUrl}
           events={{
             "change" : this.onChange
-          }}/> : <div>{ReactHtmlParser(content)}</div>
+          }}/> : <div className="html-content-body">{ReactHtmlParser(content)}</div>
         }
         <button onClick={this.onButtonPress}>click</button>
       </div>

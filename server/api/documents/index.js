@@ -1,4 +1,5 @@
 const router = require("express").Router({ mergeParams: true });
+const commentController = require("./comment-controller");
 const {
   isAdmin,
   ensureAuthentication,
@@ -254,4 +255,171 @@ router.post(
   ensureAuthentication,
   ensureResourceAccess,
   documentController.postDownvote
+);
+
+router.put(
+  "/slug/:slug",
+  ensureAuthentication,
+  ensureResourceAccess,
+  documentController.putDocumentContentHTMLBySlug
+);
+
+/**
+ * Getting version comments by version id
+ *
+ * @name Get version
+ * @route {GET} /api/versions/:doc_id/comments
+ * @routeparam {Number} versionId
+ *
+ */
+router.get(
+  "/:doc_id/comments",
+  ensureDocumentSubmissionOrOwnership,
+  commentController.getComments
+);
+
+/**
+ * Posting comment
+ *
+ * @name Post comment
+ * @route {POST} /api/versions/:doc_id/comments
+ * @authentication
+ * @routeparam {Number} versionId
+ * @bodyparam {String} newComment
+ * @bodyparam {Boolean} issueOpen
+ *
+ */
+router.post(
+  "/:doc_id/comments",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.postComment
+);
+
+/**
+ * Posting reply
+ *
+ * @name Post reply
+ * @route {POST} /api/versions/:doc_id/comments/:parentId/reply
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} parentId
+ * @bodyparam {String} newComment
+ *
+ */
+router.post(
+  "/:doc_id/comments/:parentId/reply",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.postReply
+);
+
+/**
+ * Posting upvote
+ *
+ * @name Post upvote
+ * @route {POST} /api/versions/:doc_id/comments/:commentId/upvote
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @bodyparam {Boolean} hasUpvoted
+ *
+ */
+router.post(
+  "/:doc_id/comments/:commentId/upvote",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.postUpvote
+);
+
+/**
+ * Updating comment
+ *
+ * @name Put comment
+ * @route {PUT} /api/versions/:doc_id/comments/:commentId/edit
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @bodyparam {String} newComment
+ * @bodyparam {Array} tags
+ * @bodyparam {Boolean} issueOpen
+ *
+ */
+router.put(
+  "/:doc_id/comments/:commentId/edit",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.putEditedComment
+);
+
+/**
+ * Removing comment's tag
+ *
+ * @name Delete comment's tag
+ * @route {DELETE} /api/versions/:doc_id/comments/:commentId/tags/:tagId
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @routeparam {Number} tagId
+ *
+ */
+router.delete(
+  "/:doc_id/comments/:commentId/tags/:tagId",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.deleteTag
+);
+
+/**
+ * Adding comment's tag
+ *
+ * @name Put comment's tag
+ * @route {PUT} /api/versions/:doc_id/comments/:commentId/tags
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @bodyparam {String} tagname
+ *
+ */
+router.put(
+  "/:doc_id/comments/:commentId/tags",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.putTags
+);
+
+/**
+ * Updating comment's review status
+ *
+ * @name Put comment's review status
+ * @route {PUT} /api/versions/:doc_id/comments/:commentId/verify
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @bodyparam {String} reviewed
+ *
+ */
+router.put(
+  "/:doc_id/comments/:commentId/verify",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.putCommentStatus
+);
+
+/**
+ * Updating comment's issue status
+ *
+ * @name Put comment's issue status
+ * @route {PUT} /api/versions/:doc_id/comments/:commentId/issue
+ * @authentication
+ * @routeparam {Number} versionId
+ * @routeparam {Number} commentId
+ * @bodyparam {Boolean} open is the boolean indicating issue's status (open or closed)
+ *
+ */
+router.put(
+  "/:doc_id/comments/:commentId/issue",
+  ensureAuthentication,
+  ensureResourceAccess,
+  commentController.putCommentIssueStatus
 );

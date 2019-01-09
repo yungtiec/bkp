@@ -57,49 +57,41 @@ module.exports = (db, DataTypes) => {
     Comment.hasOne(models.issue, {
       foreignKey: "comment_id"
     });
-    Comment.belongsTo(models.version, {
-      foreignKey: "version_id"
-    });
-    Comment.belongsTo(models.version_question, {
-      foreignKey: "version_question_id"
+    Comment.belongsTo(models.document, {
+      foreignKey: "doc_id"
     });
   };
   Comment.loadScopes = function(models) {
-    Comment.addScope("withVersions", function(moreIncludeOptions) {
+    Comment.addScope("withDocuments", function(moreIncludeOptions) {
       var options = {
         include: [
           {
-            model: models.version,
+            model: models.document,
+            attributes: ["id", "title"],
             include: [
               {
-                model: models.document,
-                attributes: ["id", "title"],
+                model: models.user,
+                as: "collaborators",
+                through: {
+                  model: models.document_collaborator,
+                  where: {
+                    revoked_access: { [Sequelize.Op.not]: true }
+                  }
+                },
+                required: false
+              },
+              {
+                model: models.project,
                 include: [
                   {
                     model: models.user,
-                    as: "collaborators",
-                    through: {
-                      model: models.document_collaborator,
-                      where: {
-                        revoked_access: { [Sequelize.Op.not]: true }
-                      }
-                    },
-                    required: false
+                    through: "project_admins",
+                    as: "admins"
                   },
                   {
-                    model: models.project,
-                    include: [
-                      {
-                        model: models.user,
-                        through: "project_admins",
-                        as: "admins"
-                      },
-                      {
-                        model: models.user,
-                        through: "project_editors",
-                        as: "editors"
-                      }
-                    ]
+                    model: models.user,
+                    through: "project_editors",
+                    as: "editors"
                   }
                 ]
               }
@@ -134,16 +126,11 @@ module.exports = (db, DataTypes) => {
             ]
           },
           {
-            model: models.version,
+            model: models.document,
             include: [
               {
-                model: models.document,
-                include: [
-                  {
-                    model: models.project,
-                    attributes: ["symbol"]
-                  }
-                ]
+                model: models.project,
+                attributes: ["symbol"]
               }
             ]
           },
@@ -203,16 +190,11 @@ module.exports = (db, DataTypes) => {
             attributes: ["name", "id"]
           },
           {
-            model: models.version,
+            model: models.document,
             include: [
               {
-                model: models.document,
-                include: [
-                  {
-                    model: models.project,
-                    attributes: ["symbol"]
-                  }
-                ]
+                model: models.project,
+                attributes: ["symbol"]
               }
             ]
           },

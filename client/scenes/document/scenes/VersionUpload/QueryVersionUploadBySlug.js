@@ -56,11 +56,11 @@ const LoadableVersionUpload = Loadable({
 
 class MyComponent extends React.Component {
   componentDidMount() {
-    const versionId = this.props.documentMetadata.versions[0].id;
+    const versionId = this.props.documentMetadata.id;
     batchActions([
-      this.props.fetchMetadataByVersionId(versionId),
-      this.props.fetchQuestionsByVersionId(versionId),
-      this.props.fetchCommentsByVersionId(versionId),
+      //this.props.fetchMetadataByVersionId(versionId),
+      //this.props.fetchQuestionsByVersionId(versionId),
+      //this.props.fetchCommentsByVersionId(versionId),
       this.props.fetchCollaboratorOptions(this.props.documentMetadata.project.symbol)
     ]);
   }

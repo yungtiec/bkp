@@ -50,11 +50,11 @@ module.exports = (db, DataTypes) => {
       type: DataTypes.STRING
     },
     content_html: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
-    category: {
-      type: DataTypes.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
-    },
+    //category: {
+    //  type: DataTypes.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
+    //},
   });
   Document.associate = function(models) {
     Document.hasMany(models.version, {
