@@ -37,18 +37,22 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
       const firstName = profile.name ? profile.name.givenName : "";
       const lastName = profile.name ? profile.name.familyName : "";
       var user;
-      req.session.googleToken = token;
+      req.session.googleAccessToken = token;
 
-      if (req.user) {
-        try {
+      try {
+        if (req.user) {
+          var updatedProfile = { googleId };
+          if (req.session.syncAvatar) {
+            updatedProfile.avatar_url = profile._json.image.url.replace(
+              "sz=50",
+              "sz=200"
+            );
+            req.session.syncAvatar = false;
+          }
           user = await User.findById(req.user.id);
-          user = await user.update({ googleId });
+          user = await user.update(updatedProfile);
           done(null, user);
-        } catch (err) {
-          done(err);
-        }
-      } else {
-        try {
+        } else {
           user = await User.find({
             where: { googleId },
             include: [{ model: Role }]
@@ -72,9 +76,9 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
                 });
                 return done(null, user);
               });
-        } catch (err) {
-          done(err);
         }
+      } catch (err) {
+        done(err);
       }
     }
   );
@@ -85,9 +89,10 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     "/",
     (req, res, next) => {
       req.session.authRedirectPath = req.query.state;
+      req.session.syncAvatar = req.query.syncAvatar;
       next();
     },
-    passport.authenticate("google", { scope: "email" })
+    passport.authenticate("google", { scope: ["email", "profile"] })
   );
 
   router.get(
@@ -97,29 +102,6 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     }),
     (req, res) => {
       res.redirect(req.session.authRedirectPath);
-    }
-  );
-
-  router.get(
-    "/connect",
-    passport.authorize("google", { failureRedirect: "/login", scope: "email" })
-  );
-
-  router.get(
-    "/connect/callback",
-    passport.authorize("google", { failureRedirect: "/login" }),
-    function(req, res) {
-      var user = req.user;
-      var account = req.account;
-      console.log(account);
-      // Associate the Twitter account with the logged-in user.
-      account.userId = user.id;
-      account.save(function(err) {
-        if (err) {
-          return self.error(err);
-        }
-        self.redirect("/");
-      });
     }
   );
 }

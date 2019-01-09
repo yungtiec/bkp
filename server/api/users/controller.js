@@ -59,6 +59,7 @@ const getUserContributions = async (req, res, next) => {
     const user = await User.findOne({
       where: { user_handle: req.params.userHandle }
     });
+    if (!user) return res.sendStatus(404);
     const contributions = await db.sequelize.query(`${documentQuery(user)}
       union all ${commentQuery(user)}
       union all ${documentVoteQuery(user)}
@@ -124,6 +125,7 @@ const getUserDocuments = async (req, res, next) => {
     var user = await User.findOne({
       where: { user_handle: req.params.userHandle }
     });
+    if (!user) return res.sendStatus(404);
     var ownDocuments = await db.sequelize.query(
       `${documentQuery(user)} ORDER BY "createdAt" DESC OFFSET ${
         req.query.offset
@@ -232,6 +234,7 @@ const getUserComments = async (req, res, next) => {
     var user = await User.findOne({
       where: { user_handle: req.params.userHandle }
     });
+    if (!user) return res.sendStatus(404);
     var comments = await db.sequelize.query(
       `${commentQuery(user)} ORDER BY "createdAt" DESC OFFSET ${
         req.query.offset
@@ -290,6 +293,7 @@ const getUserVotes = async (req, res, next) => {
     const user = await User.findOne({
       where: { user_handle: req.params.userHandle }
     });
+    if (!user) return res.sendStatus(404);
     const votes = await db.sequelize.query(`${documentVoteQuery(
       user
     )} union all ${commentVoteQuery(user)}

@@ -3,13 +3,22 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { PublicProfileNavbar, UserSettingsNavbar } from "./index";
 
-export default ({ profileContext, isMyProfile }) => {
+export default ({ profileContext, isMyProfile, avatarUrl }) => {
   return (
     <div className="profile-header profile-header--with-nav">
       <div className="profile-banner">
         <div className="app-container">
           <div className="profile-avatar__container">
-            <div className="profile-avatar" />
+            {avatarUrl ? (
+              <img
+                className="profile-avatar"
+                width="200"
+                height="200"
+                src={avatarUrl}
+              />
+            ) : (
+              <div className="profile-avatar" />
+            )}
           </div>
         </div>
       </div>

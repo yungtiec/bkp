@@ -28,7 +28,7 @@ export function fetchUserVotes(userHandle, direction) {
       else if (!voteIds.length && !direction) {
         // empty profile page where user has no vote
         dispatch({
-          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+          type: types.USER_VOTES_FETCH_SUCCESS,
           votesById: null,
           voteIds: null,
           endOfResult: true

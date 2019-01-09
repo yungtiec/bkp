@@ -7,6 +7,17 @@ $text-lg-margin: 16px;
   margin-bottom: $text-sm-margin;
 }
 
+.profile-details__badge {
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.profile-details__badge span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #00afff;
+}
+
 .profile-details__user-handle {
   color: #838383;
   font-size: 13px;

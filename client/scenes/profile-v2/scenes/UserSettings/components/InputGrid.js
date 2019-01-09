@@ -14,11 +14,10 @@ const FORMSY_INPUT_TYPE = {
   password: FormsyInputPassword,
   email: FormsyInputEmail,
   textarea: FormsyTextArea,
-  asyncSelect: FormsyAsyncSelect,
-  file: FormsyInputFile
+  asyncSelect: FormsyAsyncSelect
 };
 
-const InputGrid = ({ type, label, name, ...props }) => {
+const InputGrid = ({ type, label, name, children, ...props }) => {
   const Input = FORMSY_INPUT_TYPE[type];
   return (
     <Fragment>
@@ -28,7 +27,7 @@ const InputGrid = ({ type, label, name, ...props }) => {
         </div>
       </div>
       <div className="mb-4 px-2 w-75 d-inline-block user-settings__input">
-        <Input name={name} {...props} />
+        {children ? children : <Input name={name} {...props} />}
       </div>
     </Fragment>
   );
