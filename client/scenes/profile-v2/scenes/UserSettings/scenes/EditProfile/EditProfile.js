@@ -2,26 +2,45 @@ import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { InputGrid } from "../../components";
+import { keys } from "lodash";
+import { InputGrid, AvatarInput } from "../../components";
 import Formsy from "formsy-react";
 
-const ProfileInput = ({ type, label, name, ...props }) => {
-  const Input = FORMSY_INPUT_TYPE[type];
-  return (
-    <Fragment>
-      <div className="mb-4 px-2 w-25 d-inline-block user-settings__input-label">
-        <div className="mt-2">
-          <label>{label}</label>
-        </div>
-      </div>
-      <div className="mb-4 px-2 w-75 d-inline-block user-settings__input">
-        <Input name={name} {...props} />
-      </div>
-    </Fragment>
-  );
+const createSyncProfilePicMessage = ({
+  profile,
+  oauthStatus,
+  currentPathname
+}) => {
+  var connectedServices = keys(oauthStatus).filter(key => profile[key]);
+  return connectedServices.length
+    ? {
+        status: "primary",
+        text: (
+          <p className="mt-1 mb-0" style={{ verticalAlign: "middle" }}>
+            Sync your profile picture with{" "}
+            {connectedServices.map(connectedService => (
+              <a
+                class="badge badge-secondary text-white mr-1"
+                href={`/auth/${oauthStatus[
+                  connectedService
+                ].toLowerCase()}/connect`}
+                style={{ lineHeight: 1.2 }}
+                href={`/auth/${oauthStatus[
+                  connectedService
+                ].toLowerCase()}?state=${encodeURI(
+                  currentPathname
+                )}&syncAvatar=true`}
+              >
+                {oauthStatus[connectedService]}
+              </a>
+            ))}
+          </p>
+        )
+      }
+    : null;
 };
 
-const EditProfile = ({ match, profile, updateProfile }) => {
+const EditProfile = ({ location, match, profile, updateProfile }) => {
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -46,24 +65,20 @@ const EditProfile = ({ match, profile, updateProfile }) => {
               name="self_introduction"
               value={profile.self_introduction}
             />
-            <InputGrid
-              type="file"
-              label="Profile picture"
-              name="profile_pic"
-              message={
-                profile.googleConnected
-                  ? {
-                      status: "primary",
-                      text: (
-                        <p className="mt-1 mb-0">
-                          Sync your profile picture with{" "}
-                          <a class="badge badge-secondary text-white" href="/auth/google/connect">Google</a>
-                        </p>
-                      )
-                    }
-                  : null
-              }
-            />
+            <InputGrid type="file" label="Avatar">
+              <AvatarInput
+                name="avatar_pic"
+                message={createSyncProfilePicMessage({
+                  profile,
+                  oauthStatus: {
+                    googleConnected: "Google",
+                    githubConnected: "Github"
+                  },
+                  currentPathname: location.pathname
+                })}
+                avatarUrl={profile.avatar_url}
+              />
+            </InputGrid>
             <InputGrid
               type="input"
               label="Organization"

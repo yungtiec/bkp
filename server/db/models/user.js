@@ -38,6 +38,12 @@ module.exports = (db, DataTypes) => {
       githubId: {
         type: DataTypes.STRING
       },
+      githubConnected: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return !!this.getDataValue("githubId");
+        }
+      },
       googleId: {
         type: DataTypes.STRING
       },
@@ -68,13 +74,16 @@ module.exports = (db, DataTypes) => {
       username: {
         type: DataTypes.STRING
       },
+      avatar_url: {
+        type: Sequelize.TEXT
+      },
+      email_verified: {
+        type: Sequelize.BOOLEAN
+      },
       organization: {
         type: DataTypes.STRING
       },
       self_introduction: {
-        type: Sequelize.TEXT
-      },
-      profile_pic_url: {
         type: Sequelize.TEXT
       },
       linkedin_url: {
@@ -275,13 +284,13 @@ module.exports = (db, DataTypes) => {
         "restricted_access",
         "short_profile_url",
         "self_introduction",
-        "profile_pic_url",
         "linkedin_url",
         "twitter_url",
         "stackoverflow_url",
         "website_url",
         "github_url",
         "user_handle",
+        "avatar_url",
         "createdAt"
       ];
       if (userId) query = { id: userId };
@@ -294,9 +303,12 @@ module.exports = (db, DataTypes) => {
           "onboard",
           "profile_update_prompted",
           "googleId",
+          "githubId",
           "uportAddress",
           "googleConnected",
-          "uportConnected"
+          "uportConnected",
+          "githubConnected",
+          "email_verified"
         ]);
       return {
         where: query,

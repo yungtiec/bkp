@@ -13,6 +13,7 @@ const Profile = ({ me, profile, match, location }) => {
       <ProfileHeader
         profileContext={profileContext}
         isMyProfile={isMyProfile}
+        avatarUrl={profile.avatar_url}
       />
       <Switch>
         {isMyProfile && (

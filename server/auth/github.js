@@ -1,6 +1,6 @@
 const passport = require("passport");
 const router = require("express").Router();
-const GitHubStrategy = require('passport-github').Strategy;
+const GitHubStrategy = require("passport-github").Strategy;
 const { User, Role } = require("../db/models");
 module.exports = router;
 
@@ -25,40 +25,56 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.GITHUB_CALLBACK,
+    passReqToCallback: true
   };
 
   const strategy = new GitHubStrategy(
     githubConfig,
-    async (token, refreshToken, profile, done) => {
-      console.log({profile});
+    async (req, token, refreshToken, profile, done) => {
+      console.log({ profile });
       const githubId = profile.id;
       const displayName = profile.username;
       const name = profile._json.name;
-      const firstName = name ? name.split(' ')[0] : null;
-      const lastName = name ? name.split(' ')[1] : null;
+      const firstName = name ? name.split(" ")[0] : null;
+      const lastName = name ? name.split(" ")[1] : null;
       const email = profile.email;
+      var user;
+      req.session.githubAccessToken = token;
 
-      User.find({ where: { githubId }, include: [{ model: Role }] })
-        .then(foundUser => {
-          return foundUser
-            ? done(null, foundUser)
+      try {
+        if (req.user) {
+          user = await User.findById(req.user.id);
+          user = await user.update({ githubId });
+          done(null, user);
+        } else {
+          user = await User.find({
+            where: { githubId },
+            include: [{ model: Role }]
+          });
+          user
+            ? done(null, user)
             : User.findOrCreate({
-              where: { email },
-              defaults: {
-                email,
-                displayName,
-                githubId,
-                first_name: firstName,
-                last_name: lastName,
-                name: name
-              }
-            }).spread(async (user, created) => {
-              if (!created) user = await user.update({ githubId });
-              user = await User.getContributions({ githubId });
-              return done(null, user);
-            });
-        })
-        .catch(done);
+                where: { email },
+                defaults: {
+                  email,
+                  displayName,
+                  githubId,
+                  first_name: firstName,
+                  last_name: lastName,
+                  name: name
+                }
+              }).spread(async (user, created) => {
+                if (!created) user = await user.update({ githubId });
+                user = await User.getContributions({
+                  githubId,
+                  includePrivateInfo: true
+                });
+                return done(null, user);
+              });
+        }
+      } catch (err) {
+        done(err);
+      }
     }
   );
 

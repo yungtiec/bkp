@@ -109,7 +109,9 @@ class Account extends React.Component {
                   message={{
                     status: "primary",
                     text: (
-                      <Link to="/request-password-reset">forget password? or don't have password set up yet?</Link>
+                      <Link to="/request-password-reset">
+                        forget password? or don't have password set up yet?
+                      </Link>
                     )
                   }}
                   required
@@ -143,7 +145,7 @@ class Account extends React.Component {
             <div className="user-account__fieldset">
               {profile.googleConnected ? (
                 <div className="mb-2 px-2">
-                  <p>You're logged in using Google</p>
+                  <p className="mb-0">You're logged in using Google</p>
                 </div>
               ) : (
                 <a
@@ -161,7 +163,7 @@ class Account extends React.Component {
               )}
               {profile.uportConnected ? (
                 <div className="mb-2 px-2">
-                  <p>You're logged in using Uport</p>
+                  <p className="mb-0">You're logged in using Uport</p>
                 </div>
               ) : (
                 <a className="mb-2 px-1 d-block" onClick={signinWithUport}>
@@ -169,6 +171,25 @@ class Account extends React.Component {
                     width="191px"
                     height="46px"
                     src="/assets/btn_uport_signin_dark_normal_web.png"
+                  />
+                </a>
+              )}
+              {profile.githubConnected ? (
+                <div className="mb-2 px-2">
+                  <p className="mb-0">You're logged in using Github</p>
+                </div>
+              ) : (
+                <a
+                  className="mb-2 px-1 d-block"
+                  href={`/auth/github?state=${encodeURI(
+                    window.location.pathname
+                  )}`}
+                >
+                  <img
+                    width="185px"
+                    height="45px"
+                    style={{ marginLeft: "3px" }}
+                    src="/assets/btn-github-dark.png"
                   />
                 </a>
               )}

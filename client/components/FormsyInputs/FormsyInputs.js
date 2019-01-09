@@ -42,7 +42,7 @@ function createInputWithType(type) {
             onBlur={this.validateValue}
             type={type}
             className={`form-control ${showRequiredMessage &&
-              "form-control--invalid"}`}
+              "form-control--invalid"} ${this.props.inputClassname}`}
             value={this.props.getValue() || ""}
           />
           {!isEmpty(this.props.message) && (
