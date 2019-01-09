@@ -31,7 +31,6 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   const strategy = new GoogleStrategy(
     googleConfig,
     async (req, token, refreshToken, profile, done) => {
-      console.log(req.query);
       const googleId = profile.id;
       const name = profile.displayName;
       const email = profile.emails[0].value;
@@ -44,7 +43,10 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
         if (req.user) {
           var updatedProfile = { googleId };
           if (req.session.syncAvatar) {
-            updatedProfile.avatar_url = profile._json.image.url;
+            updatedProfile.avatar_url = profile._json.image.url.replace(
+              "sz=50",
+              "sz=200"
+            );
             req.session.syncAvatar = false;
           }
           user = await User.findById(req.user.id);

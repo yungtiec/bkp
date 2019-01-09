@@ -10,7 +10,7 @@ const AvatarInput = ({ name, avatarUrl, ...props }) => (
         className="user-settings__avatar-input-preview"
         width="43"
         height="43"
-        src={avatarUrl.replace("sz=50", "sz=43")}
+        src={avatarUrl}
       />
     )}
     <div className="user-settings__avatar-input-container">

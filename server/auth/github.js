@@ -31,7 +31,6 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
   const strategy = new GitHubStrategy(
     githubConfig,
     async (req, token, refreshToken, profile, done) => {
-      console.log({ profile });
       const githubId = profile.id;
       const displayName = profile.username;
       const name = profile._json.name;
@@ -43,8 +42,13 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
 
       try {
         if (req.user) {
+          var updatedProfile = { githubId };
+          if (req.session.syncAvatar) {
+            updatedProfile.avatar_url = profile._json.avatar_url;
+            req.session.syncAvatar = false;
+          }
           user = await User.findById(req.user.id);
-          user = await user.update({ githubId });
+          user = await user.update(updatedProfile);
           done(null, user);
         } else {
           user = await User.find({
@@ -84,9 +88,10 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
     "/",
     (req, res, next) => {
       req.session.authRedirectPath = req.query.state;
+      req.session.syncAvatar = req.query.syncAvatar;
       next();
     },
-    passport.authenticate("github", { scope: "email" })
+    passport.authenticate("github", { scope: ["email", "profile"] })
   );
 
   router.get(

@@ -14,7 +14,7 @@ export default ({ profileContext, isMyProfile, avatarUrl }) => {
                 className="profile-avatar"
                 width="200"
                 height="200"
-                src={avatarUrl.replace("sz=50", "sz=200")}
+                src={avatarUrl}
               />
             ) : (
               <div className="profile-avatar" />
