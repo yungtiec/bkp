@@ -18,9 +18,9 @@ module.exports = {
       queryInterface.addColumn("documents", "content_html", {
         type: Sequelize.TEXT
       }),
-      //queryInterface.addColumn("documents", "category", {
-      //  type: Sequelize.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
-      //})
+      queryInterface.addColumn("documents", "category", {
+        type: Sequelize.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
+      })
     ];
   },
 
@@ -31,7 +31,7 @@ module.exports = {
       queryInterface.removeColumn("documents", "reviewed"),
       queryInterface.removeColumn("documents", "comment_until_unix"),
       queryInterface.removeColumn("documents", "content_html"),
-      //queryInterface.removeColumn("documents", "category")
+      queryInterface.removeColumn("documents", "category")
     ];
   }
 };

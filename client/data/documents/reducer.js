@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { values, orderBy, cloneDeep, keys, assignIn } from "lodash";
+import { values, orderBy, cloneDeep, keys, assignIn, uniq } from "lodash";
 
 const initialState = {
   documentsById: null,
@@ -16,8 +16,6 @@ export default function reduce(state = initialState, action = {}) {
     case types.DOCUMENT_LISTING_FETCH_SUCCESS:
       return {
         ...state,
-        //documentsById: assignIn(action.documentsById, state.documentsById || {}),
-        //documentIds: (state.documentIds || []).concat(action.documentIds),
         documents: (state.documents || []).concat(action.documents),
         offset: action.offset,
         count: action.count
