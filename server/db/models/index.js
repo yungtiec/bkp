@@ -9,6 +9,7 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 const db = {};
 const exportedDb = {};
+const _ = require("lodash");
 
 let sequelize;
 if (config.use_env_variable) {
@@ -19,11 +20,11 @@ if (config.use_env_variable) {
     config.username,
     config.password,
     config
+    // _.assignIn(config, { logging: console.log })
   );
 }
 
-fs
-  .readdirSync(__dirname)
+fs.readdirSync(__dirname)
   .filter(file => {
     return (
       file.indexOf(".") !== 0 &&
@@ -34,7 +35,6 @@ fs
   })
   .forEach(file => {
     const model = sequelize["import"](path.join(__dirname, file));
-
     db[model.name] = model;
     exportedDb[
       model.name

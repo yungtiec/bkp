@@ -1,0 +1,36 @@
+.tab-list__item {
+  display: inline-block;
+  padding: 14px 15px;
+  color: #838383;
+  text-align: center;
+}
+
+.tab-list__item:hover {
+  color: black;
+}
+
+.tab-list__item.active {
+  box-shadow: #2a48d4 0px -4px 0px 0px inset;
+}
+
+.tab-list__item span {
+  display: block;
+}
+
+.tab-list__item-label {
+  font-size: 13px;
+}
+
+.tab-list__item-label--pull-down {
+  margin-bottom: -9px;
+  margin-top: 9px;
+}
+
+.tab-list__item-stats {
+  color: #2a48d4;
+  font-size: 12px;
+}
+
+.tab-list__item-stats--hidden {
+  visibility: hidden;
+}

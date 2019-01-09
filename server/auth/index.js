@@ -1,10 +1,18 @@
 const router = require("express").Router();
-const { User, Role, ProjectAdmin, ProjectEditor } = require("../db/models");
+const {
+  User,
+  Role,
+  ProjectAdmin,
+  ProjectEditor,
+  Tag,
+  TagLink
+} = require("../db/models");
 const _ = require("lodash");
 const generateForgetPasswordHtml = require("./generateForgetPasswordHtml.js");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 const moment = require("moment");
+Promise = require("bluebird");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = router;
@@ -27,7 +35,10 @@ router.post("/login", async (req, res, next) => {
       } else {
         req.login(user, async err => {
           if (err) next(err);
-          user = await User.getContributions({ userId: user.id });
+          user = await User.getContributions({
+            includePrivateInfo: true,
+            userId: user.id
+          });
           res.send(user);
         });
       }
@@ -38,7 +49,10 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", (req, res, next) => {
   User.create(req.body)
     .then(async user => {
-      user = await User.getContributions({ userId: user.id });
+      user = await User.getContributions({
+        includePrivateInfo: true,
+        userId: user.id
+      });
       req.login(user, err => (err ? next(err) : res.json(user)));
     })
     .catch(err => {
@@ -59,7 +73,10 @@ router.post("/logout", (req, res) => {
 
 router.get("/me", async (req, res) => {
   if (req.user) {
-    const user = await User.getContributions({ userId: req.user.id });
+    const user = await User.getContributions({
+      includePrivateInfo: true,
+      userId: req.user.id
+    });
     res.send(user);
   } else {
     res.sendStatus(401);
@@ -67,17 +84,41 @@ router.get("/me", async (req, res) => {
 });
 
 router.put("/profile", async (req, res, next) => {
-  if (!req.user || req.user.id !== req.body.id) res.sendStatus(401);
+  if (!req.user) res.sendStatus(401);
+  if (req.user.user_handle !== req.body.user_handle) res.sendStatus(401);
   else {
-    const user = await User.findById(req.user.id).then(user =>
-      user.update({
-        first_name: req.body.firstName,
-        last_name: req.body.lastName,
-        name: req.body.name,
-        organization: req.body.organization
-      })
-    );
-    res.send(user);
+    try {
+      var user = await User.findOne({
+        where: { id: req.user.id },
+        include: [{ model: Tag }]
+      });
+      const updatedTagIds = (req.body.location || [])
+        .concat(req.body.careerRole || [])
+        .map(tag => tag.value);
+      const removeTagPromises = Promise.map(
+        user.tags.filter(tag => updatedTagIds.indexOf(tag.id) === -1),
+        removedTag =>
+          TagLink.destroy({
+            where: { tagId: removedTag.id, foreign_key: user.id, table: "user" }
+          })
+      );
+      const addTagPromises = Promise.map(updatedTagIds, async tagId => {
+        const tag = await Tag.findById(tagId);
+        return user.addTag(tag);
+      });
+      await Promise.all([
+        user.update(_.omit(req.body, ["careerRole", "location"])),
+        removeTagPromises,
+        addTagPromises
+      ]);
+      user = await User.findOne({
+        where: { id: req.user.id },
+        include: [{ model: Tag }]
+      });
+      res.send(user);
+    } catch (err) {
+      next(err);
+    }
   }
 });
 
@@ -105,22 +146,41 @@ router.put("/profile/onboard", async (req, res, next) => {
   }
 });
 
-router.put("/profile/update-password", async (req, res, next) => {
+router.put("/accounts/update-account", async (req, res, next) => {
   try {
-    const user = await User.findById(req.body.id);
+    if (req.user.user_handle !== req.body.current_user_handle)
+      res.sendStatus(401);
+    var user = await User.findById(req.user.id);
+    var putQuery = {};
+    if (user.email !== req.body.email) {
+      putQuery.email = req.body.email;
+      putQuery.email_verified = false;
+    }
+    if (user.user_handle !== req.body.user_handle)
+      putQuery.user_handle = req.body.user_handle;
+    user = await user.update(putQuery);
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/accounts/update-password", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
     const userEmail = user.dataValues.email;
-    const isCorrectPassword = user.correctPassword(req.body.currentPassword);
+    const isCorrectPassword = user.correctPassword(req.body.password);
     if (isCorrectPassword) {
       await user.update({
         password: req.body.newPassword
       });
       const message = {
-        to : userEmail,
-        from : "The Brooklyn Project <reset-password@thebkp.com>",
-        subject : "The Brooklyn Project - Password Change",
-        text :
-        "You are receiving this because you (or someone else) have changed the password for your account.\n\n" +
-        "If you did not request this, please contact an administrator immediately.\n",
+        to: userEmail,
+        from: "The Brooklyn Project <reset-password@thebkp.com>",
+        subject: "The Brooklyn Project - Password Change",
+        text:
+          "You are receiving this because you (or someone else) have changed the password for your account.\n\n" +
+          "If you did not request this, please contact an administrator immediately.\n"
       };
       await sgMail.send(message);
       res.send(200);
@@ -198,7 +258,10 @@ router.put("/reset-password/:token", async (req, res, next) => {
       req.logIn(user, async function(err) {
         if (err) res.sendStatus(400);
         else {
-          user = await User.getContributions({ userId: user.id });
+          user = await User.getContributions({
+            includePrivateInfo: true,
+            userId: user.id
+          });
           res.send(user);
         }
       });

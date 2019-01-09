@@ -15,16 +15,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding-left: 65px;
-  padding-right: 65px; // box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.17);
-  @include breakpoint(xl) {
-    padding-left: 145px;
-    padding-right: 145px;
-  }
-  @include breakpoint(xs) {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
 }
 
 .logo-header {
@@ -41,7 +31,6 @@
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
-  margin-right: 15px;
 }
 
 .navbar__nav-item {
@@ -69,6 +58,7 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  margin-left: -15px;
 }
 
 .navbar__nav-item.notification-count {

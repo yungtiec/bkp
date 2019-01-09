@@ -7,6 +7,7 @@
 @import "./global-scss/html-content-body";
 @import "./global-scss/upload-accordion";
 @import "./global-scss/comment-box";
+@import "./global-scss/bootstrap-extension";
 @import "./global-scss/modal";
 
 html,
@@ -27,6 +28,19 @@ li {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+.app-container {
+  padding-left: 65px;
+  padding-right: 65px;
+  @include breakpoint(xl) {
+    padding-left: 145px;
+    padding-right: 145px;
+  }
+  @include breakpoint(xs) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
 
 .main-container {

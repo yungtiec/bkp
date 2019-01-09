@@ -6,21 +6,42 @@ module.exports = router;
 
 router.post("/", async (req, res, next) => {
   try {
-    var user = await User.findOne({
-      where: { uportAddress: req.body.address }
-    });
-    if (user)
-      user = await User.getContributions({ uportAddress: req.body.address });
-    else
-      user = await User.create({
-        name: req.body.name,
-        uportAddress: req.body.address
-      }).then(user =>
-        User.getContributions({ uportAddress: req.body.address })
+    var user;
+    if (req.user) {
+      user = await User.findById(req.user.id);
+      user = await user.update({ uportAddress: req.body.address }).then(user =>
+        User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: req.body.address
+        })
       );
+    } else {
+      user = await User.findOne({
+        where: { uportAddress: req.body.address }
+      });
+      if (user)
+        user = await User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: req.body.address
+        });
+      else
+        user = await User.create({
+          name: req.body.name,
+          uportAddress: req.body.address
+        }).then(user =>
+          User.getContributions({
+            includePrivateInfo: true,
+            uportAddress: req.body.address
+          })
+        );
+    }
     req.login(user, async err => {
       if (err) next(err);
-      res.send({ user, authRedirectPath: req.session.authRedirectPath });
+      res.send({
+        user,
+        authRedirectPath:
+          req.session.authRedirectPath || req.body.authRedirectPath
+      });
     });
   } catch (err) {
     next(err);
@@ -39,13 +60,19 @@ router.post("/mobile", async (req, res, next) => {
       where: { uportAddress: decoded.payload.nad }
     });
     if (user)
-      user = await User.getContributions({ uportAddress: decoded.payload.nad });
+      user = await User.getContributions({
+        includePrivateInfo: true,
+        uportAddress: decoded.payload.nad
+      });
     else
       user = await User.create({
         name: decoded.payload.own.name,
         uportAddress: decoded.payload.nad
       }).then(user =>
-        User.getContributions({ uportAddress: decoded.payload.nad })
+        User.getContributions({
+          includePrivateInfo: true,
+          uportAddress: decoded.payload.nad
+        })
       );
     req.login(user, async err => {
       if (err) next(err);
