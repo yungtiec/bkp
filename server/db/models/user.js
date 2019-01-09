@@ -322,7 +322,8 @@ module.exports = (db, DataTypes) => {
           { model: models.project, as: "editedProjects" },
           {
             model: models.tag
-          }
+          },
+          { model: models.badge, attributes: ["id", "name"] }
         ]
       };
     });

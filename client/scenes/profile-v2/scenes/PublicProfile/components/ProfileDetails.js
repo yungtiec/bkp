@@ -14,6 +14,27 @@ const renderTags = (tags, icon) =>
     </div>
   );
 
+const badgeIcons = {
+  "Authenticated User": "shield",
+  "Top Telegram Contributor": "badge"
+};
+
+const renderBadges = badges =>
+  badges && (
+    <div className="mb-4">
+      {badges.map(badge => (
+        <div className="d-flex align-items-center profile-details__badge">
+          <i
+            data-vi={badgeIcons[badge.name]}
+            data-vi-primary="#00AFFF"
+            data-vi-size="35"
+          />
+          <span>{badge.name}</span>
+        </div>
+      ))}
+    </div>
+  );
+
 const ProfileDetails = ({ match, profile }) => {
   return (
     <div className="profile-details">
@@ -24,6 +45,7 @@ const ProfileDetails = ({ match, profile }) => {
           {profile.self_introduction}
         </p>
       ) : null}
+      {renderBadges(profile.badges)}
       <div>
         {profile.organization && (
           <p className="profile-details--with-icons">

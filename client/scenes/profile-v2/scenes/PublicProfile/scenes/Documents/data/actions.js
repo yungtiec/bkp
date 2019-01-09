@@ -28,7 +28,7 @@ export function fetchUserDocuments(userHandle, direction) {
       else if (!documentIds.length && !direction) {
         // empty profile page where user has no document
         dispatch({
-          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+          type: types.USER_DOCUMENTS_FETCH_SUCCESS,
           documentsById: null,
           documentIds: null,
           endOfResult: true
