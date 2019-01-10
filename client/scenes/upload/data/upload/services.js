@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export function postMarkdown({
-  markdown,
-  versionNumber,
+export function postHtml({
+  title,
+  contentHtml,
   collaboratorEmails,
   commentPeriodValue,
   commentPeriodUnit,
@@ -13,14 +13,14 @@ export function postMarkdown({
 }) {
   return axios
     .post(`/api/documents`, {
-      markdown,
-      versionNumber,
+      title,
+      contentHtml,
       collaboratorEmails,
       commentPeriodValue,
       commentPeriodUnit,
       selectedProjectSymbol,
       scorecard,
-      documentFormat: "markdown",
+      documentFormat: "html",
       documentType
     })
     .then(res => res.data);

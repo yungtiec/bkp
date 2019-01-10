@@ -1,9 +1,7 @@
 import * as types from "./actionTypes";
-import { values, orderBy, cloneDeep, keys, assignIn, uniq } from "lodash";
+import { values, orderBy, cloneDeep, keys, assignIn, uniqBy } from "lodash";
 
 const initialState = {
-  documentsById: null,
-  documentIds: null,
   documents: null,
   offset: 0,
   limit: 10,
@@ -11,12 +9,21 @@ const initialState = {
   fetchError: false
 };
 
+const generateUniqueDocs = (originalDocs, newDocs) => {
+
+};
+
 export default function reduce(state = initialState, action = {}) {
+  console.log(state.documents);
   switch (action.type) {
     case types.DOCUMENT_LISTING_FETCH_SUCCESS:
+      const docs = uniqBy((state.documents || []).concat(action.documents), (doc) => {
+        if(doc) return doc.id
+        return doc;
+      });
       return {
         ...state,
-        documents: (state.documents || []).concat(action.documents),
+        documents: docs,
         offset: action.offset,
         count: action.count
       };

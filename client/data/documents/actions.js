@@ -13,8 +13,6 @@ export function fetchLastestDocumentsWithStats(hasLimit) {
         hasLimit: hasLimit || false
       });
       console.log(documents);
-      //const documentIds = documents.map(s => s.id);
-      //const documentsById = keyBy(documents, "id");
       dispatch({
         type: types.DOCUMENT_LISTING_FETCH_SUCCESS,
         documents: documents.rows,

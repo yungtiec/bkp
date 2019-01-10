@@ -11,7 +11,8 @@ const initialState = {
   projectSymbolArr: [],
   projectsBySymbol: {},
   collaboratorOptions: [],
-  scorecard: {}
+  scorecard: {},
+  title: ''
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -61,6 +62,16 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         scorecard: action.projectScorecard
       };
+    case types.CONTENT_HTML_UPDATED:
+      return {
+        ...state,
+        contentHtml: action.contentHtml
+      };
+    case types.TITLE_UPDATED:
+      return {
+        ...state,
+        title: action.title
+      };
     default:
       return state;
   }
@@ -68,23 +79,19 @@ export default function reduce(state = initialState, action = {}) {
 
 export function getUploadMetadata(state) {
   var {
-    markdown: importedMarkdown,
-    versionNumber,
+    contentHtml,
     selectedProject,
     collaboratorEmails,
     collaboratorOptions,
-    versionNumber,
     commentPeriodUnit,
     commentPeriodValue,
     scorecard
   } = state.scenes.upload.data.upload;
   return {
-    importedMarkdown,
-    versionNumber,
+    contentHtml,
     selectedProject,
     collaboratorEmails,
     collaboratorOptions,
-    versionNumber,
     commentPeriodUnit,
     commentPeriodValue,
     scorecard,

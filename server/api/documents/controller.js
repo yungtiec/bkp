@@ -215,6 +215,8 @@ const postDocument = async (req, res, next) => {
         return createDocumentByMarkdown(req, res, next);
       case "wizard":
         return createDocumentWithSchemaId(req, res, next);
+      case "html":
+        return createDocumentFromHtml(req, res, next);
       default:
         res.sendStatus(404);
     }
@@ -372,6 +374,74 @@ const createDocumentWithSchemaId = async (req, res, next) => {
       )
     : null;
   res.send({ version, document, wizardSchema });
+};
+
+const createDocumentFromHtml = async (req, res, next) => {
+  const project = await Project.findOne({
+    where: { symbol: req.body.selectedProjectSymbol },
+    include: [
+      {
+        model: User,
+        through: ProjectAdmin,
+        as: "admins"
+      },
+      {
+        model: User,
+        through: ProjectEditor,
+        as: "editors"
+      }
+    ]
+  });
+  const canCreate = permission("Create", { project }, req.user);
+  if (!canCreate) {
+    res.sendStatus(403);
+    return;
+  }
+  const commentUntilInUnix = moment()
+    .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
+    .format("x");
+
+  console.log('body', req.body);
+
+  const slug = await createVersionSlug(
+    req.body.title,
+    req.body.contentHtml
+  );
+
+  console.log(req.body);
+
+  const document = await Document.create({
+    title: req.body.title,
+    creator_id: req.user.id,
+    project_id: project.id,
+    comment_until_unix: commentUntilInUnix,
+    content_html: req.body.contentHtml,
+    submitted: true,
+    slug
+  });
+
+  const collaborators = req.body.collaboratorEmails
+    ? req.body.collaboratorEmails.map(emailOption => emailOption.value).map(
+      async email =>
+        await User.findOne({ where: { email } }).then(user =>
+          DocumentCollaborator.create({
+            user_id: user ? user.id : null,
+            email,
+            document_id: document.id
+          }).then(collaborator => {
+            return Notification.notifyCollaborators({
+              sender: req.user,
+              collaboratorId: user.id,
+              versionId: version.id,
+              projectSymbol: project.symbol,
+              parentVersionTitle: document.title,
+              action: "created"
+            });
+          })
+        )
+    )
+    : null;
+  res.send(document);
 };
 
 const postUpvote = async (req, res, next) => {

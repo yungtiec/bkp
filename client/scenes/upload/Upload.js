@@ -17,6 +17,7 @@ import {
 } from "react-accessible-accordion";
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
+import CKEditor from 'react-ckeditor-component';
 
 class Upload extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class Upload extends Component {
       projectError: false,
       scorecardError: false,
       isScorecard: false,
-      uploadClicked: false
+      uploadClicked: false,
+      content: this.props.contentHtml
     };
   }
 
@@ -67,6 +69,16 @@ class Upload extends Component {
     this.setState({
       isScorecard: evt.target.checked
     });
+  }
+
+  handleTitleChange(evt) {
+    const title = evt.target.value;
+    this.props.updateTitle(title)
+  }
+
+  handleCkEditorChange(evt) {
+    var newContent = evt.editor.getData();
+    this.props.updateContentHtml(newContent)
   }
 
   handleAccordionChange(key) {
@@ -125,13 +137,11 @@ class Upload extends Component {
 
   submit() {
     if (
-      !!this.props.importedMarkdown &&
       !!this.props.selectedProject &&
-      !!this.props.versionNumber &&
       ((this.state.isScorecard && this.props.scorecardCompleted) ||
         !this.state.isScorecard)
     ) {
-      this.props.uploadMarkdownToServer();
+      this.props.uploadHtmlToServer();
     } else {
       this.setState({ uploadClicked: true });
     }
@@ -161,6 +171,7 @@ class Upload extends Component {
       toggleSidebar,
       scorecardCompleted
     } = this.props;
+    const scriptUrl = 'http://localhost:8000/assets/ckeditor/ckeditor.js';
 
     return (
       <div className="main-container">
@@ -206,31 +217,6 @@ class Upload extends Component {
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 1}>
               <AccordionItemTitle>
-                <p className="upload-accordion__item-header">Version number</p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <div className="d-flex flex-column">
-                  <p>set version number</p>
-                  <input
-                    name="version-number"
-                    type="string"
-                    value={versionNumber}
-                    onChange={this.handleVersionNumberChange}
-                  />
-                  {this.state.versionNumberError ? (
-                    <p className="text-danger mt-2">version number required</p>
-                  ) : null}
-                  <button
-                    onClick={() => this.next("versionNumber")}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
-              <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Collaborators (optional)
                 </p>
@@ -258,7 +244,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Comment period</p>
               </AccordionItemTitle>
@@ -292,7 +278,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Project score (optional)
@@ -328,29 +314,40 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
-                  Disclosure markdown
+                  title
                 </p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <p style={{ marginBottom: "0px" }}>
-                    import markdown and preview
+                    document title
                   </p>
-                  <button
-                    onClick={() => importMarkdown(null)}
-                    className="btn btn-outline-primary"
-                  >
-                    reset
-                  </button>
                 </div>
-                <UploadInterface
-                  importedMarkdown={importedMarkdown}
-                  importMarkdown={importMarkdown}
-                  uploadMarkdownToServer={uploadMarkdownToServer}
-                />
+                <input type="text" name="name" onChange={this.handleTitleChange} />
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+              <AccordionItemTitle>
+                <p className="upload-accordion__item-header">
+                  Document Content
+                </p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <p style={{ marginBottom: "0px" }}>
+                    create document content
+                  </p>
+                </div>
+                <CKEditor
+                  activeClass="p10"
+                  content={this.props.contentHtml}
+                  scriptUrl={scriptUrl}
+                  events={{
+                    "change" : this.handleCkEditorChange
+                  }}/>
               </AccordionItemBody>
             </AccordionItem>
           </Accordion>
@@ -384,15 +381,6 @@ class Upload extends Component {
                   }
                 />
                 <Step
-                  title="version number"
-                  description="set version number for this document"
-                  status={
-                    this.state.versionNumberError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 1 ? "finish" : "wait"
-                  }
-                />
-                <Step
                   title="collaborators"
                   description="select collaborator(s) to work on your disclosure"
                 />
@@ -406,12 +394,16 @@ class Upload extends Component {
                   status={
                     this.state.scorecardError
                       ? "error"
-                      : this.state.activeAccordionItemId > 4 ? "finish" : "wait"
+                      : this.state.activeAccordionItemId > 3 ? "finish" : "wait"
                   }
                 />
                 <Step
-                  title="disclosure"
-                  description="import markdown and preview"
+                  title="title"
+                  description="set document title"
+                />
+                <Step
+                  title="content"
+                  description="create document content"
                   status={
                     !importedMarkdown
                       ? "wait"
@@ -431,7 +423,6 @@ class Upload extends Component {
                 </button>
                 {this.state.uploadClicked &&
                 !(
-                  !!this.props.importedMarkdown &&
                   !!this.props.selectedProject &&
                   ((this.state.isScorecard && this.props.scorecardCompleted) ||
                     !this.state.isScorecard)

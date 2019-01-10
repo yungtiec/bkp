@@ -1,28 +1,23 @@
 import * as types from "./actionTypes";
-import { postMarkdown, getManagedProjects } from "./services";
+import { postHtml, getManagedProjects } from "./services";
 import history from "../../../../history";
 import { orderBy, keyBy } from "lodash";
 
-export const importMarkdown = markdown => ({
-  type: types.MARKDOWN_IMPORTED,
-  markdown
-});
-
-export const uploadMarkdownToServer = () => async (dispatch, getState) => {
+export const uploadHtmlToServer = () => async (dispatch, getState) => {
   try {
     const state = getState();
     const {
-      markdown,
-      versionNumber,
+      title,
+      contentHtml,
       collaboratorEmails,
       commentPeriodValue,
       commentPeriodUnit,
       selectedProject,
       scorecard
     } = state.scenes.upload.data.upload;
-    const version = await postMarkdown({
-      markdown,
-      versionNumber,
+    const document = await postHtml({
+      title,
+      contentHtml,
       collaboratorEmails,
       commentPeriodValue,
       commentPeriodUnit,
@@ -30,9 +25,7 @@ export const uploadMarkdownToServer = () => async (dispatch, getState) => {
       scorecard
     });
     history.push(
-      `/project/${selectedProject.symbol}/document/${
-        version.document.id
-      }/version/${version.id}`
+      `/s/${document.slug}`
     );
     dispatch({
       type: types.MARKDOWN_UPLOADED
@@ -67,7 +60,12 @@ export const updateProjectScorecard = projectScorecard => ({
   projectScorecard
 });
 
-export const updateVersionNumber = versionNumber => ({
-  type: types.VERSION_NUMBER_UPDATED,
-  versionNumber
+export const updateContentHtml = contentHtml => ({
+  type: types.CONTENT_HTML_UPDATED,
+  contentHtml
+});
+
+export const updateTitle = title => ({
+  type: types.TITLE_UPDATED,
+  title
 });

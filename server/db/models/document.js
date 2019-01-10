@@ -174,6 +174,7 @@ module.exports = (db, DataTypes) => {
       };
     });
     Document.addScope("includeAllEngagements", {
+      where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
       include: [
         {
           model: models["user"],
@@ -200,6 +201,7 @@ module.exports = (db, DataTypes) => {
       ]
     });
     Document.addScope("includeVersionsWithAllEngagements", {
+      where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
       include: [
         {
           model: models["user"],

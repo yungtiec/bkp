@@ -7,15 +7,15 @@ import { batchActions } from "redux-batched-actions";
 import { toggleSidebar } from "./reducer";
 import { getUploadMetadata } from "./data/upload/reducer";
 import {
-  importMarkdown,
-  uploadMarkdownToServer,
+  uploadHtmlToServer,
   updateCollaborators,
   removeCollaborator,
   updateCommentPeriodUnit,
   updateCommentPeriodValue,
   updateSelectedProject,
   updateProjectScorecard,
-  updateVersionNumber
+  updateContentHtml,
+  updateTitle
 } from "./data/upload/actions";
 import {
   fetchAllProjects,
@@ -58,7 +58,8 @@ class MyComponent extends React.Component {
 const mapState = state => {
   const { projectsBySymbol, projectSymbolArr } = getManagedProjects(state);
   const {
-    importedMarkdown,
+    title,
+    contentHtml,
     selectedProject,
     collaboratorEmails,
     collaboratorOptions,
@@ -74,7 +75,6 @@ const mapState = state => {
     isLoggedIn: !!state.data.user.id,
     currentUser: state.data.user,
     sidebarOpen: state.scenes.upload.sidebarOpen,
-    importedMarkdown,
     selectedProject,
     collaboratorEmails,
     collaboratorOptions,
@@ -84,14 +84,15 @@ const mapState = state => {
     scorecard,
     scorecardCompleted,
     projectsBySymbol,
-    projectSymbolArr
+    projectSymbolArr,
+    contentHtml,
+    title
   };
 };
 
 const actions = {
   fetchManagedProjects,
-  importMarkdown,
-  uploadMarkdownToServer,
+  uploadHtmlToServer,
   updateCollaborators,
   removeCollaborator,
   updateCommentPeriodUnit,
@@ -101,7 +102,8 @@ const actions = {
   toggleSidebar,
   fetchAllProjects,
   updateProjectScorecard,
-  updateVersionNumber
+  updateContentHtml,
+  updateTitle
 };
 
 export default withRouter(connect(mapState, actions)(MyComponent));

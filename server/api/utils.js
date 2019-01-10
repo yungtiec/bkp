@@ -95,26 +95,26 @@ const getEngagedUsers = async ({ version, creator, collaboratorEmails }) => {
   return commentators;
 };
 
-const createVersionSlug = async (docTitle, versionObj) => {
+const createVersionSlug = async (docTitle, contentHtml) => {
   const sha256 = crypto.createHash("sha256");
 
   try {
     // Hash the original version obj as a JSON string
     // Convert the hash to base64 ([a-z], [A-Z], [0-9], +, /)
-    const hash = sha256.update(JSON.stringify(versionObj)).digest("base64");
+    const hash = sha256.update(contentHtml).digest("base64");
 
     // This is the  base64 key that corresponds to the given JSON string
     const base64Key = hash.slice(0, 8);
 
     // Convert base64 to hex string
-    const versionHash = Buffer.from(base64Key, "base64").toString("hex");
+    const docHash = Buffer.from(base64Key, "base64").toString("hex");
 
-    const versionSlug = `${docTitle
+    const docSlug = `${docTitle
       .toLowerCase()
       .split(" ")
-      .join("-")}-${versionHash}`;
+      .join("-")}-${docHash}`;
 
-    return docTitle ? versionSlug : versionHash;
+    return docTitle ? docSlug : docHash;
   } catch (err) {
     console.error(err);
   }
