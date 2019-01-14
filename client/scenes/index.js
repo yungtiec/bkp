@@ -2,7 +2,6 @@ export {
   default as Collaborations
 } from "./collaborations/QueryCollaborations";
 export { default as Profile } from "./profile/QueryProfile";
-export { default as ProfileV2 } from "./profile-v2/QueryProfile";
 export { default as Upload } from "./upload/QueryUpload";
 export { default as Projects } from "./projects/QueryProjects";
 export { default as Project } from "./project/QueryProject";
@@ -17,3 +16,4 @@ export { default as ActivityBoard } from "./activity-board/QueryActivityBoard";
 export { default as Admin } from "./admin/AdminContainer";
 export { default as Wizard } from "./wizard/QueryWizard";
 export { default as MyDocuments } from "./my-documents/QueryMyDocuments";
+export { default as Feed } from "./feed/Feed";

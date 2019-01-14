@@ -226,7 +226,18 @@ class AuthForm extends Component {
             {authMethodLabel}
           </button>
         </div>
-        {error && error.response && <div>{error.response.data}</div>}
+        {error &&
+          error.response && (
+            <div
+              style={{
+                display: "block",
+                marginRight: "-15px",
+                marginLeft: "-15px"
+              }}
+            >
+              {error.response.data}
+            </div>
+          )}
       </Formsy>
     );
   }

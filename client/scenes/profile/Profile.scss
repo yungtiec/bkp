@@ -1,43 +1,4 @@
-@import "../../breakpoint";
-
-.profile-subroute {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 30px 15px;
-}
-
-.profile-subroute__empty {
-  width: 230px;
-  margin: 100px auto;
-}
-
-.profile-engagement-items__container {
-  display: flex;
-  @include breakpoint(xs) {
-    flex-direction: column;
-  }
-}
-
-.profile-enagement-items {
-  flex: 1;
-  margin-top: 30px;
-}
-
-.profile-engagement-items__container .Select {
-  width: 80%;
-  margin-top: 10px;
-  @include breakpoint(xs) {
-    width: 100%;
-  }
-}
-
-.profile-container .route__loader {
-  position: relative;
-}
-
-.profile-container .route__loader div {
-  position: absolute;
-  margin: auto;
-  right: 0;
-  margin-top: 100px;
+.profile {
+  min-height: calc(100vh - 90px);
+  background: #f3f3f3;
 }

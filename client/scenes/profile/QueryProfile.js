@@ -3,15 +3,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
-import { currentUserIsAdmin, editProfile } from "../../data/reducer";
-import {
-  fetchUserBasicInfo,
-  changeAccessStatus,
-  resetUserData,
-  changeAnonymity
-} from "./scenes/about/data/actions";
-import { updateUserPassword } from "./scenes/password/data/actions";
-import { getUserBasicInfo } from "./scenes/about/data/reducer";
+import { fetchUserProfile } from "./data/actions";
+import { getUserProfile } from "./data/reducer";
 
 const LoadableQueryProfile = Loadable({
   loader: () => import("./Profile"),
@@ -36,57 +29,37 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserBasicInfo(this.props.match.params.userId);
+    this.props.fetchUserProfile(this.props.match.params.userHandle.slice(1));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.userId !== nextProps.match.params.userId) {
-      this.props.fetchUserBasicInfo(nextProps.match.params.userId);
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.match.params.userHandle !== this.props.match.params.userHandle
+    ) {
+      this.props.fetchUserProfile(this.props.match.params.userHandle.slice(1));
     }
   }
 
   render() {
+    if (!this.props.profile) return null;
     return <LoadableQueryProfile {...this.props} />;
   }
 }
 
 const mapState = state => {
-  const basicInfo = getUserBasicInfo(state);
-  const isAdmin = currentUserIsAdmin(state);
   return {
-    basicInfo,
-    isAdmin,
-    myUserId: state.data.user && state.data.user.id,
-    passwordUpdate: state.scenes.profile
+    profile: getUserProfile(state),
+    me: state.data.user
   };
 };
 
-const actions = (dispatch, ownProps) => {
-  return {
-    fetchUserBasicInfo: userId => {
-      dispatch(fetchUserBasicInfo(userId));
-    },
-    restrictAccess: () =>
-      dispatch(
-        changeAccessStatus({
-          userId: ownProps.match.params.userId,
-          accessStatus: "restricted"
-        })
-      ),
-    restoreAccess: () =>
-      dispatch(
-        changeAccessStatus({
-          userId: ownProps.match.params.userId,
-          accessStatus: "restore"
-        })
-      ),
-    changeAnonymity: () => dispatch(changeAnonymity()),
-    editProfile: props => dispatch(editProfile(props)),
-    resetUserData: () => dispatch(resetUserData()),
-    updateUserPassword: async (myUserId, currentPassword, newPassword) => {
-      return await dispatch(updateUserPassword(myUserId, currentPassword, newPassword));
-    }
-  };
+const actions = {
+  fetchUserProfile
 };
 
-export default withRouter(connect(mapState, actions)(MyComponent));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(MyComponent)
+);
