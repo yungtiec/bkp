@@ -154,8 +154,8 @@ class CkEditor extends Component {
   }
 
   render() {
-    console.log('heeey', this.props)
-    const scriptUrl = 'http://localhost:8000/assets/ckeditor/ckeditor.js';
+    console.log('heeey', window.location);
+    const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const {renderHtml, content} = this.state;
     return (
       <div>
