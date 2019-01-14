@@ -171,7 +171,7 @@ class Upload extends Component {
       toggleSidebar,
       scorecardCompleted
     } = this.props;
-    const scriptUrl = 'http://localhost:8000/assets/ckeditor/ckeditor.js';
+    const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
     return (
       <div className="main-container">
