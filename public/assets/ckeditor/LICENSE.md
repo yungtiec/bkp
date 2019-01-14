@@ -7,15 +7,15 @@ Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
 Licensed under the terms of any of the following licenses at your
 choice:
 
- - GNU General Public License Version 2 or later (the "GPL")
+ - GNU General Public License Document 2 or later (the "GPL")
    http://www.gnu.org/licenses/gpl.html
    (See Appendix A)
 
- - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ - GNU Lesser General Public License Document 2.1 or later (the "LGPL")
    http://www.gnu.org/licenses/lgpl.html
    (See Appendix B)
 
- - Mozilla Public License Version 1.1 or later (the "MPL")
+ - Mozilla Public License Document 1.1 or later (the "MPL")
    http://www.mozilla.org/MPL/MPL-1.1.html
    (See Appendix C)
 
@@ -45,7 +45,7 @@ Parts of code taken from the following libraries are included in CKEditor under 
 
 * jQuery (inspired the domReady function, ckeditor_base.js) - Copyright (c) 2011 John Resig, http://jquery.com/
 
-The following libraries are included in CKEditor under the SIL Open Font License, Version 1.1 (see Appendix E):
+The following libraries are included in CKEditor under the SIL Open Font License, Document 1.1 (see Appendix E):
 
 * Font Awesome (included in the toolbar configurator) - Copyright (C) 2012 by Dave Gandy.
 

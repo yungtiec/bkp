@@ -313,13 +313,6 @@ export function getAllComments(state, content_html) {
   var { commentIds, commentsById, loading } = state.scenes.document.data.comments;
   const tagFilter = state.scenes.document.data.tags.filter;
   const commentIssueFilter = state.scenes.document.commentIssueFilter;
-  const {
-    versionQnaIds,
-    versionQnasById
-  } = state.scenes.document.data.versionQnas;
-  const versionAnswerIds =
-    versionQnaIds &&
-    versionQnaIds.map(id => versionQnasById[id].version_answers[0].id);
   const commentCollection = values(commentsById).map(comment => {
     const range = getStartAndEndIndexInDocumentQna(
       content_html,
@@ -329,7 +322,7 @@ export function getAllComments(state, content_html) {
       { unix: moment(comment.createdAt).format("X"), range },
       comment
     );
-  });
+  });filteredCommentIds
   var sortedComments = sortFn(commentCollection);
   var sortedCommentIds = sortedComments.map(a => a.id);
   filteredCommentIds = filterByTags({
@@ -343,7 +336,6 @@ export function getAllComments(state, content_html) {
     commentIds: filteredCommentIds
   });
   filteredCommentIds = filterByVersionAnswer({
-    versionAnswerIds,
     commentsById,
     commentIds: filteredCommentIds
   });

@@ -2,11 +2,8 @@ import "./QnaContainer.scss";
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import { withRouter } from "react-router-dom";
-import Question from "./Question";
-import Answers from "./Answers";
 import annotator from "annotator";
 import { draw, undraw } from "../../../../../../annotator/highlight";
-import history from "../../../../../../history";
 import { isEmpty } from "lodash";
 
 class QnaBox extends Component {

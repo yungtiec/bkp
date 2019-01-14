@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { withRouter } from "react-router-dom";
 import { batchActions } from "redux-batched-actions";
-import { getVersionMetadata } from "./data/versionMetadata/reducer";
 import {
   getDocumentMetadata,
   getDocumentLatestVersion,
@@ -14,8 +13,6 @@ import {
   upvoteDocument,
   downvoteDocument
 } from "./data/documentMetadata/actions";
-import { getAllDocumentQuestions } from "./data/versionQnas/reducer";
-import { fetchLatestQuestionsBySlug } from "./data/versionQnas/actions";
 import DocumentContainerBySlug from "./DocumentContainerBySlug";
 import history from "../../history";
 
@@ -28,9 +25,6 @@ class QueryDocumentContainerBySlug extends Component {
   componentDidMount() {
     batchActions([
       this.props.fetchMetadataBySlug(this.props.match.params.slug),
-      //this.props.fetchLatestQuestionsBySlug(
-      //  this.props.match.params.slug
-      //)
     ]);
   }
 
@@ -51,7 +45,6 @@ const mapState = state => {
 
 const actions = {
   fetchMetadataBySlug,
-  fetchLatestQuestionsBySlug,
   upvoteDocument,
   downvoteDocument
 };

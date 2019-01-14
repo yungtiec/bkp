@@ -1,8 +1,9 @@
 import * as types from "./actionTypes";
 import { DOCUMENT_METADATA_FETCH_SUCCESS } from "../documentMetadata/actionTypes";
-import { PROJECT_SURVEY_METADATA_FETCH_SUCCESS } from "../versionMetadata/actionTypes";
+//import { PROJECT_SURVEY_METADATA_FETCH_SUCCESS } from "../versionMetadata/actionTypes";
 import { uniq, isEmpty, values } from "lodash";
 
+const PROJECT_SURVEY_METADATA_FETCH_SUCCESS = 'PROJECT_SURVEY_METADATA_FETCH_SUCCESS';
 const initialState = {
   markdown: null,
   versionNumber: "",

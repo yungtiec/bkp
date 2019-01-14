@@ -22,22 +22,6 @@ import {
   updateSidebarCommentContext
 } from "../../reducer";
 
-// document/qnas
-import {
-  fetchQuestionsByVersionId,
-  editQuestion,
-  editAnswer,
-  revertToPrevQuestion,
-  revertToPrevAnswer
-} from "../../data/versionQnas/actions";
-import { getAllDocumentQuestions } from "../../data/versionQnas/reducer";
-
-// document/metadata
-import {
-  fetchMetadataByVersionId,
-  editScorecard
-} from "../../data/versionMetadata/actions";
-import { getVersionMetadata } from "../../data/versionMetadata/reducer";
 import {
   upvoteDocument,
   downvoteDocument
@@ -46,7 +30,7 @@ import { getDocumentMetadata } from "../../data/documentMetadata/reducer";
 
 // document/comments
 import {
-  fetchCommentsByVersionId,
+  fetchCommentsByDocId,
   addNewCommentSentFromServer,
   addNewComment
 } from "../../data/comments/actions";
@@ -61,7 +45,7 @@ import {
 import { updateTagFilter } from "../../data/tags/actions";
 
 const LoadableVersion = Loadable({
-  loader: () => import("./Version"),
+  loader: () => import("./Document"),
   loading: () => (
     <SquareLoader
       key="LoadableVersion"
@@ -192,7 +176,7 @@ const actions = {
   revertToPrevQuestion,
   revertToPrevAnswer,
   // comments
-  fetchCommentsByVersionId,
+  fetchCommentsByDocId,
   addNewComment,
   addNewCommentSentFromServer,
   // UI context

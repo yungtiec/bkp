@@ -1,5 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
 const commentController = require("./comment-controller");
+const annotatorController = require("./annotator-controller");
 const {
   isAdmin,
   ensureAuthentication,
@@ -12,17 +13,16 @@ module.exports = router;
 
 const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
   // if document has only one version, make sure the version is submitted
+  console.log('req.params', req.params);
   try {
-    const version = await Version.findOne({version_slug : req.params.version_slug});
-    const documentId = version.document_id;
-    const document = await Document.scope({
-      method: [
-        "includeVersions",
-        {
-          documentId: documentId
-        }
-      ]
-    }).findOne();
+    let document;
+    if (req.params.version_slug) {
+      document = await Document.findOne({where: {slug : req.params.version_slug}});
+    }
+    if (req.params.doc_id) {
+      document = await Document.findOne({where: {id : req.params.doc_id}});
+    }
+    console.log({document});
     const isNotCreator =
       document && req.user && req.user.id !== document.creator_id;
     const isNotCollaborator =
@@ -31,11 +31,12 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
       document.collaborators &&
       !document.collaborators.filter(c => req.user.id !== c.id).length;
 
+    console.log({isNotCollaborator});
+
     if (
       !document ||
       (document &&
-        document.versions &&
-        !document.versions[0].submitted &&
+        !document.submitted &&
         //!isAdmin(req.user) &&
         (!req.user || (isNotCreator && isNotCollaborator)))
     )
@@ -422,4 +423,44 @@ router.put(
   ensureAuthentication,
   ensureResourceAccess,
   commentController.putCommentIssueStatus
+);
+
+/**
+ * Getting version annotated comments by version id
+ *
+ * @name Get version
+ * @route {GET} /api/versions/:versionId/annotator
+ * @routeparam {Number} versionId
+ * @queryparam {Number} versionId
+ * @queryparam {Number} version_question_id
+ * @todo camelcase version_question_id
+ * @todo handle duplicated arguments in query and route param
+ *
+ */
+router.get(
+  "/:doc_id/annotator",
+  //ensureDocumentSubmissionOrOwnership,
+  annotatorController.getAnnotatedComments
+);
+
+/**
+ * Posting annotated comment
+ *
+ * @name Post annotated comment
+ * @route {POST} /api/versions/:versionId/annotator
+ * @routeparam {Number} versionId
+ * @bodyparam {Object} range defines the location of annotation
+ * @bodyparam {String} quote is the annotated text
+ * @bodyparam {String} text is the user's comment,
+ * @bodyparam {String} uri is the address of the page
+ * @bodyparam {Number} version_id
+ * @bodyparam {Number} version_question_id
+ * @bodyparam {Array} tags is not used currently
+ *
+ */
+router.post(
+  "/:doc_id/annotator",
+  ensureAuthentication,
+  ensureResourceAccess,
+  annotatorController.postAnnotatedComment
 );

@@ -13,11 +13,10 @@ import {
 import { maxBy } from "lodash";
 import PropTypes from "prop-types";
 import { Events, scrollSpy, animateScroll as scroll } from "react-scroll";
-import QueryVersionUploadBySlug from "./scenes/VersionUpload/QueryVersionUploadBySlug";
-import QueryVersionBySlug from "./scenes/Version/QueryVersionBySlug";
+import QueryDocumentBySlug from "./scenes/Document/QueryDocumentBySlug";
 import autoBind from "react-autobind";
-import { DocumentHeader, VersionToolbar } from "./components";
-import { VersionIssues, VersionProgress } from "./scenes/Version/components";
+import { DocumentHeader, DocumentToolbar } from "./components";
+import { VersionIssues, VersionProgress } from "./scenes/Document/components";
 import history from "../../history";
 
 class DocumentContainer extends Component {
@@ -63,35 +62,15 @@ class DocumentContainer extends Component {
           documentMetadata={documentMetadata}
           isClosedForComment={isClosedForComment}
         />
-        <VersionToolbar
+        <DocumentToolbar
           documentMetadata={documentMetadata}
           upvoteDocument={upvoteDocument}
           downvoteDocument={downvoteDocument}
         />
         <Switch>
           <Route
-            path={`${match.path}/issues`}
-            render={props => (
-              <VersionIssues
-                documentMetadata={documentMetadata}
-              />
-            )}
-          />
-          <Route
-            path={`${match.path}/progress`}
-            render={() => (
-              <VersionProgress
-                documentMetadata={documentMetadata}
-              />
-            )}
-          />
-          <Route
-            path={`${match.path}/upload`}
-            render={props => <QueryVersionUploadBySlug documentMetadata={documentMetadata} />}
-          />
-          <Route
             path={`${match.path}`}
-            render={props => <QueryVersionBySlug documentMetadata={documentMetadata} />}
+            render={props => <QueryDocumentBySlug documentMetadata={documentMetadata} />}
           />
         </Switch>
       </div>

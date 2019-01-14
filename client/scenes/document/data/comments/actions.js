@@ -13,7 +13,7 @@ import { keyBy, omit, assignIn, pick, cloneDeep, values, maxBy } from "lodash";
 import { notify } from "reapop";
 import history from "../../../../history";
 
-export const fetchCommentsByVersionId = docId => {
+export const fetchCommentsByDocId = docId => {
   return async (dispatch, getState) => {
     try {
       dispatch({
@@ -63,13 +63,13 @@ export const addNewCommentSentFromServer = comment => {
     try {
       const projectSymbol = getState().scenes.document.data.documentMetadata
         .project.symbol;
-      const documentId = getState().scenes.document.data.versionMetadata.id;
+      const documentId = getState().scenes.document.data.documentMetadata.id;
       dispatch({
         type: types.COMMENT_ADDED,
         comment
       });
       history.push(
-        `/project/${projectSymbol}/document/${
+        `/s/${getState().scenes.document.data.documentMetadata.slug}/${
           comment.doc_id
         }/comment/${comment.id}`
       );

@@ -12,7 +12,7 @@ import { loadModal } from "../../../data/reducer";
 import policies from "../../../policies.js";
 import ReactTooltip from "react-tooltip";
 
-class VersionToolbar extends Component {
+class DocumentToolbar extends Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -111,4 +111,4 @@ const mapState = (state, ownProps) => ({
   width: state.data.environment.width
 });
 
-export default connect(mapState, { notify, loadModal })(VersionToolbar);
+export default connect(mapState, { notify, loadModal })(DocumentToolbar);

@@ -22,22 +22,6 @@ import {
   updateSidebarCommentContext
 } from "../../reducer";
 
-// document/qnas
-import {
-  fetchQuestionsByVersionId,
-  editQuestion,
-  editAnswer,
-  revertToPrevQuestion,
-  revertToPrevAnswer
-} from "../../data/versionQnas/actions";
-import { getAllDocumentQuestions } from "../../data/versionQnas/reducer";
-
-// document/metadata
-import {
-  fetchMetadataByVersionId,
-  editScorecard
-} from "../../data/versionMetadata/actions";
-import { getVersionMetadata } from "../../data/versionMetadata/reducer";
 import {
   upvoteDocument,
   downvoteDocument
@@ -46,9 +30,9 @@ import { getDocumentMetadata } from "../../data/documentMetadata/reducer";
 
 // document/comments
 import {
-  fetchCommentsByVersionId,
+  fetchCommentsByDocId,
   addNewCommentSentFromServer,
-  addNewComment
+  addNewComment,
 } from "../../data/comments/actions";
 import { getAllComments } from "../../data/comments/reducer";
 
@@ -61,7 +45,7 @@ import {
 import { updateTagFilter } from "../../data/tags/actions";
 
 const LoadableVersion = Loadable({
-  loader: () => import("./Version"),
+  loader: () => import("./Document"),
   loading: () => (
     <SquareLoader
       key="LoadableVersion"
@@ -83,20 +67,20 @@ class MyComponent extends React.Component {
     this.loadData();
   }
 
-  //componentDidUpdate(prevProps) {
-  //  const versionId = this.props.documentMetadata.versions[0].id;
-  //  const prevVersionId = prevProps.documentMetadata.versions[0].id;
-  //  if (
-  //    prevVersionId !== versionId
-  //  ) {
-  //    this.loadData({
-  //      versionId: versionId
-  //    });
-  //  }
-  //}
+  componentDidUpdate(prevProps) {
+    const docId = this.props.documentMetadata.id;
+    const previousDocId = prevProps.documentMetadata.id;
+    if (
+      previousDocId !== docId
+    ) {
+      this.loadData({
+        docId: docId
+      });
+    }
+  }
 
   loadData() {
-    this.props.fetchCommentsByVersionId(this.props.documentMetadata.id);
+    this.props.fetchCommentsByDocId(this.props.documentMetadata.id);
   }
 
   render() {
@@ -160,18 +144,11 @@ const actions = {
   updateOnboardStatus,
   loadModal,
   // metadata
-  fetchMetadataByVersionId,
   upvoteDocument,
   downvoteDocument,
-  editScorecard,
-  // qnas
-  fetchQuestionsByVersionId,
-  editQuestion,
-  editAnswer,
-  revertToPrevQuestion,
-  revertToPrevAnswer,
+  //editScorecard,
   // comments
-  fetchCommentsByVersionId,
+  fetchCommentsByDocId,
   addNewComment,
   addNewCommentSentFromServer,
   // UI context

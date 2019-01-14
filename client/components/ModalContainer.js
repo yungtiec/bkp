@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 /** Modal Components */
 import CollaborationProposalModal from "../scenes/collaborations/components/CollaborationProposalModal";
-import { EditCommentModal } from "../scenes/document/scenes/Version/components";
+import { EditCommentModal } from "../scenes/document/scenes/Document/components";
 import { ProjectEditorModal } from "../scenes/project/components";
 import FeedbackModal from "./FeedbackModal";
 import DependentSelectWidgetCreateModal from "../scenes/wizard/components/widgets/DependentSelectWidgetCreateModal";

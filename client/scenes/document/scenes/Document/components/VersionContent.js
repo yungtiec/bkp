@@ -13,14 +13,6 @@ const VersionContent = ({
   isLoggedIn,
   isClosedForComment,
   documentMetadata,
-  versionQnasById,
-  versionQnaIds,
-  editScorecard,
-  editQuestion,
-  editAnswer,
-  revertToPrevQuestion,
-  revertToPrevAnswer,
-  versionMetadata,
   commentOnClick,
   parent,
   tags,
@@ -28,7 +20,7 @@ const VersionContent = ({
   addNewCommentSentFromServer
 }) => (
   <div className="project-document" id="project-document">
-    <CkEditor documentMetadata={documentMetadata} updateContentHTMLBySlug={updateContentHTMLBySlug}/>
+    <CkEditor isLoggedIn={isLoggedIn} isClosedForComment={isClosedForComment} documentMetadata={documentMetadata} updateContentHTMLBySlug={updateContentHTMLBySlug}/>
   </div>
 );
 
