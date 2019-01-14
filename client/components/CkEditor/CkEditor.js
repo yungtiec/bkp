@@ -147,10 +147,11 @@ class CkEditor extends Component {
             documentMetadata,
             updateContentHTMLBySlug
           } = this.props;
+
     await updateContentHTMLBySlug(documentMetadata.slug, this.state.content);
     this.setState({
       renderHtml : !this.state.renderHtml
-    })
+    });
   }
 
   render() {

@@ -13,7 +13,6 @@ module.exports = router;
 
 const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
   // if document has only one version, make sure the version is submitted
-  console.log('req.params', req.params);
   try {
     let document;
     if (req.params.version_slug) {
@@ -22,7 +21,6 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
     if (req.params.doc_id) {
       document = await Document.findOne({where: {id : req.params.doc_id}});
     }
-    console.log({document});
     const isNotCreator =
       document && req.user && req.user.id !== document.creator_id;
     const isNotCollaborator =
@@ -30,8 +28,6 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
       req.user &&
       document.collaborators &&
       !document.collaborators.filter(c => req.user.id !== c.id).length;
-
-    console.log({isNotCollaborator});
 
     if (
       !document ||

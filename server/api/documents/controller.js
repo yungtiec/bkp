@@ -23,7 +23,6 @@ const crypto = require("crypto");
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
-  console.log(req.params);
   try {
     const comments = await Comment.scope({
       method: [
@@ -197,9 +196,7 @@ const addHistory = versionQuestionOrAnswer => {
 
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
   try {
-    console.log('slug', req.params);
     const documentToUpdate = await Document.findOne({ where: { slug : req.params.slug } });
-    console.log({documentToUpdate});
     documentToUpdate.content_html = req.body.contentHTML;
     const document = await documentToUpdate.save();
     res.send(document);
@@ -401,14 +398,10 @@ const createDocumentFromHtml = async (req, res, next) => {
     .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
     .format("x");
 
-  console.log('body', req.body);
-
   const slug = await createVersionSlug(
     req.body.title,
     req.body.contentHtml
   );
-
-  console.log(req.body);
 
   const document = await Document.create({
     title: req.body.title,

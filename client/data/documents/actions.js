@@ -12,7 +12,6 @@ export function fetchLastestDocumentsWithStats(hasLimit) {
         limit,
         hasLimit: hasLimit || false
       });
-      console.log(documents);
       dispatch({
         type: types.DOCUMENT_LISTING_FETCH_SUCCESS,
         documents: documents.rows,

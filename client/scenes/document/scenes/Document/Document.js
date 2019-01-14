@@ -374,12 +374,9 @@ class Document extends Component {
                   parent={this}
                 />
               )}
-              {/*{sidebarContext === "tableOfContents" && (*/}
-                {/*<SidebarTableOfContents*/}
-                  {/*versionQnasById={versionQnasById}*/}
-                  {/*versionQnaIds={versionQnaIds}*/}
-                {/*/>*/}
-              {/*)}*/}
+              {sidebarContext === "tableOfContents" && (
+                <SidebarTableOfContents />
+              )}
             </CustomScrollbar>
           </SidebarLayout>
         </div>

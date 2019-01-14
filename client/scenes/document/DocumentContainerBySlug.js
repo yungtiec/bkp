@@ -26,7 +26,6 @@ class DocumentContainer extends Component {
   }
 
   componentDidMount() {
-    console.log()
     Events.scrollEvent.register("begin", () => {});
     Events.scrollEvent.register("end", () => {});
     scrollSpy.update();
@@ -53,8 +52,6 @@ class DocumentContainer extends Component {
       downvoteDocument,
       match
     } = this.props;
-
-    console.log({documentMetadata})
 
     return (
       <div className="main-container">

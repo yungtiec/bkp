@@ -29,7 +29,6 @@ class QueryDocumentContainerBySlug extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     if (!this.props.documentMetadata.id)
       return null;
     return <DocumentContainerBySlug {...this.props} />;
