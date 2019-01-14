@@ -5,6 +5,8 @@ import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/actions.js";
 import CkEditor from '../../../../../../client/components/CkEditor/CkEditor.js';
+import ActiveToggle from './ActiveToggle';
+import CategorySelect from './CategorySelect';
 
 const VersionContent = ({
   updateContentHTMLBySlug,
@@ -20,7 +22,12 @@ const VersionContent = ({
   addNewCommentSentFromServer
 }) => (
   <div className="project-document" id="project-document">
-    <CkEditor isLoggedIn={isLoggedIn} isClosedForComment={isClosedForComment} documentMetadata={documentMetadata} updateContentHTMLBySlug={updateContentHTMLBySlug}/>
+    <CkEditor
+      isLoggedIn={isLoggedIn}
+      isClosedForComment={isClosedForComment}
+      documentMetadata={documentMetadata}
+      updateContentHTMLBySlug={updateContentHTMLBySlug}
+      addNewCommentSentFromServer={addNewCommentSentFromServer}/>
   </div>
 );
 

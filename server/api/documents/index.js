@@ -422,13 +422,11 @@ router.put(
 );
 
 /**
- * Getting version annotated comments by version id
+ * Getting doc annotated comments by doc id
  *
- * @name Get version
- * @route {GET} /api/versions/:versionId/annotator
- * @routeparam {Number} versionId
- * @queryparam {Number} versionId
- * @queryparam {Number} version_question_id
+ * @name Get doc
+ * @route {GET} /api/documents/:doc_id/annotator
+ * @routeparam {Number} doc_id
  * @todo camelcase version_question_id
  * @todo handle duplicated arguments in query and route param
  *
@@ -443,15 +441,13 @@ router.get(
  * Posting annotated comment
  *
  * @name Post annotated comment
- * @route {POST} /api/versions/:versionId/annotator
- * @routeparam {Number} versionId
+ * @route {POST} /api/documents/:doc_id/annotator
+ * @routeparam {Number} doc_id
  * @bodyparam {Object} range defines the location of annotation
  * @bodyparam {String} quote is the annotated text
  * @bodyparam {String} text is the user's comment,
  * @bodyparam {String} uri is the address of the page
- * @bodyparam {Number} version_id
- * @bodyparam {Number} version_question_id
- * @bodyparam {Array} tags is not used currently
+ * @bodyparam {Number} doc_id
  *
  */
 router.post(

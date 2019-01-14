@@ -129,17 +129,10 @@ class Document extends Component {
   focusOnContext() {
     const givenCommentContext =
       window.location.pathname.indexOf("/comment/") !== -1;
-    const givenQnaContext =
-      window.location.pathname.indexOf("/question/") !== -1;
-    var commentId, qnaId, pos, comments;
+    var commentId, pos, comments;
     if (givenCommentContext) {
       pos = window.location.pathname.indexOf("/comment/");
       commentId = window.location.pathname.substring(pos).split("/")[2];
-      if (givenQnaContext) {
-        pos = window.location.pathname.indexOf("/question/");
-        qnaId = window.location.pathname.substring(pos).split("/")[2];
-        scroller.scrollTo(`qna-${qnaId}`);
-      }
       if (
         this.props.commentsById &&
         this.props.commentsById[Number(commentId)]

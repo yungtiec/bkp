@@ -198,6 +198,8 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
   try {
     const documentToUpdate = await Document.findOne({ where: { slug : req.params.slug } });
     documentToUpdate.content_html = req.body.contentHTML;
+    documentToUpdate.reviewed = req.body.status;
+    documentToUpdate.category = req.body.category;
     const document = await documentToUpdate.save();
     res.send(document);
   } catch (err) {

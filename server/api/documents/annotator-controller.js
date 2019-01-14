@@ -34,7 +34,6 @@ const sendNotificationToSlack = annotation => {
 };
 
 const getAnnotatedComments = async (req, res, next) => {
-  console.log('here i am right now');
   try {
     var comments = await Comment.findAll({
       where: {
@@ -50,10 +49,6 @@ const getAnnotatedComments = async (req, res, next) => {
       ]
     }).map(annotation => {
       return annotation.toJSON();
-    });
-    console.log('getting da comments', {
-      rows: comments,
-      total: comments.length
     });
     res.send({
       rows: comments,

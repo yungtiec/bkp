@@ -37,10 +37,10 @@ export function fetchMetadataBySlug(slug, versionId) {
   };
 }
 
-export function updateContentHTMLBySlug(slug, contentHTML) {
+export function updateContentHTMLBySlug(slug, propertiesToUpdate) {
   return async (dispatch, getState) => {
     try {
-      var documentMetadata = await putContentHTMLBySlug(slug, contentHTML);
+      var documentMetadata = await putContentHTMLBySlug(slug, propertiesToUpdate);
       dispatch({
         type: types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS,
         documentMetadata

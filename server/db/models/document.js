@@ -197,6 +197,39 @@ module.exports = (db, DataTypes) => {
         },
         {
           model: models["project"]
+        },
+        {
+          model: models["comment"],
+          required: false,
+          attributes: ["id", "reviewed", "hierarchyLevel"],
+          where: {
+            reviewed: {
+              [Sequelize.Op.or]: [
+                { [Sequelize.Op.eq]: "pending" },
+                { [Sequelize.Op.eq]: "verified" }
+              ]
+            },
+            hierarchyLevel: 1
+          },
+          include: [
+            {
+              model: models["issue"],
+              required: false
+            },
+            {
+              model: models["user"],
+              as: "upvotesFrom",
+              attributes: ["id"],
+              required: false
+            },
+            { model: models["comment"], as: "descendents" }
+          ],
+          order: [
+            [
+              { model: models["comment"], as: "descendents" },
+              "hierarchyLevel"
+            ]
+          ]
         }
       ]
     });
@@ -326,33 +359,27 @@ module.exports = (db, DataTypes) => {
       offset
     });
     var count = documentQueryResult.count;
-    //var documents = documentQueryResult.rows.map(computeDocumentStats);
-    return { count, documents: documentQueryResult };
+    var documents = documentQueryResult.rows.map(computeDocumentStats);
+    console.log({documents});
+    return { count, documents: {rows: documents } };
   };
   return Document;
 };
 
 function computeDocumentStats(document) {
-  const issues = document.versions.reduce(
-    (issueArr, ps) => ps.comments.filter(c => !!c.issue).concat(issueArr),
-    []
-  );
-  const comments = document.versions.reduce(
-    (commentArr, ps) => ps.comments.concat(commentArr),
-    []
-  );
-  const replies = comments.reduce(
-    (replyArr, comment) =>
-      comment.descendents && comment.descendents.length
-        ? comment.descendents
-        .filter(d => d.reviewed !== "spam")
-        .concat(replyArr)
-        : replyArr,
-    []
-  );
+  const issues = document.comments.filter(c => !!c.issue);
+  const comments = document.comments;
+  //const replies = comments.reduce(
+  //  (replyArr, comment) =>
+  //    comment.descendents && comment.descendents.length
+  //      ? comment.descendents
+  //      .filter(d => d.reviewed !== "spam")
+  //      .concat(replyArr)
+  //      : replyArr,
+  //  []
+  //);
   return _.assignIn(
     {
-      num_versions: document.versions.length,
       num_outstanding_issues: issues.filter(c => !c.issue.open).length,
       num_resolved_issues: issues.filter(c => c.issue.open).length,
       num_issues: issues.length,
@@ -361,7 +388,6 @@ function computeDocumentStats(document) {
       num_total_comments: comments.filter(c => c.reviewed !== "spam").length,
       num_upvotes: document.upvotesFrom.length,
       num_downvotes: document.downvotesFrom.length,
-      latest_version: document.versions[0]
     },
     document.toJSON()
   );

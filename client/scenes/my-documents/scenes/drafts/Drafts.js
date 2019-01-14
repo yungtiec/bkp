@@ -20,8 +20,7 @@ class Drafts extends Component {
   render() {
     return (
       <MyDocumentsList
-        myDocumentIds={this.props.draftIds}
-        myDocumentsById={this.props.draftsById}
+        documents={this.props.draftDocuments}
         canLoadMore={this.props.canLoadMore}
       />
     );
@@ -29,10 +28,10 @@ class Drafts extends Component {
 }
 
 const mapState = state => {
-  const { draftsById, draftIds } = getOwnDrafts(state);
+  const { draftDocuments } = getOwnDrafts(state);
+  console.log({draftDocuments});
   return {
-    draftsById,
-    draftIds,
+    draftDocuments,
     canLoadMore: canLoadMore(state)
   };
 };

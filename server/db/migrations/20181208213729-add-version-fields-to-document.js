@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.TEXT
       }),
       queryInterface.addColumn("documents", "category", {
-        type: Sequelize.ENUM('GENERAL', 'SCORECARD', 'REGULATORY')
+        type: Sequelize.TEXT
       })
     ];
   },

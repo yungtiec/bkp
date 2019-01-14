@@ -1,9 +1,8 @@
 import * as types from "./actionTypes";
-import { assignIn } from "lodash";
+import {assignIn, uniqBy} from "lodash";
 
 const initialState = {
-  publishedDocumentsById: null,
-  publishedDocumentIds: null,
+  publishedDocuments: null,
   publishedDocumentOffset: 0,
   publishedDocumentLimit: 10,
   publishedDocumentCount: null
@@ -12,15 +11,14 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.PUBLISHED_DOCUMENTS_FETCHED_SUCESSS:
+      const publishedDocuments = uniqBy((state.publishedDocuments || []).concat(action.publishedDocuments), (doc) => {
+        if(doc) return doc.id
+        return doc;
+      });
+      console.log(publishedDocuments)
       return {
         ...state,
-        publishedDocumentsById: assignIn(
-          action.publishedDocumentsById,
-          state.publishedDocumentsById
-        ),
-        publishedDocumentIds: (state.publishedDocumentIds || []).concat(
-          action.publishedDocumentIds
-        ),
+        publishedDocuments,
         publishedDocumentOffset: action.publishedDocumentOffset,
         publishedDocumentCount: action.count
       };
@@ -31,12 +29,9 @@ export default function(state = initialState, action) {
 
 export function getOwnPublishedDocuments(state) {
   return {
-    publishedDocumentsById:
+    publishedDocuments:
       state.scenes.myDocuments.scenes.publishedDocuments.data
-        .publishedDocumentsById,
-    publishedDocumentIds:
-      state.scenes.myDocuments.scenes.publishedDocuments.data
-        .publishedDocumentIds
+        .publishedDocuments
   };
 }
 

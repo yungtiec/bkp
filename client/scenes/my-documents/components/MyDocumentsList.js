@@ -3,25 +3,25 @@ import { ListItem } from "../../../components";
 import { ScaleLoader } from "halogenium";
 import moment from "moment";
 
-const ListMyDocuments = ({ myDocumentIds, myDocumentsById }) =>
-  myDocumentIds.length ? (
+const ListMyDocuments = ({ documents }) =>
+  documents.length ? (
     <Fragment>
-      {myDocumentIds.map(id => (
+      {documents.map(doc => (
         <ListItem
-          cardKey={id}
-          cardHref=""
-          mainTitle={myDocumentsById[id].title}
+          cardKey={doc.id}
+          cardHref={`/s/${doc.slug}`}
+          mainTitle={doc.title}
           subtitle={""}
-          textUpperRight={moment(myDocumentsById[id].createdAt).fromNow()}
+          textUpperRight={moment(doc.createdAt).fromNow()}
           mainText={""}
         />
       ))}
     </Fragment>
   ) : null;
 
-export default ({ myDocumentsById, myDocumentIds, canLoadMore }) => (
+export default ({ documents, canLoadMore }) => (
   <div class="dashboard__recent-my-documents">
-    {!myDocumentIds || !myDocumentsById ? (
+    {!documents ? (
       <div className="component__loader-container d-flex">
         <ScaleLoader
           className="component__loader"
@@ -30,14 +30,13 @@ export default ({ myDocumentsById, myDocumentIds, canLoadMore }) => (
           margin="4px"
         />
       </div>
-    ) : myDocumentIds && !myDocumentIds.length ? (
+    ) : documents && !documents.length ? (
       <div className="component__loader-container d-flex">
         currently has no myDocument available
       </div>
     ) : (
       <ListMyDocuments
-        myDocumentIds={myDocumentIds}
-        myDocumentsById={myDocumentsById}
+        documents={documents}
       />
     )}
     {canLoadMore ? (

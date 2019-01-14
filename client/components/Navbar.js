@@ -95,6 +95,19 @@ class Navbar extends Component {
             ) : (
               ""
             )}
+            {width > 970 ? (
+              <PunditContainer policies={policies} user={user}>
+                <PunditTypeSet type="Disclosure">
+                  <VisibleIf action="Create" model={{}}>
+                    <Link to="/me/documents" className="navbar__nav-item">
+                      my documents
+                    </Link>
+                  </VisibleIf>
+                </PunditTypeSet>
+              </PunditContainer>
+            ) : (
+              ""
+            )}
           </div>
           <div className="box--right">
             {isLoggedIn ? (

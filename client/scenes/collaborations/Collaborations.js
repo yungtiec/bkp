@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { ListProject, ListDocumentGrid } from "../../components";
 import { Helmet } from "react-helmet";
 
-const documentTypes = {
+const documentCategory = {
   general: "general",
   scorecard: "scorecard",
   regulatory: "regulatory",
@@ -18,15 +18,16 @@ const filterDocuments = (documents) => {
   let regulatoryArr = [];
   let regulatoryForCommentArr = [];
   let proposedLawsRegulationsArr = [];
-
+  console.log(documents);
   documents.forEach((document) => {
-    if (document.document_type === documentTypes.scorecard) {
+    console.log({document});
+    if (document.category === documentCategory.scorecard) {
       scorecardsArr = [].concat(scorecardsArr).concat([document]);
-    } else if (document.document_type === documentTypes.regulatory) {
+    } else if (document.document_type === documentCategory.regulatory) {
       regulatoryArr = [].concat(regulatoryArr).concat([document]);
-    } else if (document.document_type === documentTypes.regulatoryForComment) {
+    } else if (document.document_type === documentCategory.regulatoryForComment) {
       regulatoryForCommentArr  = [].concat(regulatoryForCommentArr).concat([document]);
-    } else if (document.document_type === documentTypes.proposedLawsRegulations) {
+    } else if (document.document_type === documentCategory.proposedLawsRegulations) {
       proposedLawsRegulationsArr  = [].concat(proposedLawsRegulationsArr).concat([document]);
     } else {
       thoughtLeadershipArr = [].concat(thoughtLeadershipArr).concat([document]);

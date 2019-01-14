@@ -6,7 +6,9 @@ import ReactHtmlParser, {processNodes, convertNodeToElement, htmlparser2} from '
 import annotator from 'annotator';
 import {draw, undraw} from '../../annotator/highlight';
 import {isEmpty} from 'lodash';
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import ActiveToggle from '../../scenes/document/scenes/Document/components/ActiveToggle';
+import CategorySelect from '../../scenes/document/scenes/Document/components/CategorySelect';
 
 class CkEditor extends Component {
 
@@ -17,8 +19,10 @@ class CkEditor extends Component {
     this.contentHtml   = this.props.documentMetadata.content_html;
     this.state         = {
       content : this.props.documentMetadata.content_html || '',
+      status : this.props.documentMetadata.reviewed,
+      category : this.props.documentMetadata.document_type,
       renderHtml : this.contentHtml && this.contentHtml.length !== 0,
-      temporaryHighlight : {}
+      temporaryHighlight : {},
     };
     autoBind(this);
   }
@@ -26,22 +30,18 @@ class CkEditor extends Component {
   async componentDidMount() {
     const self = this;
     if (!this.annotation) {
-      console.log('hitting here', this.props);
       const {qna, match, isLoggedIn, tagFilter, versionId} = this.props;
       var app                                              = new annotator.App();
       var pageUri                                          = function () {
         return {
           beforeAnnotationCreated : function (ann) {
-            console.log('before annotation created', self);
             var temporaryHighlight = draw(self['content'], ann);
-            console.log(temporaryHighlight);
             self.setState({
               temporaryHighlight
             });
             ann.uri = `${window.location.origin}`;
           },
           annotationCreated : function (ann) {
-            console.log('created');
             undraw(self.state.temporaryHighlight);
             self.props.addNewCommentSentFromServer(ann);
           }
@@ -73,7 +73,7 @@ class CkEditor extends Component {
       await app.start().then(function () {
         app.annotations.load({
           uri : `${window.location.origin}${match.url}`,
-          doc_id: doc_id
+          doc_id : doc_id
         });
       });
       this.annotator = app;
@@ -119,12 +119,11 @@ class CkEditor extends Component {
       $(".annotator-adder").css("cursor", "pointer");
       $(".annotator-adder").css("height", "inherit");
     }
-    var self                                             = this;
-    const { match } = this.props;
-    console.log('updating...')
+    var self      = this;
+    const {match} = this.props;
     await self.annotator.annotations.load({
       uri : `${window.location.origin}${match.url}`,
-      doc_id: this.props.documentMetadata.id
+      doc_id : this.props.documentMetadata.id
     });
   }
 
@@ -134,9 +133,23 @@ class CkEditor extends Component {
     })
   }
 
+  handleStatusChange(status) {
+    console.log({status});
+    this.setState({
+      status: status.value
+    })
+  }
+
+  handleCategoryChange(category) {
+    console.log({category});
+    this.setState({
+      category: category.value
+    })
+  }
+
+
   onChange(evt) {
     var newContent = evt.editor.getData();
-    console.log({newContent});
     this.setState({
       content : newContent
     })
@@ -144,29 +157,45 @@ class CkEditor extends Component {
 
   async onButtonPress() {
     const {
-            documentMetadata,
-            updateContentHTMLBySlug
-          } = this.props;
+      documentMetadata,
+      updateContentHTMLBySlug
+    } = this.props;
+    const { content, status, category } = this.state;
 
-    await updateContentHTMLBySlug(documentMetadata.slug, this.state.content);
+    const propertiesToUpdate = {
+      content,
+      status,
+      category
+    };
+
+    console.log(propertiesToUpdate);
+
+    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
     this.setState({
       renderHtml : !this.state.renderHtml
     });
   }
 
   render() {
-    console.log('heeey', window.location);
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const {renderHtml, content} = this.state;
+    const { documentMetadata } = this.props;
     return (
       <div>
-        {!renderHtml ? <CKEditor
-          activeClass="p10"
-          content={content}
-          scriptUrl={scriptUrl}
-          events={{
-            "change" : this.onChange
-          }}/> : <div
+        {!renderHtml ? (
+          <div>
+            <div className="mb-4">
+              <ActiveToggle handleStatusChange={this.handleStatusChange} status={this.state.status} />
+              <CategorySelect handleCategoryChange={this.handleCategoryChange} category={this.state.category} />
+            </div>
+            <CKEditor
+              activeClass="p10"
+              content={content}
+              scriptUrl={scriptUrl}
+              events={{
+                "change" : this.onChange
+              }}/>
+          </div>) : <div
           className="mb-4"
           ref={el => (this[`content`] = el)}
         >

@@ -1,6 +1,3 @@
-export { default as Qna } from "./Qna/QnaContainer";
-export { default as Question } from "./Qna/Question";
-export { default as Answers } from "./Qna/Answers";
 export { default as VersionContent } from "./VersionContent";
 export { default as VersionProgress } from "./VersionProgress";
 export { default as VersionIssues } from "./VersionIssues";

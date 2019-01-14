@@ -13,13 +13,10 @@ export const fetchOwnPublishedDocuments = () => async (dispatch, getState) => {
       offset: publishedDocumentOffset,
       limit: publishedDocumentLimit
     });
-    const publishedDocumentsById = keyBy(rows, "id");
-    const publishedDocumentIds = rows.map(i => i.id);
     dispatch({
       type: types.PUBLISHED_DOCUMENTS_FETCHED_SUCESSS,
       publishedDocumentOffset: publishedDocumentOffset + publishedDocumentLimit,
-      publishedDocumentsById,
-      publishedDocumentIds,
+      publishedDocuments: rows,
       count
     });
   } catch (err) {

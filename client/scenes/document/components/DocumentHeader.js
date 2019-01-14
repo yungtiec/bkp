@@ -18,7 +18,6 @@ export default class DocumentHeader extends Component {
       documentMetadata,
     } = this.props;
     const { creator, createdAt } = documentMetadata;
-    console.log({documentMetadata});
     const collaborators = documentMetadata.collaborators
       .map((c, i) => {
         if (

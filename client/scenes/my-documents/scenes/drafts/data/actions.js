@@ -13,13 +13,10 @@ export const fetchOwnDrafts = () => async (dispatch, getState) => {
       offset: draftOffset,
       limit: draftLimit
     });
-    const draftsById = keyBy(rows, "id");
-    const draftIds = rows.map(i => i.id);
     dispatch({
       type: types.DRAFTS_FETCHED_SUCESSS,
       draftOffset: draftOffset + draftLimit,
-      draftsById,
-      draftIds,
+      draftDocuments: rows,
       count
     });
   } catch (err) {

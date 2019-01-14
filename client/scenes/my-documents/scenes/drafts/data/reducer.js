@@ -1,9 +1,8 @@
 import * as types from "./actionTypes";
-import { assignIn } from "lodash";
+import {assignIn, uniqBy} from "lodash";
 
 const initialState = {
-  draftsById: null,
-  draftIds: null,
+  draftDocuments: null,
   draftOffset: 0,
   draftLimit: 10,
   draftCount: null
@@ -12,10 +11,13 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.DRAFTS_FETCHED_SUCESSS:
+      const draftDocuments = uniqBy((state.draftDocuments || []).concat(action.draftDocuments), (doc) => {
+        if(doc) return doc.id
+        return doc;
+      });
       return {
         ...state,
-        draftsById: assignIn(action.draftsById, state.draftsById),
-        draftIds: (state.draftIds || []).concat(action.draftIds),
+        draftDocuments,
         draftOffset: action.draftOffset,
         draftCount: action.count
       };
@@ -26,8 +28,7 @@ export default function(state = initialState, action) {
 
 export function getOwnDrafts(state) {
   return {
-    draftsById: state.scenes.myDocuments.scenes.drafts.data.draftsById,
-    draftIds: state.scenes.myDocuments.scenes.drafts.data.draftIds
+    draftDocuments: state.scenes.myDocuments.scenes.drafts.data.draftDocuments
   };
 }
 

@@ -18,10 +18,10 @@ class PublishedDocuments extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <MyDocumentsList
-        myDocumentIds={this.props.publishedDocumentIds}
-        myDocumentsById={this.props.publishedDocumentsById}
+        documents={this.props.publishedDocuments}
         canLoadMore={this.props.canLoadMore}
       />
     );
@@ -30,12 +30,10 @@ class PublishedDocuments extends Component {
 
 const mapState = state => {
   const {
-    publishedDocumentsById,
-    publishedDocumentIds
+    publishedDocuments
   } = getOwnPublishedDocuments(state);
   return {
-    publishedDocumentsById,
-    publishedDocumentIds,
+    publishedDocuments,
     canLoadMore: canLoadMore(state)
   };
 };
