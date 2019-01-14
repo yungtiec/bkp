@@ -19,6 +19,7 @@ const Profile = ({ me, profile, match, location }) => {
         profileContext={profileContext}
         isMyProfile={isMyProfile}
         avatarUrl={profile.avatar_url}
+        name={profile.name}
       />
       <Switch>
         {isMyProfile ? (

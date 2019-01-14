@@ -47,6 +47,7 @@ $profile-avatar-z-index: 4;
   height: 200px;
   position: relative;
   width: 200px;
+  box-sizing: content-box;
 }
 
 .profile__setting-btn {
