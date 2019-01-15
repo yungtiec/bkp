@@ -134,14 +134,12 @@ class CkEditor extends Component {
   }
 
   handleStatusChange(status) {
-    console.log({status});
     this.setState({
       status: status.value
     })
   }
 
   handleCategoryChange(category) {
-    console.log({category});
     this.setState({
       category: category.value
     })
@@ -183,7 +181,7 @@ class CkEditor extends Component {
     return (
       <div>
         {!renderHtml ? (
-          <div>
+          <div className="mb-4">
             <div className="mb-4">
               <ActiveToggle handleStatusChange={this.handleStatusChange} status={this.state.status} />
               <CategorySelect handleCategoryChange={this.handleCategoryChange} category={this.state.category} />
@@ -202,11 +200,11 @@ class CkEditor extends Component {
           <div className="html-content-body">{ReactHtmlParser(content)}</div>
         </div>
         }
-        {!renderHtml && this.props.isLoggedIn ? <button onClick={this.onButtonPress}>save</button> :
+        {!renderHtml && this.props.isLoggedIn ? <button className="edit-button" onClick={this.onButtonPress}>save</button> :
           null
         }
 
-        {renderHtml && this.props.isLoggedIn ? <button onClick={this.onButtonPress}>edit</button> :
+        {renderHtml && this.props.isLoggedIn ? <button className="edit-button" onClick={this.onButtonPress}>edit</button> :
           null
         }
       </div>

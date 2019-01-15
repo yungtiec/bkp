@@ -72,8 +72,6 @@ class SidebarHeader extends Component {
       isClosedForComment
     } = this.props;
 
-    console.log('props', this.props);
-
     return (
       <div>
         {selectedComments && !selectedComments.length ? (
