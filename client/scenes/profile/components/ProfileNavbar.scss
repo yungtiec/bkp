@@ -1,0 +1,18 @@
+.profile-navbar {
+  text-align: center;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.profile-navbar__item {
+  display: inline-block;
+  padding: 20px 10px;
+  color: #838383;
+}
+
+.profile-navbar__item:hover {
+  color: black;
+}
+
+.profile-navbar__item.active {
+  box-shadow: #2a48d4 0px -4px 0px 0px inset;
+}

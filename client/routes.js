@@ -16,8 +16,7 @@ import {
   Document,
   DocumentBySlug,
   Wizard,
-  MyDocuments,
-  Feed
+  MyDocuments
 } from "./scenes";
 import {
   Login,
@@ -63,11 +62,6 @@ class Routes extends Component {
           )}
           <RouteWithLayout
             layout={LayoutWithNav}
-            path="/feed"
-            component={Feed}
-          />
-          <RouteWithLayout
-            layout={LayoutWithNav}
             path="/projects"
             component={Projects}
           />
@@ -88,7 +82,7 @@ class Routes extends Component {
           />
           <RouteWithLayout
             layout={LayoutWithNav}
-            path="/me/documents"
+            path="/documents/me"
             component={MyDocuments}
           />
           <RouteWithLayout
@@ -122,7 +116,7 @@ class Routes extends Component {
           {isLoggedIn && (
             <RouteWithLayout
               layout={LayoutWithNav}
-              path="/profile/:userHandle"
+              path="/user/:userId"
               component={Profile}
             />
           )}

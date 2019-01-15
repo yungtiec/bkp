@@ -11,24 +11,6 @@ const {
   Version
 } = require("../../db/models");
 const { assignIn } = require("lodash");
-const documentQuery = user =>
-  `( SELECT 'document' as type, "documents"."id" as document_id, null as comment_id ,"documents"."createdAt" as "createdAt", "documents"."title", "documents"."description", users.user_handle as "documentPostedBy", null as comment, null as quote, ( SELECT count(document_upvotes.user_id) FROM document_upvotes WHERE document_upvotes.document_id = documents.id ) as num_upvotes, ( SELECT count(document_downvotes.user_id) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) as num_downvotes, ( SELECT count(comments) FROM comments WHERE comments.version_id = ( SELECT versions.id FROM versions WHERE versions.document_id = documents.id ) ) as num_comments FROM documents INNER JOIN users on documents.creator_id = users.id WHERE documents.creator_id = ${
-    user.id
-  } )`;
-const commentQuery = user =>
-  `( SELECT 'comment' as type, null as document_id, comments.id as comment_id,"comments"."createdAt" as "createdAt", documents.title as title, null as description, users.user_handle as "documentPostedBy", "comment", "quote", ( SELECT count(comment_upvotes.user_id) FROM comment_upvotes WHERE comment_upvotes.comment_id = comments.id ) as num_upvotes, null as num_downvotes, ( SELECT count(commentsancestors) FROM commentsancestors WHERE commentsancestors."ancestorId" = comments.id ) as num_comments FROM comments INNER JOIN versions on versions.id = comments.version_id INNER JOIN documents on documents.id = versions.document_id INNER JOIN users on documents.creator_id = users.id WHERE comments.owner_id = ${
-    user.id
-  } )`;
-const documentVoteQuery = user =>
-  `( SELECT 'upvoteDocument' as type, "documents"."id" as document_id, 0 as comment_id,"document_upvotes"."createdAt" as "createdAt", "documents"."title", "documents"."description", users.user_handle as "documentPostedBy", null as comment, null as quote, ( SELECT count(document_upvotes.user_id) FROM document_upvotes WHERE document_upvotes.document_id = documents.id ) as num_upvotes, ( SELECT count(document_downvotes.user_id) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) as num_downvotes, ( SELECT count(comments) FROM comments WHERE comments.version_id = ( SELECT versions.id FROM versions WHERE versions.document_id = documents.id ) ) as num_comments FROM documents INNER JOIN users on documents.creator_id = users.id INNER JOIN document_upvotes ON documents.id = document_upvotes.document_id AND document_upvotes.user_id = ${
-    user.id
-  } ) union all ( SELECT 'downvoteDocument' as type, "documents"."id" as document_id, 0 as comment_id,"document_downvotes"."createdAt" as "createdAt", "documents"."title", "documents"."description", users.user_handle as "documentPostedBy", null as comment, null as quote, ( SELECT count(document_upvotes.user_id) FROM document_upvotes WHERE document_upvotes.document_id = documents.id ) as num_upvotes, ( SELECT count(document_downvotes.user_id) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) as num_downvotes, ( SELECT count(comments) FROM comments WHERE comments.version_id = ( SELECT versions.id FROM versions WHERE versions.document_id = documents.id ) ) as num_comments FROM documents INNER JOIN users on documents.creator_id = users.id INNER JOIN document_downvotes ON documents.id = document_downvotes.document_id AND document_downvotes.user_id = ${
-    user.id
-  } )`;
-const commentVoteQuery = user =>
-  `( SELECT 'upvoteComment' as type, "documents"."id" as document_id, "comments"."id" as comment_id, "comment_upvotes"."createdAt" as "createdAt", "documents"."title", "documents"."description", users.user_handle as "documentPostedBy", comment, quote, ( SELECT count(document_upvotes.user_id) FROM document_upvotes WHERE document_upvotes.document_id = documents.id ) as num_upvotes, ( SELECT count(document_downvotes.user_id) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) as num_downvotes, ( SELECT count(commentsancestors) FROM commentsancestors WHERE commentsancestors."ancestorId" = comments.id ) as num_comments FROM comments INNER JOIN versions on versions.id = comments.version_id INNER JOIN documents on documents.id = versions.document_id INNER JOIN users on documents.creator_id = users.id  INNER JOIN comment_upvotes ON comments.id = comment_upvotes.comment_id AND comment_upvotes.user_id = ${
-    user.id
-  } )`;
 
 const getUsers = async (req, res, next) => {
   try {
@@ -41,33 +23,10 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const requestedUser = await User.findById(req.user.id);
     const profile = await User.getContributions({
-      userHandle: req.params.userHandle,
-      includePrivateInfo:
-        req.params.userHandle &&
-        req.params.userHandle === requestedUser.user_handle
+      userId: Number(req.params.userId)
     });
     res.send(profile);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUserContributions = async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { user_handle: req.params.userHandle }
-    });
-    if (!user) return res.sendStatus(404);
-    const contributions = await db.sequelize.query(`${documentQuery(user)}
-      union all ${commentQuery(user)}
-      union all ${documentVoteQuery(user)}
-      union all ${commentVoteQuery(user)}
-      ORDER BY "createdAt" DESC OFFSET ${req.query.offset} LIMIT ${
-      req.query.limit
-    };`);
-    res.send(contributions);
   } catch (err) {
     next(err);
   }
@@ -121,23 +80,6 @@ const getUserProjects = async (req, res, next) => {
 };
 
 const getUserDocuments = async (req, res, next) => {
-  try {
-    var user = await User.findOne({
-      where: { user_handle: req.params.userHandle }
-    });
-    if (!user) return res.sendStatus(404);
-    var ownDocuments = await db.sequelize.query(
-      `${documentQuery(user)} ORDER BY "createdAt" DESC OFFSET ${
-        req.query.offset
-      } LIMIT ${req.query.limit};`
-    );
-    res.send(ownDocuments);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUserAuthorizedDocuments = async (req, res, next) => {
   try {
     var documents;
     var ownDocuments, collaboratorDocuments;
@@ -230,25 +172,8 @@ const getUserAuthorizedDocuments = async (req, res, next) => {
 };
 
 const getUserComments = async (req, res, next) => {
-  try {
-    var user = await User.findOne({
-      where: { user_handle: req.params.userHandle }
-    });
-    if (!user) return res.sendStatus(404);
-    var comments = await db.sequelize.query(
-      `${commentQuery(user)} ORDER BY "createdAt" DESC OFFSET ${
-        req.query.offset
-      } LIMIT ${req.query.limit};`
-    );
-    res.send(comments);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUserCommentsWithFilter = async (req, res, next) => {
   var queryObj = {
-    userHandle: req.params.userHandle,
+    userId: Number(req.params.userId),
     limit: Number(req.query.limit),
     offset: Number(req.query.limit) * Number(req.query.offset),
     reviewStatus: {
@@ -281,37 +206,10 @@ const getUserCommentsWithFilter = async (req, res, next) => {
     };
   }
   try {
-    const comments = await User.getCommentsAndCount(queryObj);
-    res.send(comments);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUserVotes = async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { user_handle: req.params.userHandle }
-    });
-    if (!user) return res.sendStatus(404);
-    const votes = await db.sequelize.query(`${documentVoteQuery(
-      user
-    )} union all ${commentVoteQuery(user)}
-      ORDER BY "createdAt" DESC OFFSET ${req.query.offset} LIMIT ${
-      req.query.limit
-    };`);
-    res.send(votes);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const checkUserHandle = async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { user_handle: req.query.q }
-    });
-    res.send(user);
+    const { pagedComments, commentCount } = await User.getCommentsAndCount(
+      queryObj
+    );
+    res.send({ comments: pagedComments, commentCount: commentCount });
   } catch (err) {
     next(err);
   }
@@ -320,12 +218,7 @@ const checkUserHandle = async (req, res, next) => {
 module.exports = {
   getUsers,
   getUser,
-  getUserContributions,
   getUserProjects,
-  getUserAuthorizedDocuments,
   getUserDocuments,
-  getUserComments,
-  getUserCommentsWithFilter,
-  getUserVotes,
-  checkUserHandle
+  getUserComments
 };

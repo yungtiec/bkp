@@ -25,9 +25,9 @@ const AdminUserList = ({
       accessor: "num_comments"
     },
     {
-      id: "votes",
-      Header: "votes",
-      accessor: "num_votes"
+      id: "upvotes",
+      Header: "upvotes",
+      accessor: "num_upvotes"
     },
     { Header: "issues open", accessor: "num_issues" },
     { Header: "id", accessor: "id", show: false },
