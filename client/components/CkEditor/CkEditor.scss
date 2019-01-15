@@ -1,4 +1,4 @@
-h3 {
+.html-content-body h3 {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -7,7 +7,7 @@ h3 {
   border-bottom: none !important;
 }
 
-h2 {
+.html-content-body h2 {
   text-decoration: underline;
   font-size: 22px;
   font-weight: 400;
@@ -16,25 +16,25 @@ h2 {
   line-height: 1.58;
 }
 
-p {
-  font-size: 18px;
+.html-content-body p {
+  // font-size: 18px;
   line-height: 1.58;
 }
 
-ul {
+.html-content-body ul {
   list-style-type: inherit;
   padding-left: 40px;
 }
 
-li {
+.html-content-body li {
   list-style-type: inherit;
-  font-size: 18px;
+  // font-size: 18px;
   line-height: 1.58;
   position: relative;
   padding: 0.5rem;
 }
 
-li:last-child {
+.html-content-body li:last-child {
   border-bottom: 0;
 }
 
@@ -56,8 +56,8 @@ li:last-child {
   -ms-user-select: none;
   user-select: none;
   border: 1px solid;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
