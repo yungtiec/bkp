@@ -18,16 +18,14 @@ const filterDocuments = (documents) => {
   let regulatoryArr = [];
   let regulatoryForCommentArr = [];
   let proposedLawsRegulationsArr = [];
-  console.log(documents);
   documents.forEach((document) => {
-    console.log({document});
     if (document.category === documentCategory.scorecard) {
       scorecardsArr = [].concat(scorecardsArr).concat([document]);
-    } else if (document.document_type === documentCategory.regulatory) {
+    } else if (document.category === documentCategory.regulatory) {
       regulatoryArr = [].concat(regulatoryArr).concat([document]);
-    } else if (document.document_type === documentCategory.regulatoryForComment) {
+    } else if (document.category === documentCategory.regulatoryForComment) {
       regulatoryForCommentArr  = [].concat(regulatoryForCommentArr).concat([document]);
-    } else if (document.document_type === documentCategory.proposedLawsRegulations) {
+    } else if (document.category === documentCategory.proposedLawsRegulations) {
       proposedLawsRegulationsArr  = [].concat(proposedLawsRegulationsArr).concat([document]);
     } else {
       thoughtLeadershipArr = [].concat(thoughtLeadershipArr).concat([document]);

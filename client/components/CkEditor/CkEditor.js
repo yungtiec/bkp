@@ -20,7 +20,7 @@ class CkEditor extends Component {
     this.state         = {
       content : this.props.documentMetadata.content_html || '',
       status : this.props.documentMetadata.reviewed,
-      category : this.props.documentMetadata.document_type,
+      category : this.props.documentMetadata.category,
       renderHtml : this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight : {},
     };
