@@ -12,9 +12,7 @@ import {
 } from "react-scroll";
 import { connect } from "react-redux";
 import {
-  VersionContent,
-  VersionProgress,
-  VersionIssues,
+  DocumentContent,
   SidebarComments,
   SidebarTableOfContents
 } from "./components";
@@ -289,7 +287,7 @@ class Document extends Component {
               }
             }}
           />
-          <VersionContent
+          <DocumentContent
             parent={this}
             location={location}
             isLoggedIn={isLoggedIn}

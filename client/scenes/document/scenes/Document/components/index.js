@@ -1,4 +1,4 @@
-export { default as VersionContent } from "./VersionContent";
+export { default as DocumentContent } from "./DocumentContent";
 export { default as VersionProgress } from "./VersionProgress";
 export { default as VersionIssues } from "./VersionIssues";
 export { default as SidebarComments } from "./SidebarComments";

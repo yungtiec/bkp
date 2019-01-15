@@ -8,7 +8,7 @@ import CkEditor from '../../../../../../client/components/CkEditor/CkEditor.js';
 import ActiveToggle from './ActiveToggle';
 import CategorySelect from './CategorySelect';
 
-const VersionContent = ({
+const DocumentContent = ({
   updateContentHTMLBySlug,
   location,
   user,
@@ -40,4 +40,4 @@ const actions = {
   updateContentHTMLBySlug
 };
 
-export default connect(mapState, actions)(VersionContent);
+export default connect(mapState, actions)(DocumentContent);
