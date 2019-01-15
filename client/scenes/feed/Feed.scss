@@ -105,6 +105,8 @@
   font-size: 14px;
   font-weight: 300;
   margin-bottom: 40px;
+  max-height: 200px;
+  overflow: scroll;
 }
 
 .feed__feature-action-read-more {
