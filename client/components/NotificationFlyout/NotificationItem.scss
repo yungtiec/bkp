@@ -1,0 +1,31 @@
+.notification-item {
+  padding: 15px 10px;
+  margin: 0px auto;
+  text-decoration: none !important;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  cursor: pointer;
+}
+
+.notification-item--unread {
+  background-color: #ffffff;
+}
+
+.notification-item:hover,
+.notification-item--seen {
+  background-color: #f9f9f9;
+}
+
+.notification-item__message {
+  line-height: 28px;
+}
+
+.notification-item__timestamp {
+  font-size: 13px;
+  line-height: 18px;
+  color: #999;
+}
+
+.notification-item__body {
+  margin-left: 10px;
+}

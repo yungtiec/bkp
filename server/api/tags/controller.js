@@ -24,7 +24,32 @@ const getAutocompleteTags = async (req, res, next) => {
   }
 };
 
+const searchTags = async (req, res, next) => {
+  try {
+    var formattedQuery = !req.query.q
+      ? null
+      : req.query.q
+          .trim()
+          .split(" ")
+          .map(function(phrase) {
+            return "%" + phrase + "%";
+          })
+          .join("");
+    var queryObj = {
+      where: {
+        name: { $iLike: formattedQuery }
+      }
+    };
+    if (req.query.type) queryObj.where.type = req.query.type;
+    var tags = await Tag.findAll(queryObj);
+    res.send(tags);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getTags,
-  getAutocompleteTags
+  getAutocompleteTags,
+  searchTags
 };
