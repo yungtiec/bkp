@@ -22,13 +22,3 @@ router.get("/", tagController.getTags);
  *
  */
 router.get("/autocomplete", tagController.getAutocompleteTags);
-
-/**
- * Searching tags
- *
- * @name Search tags
- * @route {GET} /api/tags/search
- * @queryParams {String} q
- *
- */
-router.get("/search", tagController.searchTags);

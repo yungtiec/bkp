@@ -1,0 +1,11 @@
+@import "../../../../breakpoint";
+
+.notification-items__container {
+  margin: 30px 80px;
+  @include breakpoint(xl) {
+    margin: 30px 100px;
+  }
+  @include breakpoint(xs) {
+    margin: 30px 5px;
+  }
+}

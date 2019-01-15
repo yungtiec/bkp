@@ -1,6 +1,6 @@
 const passport = require("passport");
 const router = require("express").Router();
-const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const { User, Role } = require("../db/models");
 module.exports = router;
 
@@ -24,41 +24,22 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   const googleConfig = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK,
-    passReqToCallback: true
+    callbackURL: process.env.GOOGLE_CALLBACK
   };
 
   const strategy = new GoogleStrategy(
     googleConfig,
-    async (req, token, refreshToken, profile, done) => {
+    async (token, refreshToken, profile, done) => {
       const googleId = profile.id;
       const name = profile.displayName;
       const email = profile.emails[0].value;
       const firstName = profile.name ? profile.name.givenName : "";
       const lastName = profile.name ? profile.name.familyName : "";
-      var user;
-      req.session.googleAccessToken = token;
 
-      try {
-        if (req.user) {
-          var updatedProfile = { googleId };
-          if (req.session.syncAvatar) {
-            updatedProfile.avatar_url = profile._json.image.url.replace(
-              "sz=50",
-              "sz=200"
-            );
-            req.session.syncAvatar = false;
-          }
-          user = await User.findById(req.user.id);
-          user = await user.update(updatedProfile);
-          done(null, user);
-        } else {
-          user = await User.find({
-            where: { googleId },
-            include: [{ model: Role }]
-          });
-          user
-            ? done(null, user)
+      User.find({ where: { googleId }, include: [{ model: Role }] })
+        .then(foundUser => {
+          return foundUser
+            ? done(null, foundUser)
             : User.findOrCreate({
                 where: { email },
                 defaults: {
@@ -70,16 +51,11 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
                 }
               }).spread(async (user, created) => {
                 if (!created) user = await user.update({ googleId });
-                user = await User.getContributions({
-                  googleId,
-                  includePrivateInfo: true
-                });
+                user = await User.getContributions({ googleId });
                 return done(null, user);
               });
-        }
-      } catch (err) {
-        done(err);
-      }
+        })
+        .catch(done);
     }
   );
 
@@ -89,10 +65,9 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     "/",
     (req, res, next) => {
       req.session.authRedirectPath = req.query.state;
-      req.session.syncAvatar = req.query.syncAvatar;
       next();
     },
-    passport.authenticate("google", { scope: ["email", "profile"] })
+    passport.authenticate("google", { scope: "email" })
   );
 
   router.get(
@@ -101,7 +76,8 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
       failureRedirect: "/login"
     }),
     (req, res) => {
-      res.redirect(req.session.authRedirectPath);
+      if (!req.user.name.trim()) res.redirect("/user/profile/about");
+      else res.redirect(req.session.authRedirectPath);
     }
   );
 }

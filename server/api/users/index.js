@@ -23,36 +23,20 @@ const ensureCorrectRole = (req, res, next) => {
 router.get("/", ensureAuthentication, userController.getUsers);
 
 /**
- * Getting user by handle
+ * Getting user by id
  *
  * @name Get user
- * @route {GET} /api/users/:userHandle
+ * @route {GET} /api/users/:userId
  * @authentication
- * @routeparam {Number} userHandle
+ * @routeparam {Number} userId
  * @todo pagination
  *
  */
 router.get(
-  "/:userHandle",
+  "/:userId",
   ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUser
-);
-
-/**
- * Check if an user handle exists already
- *
- * @name Check user handle
- * @route {GET} /api/users/:userHandle/check-handle
- * @authentication
- * @routeparam {Number} userHandle
- * @todo pagination
- *
- */
-router.get(
-  "/:userHandle/check-handle",
-  ensureAuthentication,
-  userController.checkUserHandle
 );
 
 /**
@@ -72,23 +56,7 @@ router.get(
 );
 
 /**
- * Getting a list of user's contributions
- *
- * @name Get user's contributions
- * @route {GET} /api/users/:userHandle/contributions
- * @authentication
- * @routeparam {Number} userHandle
- *
- */
-router.get(
-  "/:userHandle/contributions",
-  ensureAuthentication,
-  // ensureCorrectRole,
-  userController.getUserContributions
-);
-
-/**
- * Getting a list of user's documents
+ * Getting a list of documents user has access to
  *
  * @name Get user's document
  * @route {GET} /api/users/:userId/documents
@@ -97,26 +65,10 @@ router.get(
  *
  */
 router.get(
-  "/:userHandle/documents",
-  ensureAuthentication,
-  // ensureCorrectRole,
-  userController.getUserDocuments
-);
-
-/**
- * Getting a list of documents user has access to
- *
- * @name Get user's document
- * @route {GET} /api/users/:userId/authorized-documents
- * @authentication
- * @routeparam {Number} userId
- *
- */
-router.get(
-  "/:userId/authorized-documents",
+  "/:userId/documents",
   ensureAuthentication,
   ensureCorrectRole,
-  userController.getUserAuthorizedDocuments
+  userController.getUserDocuments
 );
 
 /**
@@ -130,28 +82,12 @@ router.get(
  * @queryparam {Number} offset
  * @queryparam {Array} reviewStatus is the review status (pending, spam, or verified) selected by user
  * @queryparam {Array} projects is the project filter selected by user
- * @queryparam {Array} issueStatus is the issues status (open or closed) selected by user
+* @queryparam {Array} issueStatus is the issues status (open or closed) selected by user
  *
  */
 router.get(
-  "/:userHandle/comments",
+  "/:userId/comments",
   ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUserComments
-);
-
-/**
- * Getting a list of user's votes
- *
- * @name Get user's upvotes and downvotes
- * @route {GET} /api/users/:userId/votes
- * @authentication
- * @routeparam {Number} userId
- *
- */
-router.get(
-  "/:userHandle/votes",
-  ensureAuthentication,
-  // ensureCorrectRole,
-  userController.getUserVotes
 );

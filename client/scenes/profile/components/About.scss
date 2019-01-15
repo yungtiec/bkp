@@ -1,0 +1,35 @@
+.profile-about__field {
+  display: flex;
+  margin: 15px 0;
+}
+
+.profile-about__field-label {
+  color: #838383;
+  width: 100px;
+  box-sizing: border-box;
+  padding: 0 15px 0 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.profile-about__field-value {
+  border-bottom: 1px solid #e8e8e8;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.profile-about__input-container {
+  padding-bottom: 20px;
+  display: flex;
+}
+
+.profile-about__field-value input {
+  border: 0;
+  line-height: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  width: 100%;
+  font-size: 13px;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import Formsy from "formsy-react";
-import { FormsyScoreInput } from "./index";
+import { ScoreInput } from "./index";
 import { addValidationRule } from "formsy-react";
 
 addValidationRule("isWithin", function(values, value, range) {
@@ -33,7 +33,7 @@ export default class ProjectScorecardInputs extends Component {
         onChange={this.handleScorecardChange}
         name="project-scorecard__form"
       >
-        <FormsyScoreInput
+        <ScoreInput
           label="Consumer Token Design"
           name="consumer_token_design"
           validations={validations}
@@ -45,7 +45,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Project Governance and Operation"
           name="project_governance_and_operation"
           validations={validations}
@@ -57,7 +57,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Responsible Token Distribution"
           name="responsible_token_distribution"
           validations={validations}
@@ -69,7 +69,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Use of Token Distribution Proceeds"
           name="use_of_token_distribution_proceeds"
           validations={validations}
@@ -81,7 +81,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Token Inventory"
           name="token_inventory"
           validations={validations}
@@ -93,7 +93,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Mitigation of Conflicts and Improper Trading"
           name="mitigation_of_conflicts_and_improper_trading"
           validations={validations}
@@ -108,7 +108,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Token Safety and Security"
           name="token_safety_and_security"
           validations={validations}
@@ -120,7 +120,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Marketing Practices"
           name="marketing_practices"
           validations={validations}
@@ -132,7 +132,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Protecting and Empowering Consumers"
           name="protecting_and_empowering_consumers"
           validations={validations}
@@ -144,7 +144,7 @@ export default class ProjectScorecardInputs extends Component {
           }
           required
         />
-        <FormsyScoreInput
+        <ScoreInput
           label="Compliance with Applicable Laws"
           name="compliance_with_application_laws"
           validations={validations}

@@ -139,7 +139,7 @@ export const fetchManagedProjects = () => async (dispatch, getState) => {
 export const fetchOwnDocuments = () => async (dispatch, getState) => {
   try {
     const documents = await axios
-      .get(`/api/users/-/authorized-documents`)
+      .get(`/api/users/-/documents`)
       .then(res => res.data);
     const documentsById = keyBy(documents, "id");
     const documentIds = documents.map(ps => ps.id);

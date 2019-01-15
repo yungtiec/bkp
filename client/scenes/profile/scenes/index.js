@@ -1,2 +1,6 @@
-export { default as PublicProfile } from "./PublicProfile/PublicProfile";
-export { default as UserSettings } from "./UserSettings/QueryUserSettings";
+export {
+  default as QueryNotifications
+} from "./notifications/QueryNotifications";
+export { default as QueryComments } from "./comments/QueryComments";
+export { default as QueryPassword } from "./password/QueryPassword";
+export { default as About } from "./about/About";

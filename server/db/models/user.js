@@ -32,35 +32,14 @@ module.exports = (db, DataTypes) => {
           return () => this.getDataValue("salt");
         }
       },
-      user_handle: {
-        type: Sequelize.TEXT
-      },
       githubId: {
         type: DataTypes.STRING
-      },
-      githubConnected: {
-        type: DataTypes.VIRTUAL,
-        get() {
-          return !!this.getDataValue("githubId");
-        }
       },
       googleId: {
         type: DataTypes.STRING
       },
-      googleConnected: {
-        type: DataTypes.VIRTUAL,
-        get() {
-          return !!this.getDataValue("googleId");
-        }
-      },
       uportAddress: {
         type: DataTypes.STRING
-      },
-      uportConnected: {
-        type: DataTypes.VIRTUAL,
-        get() {
-          return !!this.getDataValue("uportAddress");
-        }
       },
       first_name: {
         type: DataTypes.STRING
@@ -74,32 +53,8 @@ module.exports = (db, DataTypes) => {
       username: {
         type: DataTypes.STRING
       },
-      avatar_url: {
-        type: Sequelize.TEXT
-      },
-      email_verified: {
-        type: Sequelize.BOOLEAN
-      },
       organization: {
         type: DataTypes.STRING
-      },
-      self_introduction: {
-        type: Sequelize.TEXT
-      },
-      linkedin_url: {
-        type: Sequelize.TEXT
-      },
-      twitter_url: {
-        type: Sequelize.TEXT
-      },
-      github_url: {
-        type: Sequelize.TEXT
-      },
-      stackoverflow_url: {
-        type: Sequelize.TEXT
-      },
-      website_url: {
-        type: Sequelize.TEXT
       },
       restricted_access: {
         type: DataTypes.BOOLEAN,
@@ -110,10 +65,6 @@ module.exports = (db, DataTypes) => {
         defaultValue: false
       },
       onboard: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      profile_update_prompted: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
@@ -137,10 +88,7 @@ module.exports = (db, DataTypes) => {
       through: "user_roles",
       foreignKey: "user_id"
     });
-    User.belongsToMany(models.badge, {
-      through: "user_badges",
-      foreignKey: "user_id"
-    });
+    User;
     User.hasMany(models.notification, {
       foreignKey: "recipient_id",
       as: "notifications",
@@ -197,7 +145,7 @@ module.exports = (db, DataTypes) => {
 
   User.loadScopes = function(models) {
     User.addScope("comments", function({
-      userHandle,
+      userId,
       limit,
       offset,
       reviewStatus,
@@ -206,7 +154,7 @@ module.exports = (db, DataTypes) => {
     }) {
       var commentQueryObj = getCommentQueryObj({
         queryObj: {
-          userHandle,
+          userId,
           limit,
           offset,
           reviewStatus,
@@ -216,7 +164,7 @@ module.exports = (db, DataTypes) => {
         order: true
       });
       return {
-        where: { user_handle: userHandle },
+        where: { id: userId },
         attributes: [
           "id",
           "email",
@@ -266,64 +214,32 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
-    User.addScope("basicInfo", function({
-      userHandle,
-      userId,
-      googleId,
-      uportAddress,
-      includePrivateInfo
-    }) {
+    User.addScope("basicInfo", function({ userId, googleId, uportAddress }) {
       var query;
-      var attributes = [
-        "id",
-        "email",
-        "name",
-        "first_name",
-        "last_name",
-        "organization",
-        "restricted_access",
-        "short_profile_url",
-        "self_introduction",
-        "linkedin_url",
-        "twitter_url",
-        "stackoverflow_url",
-        "website_url",
-        "github_url",
-        "user_handle",
-        "avatar_url",
-        "createdAt"
-      ];
       if (userId) query = { id: userId };
       if (googleId) query = { googleId };
       if (uportAddress) query = { uportAddress };
-      if (userHandle) query = { user_handle: userHandle };
-      if (includePrivateInfo)
-        attributes = attributes.concat([
-          "anonymity",
-          "onboard",
-          "profile_update_prompted",
-          "googleId",
-          "githubId",
-          "uportAddress",
-          "googleConnected",
-          "uportConnected",
-          "githubConnected",
-          "email_verified"
-        ]);
       return {
         where: query,
-        attributes,
+        attributes: [
+          "id",
+          "email",
+          "name",
+          "first_name",
+          "last_name",
+          "organization",
+          "restricted_access",
+          "anonymity",
+          "onboard",
+          "createdAt"
+        ],
         include: [
           {
             model: models.role,
             attributes: ["name"]
           },
           { model: models.project, as: "managedProjects" },
-          { model: models.project, as: "editedProjects" },
-          {
-            model: models.tag
-          },
-          { model: models.badge, attributes: ["id", "name"] }
+          { model: models.project, as: "editedProjects" }
         ]
       };
     });
@@ -354,9 +270,7 @@ module.exports = (db, DataTypes) => {
                   "name",
                   "first_name",
                   "last_name",
-                  "organization",
-                  "user_handle",
-                  "avatar_url"
+                  "organization"
                 ]
               }
             ]
@@ -390,10 +304,8 @@ module.exports = (db, DataTypes) => {
 
   User.getContributions = async function({
     userId,
-    userHandle,
     googleId,
     uportAddress,
-    includePrivateInfo,
     githubId,
     forListing
   }) {
@@ -401,42 +313,27 @@ module.exports = (db, DataTypes) => {
     if (googleId) query = { googleId };
     if (uportAddress) query = { uportAddress };
     if (userId) query = { userId: Number(userId) };
-    if (userHandle) query = { userHandle };
-    if (includePrivateInfo) query.includePrivateInfo = true;
     if (githubId) query = { githubId };
     const user = await User.scope({
       method: ["basicInfo", query]
     }).findOne();
-    if (!user) return null;
-    const comments = await user.getComments({
-      attributes: ["id", "reviewed"],
-      include: [
-        {
-          model: db.model("issue"),
-          required: false
-        },
-        {
-          model: db.model("user"),
-          as: "upvotesFrom",
-          attributes: ["name", "first_name", "last_name", "email"],
-          required: false
-        }
-      ]
-    });
-    const documents = await user.getDocuments({
-      attributes: ["id"]
-    });
-    const [
-      commentUpvotes,
-      documentUpvotes,
-      documentDownvotes
-    ] = await Promise.all([
-      user.getUpvotedComments(),
-      user.getUpvotedDocuments(),
-      user.getDownvotedDocuments()
-    ]);
-    if (includePrivateInfo) {
-      var notifications = await user.getNotifications({
+    const [comments, notifications] = await Promise.all([
+      user.getComments({
+        attributes: ["id", "reviewed"],
+        include: [
+          {
+            model: db.model("issue"),
+            required: false
+          },
+          {
+            model: db.model("user"),
+            as: "upvotesFrom",
+            attributes: ["name", "first_name", "last_name", "email"],
+            required: false
+          }
+        ]
+      }),
+      user.getNotifications({
         where: {
           status: {
             [Sequelize.Op.or]: [
@@ -445,29 +342,26 @@ module.exports = (db, DataTypes) => {
             ]
           }
         }
-      });
-    }
+      })
+    ]);
     const numCommentIssues = comments.filter(item => item.issue).length;
     const numCommentUpvotes = comments.reduce(
       (count, item) =>
         item.upvotesFrom ? item.upvotesFrom.length + count : count,
       0
     );
+
     const numCommentSpam = comments.filter(item => item.reviewed === "spam")
       .length;
-    var results = {
-      num_documents: documents.length,
-      num_comments: comments.length,
-      num_issues: numCommentIssues,
-      num_votes:
-        commentUpvotes.length +
-        documentUpvotes.length +
-        documentDownvotes.length,
-      num_spam: numCommentSpam
-    };
-    if (includePrivateInfo) results.num_notifications = notifications.length;
+
     return assignIn(
-      results,
+      {
+        num_comments: comments.length,
+        num_issues: numCommentIssues,
+        num_upvotes: numCommentUpvotes,
+        num_spam: numCommentSpam,
+        num_notifications: notifications.length
+      },
       forListing ? omit(user.toJSON(), ["roles"]) : user.toJSON()
     );
   };
@@ -483,6 +377,9 @@ module.exports = (db, DataTypes) => {
     const user = await User.scope({
       method: ["comments", cloneDeep(queryObj)]
     }).findOne();
+    var { comments } = await User.scope({
+      method: ["commentCount", cloneDeep(queryObj)]
+    }).findOne();
     var pagedComments = user.comments
       .filter(comment => comment.version)
       .map(comment => {
@@ -495,7 +392,7 @@ module.exports = (db, DataTypes) => {
         }
         return comment;
       });
-    return pagedComments;
+    return { pagedComments, commentCount: comments.length };
   };
 
   /**

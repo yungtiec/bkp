@@ -6,14 +6,11 @@ import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import {
   logout,
-  currentUserIsAdmin,
   getUserNotificationCount,
-  fetchUserNotifications,
-  getUserNotifications,
-  updateNotificationStatus,
-  updateAllNotificationStatus
+  currentUserIsAdmin,
+  fetchUserNotifications
 } from "../data/reducer";
-import { AuthWidget, NotificationFlyout } from "./index";
+import { AuthWidget, SearchBar } from "./index";
 import asyncPoll from "react-async-poll";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import policies from "../policies.js";
@@ -29,26 +26,12 @@ class Navbar extends Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchUserNotifications();
-  }
-
   render() {
-    const {
-      isAdmin,
-      isLoggedIn,
-      width,
-      user,
-      numNotifications,
-      notificationsById,
-      notificationIds,
-      markAllAsRead,
-      updateStatus
-    } = this.props;
+    const { isAdmin, isLoggedIn, width, user, numNotifications } = this.props;
 
     return (
       <div className="header">
-        <nav className="navbar navbar-expand-md no-gutters navbar--logo app-container">
+        <nav className="navbar navbar-expand-md no-gutters navbar--logo">
           <div className="box--left">
             <Link className="logo-header my-0 ml-0" to="/">
               <img
@@ -66,7 +49,10 @@ class Navbar extends Component {
               ""
             )}
             {width > 600 ? (
-              <Link to="/" className="navbar__nav-item">
+              <Link
+                to="/"
+                className="navbar__nav-item"
+              >
                 home
               </Link>
             ) : (
@@ -112,14 +98,13 @@ class Navbar extends Component {
           </div>
           <div className="box--right">
             {isLoggedIn ? (
-              <NotificationFlyout
-                numNotifications={numNotifications}
-                notificationsById={notificationsById}
-                notificationIds={notificationIds}
-                markAllAsRead={markAllAsRead}
-                updateStatus={updateStatus}
-                isLoggedIn={isLoggedIn}
-              />
+              <Link
+                to="/user/profile/notifications"
+                className="navbar__nav-item notification-count"
+                data-count={numNotifications || ""}
+              >
+                <i className="fas fa-bell" />
+              </Link>
             ) : (
               <Link
                 to={{
@@ -140,13 +125,10 @@ class Navbar extends Component {
 }
 
 const mapState = state => {
-  const { notificationsById, notificationIds } = getUserNotifications(state);
   return {
     user: state.data.user,
     isAdmin: currentUserIsAdmin(state),
     isLoggedIn: !!state.data.user.id,
-    notificationsById,
-    notificationIds,
     numNotifications: getUserNotificationCount(state),
     width: state.data.environment.width
   };
@@ -159,21 +141,12 @@ const mapDispatch = dispatch => {
     },
     fetchUserNotifications() {
       dispatch(fetchUserNotifications());
-    },
-    markAllAsRead: () => dispatch(updateAllNotificationStatus("read")),
-    updateStatus: notification => {
-      dispatch(updateNotificationStatus(notification, "read"));
-      if (notification.uri)
-        history.push(notification.uri.replace(window.origin, ""));
     }
   };
 };
 
 export default withRouter(
-  connect(
-    mapState,
-    mapDispatch
-  )(asyncPoll(60 * 1000, onPollInterval)(Navbar))
+  connect(mapState, mapDispatch)(asyncPoll(60 * 1000, onPollInterval)(Navbar))
 );
 
 Navbar.propTypes = {

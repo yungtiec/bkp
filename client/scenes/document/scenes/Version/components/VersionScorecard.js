@@ -3,7 +3,7 @@ import { Element } from "react-scroll";
 import { keys, capitalize, isEqual } from "lodash";
 import autoBind from "react-autobind";
 import { ContentEditingContainer } from "./index";
-import { FormsyScoreInput } from "../../../../../components";
+import { ScoreInput } from "../../../../../components";
 import { meanBy, values } from "lodash";
 import Formsy from "formsy-react";
 
@@ -123,7 +123,7 @@ export default class VersionScorecard extends Component {
 
                           {this.state.editing ? (
                             <td className="">
-                              <FormsyScoreInput
+                              <ScoreInput
                                 name={principleKey}
                                 validations={validations}
                                 validationError={validationError}
