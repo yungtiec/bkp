@@ -7,7 +7,6 @@ import {
   Collaborations,
   Project,
   Profile,
-  ProfileV2,
   Admin,
   Unauthorized,
   Upload,
@@ -17,7 +16,8 @@ import {
   Document,
   DocumentBySlug,
   Wizard,
-  MyDocuments
+  MyDocuments,
+  Feed
 } from "./scenes";
 import {
   Login,
@@ -61,6 +61,11 @@ class Routes extends Component {
               component={Dashboard}
             />
           )}
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            path="/feed"
+            component={Feed}
+          />
           <RouteWithLayout
             layout={LayoutWithNav}
             path="/projects"
@@ -117,15 +122,8 @@ class Routes extends Component {
           {isLoggedIn && (
             <RouteWithLayout
               layout={LayoutWithNav}
-              path="/user/:userId"
-              component={Profile}
-            />
-          )}
-          {isLoggedIn && (
-            <RouteWithLayout
-              layout={LayoutWithNav}
               path="/profile/:userHandle"
-              component={ProfileV2}
+              component={Profile}
             />
           )}
           {isLoggedIn && (

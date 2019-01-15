@@ -354,7 +354,9 @@ module.exports = (db, DataTypes) => {
                   "name",
                   "first_name",
                   "last_name",
-                  "organization"
+                  "organization",
+                  "user_handle",
+                  "avatar_url"
                 ]
               }
             ]

@@ -5,6 +5,7 @@
  */
 export { default as Navbar } from "./Navbar";
 export { default as SearchBar } from "./SearchBar";
+export { default as NotificationFlyout } from "./NotificationFlyout";
 export { Login, Signup, RequestPasswordReset, ResetPassword } from "./AuthForm";
 export { default as ListView } from "./ListView";
 export { default as ListRow } from "./ListRow";
