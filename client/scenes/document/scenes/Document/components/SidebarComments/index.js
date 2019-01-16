@@ -28,7 +28,6 @@ export default ({
   parent
 }) => {
   const { creator_id, collaborators } = documentMetadata;
-  console.log({documentMetadata});
   const collaboratorsArray = (collaborators || []).reduce(
     (acc, curr) => {
       return acc.concat([curr.id]);

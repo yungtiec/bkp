@@ -110,7 +110,7 @@ class Document extends Component {
         referenceHash.unshift("ref");
         referenceHash = "_ftn" + referenceHash.join("");
       }
-      console.log(referenceHash)
+      console.log(referenceHash);
       if (sectionHash) {
         let node = ReactDOM.findDOMNode(this[referenceHash]);
         if (node) {
@@ -146,10 +146,8 @@ class Document extends Component {
 
   resetSidebarContext() {
     this.props.updateSidebarCommentContext({
-      selectedText: "",
-      selectedComments: null,
       focusOnce: false,
-      selectedCommentId: null
+      selectedCommentIds: null
     });
   }
 
@@ -192,18 +190,18 @@ class Document extends Component {
         qnaId: sidebarCommentContext.focusQnaId
       });
     else if (
-      sidebarCommentContext.selectedCommentId &&
-      commentsById[sidebarCommentContext.selectedCommentId]
+      sidebarCommentContext.selectedCommentIds &&
+      sidebarCommentContext.selectedCommentIds.length
     )
-      return [commentsById[sidebarCommentContext.selectedCommentId]];
+      return sidebarCommentContext.selectedCommentIds.map(
+        sid => commentsById[sid]
+      );
     else return [];
   }
 
   resetSidebarCommentContext() {
     this.props.updateSidebarCommentContext({
-      selectedText: "",
-      focusQnaId: "",
-      selectedCommentId: ""
+      selectedCommentIds: ""
     });
   }
 
@@ -259,10 +257,7 @@ class Document extends Component {
 
     const selectedComments = this.getSelectedComments();
 
-    if (
-      !commentIds ||
-      commentsLoading
-    )
+    if (!commentIds || commentsLoading)
       return (
         <SquareLoader
           key="LoadableVersion"
@@ -332,8 +327,8 @@ class Document extends Component {
                 this.props.width < 767
                   ? "350px"
                   : this.props.width > 1300
-                  ? "450px"
-                  : "410px"
+                    ? "450px"
+                    : "410px"
               }
               scrollbarContainerHeight="calc(100% - 100px)"
               autoHide={true}

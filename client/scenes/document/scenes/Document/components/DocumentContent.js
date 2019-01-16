@@ -4,11 +4,13 @@ import { Qna, Question, Answers, VersionScorecard } from "./index";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/actions.js";
-import CkEditor from '../../../../../../client/components/CkEditor/CkEditor.js';
-import ActiveToggle from './ActiveToggle';
-import CategorySelect from './CategorySelect';
+import { updateSidebarCommentContext } from "../../../reducer";
+import CkEditor from "../../../../../../client/components/CkEditor/CkEditor.js";
+import ActiveToggle from "./ActiveToggle";
+import CategorySelect from "./CategorySelect";
 
 const DocumentContent = ({
+  updateSidebarCommentContext,
   updateContentHTMLBySlug,
   location,
   user,
@@ -26,8 +28,10 @@ const DocumentContent = ({
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}
       documentMetadata={documentMetadata}
+      updateSidebarCommentContext={updateSidebarCommentContext}
       updateContentHTMLBySlug={updateContentHTMLBySlug}
-      addNewCommentSentFromServer={addNewCommentSentFromServer}/>
+      addNewCommentSentFromServer={addNewCommentSentFromServer}
+    />
   </div>
 );
 
@@ -37,7 +41,11 @@ const mapState = (state, ownProps) => ({
 });
 
 const actions = {
-  updateContentHTMLBySlug
+  updateContentHTMLBySlug,
+  updateSidebarCommentContext
 };
 
-export default connect(mapState, actions)(DocumentContent);
+export default connect(
+  mapState,
+  actions
+)(DocumentContent);

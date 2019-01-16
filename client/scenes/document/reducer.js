@@ -52,7 +52,7 @@ const initialState = {
   commentIssueFilter: [],
   sidebarCommentContext: {
     selectedText: "",
-    selectedCommentId: null,
+    selectedCommentIds: null,
     focusOnce: false
   },
   sidebarContext: "comments" // options are comment and table of contents

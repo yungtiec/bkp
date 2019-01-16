@@ -117,6 +117,9 @@ const createApp = () => {
   app.get("/admin/version/public/:file", (req, res, next) => {
     res.redirect(`/${req.params.file}`);
   });
+  app.get("/s/:slug/comment/:commentId", (req, res, next) => {
+    res.redirect(`/${req.params.file}`);
+  });
   app.get("/edit/:slug/step/public/:file", (req, res, next) => {
     res.redirect(`/${req.params.file}`);
   });
