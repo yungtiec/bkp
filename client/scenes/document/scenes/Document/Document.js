@@ -4,12 +4,6 @@ import autoBind from "react-autobind";
 import { batchActions } from "redux-batched-actions";
 import { SquareLoader } from "halogenium";
 import { Link, Switch, Route } from "react-router-dom";
-import {
-  Link as ScrollLink,
-  Element,
-  animateScroll as scroll,
-  scroller
-} from "react-scroll";
 import { connect } from "react-redux";
 import {
   DocumentContent,

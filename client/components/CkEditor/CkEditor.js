@@ -249,7 +249,6 @@ function getAnnotationIdsOfDomSelection(selection) {
   var annotationIds = [];
   var $node = $(selection.anchorNode);
   if ($node.get(0).nodeType === 3) $node = $node.parent();
-  console.log($node, $node.attr("class"));
   while (
     $node.attr("class") &&
     $node.attr("class").indexOf("annotator-hl") !== -1

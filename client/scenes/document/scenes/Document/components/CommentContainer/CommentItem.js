@@ -7,6 +7,20 @@ import { CommentBox } from "../index";
 import { ActionBar } from "./index";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import policies from "../../../../../../policies.js";
+import $ from "jquery";
+
+const commentInSidebarOnClick = comment => {
+  var element = $(document).find(`[data-annotation-id=${Number(comment.id)}]`);
+  if (element.length > 1) element = $(element[0]);
+  var offset = element.offset();
+  offset &&
+    $("html, body").animate(
+      {
+        scrollTop: offset.top
+      },
+      200
+    );
+};
 
 export default ({
   isAdmin,
@@ -24,7 +38,11 @@ export default ({
   labelAsSpam,
   labelAsNotSpam
 }) => (
-  <div className={containerClassName} style={containerStyle || {}}>
+  <div
+    className={containerClassName}
+    style={containerStyle || {}}
+    onClick={e => commentInSidebarOnClick(comment)}
+  >
     <div class="mt-3 comment-item__header">
       <p className="comment-item__owner-name d-flex flex-direction-column">
         <PunditContainer policies={policies} user={comment.owner}>

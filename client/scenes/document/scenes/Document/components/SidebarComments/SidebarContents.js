@@ -109,38 +109,26 @@ function renderSidebarWithAllComments(props) {
       // .filter(id => commentsById[id].reviewed !== "spam")
       .map(id => {
         return (
-          <Element key={`comment-${id}__element`} name={`comment-${id}`}>
-            <ScrollLink
-              key={`comment-${id}__scrolllink`}
-              className={`comment-${id}`}
-              activeClass="active"
-              to={`qna-${commentsById[id].version_question_id}`}
-              smooth="easeInOutCubic"
-              duration={300}
-              spy={true}
-            >
-              <CommentItem
-                collaboratorsArray={collaboratorsArray}
-                key={`comment-${id}`}
-                isClosedForComment={isClosedForComment}
-                comment={commentsById[id]}
-                projectMetadata={projectMetadata}
-                user={user}
-                replyToItem={replyToComment}
-                initiateReplyToItem={initiateReplyToComment}
-                cancelReplyToItem={cancelReplyToComment}
-                verifyItemAsAdmin={verifyCommentAsAdmin}
-                upvoteItem={upvoteComment}
-                editItem={editComment}
-                changeItemIssueStatus={changeCommentIssueStatus}
-                loadModal={loadModal}
-                notify={notify}
-                user={user}
-                isLoggedIn={isLoggedIn}
-                admin={admin}
-              />
-            </ScrollLink>
-          </Element>
+          <CommentItem
+            collaboratorsArray={collaboratorsArray}
+            key={`comment-${id}`}
+            isClosedForComment={isClosedForComment}
+            comment={commentsById[id]}
+            projectMetadata={projectMetadata}
+            user={user}
+            replyToItem={replyToComment}
+            initiateReplyToItem={initiateReplyToComment}
+            cancelReplyToItem={cancelReplyToComment}
+            verifyItemAsAdmin={verifyCommentAsAdmin}
+            upvoteItem={upvoteComment}
+            editItem={editComment}
+            changeItemIssueStatus={changeCommentIssueStatus}
+            loadModal={loadModal}
+            notify={notify}
+            user={user}
+            isLoggedIn={isLoggedIn}
+            admin={admin}
+          />
         );
       })
   );
@@ -166,4 +154,7 @@ const actions = {
   notify
 };
 
-export default connect(mapState, actions)(SidebarContents);
+export default connect(
+  mapState,
+  actions
+)(SidebarContents);
