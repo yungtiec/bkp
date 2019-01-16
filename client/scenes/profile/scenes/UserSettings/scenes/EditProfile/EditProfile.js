@@ -40,7 +40,13 @@ const createSyncProfilePicMessage = ({
     : null;
 };
 
-const EditProfile = ({ location, match, profile, updateProfile }) => {
+const EditProfile = ({
+  location,
+  match,
+  profile,
+  updateProfile,
+  updateAvatar
+}) => {
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -77,6 +83,23 @@ const EditProfile = ({ location, match, profile, updateProfile }) => {
                   currentPathname: location.pathname
                 })}
                 avatarUrl={profile.avatar_url}
+                nameOfUser={profile.name}
+                upload={(file, fullPath) => {
+                  var formData = new FormData();
+                  var startIndex =
+                    fullPath.indexOf("\\") >= 0
+                      ? fullPath.lastIndexOf("\\")
+                      : fullPath.lastIndexOf("/");
+                  var filename = fullPath.substring(startIndex);
+                  if (
+                    filename.indexOf("\\") === 0 ||
+                    filename.indexOf("/") === 0
+                  ) {
+                    filename = filename.substring(1);
+                  }
+                  formData.append("file", file, filename);
+                  updateAvatar(formData);
+                }}
               />
             </InputGrid>
             <InputGrid

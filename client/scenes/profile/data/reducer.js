@@ -13,6 +13,10 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         profile: assignIn(cloneDeep(state.profile), action.profile)
       };
+    case types.USER_AVATAR_UPDATED:
+      newState = cloneDeep(state);
+      newState.profile.avatar_url = action.avatar_url;
+      return newState;
     default:
       return state;
   }

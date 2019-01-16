@@ -11,9 +11,26 @@ const _ = require("lodash");
 const generateForgetPasswordHtml = require("./generateForgetPasswordHtml.js");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
-const moment = require("moment");
-Promise = require("bluebird");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const moment = require("moment");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const aws = require("aws-sdk");
+aws.config.update({
+  // Your SECRET ACCESS KEY from AWS should go here,
+  // Never share it!
+  // Setup Env Variable, e.g: process.env.SECRET_ACCESS_KEY
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  // Not working key, Your ACCESS KEY ID from AWS should go here,
+  // Never share it!
+  // Setup Env Variable, e.g: process.env.ACCESS_KEY_ID
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: "us-east-1" // region of your bucket
+});
+const s3 = new aws.S3();
+var upload = multer({ storage: multer.memoryStorage() });
+
+Promise = require("bluebird");
 
 module.exports = router;
 
@@ -119,6 +136,34 @@ router.put("/profile", async (req, res, next) => {
     } catch (err) {
       next(err);
     }
+  }
+});
+
+router.put("/profile/avatar", upload.array("file"), async (req, res, next) => {
+  try {
+    var params = {
+      Bucket: "the-bkp",
+      Key:
+        req.user.user_handle +
+        "-" +
+        req.files[0].originalname +
+        "-" +
+        moment().format(),
+      Body: req.files[0].buffer,
+      ContentType: req.files[0].mimetype,
+      ACL: "public-read"
+    };
+
+    s3.upload(params, function(err, data) {
+      if (err) {
+        next(err);
+      } else {
+        req.user.update({ avatar_url: data.Location });
+        res.send({ data });
+      }
+    });
+  } catch (err) {
+    next(err);
   }
 });
 

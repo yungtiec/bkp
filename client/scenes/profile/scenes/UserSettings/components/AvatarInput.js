@@ -1,20 +1,21 @@
 import "./AvatarInput.scss";
 import React, { Fragment } from "react";
 import Formsy from "formsy-react";
-import { FormsyInputFile } from "../../../../../components";
+import { FormsyImageUpload } from "../../../../../components";
+import Avatar from "react-avatar";
 
-const AvatarInput = ({ name, avatarUrl, ...props }) => (
+const AvatarInput = ({ nameOfUser, name, avatarUrl, ...props }) => (
   <div className="d-flex">
-    {avatarUrl && (
-      <img
-        className="user-settings__avatar-input-preview"
-        width="43"
-        height="43"
-        src={avatarUrl}
-      />
-    )}
+    <Avatar
+      className="user-settings__avatar-input-preview"
+      name={nameOfUser.trim() ? nameOfUser : "?"}
+      size={42}
+      src={avatarUrl}
+      color={"#459DF9"}
+      fgColor={"#ffffff"}
+    />
     <div className="user-settings__avatar-input-container">
-      <FormsyInputFile
+      <FormsyImageUpload
         name={name}
         inputClassname="user-settings__avatar-input"
         {...props}

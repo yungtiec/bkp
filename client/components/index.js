@@ -38,6 +38,7 @@ export {
 export { default as FormsyScoreInput } from "./FormsyInputs/FormsyScoreInput";
 export { default as FormsyTextArea } from "./FormsyInputs/FormsyTextArea";
 export { default as FormsyAsyncSelect } from "./FormsyInputs/FormsyAsyncSelect";
+export { default as FormsyImageUpload } from "./FormsyInputs/FormsyImageUpload";
 export { default as ProjectScorecardInputs } from "./ProjectScorecardInputs";
 export { default as FeedbackModal } from "./FeedbackModal";
 export {

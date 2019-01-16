@@ -9,6 +9,7 @@ import FeedbackModal from "./FeedbackModal";
 import DependentSelectWidgetCreateModal from "../scenes/wizard/components/widgets/DependentSelectWidgetCreateModal";
 import ConfirmationModal from "../scenes/wizard/components/ConfirmationModal";
 import WizardDocumentPreviewModal from "../scenes/wizard/components/WizardDocumentPreviewModal";
+import CropImageModal from "./CropImageModal";
 
 /** Modal Type Constants **/
 const MODAL_COMPONENTS = {
@@ -18,7 +19,8 @@ const MODAL_COMPONENTS = {
   FEEDBACK_MODAL: FeedbackModal,
   LOAD_SELECT_CREATABLE_MODAL: DependentSelectWidgetCreateModal,
   CONFIRMATION_MODAL: ConfirmationModal,
-  WIZARD_DOCUMENT_PREVIEW_MODAL: WizardDocumentPreviewModal
+  WIZARD_DOCUMENT_PREVIEW_MODAL: WizardDocumentPreviewModal,
+  CROP_IMAGE_MODAL: CropImageModal
 };
 
 const styles = {
@@ -30,7 +32,6 @@ const ModalContainer = ({ modalType, modalProps }) => {
     return null;
   }
 
-  console.log(modalType);
   const SpecificModal = MODAL_COMPONENTS[modalType];
 
   return <SpecificModal style={styles[modalType]} {...modalProps} />;

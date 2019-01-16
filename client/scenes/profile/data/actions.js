@@ -3,7 +3,8 @@ import {
   getUserProfile,
   putUserProfile,
   putUserAccount,
-  putUserPassword
+  putUserPassword,
+  putUserAvatar
 } from "./service";
 import { groupBy, assignIn, keys } from "lodash";
 import { notify } from "reapop";
@@ -46,6 +47,22 @@ export function updateProfile(profile) {
           dismissAfter: 3000
         })
       );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+export function updateAvatar(formData) {
+  return async (dispatch, getState) => {
+    try {
+      console.log(formData.get("file"))
+      const result = await putUserAvatar(formData);
+      console.log(result)
+      dispatch({
+        type: types.USER_AVATAR_UPDATED,
+        avatar_url: result.data.Location
+      });
     } catch (error) {
       console.error(error);
     }

@@ -17,3 +17,13 @@ export function putUserAccount(account) {
 export function putUserPassword(passwordObject) {
   return axios.put(`/auth/accounts/update-password/`, passwordObject);
 }
+
+export function putUserAvatar(formData) {
+  return axios
+    .put("/auth/profile/avatar", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+    .then(res => res.data);
+}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
-import { updateProfile } from "../../../../data/actions";
+import { updateProfile, updateAvatar } from "../../../../data/actions";
 
 const LoadableQueryEdiProfile = Loadable({
   loader: () => import("./EditProfile"),
@@ -41,7 +41,8 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  updateProfile
+  updateProfile,
+  updateAvatar
 };
 
 export default withRouter(
