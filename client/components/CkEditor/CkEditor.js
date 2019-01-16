@@ -256,5 +256,5 @@ function getAnnotationIdsOfDomSelection(selection) {
     annotationIds.push(Number($node.attr("data-annotation-id")));
     $node = $node.parent();
   }
-  return uniq(annotationIds);
+  return uniq(annotationIds).filter(id => !isNaN(id));
 }

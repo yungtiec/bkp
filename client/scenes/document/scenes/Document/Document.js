@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import autoBind from "react-autobind";
 import { batchActions } from "redux-batched-actions";
 import { SquareLoader } from "halogenium";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link, Switch, Route, matchPath } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   DocumentContent,
@@ -84,14 +84,9 @@ class Document extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const givenCommentContext =
-      this.props.location.pathname.indexOf("/comment/") !== -1;
-    if (
-      this.props.location.pathname !== prevProps.location.pathname &&
-      givenCommentContext
-    ) {
+    (this.props.location.pathname !== prevProps.location.pathname ||
+      this.props.commentsLoading !== prevProps.commentsLoading) &&
       this.focusOnContext();
-    }
 
     if (this.props.location.hash !== prevProps.location.hash) {
       var sectionHash = this.props.location.hash.replace("#", "");
@@ -104,7 +99,6 @@ class Document extends Component {
         referenceHash.unshift("ref");
         referenceHash = "_ftn" + referenceHash.join("");
       }
-      console.log(referenceHash);
       if (sectionHash) {
         let node = ReactDOM.findDOMNode(this[referenceHash]);
         if (node) {
@@ -119,22 +113,25 @@ class Document extends Component {
   }
 
   focusOnContext() {
-    const givenCommentContext =
-      window.location.pathname.indexOf("/comment/") !== -1;
-    var commentId, pos, comments;
-    if (givenCommentContext) {
-      pos = window.location.pathname.indexOf("/comment/");
-      commentId = window.location.pathname.substring(pos).split("/")[2];
-      if (
-        this.props.commentsById &&
-        this.props.commentsById[Number(commentId)]
-      ) {
-        this.props.updateSidebarCommentContext({
-          selectedCommentId: Number(commentId),
-          selectedText: "",
-          focusOnce: true
-        });
-      }
+    const matchComment = matchPath(this.props.location.pathname, {
+      path: `/s/:slug/comment/:commentId`,
+      exact: true,
+      strict: false
+    });
+    if (
+      matchComment &&
+      matchComment.params &&
+      matchComment.params.commentId &&
+      this.props.commentsById &&
+      this.props.commentsById[Number(matchComment.params.commentId)]
+    ) {
+      console.log(
+        this.props.commentsById[Number(matchComment.params.commentId)]
+      );
+      this.props.updateSidebarCommentContext({
+        selectedCommentIds: [Number(matchComment.params.commentId)],
+        focusOnce: true
+      });
     }
   }
 

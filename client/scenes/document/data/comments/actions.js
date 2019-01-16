@@ -69,9 +69,9 @@ export const addNewCommentSentFromServer = comment => {
         comment
       });
       history.push(
-        `/s/${getState().scenes.document.data.documentMetadata.slug}/${
-          comment.doc_id
-        }/comment/${comment.id}`
+        `/s/${getState().scenes.document.data.documentMetadata.slug}/comment/${
+          comment.id
+        }`
       );
     } catch (err) {
       console.log(err);
@@ -85,11 +85,17 @@ export const cancelReplyToComment = ({ accessors, parent }) => ({
   parent
 });
 
-export const replyToComment = ({ rootId, parentId, newComment, documentId }) => {
+export const replyToComment = ({
+  rootId,
+  parentId,
+  newComment,
+  documentId
+}) => {
   return async (dispatch, getState) => {
     try {
       const rootComment = await postReplyToComment({
-        projectSymbol: getState().scenes.document.data.documentMetadata.project.symbol,
+        projectSymbol: getState().scenes.document.data.documentMetadata.project
+          .symbol,
         documentId: getState().scenes.document.data.documentMetadata.id,
         rootId,
         parentId,
