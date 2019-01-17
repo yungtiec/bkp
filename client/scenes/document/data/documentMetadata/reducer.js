@@ -18,6 +18,8 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         ...action.documentMetadata
       };
+    case types.DOCUMENT_METADATA_RESET:
+      return initialState;
     case types.SURVEY_VOTED:
       return addVotesToDocument(action, state);
     default:
@@ -40,9 +42,7 @@ export function getDocumentLatestVersion(state) {
 export function isClosedForComment(state) {
   if (!state.scenes.document.data.documentMetadata.id) return "";
   return (
-    Number(
-      state.scenes.document.data.documentMetadata.comment_until_unix
-    ) -
+    Number(state.scenes.document.data.documentMetadata.comment_until_unix) -
       Number(moment().format("x")) <=
     0
   );

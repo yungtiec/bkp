@@ -23,6 +23,12 @@ export function fetchMetadataByDocumentId(documentId, versionId) {
   };
 }
 
+export function resetDocumentMetadata() {
+  return {
+    type: types.DOCUMENT_METADATA_RESET
+  };
+}
+
 export function fetchMetadataBySlug(slug, versionId) {
   return async (dispatch, getState) => {
     try {
@@ -40,7 +46,10 @@ export function fetchMetadataBySlug(slug, versionId) {
 export function updateContentHTMLBySlug(slug, propertiesToUpdate) {
   return async (dispatch, getState) => {
     try {
-      var documentMetadata = await putContentHTMLBySlug(slug, propertiesToUpdate);
+      var documentMetadata = await putContentHTMLBySlug(
+        slug,
+        propertiesToUpdate
+      );
       dispatch({
         type: types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS,
         documentMetadata

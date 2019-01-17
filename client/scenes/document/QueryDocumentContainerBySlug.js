@@ -10,6 +10,7 @@ import {
 } from "./data/documentMetadata/reducer";
 import {
   fetchMetadataBySlug,
+  resetDocumentMetadata,
   upvoteDocument,
   downvoteDocument
 } from "./data/documentMetadata/actions";
@@ -24,13 +25,16 @@ class QueryDocumentContainerBySlug extends Component {
 
   componentDidMount() {
     batchActions([
-      this.props.fetchMetadataBySlug(this.props.match.params.slug),
+      this.props.fetchMetadataBySlug(this.props.match.params.slug)
     ]);
   }
 
+  componentWillUnmount() {
+    this.props.resetDocumentMetadata();
+  }
+
   render() {
-    if (!this.props.documentMetadata.id)
-      return null;
+    if (!this.props.documentMetadata.id) return null;
     return <DocumentContainerBySlug {...this.props} />;
   }
 }
@@ -44,8 +48,14 @@ const mapState = state => {
 
 const actions = {
   fetchMetadataBySlug,
+  resetDocumentMetadata,
   upvoteDocument,
   downvoteDocument
 };
 
-export default withRouter(connect(mapState, actions)(QueryDocumentContainerBySlug));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(QueryDocumentContainerBySlug)
+);

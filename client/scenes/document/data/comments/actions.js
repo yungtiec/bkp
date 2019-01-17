@@ -20,12 +20,10 @@ export const fetchCommentsByDocId = docId => {
         type: types.COMMENTS_FETCH_REQUEST
       });
       const comments = await getCommentsByVersionId(docId);
-      const tags = await getAllTags();
       const commentsById = keyBy(comments, "id");
       dispatch({
         type: types.COMMENTS_FETCH_SUCCESS,
-        commentsById,
-        tags
+        commentsById
       });
     } catch (err) {
       console.log(err);

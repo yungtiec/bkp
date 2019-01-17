@@ -30,7 +30,6 @@ class CkEditor extends Component {
   }
 
   async componentDidMount() {
-    console.log("componentDidMount");
     loadAnnotation(this);
     !this.props.isLoggedIn || this.props.isClosedForComment
       ? hideAnnotatorUI()
@@ -38,11 +37,9 @@ class CkEditor extends Component {
   }
 
   async componentDidUpdate() {
-    console.log("componentDidUpdate");
     !this.props.isLoggedIn || this.props.isClosedForComment
       ? hideAnnotatorUI()
       : showAnnotatorUI();
-    console.log(this);
     await reloadAnnotations({
       match: this.props.match,
       doc_id: this.props.documentMetadata.id,
@@ -99,8 +96,6 @@ class CkEditor extends Component {
       status,
       category
     };
-
-    console.log(propertiesToUpdate);
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
     this.setState({
@@ -212,7 +207,6 @@ async function loadAnnotation(self) {
       });
     });
     self.annotator = app;
-    console.log(self.annotator);
     $(".annotator__tag-container").tagsInput({
       autocomplete_url: "/api/tags/autocomplete",
       defaultText: "add tag(s)",

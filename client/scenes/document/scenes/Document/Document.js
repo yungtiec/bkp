@@ -141,6 +141,13 @@ class Document extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.updateSidebarCommentContext({
+      selectedCommentIds: null,
+      focusOnce: false
+    });
+  }
+
   resetSidebarContext() {
     this.props.updateSidebarCommentContext({
       focusOnce: false,

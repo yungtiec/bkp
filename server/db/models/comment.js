@@ -156,7 +156,6 @@ module.exports = (db, DataTypes) => {
       };
     });
     Comment.addScope("flatThreadByRootId", function(options) {
-      console.log({options});
       var query = {
         include: [
           {
