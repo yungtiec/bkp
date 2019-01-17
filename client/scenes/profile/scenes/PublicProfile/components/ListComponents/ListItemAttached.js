@@ -1,9 +1,19 @@
 import "./ListItemAttached.scss";
 import React, { Fragment } from "react";
 
-export default ({ verticalDivider, icon, quote, text, actionElements }) => {
+export default ({
+  verticalDivider,
+  icon,
+  quote,
+  text,
+  actionElements,
+  onClick
+}) => {
   return (
-    <div className="list-item-attached list-item-attached--base-with-theme">
+    <div
+      className="list-item-attached list-item-attached--base-with-theme"
+      onClick={onClick}
+    >
       <div className="list-item-base__theme-icon">
         {icon && <i class={`fas fa-${icon}`} />}
         {verticalDivider && (

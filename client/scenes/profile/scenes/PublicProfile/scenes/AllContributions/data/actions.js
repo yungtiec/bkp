@@ -25,20 +25,20 @@ export function fetchUserContributions(userHandle, direction) {
           offset,
           endOfResult: contributionIds.length < limit
         });
-      else if (!contributionIds.length && !direction) {
-        // empty profile page where user has no contribution
-        dispatch({
-          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
-          contributionsById: {},
-          contributionIds: [],
-          endOfResult: true
-        });
-      } else {
-        dispatch({
-          type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
-          endOfResult: true
-        });
-        if (direction)
+      else {
+        if (!direction) {
+          // empty profile page where user has no contribution
+          dispatch({
+            type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+            contributionsById: {},
+            contributionIds: [],
+            endOfResult: true
+          });
+        } else {
+          dispatch({
+            type: types.USER_CONTRIBUTIONS_FETCH_SUCCESS,
+            endOfResult: true
+          });
           dispatch(
             notify({
               title: "You've reached the end of results",
@@ -48,6 +48,7 @@ export function fetchUserContributions(userHandle, direction) {
               dismissAfter: 3000
             })
           );
+        }
       }
     } catch (error) {
       console.error(error);

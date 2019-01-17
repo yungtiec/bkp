@@ -25,20 +25,20 @@ export function fetchUserComments(userHandle, direction) {
           offset,
           endOfResult: commentIds.length < limit
         });
-      if (!commentIds.length && !direction) {
-        // empty profile page where user has no contribution
-        dispatch({
-          type: types.USER_COMMENTS_FETCH_SUCCESS,
-          commentsById: null,
-          commentIds: null,
-          endOfResult: true
-        });
-      } else {
-        dispatch({
-          type: types.USER_COMMENTS_FETCH_SUCCESS,
-          endOfResult: true
-        });
-        if (direction)
+      else {
+        if (!direction) {
+          // empty profile page where user has no contribution
+          dispatch({
+            type: types.USER_COMMENTS_FETCH_SUCCESS,
+            commentsById: null,
+            commentIds: null,
+            endOfResult: true
+          });
+        } else {
+          dispatch({
+            type: types.USER_COMMENTS_FETCH_SUCCESS,
+            endOfResult: true
+          });
           dispatch(
             notify({
               title: "You've reached the end of results",
@@ -48,6 +48,7 @@ export function fetchUserComments(userHandle, direction) {
               dismissAfter: 3000
             })
           );
+        }
       }
     } catch (error) {
       console.error(error);

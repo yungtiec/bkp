@@ -4,3 +4,7 @@ export { default as ProfileDetails } from "./ProfileDetails";
 export { default as ListItemBase } from "./ListComponents/ListItemBase";
 export { default as ListItemAttached } from "./ListComponents/ListItemAttached";
 export { default as ContributionActionBtn } from "./ContributionActionBtn";
+export { default as CommentCard } from "./CommentCard";
+export { default as DocumentCard } from "./DocumentCard";
+export { default as DocumentVoteCard } from "./DocumentVoteCard";
+export { default as CommentVoteCard } from "./CommentVoteCard";

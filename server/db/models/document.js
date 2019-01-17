@@ -54,7 +54,7 @@ module.exports = (db, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING
-    },
+    }
   });
   Document.associate = function(models) {
     Document.hasMany(models.version, {
@@ -98,11 +98,10 @@ module.exports = (db, DataTypes) => {
     });
   };
   Document.loadScopes = function(models) {
-    Document.addScope("includeOutstandingIssues",
-      function({
-         slug,
-         versionWhereClause
-       }) {
+    Document.addScope("includeOutstandingIssues", function({
+      slug,
+      versionWhereClause
+    }) {
       return {
         where: { slug },
         include: [
@@ -225,10 +224,7 @@ module.exports = (db, DataTypes) => {
             { model: models["comment"], as: "descendents" }
           ],
           order: [
-            [
-              { model: models["comment"], as: "descendents" },
-              "hierarchyLevel"
-            ]
+            [{ model: models["comment"], as: "descendents" }, "hierarchyLevel"]
           ]
         }
       ]
@@ -313,9 +309,9 @@ module.exports = (db, DataTypes) => {
       ]
     });
     Document.addScope("includeVersions", function({
-                                                    documentId,
-                                                    versionWhereClause
-                                                  }) {
+      documentId,
+      versionWhereClause
+    }) {
       var versionIncludeClause = {
         model: models["version"]
       };
@@ -360,8 +356,7 @@ module.exports = (db, DataTypes) => {
     });
     var count = documentQueryResult.count;
     var documents = documentQueryResult.rows.map(computeDocumentStats);
-    console.log({documents});
-    return { count, documents: {rows: documents } };
+    return { count, documents: { rows: documents } };
   };
   return Document;
 };
@@ -369,15 +364,15 @@ module.exports = (db, DataTypes) => {
 function computeDocumentStats(document) {
   const issues = document.comments.filter(c => !!c.issue);
   const comments = document.comments;
-  //const replies = comments.reduce(
-  //  (replyArr, comment) =>
-  //    comment.descendents && comment.descendents.length
-  //      ? comment.descendents
-  //      .filter(d => d.reviewed !== "spam")
-  //      .concat(replyArr)
-  //      : replyArr,
-  //  []
-  //);
+  const replies = comments.reduce(
+    (replyArr, comment) =>
+      comment.descendents && comment.descendents.length
+        ? comment.descendents
+            .filter(d => d.reviewed !== "spam")
+            .concat(replyArr)
+        : replyArr,
+    []
+  );
   return _.assignIn(
     {
       num_outstanding_issues: issues.filter(c => !c.issue.open).length,
@@ -385,9 +380,10 @@ function computeDocumentStats(document) {
       num_issues: issues.length,
       num_pending_comments: comments.filter(c => c.reviewed === "pending")
         .length,
-      num_total_comments: comments.filter(c => c.reviewed !== "spam").length,
+      num_total_comments:
+        comments.filter(c => c.reviewed !== "spam").length + replies.length,
       num_upvotes: document.upvotesFrom.length,
-      num_downvotes: document.downvotesFrom.length,
+      num_downvotes: document.downvotesFrom.length
     },
     document.toJSON()
   );

@@ -30,6 +30,7 @@ class CkEditor extends Component {
   }
 
   async componentDidMount() {
+    console.log("componentDidMount");
     loadAnnotation(this);
     !this.props.isLoggedIn || this.props.isClosedForComment
       ? hideAnnotatorUI()
@@ -37,13 +38,15 @@ class CkEditor extends Component {
   }
 
   async componentDidUpdate() {
+    console.log("componentDidUpdate");
     !this.props.isLoggedIn || this.props.isClosedForComment
       ? hideAnnotatorUI()
       : showAnnotatorUI();
+    console.log(this);
     await reloadAnnotations({
       match: this.props.match,
       doc_id: this.props.documentMetadata.id,
-      annotator: this.annotator
+      self: this
     });
   }
 
@@ -135,7 +138,7 @@ class CkEditor extends Component {
         ) : (
           <div className="mb-4" ref={el => (this[`content`] = el)}>
             <div
-              className="html-content-body"
+              className="markdown-body"
               onClick={this.handleAnnotationInContentOnClick}
             >
               {ReactHtmlParser(content)}
@@ -161,7 +164,7 @@ class CkEditor extends Component {
 export default withRouter(CkEditor);
 
 async function loadAnnotation(self) {
-  if (!self.annotation) {
+  if (!self.annotator) {
     const { qna, match, isLoggedIn, tagFilter, documentMetadata } = self.props;
     var app = new annotator.App();
     var pageUri = function() {
@@ -209,6 +212,7 @@ async function loadAnnotation(self) {
       });
     });
     self.annotator = app;
+    console.log(self.annotator);
     $(".annotator__tag-container").tagsInput({
       autocomplete_url: "/api/tags/autocomplete",
       defaultText: "add tag(s)",
@@ -238,11 +242,12 @@ function showAnnotatorUI() {
   $(".annotator-adder").css("height", "inherit");
 }
 
-async function reloadAnnotations({ annotator, doc_id, match }) {
-  annotator.annotations.load({
-    uri: `${window.location.origin}${match.url}`,
-    doc_id
-  });
+async function reloadAnnotations({ self, doc_id, match }) {
+  self.annotator &&
+    self.annotator.annotations.load({
+      uri: `${window.location.origin}${match.url}`,
+      doc_id
+    });
 }
 
 function getAnnotationIdsOfDomSelection(selection) {

@@ -95,7 +95,7 @@ const getEngagedUsers = async ({ version, creator, collaboratorEmails }) => {
   return commentators;
 };
 
-const createVersionSlug = async (docTitle, contentHtml) => {
+const createSlug = async (docTitle, contentHtml) => {
   const sha256 = crypto.createHash("sha256");
 
   try {
@@ -128,5 +128,5 @@ module.exports = {
   ensureAdminRoleOrOwnership,
   ensureResourceAccess,
   getEngagedUsers,
-  createVersionSlug
+  createSlug
 };

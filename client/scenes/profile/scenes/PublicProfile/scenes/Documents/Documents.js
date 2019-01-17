@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ListItem } from "../../../../../../components";
-import { ListItemBase, ContributionActionBtn } from "../../components";
-import moment from "moment";
+import { DocumentCard } from "../../components";
 
 const Documents = ({
   gridClassnames,
@@ -16,39 +14,7 @@ const Documents = ({
 }) => {
   return (
     <div className={`${gridClassnames}`}>
-      {documentIds.map(id => (
-        <ListItemBase
-          key={id}
-          icon="file"
-          titleElement={<a>{documentsById[id].title}</a>}
-          subtitleElements={[
-            <Fragment>
-              <span>Posted by</span>
-              <a className="text-primary">@{profile.user_handle}</a>
-              <span>{moment(documentsById[id].createdAt).fromNow()}</span>
-            </Fragment>
-          ]}
-          actionElements={
-            <Fragment>
-              <ContributionActionBtn
-                icon="thumbs-up"
-                stat={Number(documentsById[id].num_upvotes) || 0}
-                label=""
-              />
-              <ContributionActionBtn
-                icon="thumbs-down"
-                stat={Number(documentsById[id].num_downvotes) || 0}
-                label=""
-              />
-              <ContributionActionBtn
-                icon="comment"
-                stat={Number(documentsById[id].num_comments) || 0}
-                label="comments"
-              />
-            </Fragment>
-          }
-        />
-      ))}
+      {documentIds.map(id => <DocumentCard document={documentsById[id]} />)}
       {!(offset === 0 && endOfResult) && (
         <div className="my-3">
           <button

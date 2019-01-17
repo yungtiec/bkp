@@ -25,20 +25,20 @@ export function fetchUserDocuments(userHandle, direction) {
           offset,
           endOfResult: documentIds.length < limit
         });
-      else if (!documentIds.length && !direction) {
-        // empty profile page where user has no document
-        dispatch({
-          type: types.USER_DOCUMENTS_FETCH_SUCCESS,
-          documentsById: null,
-          documentIds: null,
-          endOfResult: true
-        });
-      } else {
-        dispatch({
-          type: types.USER_DOCUMENTS_FETCH_SUCCESS,
-          endOfResult: true
-        });
-        if (direction)
+      else {
+        if (!direction) {
+          // empty profile page where user has no document
+          dispatch({
+            type: types.USER_DOCUMENTS_FETCH_SUCCESS,
+            documentsById: null,
+            documentIds: null,
+            endOfResult: true
+          });
+        } else {
+          dispatch({
+            type: types.USER_DOCUMENTS_FETCH_SUCCESS,
+            endOfResult: true
+          });
           dispatch(
             notify({
               title: "You've reached the end of results",
@@ -48,6 +48,7 @@ export function fetchUserDocuments(userHandle, direction) {
               dismissAfter: 3000
             })
           );
+        }
       }
     } catch (error) {
       console.error(error);

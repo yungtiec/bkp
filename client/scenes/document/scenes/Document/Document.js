@@ -113,11 +113,17 @@ class Document extends Component {
   }
 
   focusOnContext() {
+    console.log("focusOnContext");
     const matchComment = matchPath(this.props.location.pathname, {
       path: `/s/:slug/comment/:commentId`,
       exact: true,
       strict: false
     });
+    console.log(
+      matchComment && matchComment.params && matchComment.params.commentId,
+      this.props.commentsById
+    );
+
     if (
       matchComment &&
       matchComment.params &&

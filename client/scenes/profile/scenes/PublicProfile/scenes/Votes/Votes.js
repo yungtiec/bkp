@@ -1,11 +1,7 @@
 import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-  ListItemBase,
-  ListItemAttached,
-  ContributionActionBtn
-} from "../../components";
+import { DocumentVoteCard, CommentVoteCard } from "../../components";
 import moment from "moment";
 
 const Votes = ({
@@ -25,67 +21,19 @@ const Votes = ({
           case "upvoteDocument":
           case "downvoteDocument":
             return (
-              <ListItemBase
-                key={cid}
-                icon={`thumbs-${
-                  votesById[cid].type === "upvoteDocument" ? "up" : "down"
-                }`}
-                subtitleElements={[
-                  <Fragment>
-                    <a className="text-primary">@{profile.user_handle}</a>
-                    <span>
-                      {votesById[cid].type === "upvoteDocument"
-                        ? "upvote"
-                        : "downvote"}d
-                    </span>
-                    <a className="text-dark">{votesById[cid].title}</a>
-                  </Fragment>,
-                  <Fragment>
-                    <span>Posted by</span>
-                    <a className="text-primary">
-                      @{votesById[cid].documentPostedBy}
-                    </a>
-                    <span>{moment(votesById[cid].createdAt).fromNow()}</span>
-                  </Fragment>
-                ]}
+              <DocumentVoteCard
+                cid={cid}
+                vote={votesById[cid]}
+                userHandle={profile.user_handle}
               />
             );
           case "upvoteComment":
             return (
-              <Fragment>
-                <ListItemBase
-                  key={cid}
-                  icon="thumbs-up"
-                  subtitleElements={[
-                    <Fragment>
-                      <a className="text-primary">@{profile.user_handle}</a>
-                      <span>upvoted a comment in</span>
-                      <a className="text-dark">{votesById[cid].title}</a>
-                    </Fragment>,
-                    <Fragment>
-                      <span>Posted by</span>
-                      <a className="text-primary">
-                        @{votesById[cid].documentPostedBy}
-                      </a>
-                      <span>{moment(votesById[cid].createdAt).fromNow()}</span>
-                    </Fragment>
-                  ]}
-                />
-                <ListItemAttached
-                  verticalDivider={true}
-                  quote={votesById[cid].quote}
-                  text={votesById[cid].comment}
-                  actionElements={
-                    <Fragment>
-                      <ContributionActionBtn
-                        icon="reply"
-                        stat={Number(votesById[cid].num_comments) || 0}
-                        label="replies"
-                      />
-                    </Fragment>
-                  }
-                />
-              </Fragment>
+              <CommentVoteCard
+                cid={cid}
+                vote={votesById[cid]}
+                userHandle={profile.user_handle}
+              />
             );
         }
       })}

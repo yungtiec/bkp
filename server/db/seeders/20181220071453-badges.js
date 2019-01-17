@@ -6,14 +6,10 @@ module.exports = {
       "badges",
       [
         {
-          name: "Top Telegram Contributor",
-          createdAt: Sequelize.fn("NOW"),
-          updatedAt: Sequelize.fn("NOW")
+          name: "Top Telegram Contributor"
         },
         {
-          name: "Authenticated User",
-          createdAt: Sequelize.fn("NOW"),
-          updatedAt: Sequelize.fn("NOW")
+          name: "Authenticated User"
         }
       ],
       {},

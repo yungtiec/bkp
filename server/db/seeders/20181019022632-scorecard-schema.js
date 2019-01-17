@@ -8,6 +8,7 @@ module.exports = {
       "wizard_schemas",
       [
         {
+          id: 1,
           step_array_json: generateStepArrays(),
           step_schemas_json: generateStepSchemasJson(),
           createdAt: new Date(),
@@ -17,6 +18,7 @@ module.exports = {
       {},
       {
         // queryInterface is not a sequelize instacne, it's a lower level API so need to define datatype here
+        id: 2,
         step_array_json: { type: new Sequelize.JSON() },
         step_schemas_json: { type: new Sequelize.JSON() }
       }

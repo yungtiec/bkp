@@ -15,7 +15,7 @@ const {
   WizardSchema,
   Comment
 } = require("../../db/models");
-const { getEngagedUsers, createVersionSlug } = require("../utils");
+const { getEngagedUsers, createSlug } = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
@@ -264,7 +264,7 @@ const createDocumentByMarkdown = async (req, res, next) => {
     scorecard: req.body.scorecard,
     version_number: req.body.versionNumber
   };
-  const versionSlug = await createVersionSlug(
+  const versionSlug = await createSlug(
     document.title || req.body.title,
     versionObj
   );
@@ -339,7 +339,7 @@ const createDocumentWithSchemaId = async (req, res, next) => {
     comment_until_unix: commentUntilInUnix,
     version_number: "1"
   };
-  const versionSlug = await createVersionSlug("", versionObj);
+  const versionSlug = await createSlug("", versionObj);
   const versionWithSlug = Object.assign(
     {
       version_slug: versionSlug,
@@ -400,7 +400,7 @@ const createDocumentFromHtml = async (req, res, next) => {
     .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
     .format("x");
 
-  const slug = await createVersionSlug(
+  const slug = await createSlug(
     req.body.title,
     req.body.contentHtml
   );

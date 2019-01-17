@@ -25,20 +25,19 @@ export function fetchUserVotes(userHandle, direction) {
           offset,
           endOfResult: voteIds.length < limit
         });
-      else if (!voteIds.length && !direction) {
-        // empty profile page where user has no vote
-        dispatch({
-          type: types.USER_VOTES_FETCH_SUCCESS,
-          votesById: null,
-          voteIds: null,
-          endOfResult: true
-        });
-      } else {
-        dispatch({
-          type: types.USER_VOTES_FETCH_SUCCESS,
-          endOfResult: true
-        });
-        if (direction)
+      else {
+        if (!direction) {
+          dispatch({
+            type: types.USER_VOTES_FETCH_SUCCESS,
+            votesById: null,
+            voteIds: null,
+            endOfResult: true
+          });
+        } else {
+          dispatch({
+            type: types.USER_VOTES_FETCH_SUCCESS,
+            endOfResult: true
+          });
           dispatch(
             notify({
               title: "You've reached the end of results",
@@ -48,6 +47,7 @@ export function fetchUserVotes(userHandle, direction) {
               dismissAfter: 3000
             })
           );
+        }
       }
     } catch (error) {
       console.error(error);

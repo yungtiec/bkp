@@ -1,9 +1,18 @@
 import "./ListItemBase.scss";
 import React, { Fragment } from "react";
 
-export default ({ icon, titleElement, subtitleElements, actionElements }) => {
+export default ({
+  icon,
+  titleElement,
+  subtitleElements,
+  actionElements,
+  onClick
+}) => {
   return (
-    <div className="list-item-base list-item-base--with-theme">
+    <div
+      className="list-item-base list-item-base--with-theme"
+      onClick={onClick}
+    >
       <div className="list-item-base__theme-icon">
         <i class={`fas fa-${icon}`} />
       </div>
