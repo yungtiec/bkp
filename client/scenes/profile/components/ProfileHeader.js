@@ -12,7 +12,7 @@ export default ({ name, profileContext, isMyProfile, avatarUrl }) => {
           <div className="profile-avatar__container">
             <Avatar
               className="profile-avatar"
-              name={name.trim() ? name : "?"}
+              name={name && name.trim() ? name : "?"}
               size={190}
               src={avatarUrl}
               color={"#459DF9"}

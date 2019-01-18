@@ -45,7 +45,7 @@ export function updateAllNotificationStatus(status) {
         type: types.ALL_NOTIFICATIONS_READ
       });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 }

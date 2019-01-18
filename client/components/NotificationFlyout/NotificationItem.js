@@ -12,11 +12,12 @@ export default ({ handleClick, message, createdAt, sender, status }) => (
     {sender ? (
       <div className="notification-item__user">
         <Avatar
+          className="notification-item__user-avatar"
           name={sender.displayName || sender.user_handle}
           src={sender.avatar_url}
           color={"#999999"}
           size={50}
-          onClick={() => history.push(`/profile/${sender.user_handle}`)}
+          onClick={() => history.push(`/profile/@${sender.user_handle}`)}
         />
       </div>
     ) : null}

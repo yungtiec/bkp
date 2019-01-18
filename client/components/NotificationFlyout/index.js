@@ -30,7 +30,6 @@ class NotificationFlyout extends Component {
     this.setState({
       dropdown: !dropdown
     });
-    console.log("dropdown");
   }
 
   handleClickOutside(evt) {
@@ -42,6 +41,12 @@ class NotificationFlyout extends Component {
 
   setWrapperRef(node) {
     this.wrapperRef = node;
+  }
+
+  handleNotifictionOnClick(e, notification) {
+    if (e.target.parentElement.className === "notification-item__user-avatar")
+      return;
+    this.props.updateStatus(notification);
   }
 
   render() {
@@ -85,7 +90,9 @@ class NotificationFlyout extends Component {
                 ? notificationIds.map(nid => (
                     <NotificationItem
                       key={`notification-item__${nid}`}
-                      handleClick={() => updateStatus(notificationsById[nid])}
+                      handleClick={e =>
+                        this.handleNotifictionOnClick(e, notificationsById[nid])
+                      }
                       message={notificationsById[nid].message}
                       createdAt={notificationsById[nid].createdAt}
                       sender={notificationsById[nid].sender}

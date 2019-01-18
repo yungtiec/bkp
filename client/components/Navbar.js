@@ -17,6 +17,7 @@ import { AuthWidget, NotificationFlyout } from "./index";
 import asyncPoll from "react-async-poll";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import policies from "../policies.js";
+import history from "../history";
 
 const onPollInterval = (props, dispatch) => {
   if (!props.isLoggedIn) return;
@@ -176,8 +177,11 @@ const mapDispatch = dispatch => {
     markAllAsRead: () => dispatch(updateAllNotificationStatus("read")),
     updateStatus: notification => {
       dispatch(updateNotificationStatus(notification, "read"));
-      if (notification.uri)
-        history.push(notification.uri.replace(window.origin, ""));
+      console.log(notification, notification.uri)
+      if (notification.uri) {
+        console.log("hello???")
+        history.push(notification.uri);
+      }
     }
   };
 };
