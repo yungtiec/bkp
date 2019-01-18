@@ -1,4 +1,3 @@
-import "./ContributionActionBtn.scss";
 import React from "react";
 
 export default ({ icon, stat, label }) => {
