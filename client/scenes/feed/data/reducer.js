@@ -7,7 +7,36 @@ const initialState = {
   documentsById: null,
   offset: 0,
   limit: 10,
-  endOfResult: false
+  endOfResult: false,
+  filters: null,
+  optionMenus: {
+    orderBy: [
+      { value: "hot", label: "hot" },
+      { value: "date", label: "most recent" }
+    ],
+    sections: [
+      {
+        value: "thought-leadership",
+        label: "thought leadership"
+      },
+      {
+        value: "transparency-scorecard",
+        label: "transparency scorecard"
+      },
+      {
+        value: "regulatory-notices",
+        label: "regulatory notices"
+      },
+      {
+        value: "regulatory-request-for-comment",
+        label: "regulatory request for comment"
+      },
+      {
+        value: "proposed-laws-and-regulations",
+        label: "proposed laws and regulations"
+      }
+    ]
+  }
 };
 
 export default function(state = initialState, action) {
@@ -41,4 +70,8 @@ export function getFilteredDocuments(state) {
 
 export function getFilteredDocumentsOffsetAndLimit(state) {
   return pick(state.scenes.feed.data, ["offset", "limit", "endOfResult"]);
+}
+
+export function getFilterOptionMenus(state) {
+  return state.scenes.feed.data.optionMenus;
 }

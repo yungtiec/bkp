@@ -1,6 +1,10 @@
 import "./Feed.scss";
 import React, { Fragment } from "react";
-import { QueryDocumentList, QueryHeroHeadline } from "./components";
+import {
+  QueryDocumentList,
+  QueryHeroHeadline,
+  DocumentFilter
+} from "./components";
 
 export default () => (
   <Fragment>
@@ -13,19 +17,7 @@ export default () => (
       </div>
       <QueryHeroHeadline />
     </div>
-    <div className="feed__filter-container my-5">
-      <ul className="feed__filter d-flex">
-        <li className="feed__filter-item feed__filter-label">sort by</li>
-        <li className="feed__filter-item">hot</li>
-        <li className="feed__filter-item feed__filter-label">filter by</li>
-        <li className="feed__filter-item">tags</li>
-        <li className="feed__filter-item">sections</li>
-        <li className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
-          <i className="fas fa-search" />
-          <a className="feed__filter-clear">CLEAR FILTERS</a>
-        </li>
-      </ul>
-    </div>
+    <DocumentFilter />
     <div className="app-container">
       <QueryDocumentList />
     </div>
