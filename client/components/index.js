@@ -44,3 +44,4 @@ export { default as FeedbackModal } from "./FeedbackModal";
 export {
   default as WizardDocumentViewer
 } from "./WizardDocumentViewer/WizardDocumentViewer";
+export { default as ArticleStyleLoader } from "./ArticleStyleLoader";

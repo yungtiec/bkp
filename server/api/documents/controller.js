@@ -41,6 +41,33 @@ const getComments = async (req, res, next) => {
   }
 };
 
+const getFeatureDocuments = async (req, res, next) => {
+  try {
+    const documents = await Document.findAll({
+      where: { feature: true },
+      include: [
+        {
+          model: User,
+          as: "collaborators",
+          through: {
+            model: DocumentCollaborator,
+            where: { revoked_access: false }
+          },
+          required: false
+        },
+        {
+          model: User,
+          as: "creator"
+        }
+      ]
+    });
+
+    res.send(documents);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getDocuments = async (req, res, next) => {
   try {
     const { count, documents } = await Document.getDocumentsWithStats({
@@ -96,10 +123,7 @@ const getPublishedDocuments = async (req, res, next) => {
 const getDocumentBySlug = async (req, res, next) => {
   try {
     const document = await Document.scope({
-      method: [
-        "includeOutstandingIssues",
-        { slug : req.params.version_slug }
-      ]
+      method: ["includeOutstandingIssues", { slug: req.params.version_slug }]
     }).findOne();
     res.send(document);
   } catch (err) {
@@ -196,7 +220,9 @@ const addHistory = versionQuestionOrAnswer => {
 
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
   try {
-    const documentToUpdate = await Document.findOne({ where: { slug : req.params.slug } });
+    const documentToUpdate = await Document.findOne({
+      where: { slug: req.params.slug }
+    });
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
     documentToUpdate.category = req.body.category;
@@ -400,10 +426,7 @@ const createDocumentFromHtml = async (req, res, next) => {
     .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
     .format("x");
 
-  const slug = await createSlug(
-    req.body.title,
-    req.body.contentHtml
-  );
+  const slug = await createSlug(req.body.title, req.body.contentHtml);
 
   const document = await Document.create({
     title: req.body.title,
@@ -417,24 +440,24 @@ const createDocumentFromHtml = async (req, res, next) => {
 
   const collaborators = req.body.collaboratorEmails
     ? req.body.collaboratorEmails.map(emailOption => emailOption.value).map(
-      async email =>
-        await User.findOne({ where: { email } }).then(user =>
-          DocumentCollaborator.create({
-            user_id: user ? user.id : null,
-            email,
-            document_id: document.id
-          }).then(collaborator => {
-            return Notification.notifyCollaborators({
-              sender: req.user,
-              collaboratorId: user.id,
-              versionId: version.id,
-              projectSymbol: project.symbol,
-              parentVersionTitle: document.title,
-              action: "created"
-            });
-          })
-        )
-    )
+        async email =>
+          await User.findOne({ where: { email } }).then(user =>
+            DocumentCollaborator.create({
+              user_id: user ? user.id : null,
+              email,
+              document_id: document.id
+            }).then(collaborator => {
+              return Notification.notifyCollaborators({
+                sender: req.user,
+                collaboratorId: user.id,
+                versionId: version.id,
+                projectSymbol: project.symbol,
+                parentVersionTitle: document.title,
+                action: "created"
+              });
+            })
+          )
+      )
     : null;
   res.send(document);
 };
@@ -668,6 +691,7 @@ const putDocument = async (req, res, next) => {
 
 module.exports = {
   getComments,
+  getFeatureDocuments,
   getDocuments,
   getDrafts,
   getPublishedDocuments,

@@ -54,6 +54,9 @@ module.exports = (db, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING
+    },
+    header_img_url: {
+      type: DataTypes.TEXT
     }
   });
   Document.associate = function(models) {

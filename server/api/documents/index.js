@@ -16,10 +16,12 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
   try {
     let document;
     if (req.params.version_slug) {
-      document = await Document.findOne({where: {slug : req.params.version_slug}});
+      document = await Document.findOne({
+        where: { slug: req.params.version_slug }
+      });
     }
     if (req.params.doc_id) {
-      document = await Document.findOne({where: {id : req.params.doc_id}});
+      document = await Document.findOne({ where: { id: req.params.doc_id } });
     }
     const isNotCreator =
       document && req.user && req.user.id !== document.creator_id;
@@ -59,6 +61,17 @@ router.get(
  *
  */
 router.get("/", documentController.getDocuments);
+
+/**
+ * Getting a list of feature documents
+ *
+ * @name Get feature documents
+ * @route {GET} /api/documents/feature
+ * @queryparam {Number} limit
+ * @queryparam {Number} offset
+ *
+ */
+router.get("/feature", documentController.getFeatureDocuments);
 
 /**
  * Getting a list of user's drafts

@@ -9,6 +9,7 @@ import { default as dashboardReducer } from "./dashboard/reducer";
 import { default as documentReducer } from "./document/reducer";
 import { default as wizardReducer } from "./wizard/reducer";
 import { default as myDocumentsReducer } from "./my-documents/reducer";
+import { default as feedReducer } from "./feed/reducer";
 
 export default combineReducers({
   project: projectReducer,
@@ -19,5 +20,6 @@ export default combineReducers({
   dashboard: dashboardReducer,
   document: documentReducer,
   wizard: wizardReducer,
-  myDocuments: myDocumentsReducer
+  myDocuments: myDocumentsReducer,
+  feed: feedReducer
 });

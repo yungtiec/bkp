@@ -19,7 +19,7 @@ const { createSlug } = require("../server/api/utils");
 const migrate = async () => {
   try {
     await db.sync();
-    mapDocumentData();
+    await mapDocumentData();
     db.close();
   } catch (error) {
     console.log(error);
@@ -27,7 +27,7 @@ const migrate = async () => {
   }
 };
 
-const mapDocumentData = async () => {
+const awaitmapDocumentData = async () => {
   var documents = await Document.findAll({
     include: [
       {
@@ -47,6 +47,14 @@ const mapDocumentData = async () => {
     ]
   });
   return Promise.map(documents, mapData);
+};
+
+const newCategoryNames = {
+  general: "thought-leadership",
+  scorecard: "transparency-scorecard",
+  regulatory: "regulatory-notices",
+  "regulatory-for-comment": "regulatory-requests-for-comment",
+  "proposed-laws-regulations": "proposed-laws-and-regulations"
 };
 
 const mapData = async document => {
@@ -75,7 +83,7 @@ const mapData = async document => {
           ? dataMovingFromVersionToDocument.version_slug
           : documentSlug,
         content_html: contentHtml,
-        category,
+        category: category ? newCategoryNames[category] : "thought-leadership",
         document_type: !_.isEmpty(version.scorecard)
           ? "legacy_scorecard"
           : "html"

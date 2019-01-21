@@ -68,7 +68,7 @@
 
 .feed__sections-index-inner {
   display: block;
-  width: 2.4rem;
+  width: 3rem;
   height: 40px;
   font-size: 40px;
 }
@@ -98,6 +98,7 @@
   font-size: 14px;
   font-weight: 800;
   margin: 20px 0;
+  text-transform: capitalize;
 }
 
 .feed__feature-article-content {
@@ -197,6 +198,7 @@
   display: inline-block;
   font-size: 11px;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .document-preview__content h5 {
@@ -220,6 +222,6 @@
   font-size: 11px;
 }
 
-.document-preview__content-bottom a i{
+.document-preview__content-bottom a i {
   color: #838383;
 }
