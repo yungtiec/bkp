@@ -60,7 +60,7 @@ router.get(
  * @queryparam {Number} offset
  *
  */
-router.get("/", documentController.getDocuments);
+router.get("/", documentController.getDocumentsWithFilters);
 
 /**
  * Getting a list of feature documents

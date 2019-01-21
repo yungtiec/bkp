@@ -80,6 +80,30 @@ const getDocuments = async (req, res, next) => {
   }
 };
 
+const getDocumentsWithFilters = async (req, res, next) => {
+  try {
+    console.log(req.query);
+    var limit = Number(req.query.limit);
+    var offset = Number(req.query.limit) * Number(req.query.offset);
+    var cateogry = req.query.cateogry &&
+      req.query.cateogry.length && {
+        [Sequelize.Op.or]: req.query.cateogry.map(c => ({
+          [Sequelize.Op.eq]: [Sequelize.Op.eq]
+        }))
+      };
+    var order = req.query.order;
+
+    const { count, documents } = await Document.getDocumentsWithStats({
+      limit: req.query.limit,
+      offset: req.query.offset,
+      where: { cateogry }
+    });
+    res.send({ count, documents });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getDrafts = async (req, res, next) => {
   try {
     var { count, rows } = await Document.scope({
@@ -692,6 +716,7 @@ const putDocument = async (req, res, next) => {
 module.exports = {
   getComments,
   getFeatureDocuments,
+  getDocumentsWithFilters,
   getDocuments,
   getDrafts,
   getPublishedDocuments,

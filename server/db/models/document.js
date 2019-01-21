@@ -362,6 +362,20 @@ module.exports = (db, DataTypes) => {
     return { count, documents: { rows: documents } };
   };
   return Document;
+
+  Document.getFilteredDocumentsWithStats = async function({ offset, limit, where, order }) {
+    var documentQueryResult = await Document.scope(
+      "includeAllEngagements"
+    ).findAndCountAll({
+      limit,
+      offset,
+      where
+    });
+    var count = documentQueryResult.count;
+    var documents = documentQueryResult.rows.map(computeDocumentStats);
+    return { count, documents: { rows: documents } };
+  };
+  return Document;
 };
 
 function computeDocumentStats(document) {

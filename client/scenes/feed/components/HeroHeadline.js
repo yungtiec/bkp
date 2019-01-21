@@ -12,15 +12,15 @@ export default class HeroHeadline extends React.Component {
   navigate(direction) {
     var newIndex =
       this.state.index + direction >= 0
-        ? (this.state.index + direction) % this.props.featureDocuments.length
-        : this.props.featureDocuments.length - 1;
+        ? (this.state.index + direction) % this.props.featureDocumentIds.length
+        : this.props.featureDocumentIds.length - 1;
     this.setState({
       index: newIndex
     });
   }
 
   render() {
-    const { featureDocuments } = this.props;
+    const { documentsById, featureDocumentIds } = this.props;
 
     return (
       <div className="feed__features d-flex ">
@@ -28,7 +28,8 @@ export default class HeroHeadline extends React.Component {
           <img
             className="feed__feature-img"
             src={
-              featureDocuments[this.state.index].header_img_url ||
+              documentsById[featureDocumentIds[this.state.index]]
+                .header_img_url ||
               "https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-1.2.1&auto=format&fit=crop&w=2492&q=80"
             }
           />
@@ -42,9 +43,9 @@ export default class HeroHeadline extends React.Component {
                 </span>
               </span>
               <span className="feed__sections-index-total">
-                {featureDocuments.length < 10
-                  ? `0${featureDocuments.length}`
-                  : featureDocuments.length}
+                {featureDocumentIds.length < 10
+                  ? `0${featureDocumentIds.length}`
+                  : featureDocumentIds.length}
               </span>
             </div>
             <div className="feed__feature-articles-nav-btns">
@@ -62,7 +63,9 @@ export default class HeroHeadline extends React.Component {
               </a>
             </div>
           </div>
-          <HeroDocument document={featureDocuments[this.state.index]} />
+          <HeroDocument
+            document={documentsById[featureDocumentIds[this.state.index]]}
+          />
         </div>
       </div>
     );

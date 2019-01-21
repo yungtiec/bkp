@@ -1,6 +1,6 @@
 import "./Feed.scss";
 import React, { Fragment } from "react";
-import { HeroHeadline, QueryHeroHeadline } from "./components";
+import { QueryDocumentList, QueryHeroHeadline } from "./components";
 
 export default () => (
   <Fragment>
@@ -27,38 +27,7 @@ export default () => (
       </ul>
     </div>
     <div className="app-container">
-      <div className="document-preview__bloc d-flex align-items-stretch mb-3">
-        <div className="document-preview__img-wrapper">
-          <a />
-        </div>
-        <div className="document-preview__content ml-4">
-          <h6>REGULATORY REQUESTS FOR COMMENT</h6>
-          <h5>CFTC Request For Input On Crypto-Asset Mechanics And Markets</h5>
-          <p>
-            The questions below were originally posted by the CFTC in their
-            “Request For Input On Crypto-Asset Mechanics And Markets” on 11
-            December 2018, available at
-            https://www.cftc.gov/sites/default/files/2018-12/federalregister121118.pdf.
-          </p>
-          <div className="document-preview__content-bottom d-flex justify-content-between align-items-center">
-            <span>JULY 20, 2018</span>
-            <div>
-              <a className="contribution__action-btn">
-                <i className="fas fa-thumbs-up" />
-                <span>0</span>
-              </a>
-              <a className="contribution__action-btn">
-                <i className="fas fa-thumbs-down" />
-                <span>0</span>
-              </a>
-              <a className="contribution__action-btn">
-                <i className="fas fa-comment" />
-                <span>0</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <QueryDocumentList />
     </div>
   </Fragment>
 );

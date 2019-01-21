@@ -7,16 +7,7 @@ import Loadable from "react-loadable";
 import { fetchFeatureDocuments } from "../data/actions";
 import { getFeatureDocuments } from "../data/reducer";
 
-const LoadableQueryHeroHeadline = Loadable({
-  loader: () => import("./HeroHeadline"),
-  loading: () => <ArticleStyleLoader />,
-  render(loaded, props) {
-    let HeroHeadline = loaded.default;
-  },
-  delay: 10000
-});
-
-class MyComponent extends React.Component {
+class QueryHeroHeadline extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -26,15 +17,17 @@ class MyComponent extends React.Component {
   }
 
   render() {
-    console.log(this.props)
-    if (!this.props.featureDocuments) return <ArticleStyleLoader />;
+    if (!this.props.featureDocumentIds) return <ArticleStyleLoader />;
     else return <HeroHeadline {...this.props} />;
   }
 }
 
 const mapState = (state, ownProps) => {
+  const { documentsById, featureDocumentIds } = getFeatureDocuments(state);
+
   return {
-    featureDocuments: getFeatureDocuments(state)
+    documentsById,
+    featureDocumentIds
   };
 };
 
@@ -46,5 +39,5 @@ export default withRouter(
   connect(
     mapState,
     actions
-  )(MyComponent)
+  )(QueryHeroHeadline)
 );
