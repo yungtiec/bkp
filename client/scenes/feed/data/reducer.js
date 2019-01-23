@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { assignIn, pick } from "lodash";
+import { assignIn, pick, cloneDeep } from "lodash";
 
 const initialState = {
   documentIds: null,
@@ -8,13 +8,18 @@ const initialState = {
   offset: 0,
   limit: 10,
   endOfResult: false,
-  filters: null,
+  filters: {
+    category: null,
+    order: { value: "date", label: "most recent" },
+    search: ""
+  },
   optionMenus: {
-    orderBy: [
-      { value: "hot", label: "hot" },
+    order: [
+      { value: "most-discussed", label: "most discussed" },
+      { value: "most-upvoted", label: "most upvoted" },
       { value: "date", label: "most recent" }
     ],
-    sections: [
+    category: [
       {
         value: "thought-leadership",
         label: "thought leadership"
@@ -28,8 +33,8 @@ const initialState = {
         label: "regulatory notices"
       },
       {
-        value: "regulatory-request-for-comment",
-        label: "regulatory request for comment"
+        value: "regulatory-requests-for-comment",
+        label: "regulatory requests for comment"
       },
       {
         value: "proposed-laws-and-regulations",
@@ -40,6 +45,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+  var filters;
   switch (action.type) {
     case types.FEATURE_DOCUMENTS_FETCHED_SUCESSS:
       return {
@@ -50,11 +56,34 @@ export default function(state = initialState, action) {
     case types.DOCUMENTS_FETCHED_SUCESSS:
       return {
         ...state,
-        documentIds: (state.documentIds || []).concat(action.documentIds || []),
+        documentIds: action.loadMore
+          ? (state.documentIds || []).concat(action.documentIds || [])
+          : action.documentIds,
         documentsById: assignIn(action.documentsById, state.documentsById),
         offset: action.offset,
         endOfResult: action.endOfResult
       };
+    case types.FILTER_UPDATED:
+      filters = cloneDeep(state.filters);
+      filters[action.key] = action.value;
+      return {
+        ...state,
+        filters
+      };
+    case types.FILTER_CLEAR:
+      if (!action.key)
+        return {
+          ...state,
+          filters: initialState.filters
+        };
+      else {
+        filters = cloneDeep(filters);
+        filters[action.key] = null;
+        return {
+          ...state,
+          filters
+        };
+      }
     default:
       return state;
   }
@@ -74,4 +103,8 @@ export function getFilteredDocumentsOffsetAndLimit(state) {
 
 export function getFilterOptionMenus(state) {
   return state.scenes.feed.data.optionMenus;
+}
+
+export function getFilters(state) {
+  return state.scenes.feed.data.filters;
 }

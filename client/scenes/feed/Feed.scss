@@ -160,7 +160,8 @@
   margin: 0 8px 8px 0;
 }
 
-.feed__filter-option:hover {
+.feed__filter-option:hover,
+.feed__filter-option--active {
   border-color: #3f9bfc;
   color: #3f9bfc;
   background-color: transparent;
@@ -254,4 +255,28 @@
 
 .document-preview__content-bottom a i {
   color: #838383;
+}
+
+// search
+.feed__filter-search-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 69px;
+  line-height: 74px;
+  padding: 0 20px;
+  border: 0;
+  background-color: transparent;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  margin-bottom: -2px;
+  font-weight: 800;
+}
+
+.feed__filter-search-input:focus {
+  outline: none;
 }

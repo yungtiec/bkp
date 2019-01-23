@@ -1,3 +1,4 @@
+const Sequelize = require("sequelize");
 const permission = require("../../access-control")["Disclosure"];
 const {
   User,
@@ -82,22 +83,50 @@ const getDocuments = async (req, res, next) => {
 
 const getDocumentsWithFilters = async (req, res, next) => {
   try {
-    console.log(req.query);
+    req.query.order = JSON.parse(req.query.order);
+    req.query.category = req.query.category
+      ? req.query.category.map(JSON.parse)
+      : null;
+    var formattedSearchTerms;
+    if (!req.query.search) formattedSearchTerms = null;
+    else {
+      var queryArray = req.query.search.trim().split(" ");
+      formattedSearchTerms = queryArray
+        .map(function(phrase) {
+          return "%" + phrase + "%";
+        })
+        .join("");
+    }
     var limit = Number(req.query.limit);
     var offset = Number(req.query.limit) * Number(req.query.offset);
-    var cateogry = req.query.cateogry &&
-      req.query.cateogry.length && {
-        [Sequelize.Op.or]: req.query.cateogry.map(c => ({
-          [Sequelize.Op.eq]: [Sequelize.Op.eq]
-        }))
-      };
+    var category =
+      req.query.category && req.query.category.length
+        ? {
+            [Sequelize.Op.or]: req.query.category.map(c => ({
+              [Sequelize.Op.eq]: c.value
+            }))
+          }
+        : null;
     var order = req.query.order;
-
-    const { count, documents } = await Document.getDocumentsWithStats({
+    var attributes;
+    if (order.value === "date") {
+      order = [["createdAt", "DESC"]];
+    } else if (order.value === "most-upvoted") {
+      order = [[Sequelize.literal("num_upvotes"), "DESC"]];
+    } else if (order.value === "most-discussed") {
+      order = [[Sequelize.literal("num_comments"), "DESC"]];
+    }
+    var query = {
       limit: req.query.limit,
       offset: req.query.offset,
-      where: { cateogry }
-    });
+      order
+    };
+    if (category) query.where = { category };
+    if (formattedSearchTerms)
+      query.where = query.where
+        ? _.assign(query.where, { title: { $iLike: formattedSearchTerms } })
+        : { title: { $iLike: formattedSearchTerms } };
+    const { count, documents } = await Document.getDocumentsWithStats(query);
     res.send({ count, documents });
   } catch (err) {
     next(err);

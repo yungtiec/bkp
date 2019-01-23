@@ -175,62 +175,104 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
-    Document.addScope("includeAllEngagements", {
-      where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
-      include: [
-        {
-          model: models["user"],
-          as: "upvotesFrom",
-          attributes: ["name", "first_name", "last_name", "email", "id"]
-        },
-        {
-          model: models["user"],
-          as: "downvotesFrom",
-          attributes: ["name", "first_name", "last_name", "email", "id"]
-        },
-        {
-          model: models["user"],
-          as: "creator",
-          include: [
-            {
-              model: models.role
-            }
-          ]
-        },
-        {
-          model: models["project"]
-        },
-        {
-          model: models["comment"],
-          required: false,
-          attributes: ["id", "reviewed", "hierarchyLevel"],
-          where: {
-            reviewed: {
-              [Sequelize.Op.or]: [
-                { [Sequelize.Op.eq]: "pending" },
-                { [Sequelize.Op.eq]: "verified" }
-              ]
-            },
-            hierarchyLevel: 1
+    Document.addScope("includeAllEngagements", function(
+      extendedWhereOptions = {}
+    ) {
+      var defaultWhereOptions = {
+        submitted: true,
+        reviewed: true
+      };
+      var where = _.assignIn(defaultWhereOptions, extendedWhereOptions);
+      var attributes = [
+        "id",
+        "title",
+        "document_type",
+        "description",
+        "project_id",
+        "submitted",
+        "reviewed",
+        "comment_until_unix",
+        "slug",
+        "content_html",
+        "category",
+        "header_img_url",
+        "creator_id",
+        "createdAt",
+        "updatedAt",
+        [
+          Sequelize.literal(
+            "(SELECT COUNT(*) FROM comments WHERE comments.doc_id = Document.id)"
+          ),
+          "num_comments"
+        ],
+        [
+          Sequelize.literal(
+            "(SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = Document.id)"
+          ),
+          "num_upvotes"
+        ]
+      ];
+      return {
+        where,
+        attributes,
+        include: [
+          {
+            model: models["user"],
+            as: "upvotesFrom",
+            attributes: ["name", "first_name", "last_name", "email", "id"]
           },
-          include: [
-            {
-              model: models["issue"],
-              required: false
+          {
+            model: models["user"],
+            as: "downvotesFrom",
+            attributes: ["name", "first_name", "last_name", "email", "id"]
+          },
+          {
+            model: models["user"],
+            as: "creator",
+            include: [
+              {
+                model: models.role
+              }
+            ]
+          },
+          {
+            model: models["project"]
+          },
+          {
+            model: models["comment"],
+            required: false,
+            attributes: ["id", "reviewed", "hierarchyLevel"],
+            where: {
+              reviewed: {
+                [Sequelize.Op.or]: [
+                  { [Sequelize.Op.eq]: "pending" },
+                  { [Sequelize.Op.eq]: "verified" }
+                ]
+              },
+              hierarchyLevel: 1
             },
-            {
-              model: models["user"],
-              as: "upvotesFrom",
-              attributes: ["id"],
-              required: false
-            },
-            { model: models["comment"], as: "descendents" }
-          ],
-          order: [
-            [{ model: models["comment"], as: "descendents" }, "hierarchyLevel"]
-          ]
-        }
-      ]
+            include: [
+              {
+                model: models["issue"],
+                required: false
+              },
+              {
+                model: models["user"],
+                as: "upvotesFrom",
+                attributes: ["id"],
+                required: false
+              },
+              { model: models["comment"], as: "descendents" }
+            ],
+            order: [
+              [
+                { model: models["comment"], as: "descendents" },
+                "hierarchyLevel"
+              ]
+            ]
+          }
+        ]
+      };
     });
     Document.addScope("includeVersionsWithAllEngagements", {
       where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
@@ -350,12 +392,18 @@ module.exports = (db, DataTypes) => {
     });
   };
 
-  Document.getDocumentsWithStats = async function({ offset, limit }) {
-    var documentQueryResult = await Document.scope(
-      "includeAllEngagements"
-    ).findAndCountAll({
+  Document.getDocumentsWithStats = async function({
+    offset,
+    limit,
+    order,
+    where
+  }) {
+    var documentQueryResult = await Document.scope({
+      method: ["includeAllEngagements", where]
+    }).findAndCountAll({
       limit,
-      offset
+      offset,
+      order
     });
     var count = documentQueryResult.count;
     var documents = documentQueryResult.rows.map(computeDocumentStats);
@@ -363,7 +411,12 @@ module.exports = (db, DataTypes) => {
   };
   return Document;
 
-  Document.getFilteredDocumentsWithStats = async function({ offset, limit, where, order }) {
+  Document.getFilteredDocumentsWithStats = async function({
+    offset,
+    limit,
+    where,
+    order
+  }) {
     var documentQueryResult = await Document.scope(
       "includeAllEngagements"
     ).findAndCountAll({
