@@ -27,7 +27,7 @@ const migrate = async () => {
   }
 };
 
-const awaitmapDocumentData = async () => {
+const mapDocumentData = async () => {
   var documents = await Document.findAll({
     include: [
       {

@@ -5,11 +5,11 @@ import { ListProject, ListDocumentGrid } from "../../components";
 import { Helmet } from "react-helmet";
 
 const documentCategory = {
-  general: "general",
-  scorecard: "scorecard",
-  regulatory: "regulatory",
-  regulatoryForComment: "regulatory-for-comment",
-  proposedLawsRegulations: "proposed-laws-regulations"
+  general: "thought-leadership",
+  scorecard: "transparency-scorecard",
+  regulatory: "regulatory-notices",
+  regulatoryForComment: "regulatory-requests-for-comment",
+  proposedLawsRegulations: "proposed-laws-and-regulations"
 };
 
 const filterDocuments = (documents) => {

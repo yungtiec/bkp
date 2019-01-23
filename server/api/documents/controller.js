@@ -83,10 +83,9 @@ const getDocuments = async (req, res, next) => {
 
 const getDocumentsWithFilters = async (req, res, next) => {
   try {
-    req.query.order = JSON.parse(req.query.order);
-    req.query.category = req.query.category
-      ? req.query.category.map(JSON.parse)
-      : null;
+    if (req.query.order) req.query.order = JSON.parse(req.query.order);
+    if (req.query.category)
+      req.query.category = req.query.category.map(JSON.parse);
     var formattedSearchTerms;
     if (!req.query.search) formattedSearchTerms = null;
     else {
@@ -109,18 +108,18 @@ const getDocumentsWithFilters = async (req, res, next) => {
         : null;
     var order = req.query.order;
     var attributes;
-    if (order.value === "date") {
+    if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
-    } else if (order.value === "most-upvoted") {
+    } else if (order && order.value === "most-upvoted") {
       order = [[Sequelize.literal("num_upvotes"), "DESC"]];
-    } else if (order.value === "most-discussed") {
+    } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
     }
     var query = {
       limit: req.query.limit,
-      offset: req.query.offset,
-      order
+      offset: req.query.offset
     };
+    if (order) query.order = order;
     if (category) query.where = { category };
     if (formattedSearchTerms)
       query.where = query.where
