@@ -71,7 +71,7 @@ export default ({
               model={{ project: projectMetadata, comment }}
             >
               <span>
-                {comment.owner.displayName}
+                id: {comment.id}
                 {isAdmin ? (
                   <span className="comment-item__owner-name"> (admin)</span>
                 ) : null}

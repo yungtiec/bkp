@@ -174,6 +174,8 @@ async function loadAnnotation(self) {
         annotationCreated: function(ann) {
           undraw(self.state.temporaryHighlight);
           self.props.addNewCommentSentFromServer(ann);
+          console.log(ann);
+          window.alert(JSON.stringify(ann.ranges[0]));
         }
       };
     };
