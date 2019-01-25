@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import CKEditor from "react-ckeditor-component";
 import "./CkEditor.scss";
@@ -13,7 +14,9 @@ import { isEmpty, uniq, cloneDeep } from "lodash";
 import { withRouter } from "react-router-dom";
 import ActiveToggle from "../../scenes/document/scenes/Document/components/ActiveToggle";
 import CategorySelect from "../../scenes/document/scenes/Document/components/CategorySelect";
+import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
 import $ from "jquery";
+import { loadModal, hideModal } from "../../data/reducer";
 
 class CkEditor extends Component {
   constructor(props) {
@@ -23,6 +26,7 @@ class CkEditor extends Component {
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
       category: this.props.documentMetadata.category,
+      headerImageUrl: this.props.documentMetadata.header_img_url,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
     };
@@ -80,6 +84,20 @@ class CkEditor extends Component {
     });
   }
 
+  handleImageSelection(image) {
+    this.setState({
+      headerImageUrl: image
+    }, () => {
+      this.props.hideModal();
+    });
+  }
+
+  openImageFinderModal() {
+    this.props.loadModal("IMAGE_FINDER_MODAL", {
+      handleImageSelection: this.handleImageSelection
+    });
+  }
+
   onChange(evt) {
     var newContent = evt.editor.getData();
     this.setState({
@@ -89,12 +107,13 @@ class CkEditor extends Component {
 
   async onButtonPress() {
     const { documentMetadata, updateContentHTMLBySlug } = this.props;
-    const { content, status, category } = this.state;
+    const { content, status, category, headerImageUrl } = this.state;
 
     const propertiesToUpdate = {
       content,
       status,
-      category
+      category,
+      headerImageUrl
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
@@ -105,7 +124,7 @@ class CkEditor extends Component {
 
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
-    const { renderHtml, content } = this.state;
+    const { renderHtml, content, headerImageUrl } = this.state;
     const { documentMetadata } = this.props;
     return (
       <div>
@@ -120,6 +139,9 @@ class CkEditor extends Component {
                 handleCategoryChange={this.handleCategoryChange}
                 category={this.state.category}
               />
+              <HeaderImageSelector
+                openImageFinderModal={this.openImageFinderModal}
+                headerImageUrl={headerImageUrl}/>
             </div>
             <CKEditor
               activeClass="p10"
@@ -156,7 +178,19 @@ class CkEditor extends Component {
   }
 }
 
-export default withRouter(CkEditor);
+const mapState = (state, ownProps) => {
+  return { ...ownProps };
+};
+
+const actions = {
+  loadModal,
+  hideModal
+};
+
+export default connect(
+  mapState,
+  actions
+)(withRouter(CkEditor));
 
 async function loadAnnotation(self) {
   if (!self.annotator) {

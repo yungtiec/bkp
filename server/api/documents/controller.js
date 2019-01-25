@@ -278,6 +278,7 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
     documentToUpdate.category = req.body.category;
+    documentToUpdate.header_img_url = req.body.headerImageUrl;
     const document = await documentToUpdate.save();
     res.send(document);
   } catch (err) {

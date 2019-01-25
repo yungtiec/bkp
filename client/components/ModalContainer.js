@@ -10,6 +10,7 @@ import DependentSelectWidgetCreateModal from "../scenes/wizard/components/widget
 import ConfirmationModal from "../scenes/wizard/components/ConfirmationModal";
 import WizardDocumentPreviewModal from "../scenes/wizard/components/WizardDocumentPreviewModal";
 import CropImageModal from "./CropImageModal";
+import ImageFinderModal from "./ImageFinder/ImageFinder";
 
 /** Modal Type Constants **/
 const MODAL_COMPONENTS = {
@@ -20,7 +21,8 @@ const MODAL_COMPONENTS = {
   LOAD_SELECT_CREATABLE_MODAL: DependentSelectWidgetCreateModal,
   CONFIRMATION_MODAL: ConfirmationModal,
   WIZARD_DOCUMENT_PREVIEW_MODAL: WizardDocumentPreviewModal,
-  CROP_IMAGE_MODAL: CropImageModal
+  CROP_IMAGE_MODAL: CropImageModal,
+  IMAGE_FINDER_MODAL: ImageFinderModal
 };
 
 const styles = {
