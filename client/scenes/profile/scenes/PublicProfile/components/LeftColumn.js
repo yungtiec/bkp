@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
-import { ProfileDetails } from "./index";
+import { ProfileDetails } from "../../../components/index";
 import PropTypes from "prop-types";
 import moment from "moment";
 

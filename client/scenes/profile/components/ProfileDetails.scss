@@ -5,6 +5,21 @@ $text-lg-margin: 16px;
 .profile-details__name {
   font-weight: 600;
   margin-bottom: $text-sm-margin;
+  display: table;
+}
+
+.profile-details__toggle-scene {
+  font-size: 12px;
+  font-weight: 400;
+  color: #838383;
+  border: 1px solid #838383;
+  padding: 3px 5px;
+  border-radius: 4px;
+  display: table-cell;
+  line-height: 1.2;
+  vertical-align: middle;
+  position: relative;
+  left: 5px;
 }
 
 .profile-details__badge {
@@ -52,4 +67,24 @@ $text-lg-margin: 16px;
   background: #565656;
   color: white;
   margin-right: 5px;
+}
+
+.profile-details__badge-container {
+  margin-bottom: 1.5rem;
+}
+
+.profile-details--mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px 0;
+  .profile-details__user-handle,
+  .profile-details__badge-container {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.profile-details__show-more {
+  font-size: 13px;
 }
