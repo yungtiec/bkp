@@ -51,6 +51,11 @@ class ImageFinder extends Component {
               : <ImgList handleImageSelection={this.props.handleImageSelection} data={this.state.imgs} />}
           </div>
         </div>
+        <div className="image-finder-image__btns mt-4">
+          <button className="btn btn-outline-danger image-finder-image__btn" onClick={() => this.props.hideModal()}>
+            Cancel
+          </button>
+        </div>
       </Modal>
     )
   }

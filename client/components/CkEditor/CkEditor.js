@@ -94,7 +94,8 @@ class CkEditor extends Component {
 
   openImageFinderModal() {
     this.props.loadModal("IMAGE_FINDER_MODAL", {
-      handleImageSelection: this.handleImageSelection
+      handleImageSelection: this.handleImageSelection,
+      hideModal: this.props.hideModal
     });
   }
 
