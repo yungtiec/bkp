@@ -45,8 +45,11 @@ const EditProfile = ({
   match,
   profile,
   updateProfile,
-  updateAvatar
+  updateAvatar,
+  screenWidth
 }) => {
+  const inputWidth = screenWidth > 768 ? "w-50" : "w-100";
+
   return (
     <div className="user-settings__edit-profile w-100 mt-5">
       <Formsy
@@ -56,8 +59,8 @@ const EditProfile = ({
         onValid={() => {}}
         onInvalid={() => {}}
       >
-        <div className=" d-flex w-100">
-          <div className="w-50 pr-4">
+        <div className={screenWidth > 768 ? "d-flex w-100" : ""}>
+          <div className={`${inputWidth} ${screenWidth > 768 ? "pr-4" : ""}`}>
             <InputGrid
               type="input"
               label="Name"
@@ -170,7 +173,7 @@ const EditProfile = ({
             />
             <InputGrid type="input" label="Role" name="role" />
           </div>
-          <div className="w-50 pl-4">
+          <div className={`${inputWidth} ${screenWidth > 768 ? "pl-4" : ""}`}>
             <InputGrid
               type="input"
               label="LinkedIn"

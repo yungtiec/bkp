@@ -21,20 +21,23 @@ export default class HeroHeadline extends React.Component {
 
   render() {
     const { documentsById, featureDocumentIds } = this.props;
+    const hiddenOnXsSmScreenSize = "d-none d-sm-none d-md-block";
+    const hiddenOnMdLgXlScreenSize = "d-md-none d-lg-none d-xl-none";
+    const backupImgUrl =
+      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-1.2.1&auto=format&fit=crop&w=2492&q=80";
 
     return (
       <div className="feed__features d-flex ">
-        <div className="feed__feature-img-wrap">
+        <div className={`feed__feature-img-wrap ${hiddenOnXsSmScreenSize}`}>
           <img
             className="feed__feature-img"
             src={
               documentsById[featureDocumentIds[this.state.index]]
-                .header_img_url ||
-              "https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-1.2.1&auto=format&fit=crop&w=2492&q=80"
+                .header_img_url || backupImgUrl
             }
           />
         </div>
-        <div className="feed__feature-articles-container ml-5 d-flex align-items-baseline flex-column">
+        <div className="feed__feature-articles-container d-flex align-items-baseline flex-column">
           <div className="feed__feature-articles-navigation w-100 d-flex justify-content-between align-items-baseline">
             <div className="feed__sections-index">
               <span className="feed__sections-index-current">

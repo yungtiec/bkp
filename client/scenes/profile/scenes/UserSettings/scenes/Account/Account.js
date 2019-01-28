@@ -22,13 +22,14 @@ class Account extends React.Component {
       profile,
       updateAccount,
       updateUserPassword,
-      signinWithUport
+      signinWithUport,
+      screenWidth
     } = this.props;
 
     return (
       <div className="user-settings__edit-account w-100 mt-3">
         <div className=" d-flex w-100 justify-content-center">
-          <div className="w-50 pr-4">
+          <div className={`${screenWidth > 992 ? "w-50" : "w-100"}`}>
             <Formsy
               onValidSubmit={updateAccount}
               name="user-account"

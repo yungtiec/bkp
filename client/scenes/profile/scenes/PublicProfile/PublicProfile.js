@@ -17,20 +17,30 @@ class PublicProfile extends React.Component {
     script.defer = true;
     document.body.appendChild(script);
   }
+
   componentDidMount() {
     this.fetchVividIcon();
   }
 
   render() {
-    const { match, profile } = this.props;
+    const { match, profile, screenWidth } = this.props;
     return (
       <div className="app-container mt-3 pb-4 d-flex">
-        <LeftColumn gridClassnames="w-25" profile={profile} />
+        {screenWidth > 992 ? (
+          <LeftColumn
+            gridClassnames="w-25"
+            profile={profile}
+            screenWidth={screenWidth}
+          />
+        ) : null}
         <Switch>
           <Route
             path={`${match.url}/:tab`}
             render={() => (
-              <MainColumn profile={profile} gridClassnames="w-75" />
+              <MainColumn
+                profile={profile}
+                gridClassnames={screenWidth > 992 ? "w-75" : "w-100"}
+              />
             )}
           />
           <Redirect
@@ -46,6 +56,7 @@ class PublicProfile extends React.Component {
 
 const mapState = (state, ownProps) => ({
   profile: getUserProfile(state),
+  screenWidth: state.data.environment.width,
   ...ownProps
 });
 

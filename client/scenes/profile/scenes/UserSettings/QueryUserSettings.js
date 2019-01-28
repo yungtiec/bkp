@@ -37,7 +37,11 @@ class MyComponent extends React.Component {
 }
 
 const mapState = (state, ownProps) => {
-  return { profile: getUserProfile(state), ...ownProps };
+  return {
+    profile: getUserProfile(state),
+    screenWidth: state.data.environment.width,
+    ...ownProps
+  };
 };
 
 const actions = (dispatch, ownProps) => {

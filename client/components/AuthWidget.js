@@ -72,7 +72,10 @@ class AuthWidget extends Component {
             <Avatar
               name={name.trim() ? name : "?"}
               size={46}
-              src={user.avatar_url}
+              src={
+                user.avatar_url ||
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              }
               color={avatarColor}
               fgColor={avatarFgColor}
               onClick={this.toggleDropdown}

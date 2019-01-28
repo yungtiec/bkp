@@ -43,7 +43,7 @@ export default class DocumentFilterDropdown extends Component {
         <div className="feed__filter-item" onClick={this.toggleDropdown}>
           {label}
           {this.state.dropdown ? (
-            <div className="feed__filter-dropdown" ref={this.setWrapperRef}>
+            <div className={`feed__filter-dropdown feed__filter-dropdown-${name}`} ref={this.setWrapperRef}>
               {children}
             </div>
           ) : null}
