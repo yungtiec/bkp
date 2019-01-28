@@ -7,15 +7,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { notify } from "reapop";
 import { TabList } from "./index";
 
-const getParams = pathname => {
-  const match = matchPath(pathname, {
-    path: `/profile/:userhandle/:tab`,
-    exact: true,
-    strict: false
-  });
-  return (match && match.params) || {};
-};
-
 const PublicProfileNavbar = ({
   isMyProfile,
   match,
@@ -23,11 +14,17 @@ const PublicProfileNavbar = ({
   num_documents,
   num_comments,
   num_votes,
-  notify
+  notify,
+  mobile,
+  getParams
 }) => {
-  const routeParams = getParams(location.pathname);
+  const routeParams = getParams(`/profile/:userhandle/:tab`, location.pathname);
   return (
-    <div className="profile-navbar app-container d-flex justify-content-between align-items-center">
+    <div
+      className={`profile-navbar app-container d-flex justify-content-${
+        mobile ? "center" : "between"
+      } align-items-center`}
+    >
       <TabList
         tabType="stats"
         tabs={[
@@ -58,33 +55,35 @@ const PublicProfileNavbar = ({
         ]}
         currentTab={routeParams.tab}
       />
-      <div className="d-flex">
-        {isMyProfile && (
-          <Fragment>
-            <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
-              <i className="fas fa-cog profile__setting-btn" />
-            </Link>
-            <CopyToClipboard
-              text={`${window.location.origin}/profile/${
-                routeParams.userhandle
-              }`}
-              onCopy={() =>
-                notify({
-                  title: "Profile link copied to clipboard",
-                  message: "",
-                  status: "success",
-                  dismissible: true,
-                  dismissAfter: 3000
-                })
-              }
-            >
-              <button className="btn btn-outline-primary ml-2">
-                Share my profile
-              </button>
-            </CopyToClipboard>
-          </Fragment>
-        )}
-      </div>
+      {!mobile ? (
+        <div className="d-flex">
+          {isMyProfile && (
+            <Fragment>
+              <Link to={`/profile/${routeParams.userhandle}/settings`} exact>
+                <i className="fas fa-cog profile__setting-btn" />
+              </Link>
+              <CopyToClipboard
+                text={`${window.location.origin}/profile/${
+                  routeParams.userhandle
+                }`}
+                onCopy={() =>
+                  notify({
+                    title: "Profile link copied to clipboard",
+                    message: "",
+                    status: "success",
+                    dismissible: true,
+                    dismissAfter: 3000
+                  })
+                }
+              >
+                <button className="btn btn-outline-primary ml-2">
+                  Share my profile
+                </button>
+              </CopyToClipboard>
+            </Fragment>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };

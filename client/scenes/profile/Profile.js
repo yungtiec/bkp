@@ -1,12 +1,22 @@
 import "./Profile.scss";
+import "./components/ProfileHeader.scss";
 import React, { Component } from "react";
-import { withRouter, Switch, Route, Redirect } from "react-router-dom";
+import { withRouter, Switch, Route, matchPath } from "react-router-dom";
 import PropTypes from "prop-types";
-import { ProfileHeader } from "./components";
+import { ProfileHeader, MobileProfileHeader } from "./components";
 import { PublicProfile, UserSettings } from "./scenes";
 import { Unauthorized } from "../index";
 
-const Profile = ({ me, profile, match, location }) => {
+const getParams = (pathToCompare, pathname) => {
+  const match = matchPath(pathname, {
+    path: pathToCompare,
+    exact: true,
+    strict: false
+  });
+  return (match && match.params) || {};
+};
+
+const Profile = ({ me, profile, match, location, screenWidth }) => {
   const profileContext = location.pathname.split("/")[3];
   const isMyProfile = me.user_handle === profile.user_handle;
   const isInUserSettings = location.pathname.indexOf("/settings") !== -1;
@@ -15,12 +25,25 @@ const Profile = ({ me, profile, match, location }) => {
     <Unauthorized />
   ) : (
     <div className="profile">
-      <ProfileHeader
-        profileContext={profileContext}
-        isMyProfile={isMyProfile}
-        avatarUrl={profile.avatar_url}
-        name={profile.name}
-      />
+      {screenWidth > 992 ? (
+        <ProfileHeader
+          profileContext={profileContext}
+          isMyProfile={isMyProfile}
+          avatarUrl={profile.avatar_url}
+          name={profile.name}
+          getParams={getParams}
+        />
+      ) : (
+        <MobileProfileHeader
+          profileContext={profileContext}
+          isMyProfile={isMyProfile}
+          avatarUrl={profile.avatar_url}
+          name={profile.name}
+          profile={profile}
+          screenWidth={screenWidth}
+          getParams={getParams}
+        />
+      )}
       <Switch>
         {isMyProfile ? (
           <Route path={`${match.url}/settings`} component={UserSettings} />

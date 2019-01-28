@@ -3,19 +3,17 @@ import React, { Component } from "react";
 import { withRouter, matchPath, Link } from "react-router-dom";
 import { TabList } from "./index";
 
-const getParams = pathname => {
-  const match = matchPath(pathname, {
-    path: `/profile/:userhandle/settings/:tab`,
-    exact: true,
-    strict: false
-  });
-  return (match && match.params) || {};
-};
-
-const UserSettingsNavbar = ({ tab, match, location }) => {
-  const routeParams = getParams(location.pathname);
+const UserSettingsNavbar = ({ tab, match, location, getParams, mobile }) => {
+  const routeParams = getParams(
+    `/profile/:userhandle/settings/:tab`,
+    location.pathname
+  );
   return (
-    <div className="profile-navbar app-container d-flex justify-content-between align-items-center">
+    <div
+      className={`profile-navbar app-container d-flex justify-content-${
+        mobile ? "center" : "between"
+      } align-items-center`}
+    >
       <TabList
         tabType="label"
         tabs={[
@@ -32,9 +30,11 @@ const UserSettingsNavbar = ({ tab, match, location }) => {
         ]}
         currentTab={routeParams.tab}
       />
-      <Link className="btn btn-outline-primary" to={`${match.url}`}>
-        View my profile
-      </Link>
+      {mobile ? null : (
+        <Link className="btn btn-outline-primary" to={`${match.url}`}>
+          View my profile
+        </Link>
+      )}
     </div>
   );
 };
