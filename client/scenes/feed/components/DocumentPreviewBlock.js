@@ -6,9 +6,17 @@ import { Link } from "react-router-dom";
 // figure out extracting exercpt
 
 export default ({ document }) => (
-  <div className="document-preview__bloc d-flex align-items-stretch mb-5">
+  <Link
+    className="document-preview__bloc d-flex align-items-stretch mb-5"
+    to={`/s/${document.slug}`}
+  >
     <div className="document-preview__img-wrapper">
-      <a />
+      <a
+        style={{
+          backgroundImage: `url(${document.header_img_url ||
+            "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"})`
+        }}
+      />
     </div>
     <div className="document-preview__content ml-4">
       <h6>{document.category.replace(/-/g, " ")}</h6>
@@ -38,5 +46,5 @@ export default ({ document }) => (
         </div>
       </div>
     </div>
-  </div>
+  </Link>
 );
