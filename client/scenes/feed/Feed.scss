@@ -33,10 +33,13 @@
 }
 
 .feed__feature-img {
+  background-position: 50% 50% !important;
+  background-position: center !important;
+  background-origin: border-box !important;
+  background-size: cover !important;
   display: block;
-  position: absolute;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .feed__sections-index {
@@ -274,7 +277,6 @@
 }
 
 .document-preview__img-wrapper a {
-  background-image: url(https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80);
   background-position: 50% 50% !important;
   background-position: center !important;
   background-origin: border-box !important;

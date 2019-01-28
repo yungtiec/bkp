@@ -29,12 +29,13 @@ export default class HeroHeadline extends React.Component {
     return (
       <div className="feed__features d-flex ">
         <div className={`feed__feature-img-wrap ${hiddenOnXsSmScreenSize}`}>
-          <img
+          <a
             className="feed__feature-img"
-            src={
-              documentsById[featureDocumentIds[this.state.index]]
-                .header_img_url || backupImgUrl
-            }
+            style={{
+              backgroundImage: `url(${documentsById[
+                featureDocumentIds[this.state.index]
+              ].header_img_url || backupImgUrl})`
+            }}
           />
         </div>
         <div className="feed__feature-articles-container d-flex align-items-baseline flex-column">
