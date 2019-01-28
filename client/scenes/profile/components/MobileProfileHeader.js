@@ -33,6 +33,7 @@ export default ({
         />
       </div>
       <ProfileDetails
+        isMyProfile={isMyProfile}
         profile={profile}
         mobile={true}
       />
