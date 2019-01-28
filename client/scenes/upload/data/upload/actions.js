@@ -8,6 +8,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
     const state = getState();
     const {
       title,
+      headerImageUrl,
       contentHtml,
       collaboratorEmails,
       commentPeriodValue,
@@ -17,6 +18,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
     } = state.scenes.upload.data.upload;
     const document = await postHtml({
       title,
+      headerImageUrl,
       contentHtml,
       collaboratorEmails,
       commentPeriodValue,
@@ -68,4 +70,9 @@ export const updateContentHtml = contentHtml => ({
 export const updateTitle = title => ({
   type: types.TITLE_UPDATED,
   title
+});
+
+export const updateHeaderImageUrl = headerImageUrl => ({
+  type: types.HEADER_IMAGE_URL_UPDATED,
+  headerImageUrl
 });
