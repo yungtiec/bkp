@@ -18,7 +18,7 @@ const getParams = (pathToCompare, pathname) => {
 
 const Profile = ({ me, profile, match, location, screenWidth }) => {
   const profileContext = location.pathname.split("/")[3];
-  const isMyProfile = me.user_handle === profile.user_handle;
+  const isMyProfile = me && me.user_handle === profile.user_handle;
   const isInUserSettings = location.pathname.indexOf("/settings") !== -1;
 
   return !isMyProfile && isInUserSettings ? (
