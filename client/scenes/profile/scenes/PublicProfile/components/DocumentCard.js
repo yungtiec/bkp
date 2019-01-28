@@ -8,17 +8,22 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import history from "../../../../../history";
 
+const goToDocument = (e, document) => {
+  if (e.target.className.indexOf("document-card__profile-link") !== -1) return;
+  history.push(`/s/${document.slug}`);
+};
+
 export default ({ cid, document }) => (
   <ListItemBase
     key={cid || document.id}
     icon="file"
     titleElement={<a>{document.title}</a>}
-    onClick={() => history.push(`/s/${document.slug}`)}
+    onClick={e => goToDocument(e, document)}
     subtitleElements={[
       <Fragment>
         <span>Posted by</span>
         <Link
-          className="text-primary"
+          className="text-primary document-card__profile-link"
           to={`/profile/@${document.documentPostedBy}`}
         >
           @{document.documentPostedBy}

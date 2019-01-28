@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 // figure out extracting exercpt
 
 export default ({ document }) => (
-  <div className="document-preview__bloc d-flex align-items-stretch mb-5">
+  <Link
+    className="document-preview__bloc d-flex align-items-stretch mb-5"
+    to={`/s/${document.slug}`}
+  >
     <div className="document-preview__img-wrapper">
       <a
         style={{
@@ -43,5 +46,5 @@ export default ({ document }) => (
         </div>
       </div>
     </div>
-  </div>
+  </Link>
 );
