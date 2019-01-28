@@ -15,12 +15,15 @@ import {
   updateSelectedProject,
   updateProjectScorecard,
   updateContentHtml,
-  updateTitle
+  updateTitle,
+  updateHeaderImageUrl
 } from "./data/upload/actions";
 import {
   fetchAllProjects,
   fetchManagedProjects,
-  getManagedProjects
+  getManagedProjects,
+  loadModal,
+  hideModal
 } from "../../data/reducer";
 import { notify } from "reapop";
 
@@ -58,7 +61,6 @@ class MyComponent extends React.Component {
 const mapState = state => {
   const { projectsBySymbol, projectSymbolArr } = getManagedProjects(state);
   const {
-    title,
     contentHtml,
     selectedProject,
     collaboratorEmails,
@@ -66,6 +68,8 @@ const mapState = state => {
     versionNumber,
     commentPeriodUnit,
     commentPeriodValue,
+    title,
+    headerImageUrl,
     scorecard,
     scorecardCompleted
   } = getUploadMetadata(state);
@@ -86,11 +90,14 @@ const mapState = state => {
     projectsBySymbol,
     projectSymbolArr,
     contentHtml,
-    title
+    title,
+    headerImageUrl
   };
 };
 
 const actions = {
+  loadModal,
+  hideModal,
   fetchManagedProjects,
   uploadHtmlToServer,
   updateCollaborators,
@@ -103,7 +110,8 @@ const actions = {
   fetchAllProjects,
   updateProjectScorecard,
   updateContentHtml,
-  updateTitle
+  updateTitle,
+  updateHeaderImageUrl
 };
 
 export default withRouter(connect(mapState, actions)(MyComponent));

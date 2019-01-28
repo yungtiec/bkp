@@ -483,6 +483,7 @@ const createDocumentFromHtml = async (req, res, next) => {
 
   const document = await Document.create({
     title: req.body.title,
+    header_img_url: req.body.headerImageUrl,
     creator_id: req.user.id,
     project_id: project.id,
     comment_until_unix: commentUntilInUnix,

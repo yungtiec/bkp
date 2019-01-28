@@ -18,6 +18,7 @@ import {
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import CKEditor from 'react-ckeditor-component';
+import HeaderImageSelector from '../document/scenes/Document/components/HeaderImageSelector';
 
 class Upload extends Component {
   constructor(props) {
@@ -30,7 +31,8 @@ class Upload extends Component {
       scorecardError: false,
       isScorecard: false,
       uploadClicked: false,
-      content: this.props.contentHtml
+      content: this.props.contentHtml,
+      headerImageUrl: ''
     };
   }
 
@@ -81,6 +83,18 @@ class Upload extends Component {
     this.props.updateContentHtml(newContent)
   }
 
+  handleImageSelection(headerImageUrl) {
+    this.props.updateHeaderImageUrl(headerImageUrl);
+    this.props.hideModal();
+  }
+
+  openImageFinderModal() {
+    this.props.loadModal("IMAGE_FINDER_MODAL", {
+      handleImageSelection: this.handleImageSelection,
+      hideModal: this.props.hideModal
+    });
+  }
+
   handleAccordionChange(key) {
     if (key > 0)
       this.setState(prevState => ({
@@ -129,7 +143,7 @@ class Upload extends Component {
     else
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: (prevState.activeAccordionItemId + 1) % 6,
+        activeAccordionItemId: (prevState.activeAccordionItemId + 1) % 7,
         scorecardError: false,
         projectError: !this.props.selectedProject
       }));
@@ -156,8 +170,6 @@ class Upload extends Component {
       projectsBySymbol,
       projectSymbolArr,
       importedMarkdown,
-      importMarkdown,
-      uploadMarkdownToServer,
       versionNumber,
       collaboratorOptions,
       updateCollaborators,
@@ -169,7 +181,8 @@ class Upload extends Component {
       updateProjectScorecard,
       sidebarOpen,
       toggleSidebar,
-      scorecardCompleted
+      scorecardCompleted,
+      headerImageUrl
     } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
@@ -327,9 +340,37 @@ class Upload extends Component {
                   </p>
                 </div>
                 <input type="text" name="name" onChange={this.handleTitleChange} />
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={this.next}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
               </AccordionItemBody>
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+              <AccordionItemTitle>
+                <p className="upload-accordion__item-header">
+                  header image
+                </p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <HeaderImageSelector
+                  openImageFinderModal={this.openImageFinderModal}
+                  headerImageUrl={headerImageUrl}/>
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={this.next}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Content
@@ -400,6 +441,20 @@ class Upload extends Component {
                 <Step
                   title="title"
                   description="set document title"
+                  status={
+                    this.state.scorecardError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 4 ? "finish" : "wait"
+                  }
+                />
+                <Step
+                  title="header image"
+                  description="set document header image"
+                  status={
+                    this.state.scorecardError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 5 ? "finish" : "wait"
+                  }
                 />
                 <Step
                   title="content"
@@ -407,7 +462,7 @@ class Upload extends Component {
                   status={
                     !importedMarkdown
                       ? "wait"
-                      : this.state.activeAccordionItemId === 5
+                      : this.state.activeAccordionItemId === 6
                         ? "finish"
                         : "wait"
                   }
