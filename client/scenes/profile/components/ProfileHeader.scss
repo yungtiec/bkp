@@ -8,10 +8,22 @@ $profile-avatar-z-index: 4;
   transition: height 0.3s;
   position: relative;
   box-sizing: content-box;
+  @include breakpoint(xs) {
+    height: inherit;
+  }
+  @include breakpoint(sm) {
+    height: inherit;
+  }
 }
 
 .profile-header--with-nav {
   padding-bottom: 66px;
+  @include breakpoint(xs) {
+    padding-bottom: inherit;
+  }
+  @include breakpoint(sm) {
+    padding-bottom: inherit;
+  }
 }
 
 .profile-banner {
@@ -33,6 +45,12 @@ $profile-avatar-z-index: 4;
   height: 66px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
   padding-left: 33%;
+  @include breakpoint(xs) {
+    padding-left: inherit;
+  }
+  @include breakpoint(sm) {
+    padding-left: inherit;
+  }
 }
 
 .profile-avatar__container {
@@ -53,4 +71,9 @@ $profile-avatar-z-index: 4;
 .profile__setting-btn {
   padding: 15px;
   cursor: pointer;
+
+  @include breakpoint(xs) {
+    font-size: 17px;
+    padding: 0.25rem !important;
+  }
 }

@@ -1,7 +1,7 @@
 @import "../../breakpoint";
 
 .feed__header {
-  margin: 80px auto 50px auto;
+  margin: 80px 10px 50px 10px;
 }
 
 .feed__header-title {
@@ -9,11 +9,17 @@
   font-weight: 600;
   letter-spacing: 2px;
   margin-bottom: 12px;
+  @include breakpoint(xs) {
+    font-size: 34px;
+  }
 }
 
 .feed__header-subtitle {
   font-size: 24px;
   font-weight: 300;
+  @include breakpoint(xs) {
+    font-size: 20px;
+  }
 }
 
 .feed__feature-img-wrap {
@@ -73,15 +79,17 @@
   font-size: 40px;
 }
 
-@include breakpoint(0, 992) {
-  .feed__sections-index {
-    margin: auto;
-    width: 170px;
-  }
-}
-
 .feed__feature-articles-container {
   width: 50%;
+  margin-left: 3rem;
+  @include breakpoint(xs) {
+    width: 100%;
+    margin: 0 10px;
+  }
+  // @include breakpoint(sm) {
+  //   width: 100%;
+  //   margin: 0 10px;
+  // }
 }
 
 .feed__feature-articles-nav-btns {
@@ -119,6 +127,7 @@
 .feed__filter {
   border-top: 1px solid #e6eaea;
   border-bottom: 1px solid #e6eaea;
+  flex-wrap: wrap;
 }
 
 .feed__filter-item {
@@ -134,6 +143,56 @@
   text-align: center;
   border-right: 1px solid #e6eaea;
   cursor: pointer;
+  @include breakpoint(sm) {
+    text-align: left;
+    min-width: 25%;
+    border-bottom: 1px solid #e6eaea;
+  }
+  @include breakpoint(xs) {
+    text-align: left;
+    min-width: 30%;
+    border-bottom: 1px solid #e6eaea;
+    padding: 0 10px;
+  }
+}
+
+.feed__filter-search {
+  flex: 1;
+  border-right: none;
+  justify-self: flex-start;
+  align-self: flex-start;
+  text-align: left;
+  border-bottom: 0px;
+}
+
+.feed__filter-search i {
+  font-size: 15px;
+}
+
+.feed__filter-search-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 69px;
+  line-height: 74px;
+  padding: 0 20px;
+  border: 0;
+  background-color: transparent;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  margin-bottom: -2px;
+  font-weight: 800;
+  @include breakpoint(xs) {
+    padding: 0px;
+  }
+}
+
+.feed__filter-search-input:focus {
+  outline: none;
 }
 
 .feed__filter-dropdown {
@@ -147,6 +206,20 @@
   text-align: initial;
   padding: 20px 20px 12px 20px;
   line-height: 14px;
+  z-index: 2;
+}
+
+.feed__filter-dropdown-category {
+  @include breakpoint(xs) {
+    left: inherit;
+    right: 0;
+  }
+}
+
+.feed__filter-dropdown-order {
+  @include breakpoint(xs) {
+    left: -80px;
+  }
 }
 
 .feed__filter-option {
@@ -170,18 +243,9 @@
 .feed__filter-label {
   font-weight: 800;
   cursor: inherit;
-}
-
-.feed__filter-search {
-  flex: 1;
-  border-right: none;
-  justify-self: flex-start;
-  align-self: flex-start;
-  text-align: left;
-}
-
-.feed__filter-search i {
-  font-size: 15px;
+  @include breakpoint(xs) {
+    min-width: 20%;
+  }
 }
 
 .feed__filter-clear {
@@ -202,6 +266,11 @@
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 200px;
+  @include breakpoint(xs) {
+    width: 80px;
+    height: 80px;
+    margin-top: 10px;
+  }
 }
 
 .document-preview__img-wrapper a {
@@ -236,7 +305,7 @@
   letter-spacing: 0.2px;
   color: rgb(0, 0, 0);
   cursor: pointer;
-  font: 500 20px/28px Roboto, sans-serif;
+  font: 500 18px/28px Roboto, sans-serif;
 }
 
 .document-preview__content p {
@@ -246,6 +315,10 @@
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical;
+  @include breakpoint(xs) {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
 }
 
 .document-preview__content-bottom {
@@ -257,26 +330,11 @@
   color: #838383;
 }
 
-// search
-.feed__filter-search-input {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  height: 69px;
-  line-height: 74px;
-  padding: 0 20px;
-  border: 0;
-  background-color: transparent;
-  font-size: 13px;
-  text-transform: uppercase;
-  margin-top: 2px;
-  margin-bottom: -2px;
-  font-weight: 800;
-}
-
-.feed__filter-search-input:focus {
-  outline: none;
+.document-preview__content-bottom .contribution__action-btn {
+  @include breakpoint(xs) {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 12px;
+    padding: 6px;
+  }
 }

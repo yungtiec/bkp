@@ -28,7 +28,16 @@ class MyComponent extends React.Component {
     super(props);
   }
 
+  fetchVividIcon() {
+    const script = document.createElement("script");
+    script.src = "https://unpkg.com/vivid-icons";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
   componentDidMount() {
+    this.fetchVividIcon();
     this.props.fetchUserProfile(this.props.match.params.userHandle.slice(1));
   }
 
@@ -49,7 +58,8 @@ class MyComponent extends React.Component {
 const mapState = state => {
   return {
     profile: getUserProfile(state),
-    me: state.data.user
+    me: state.data.user,
+    screenWidth: state.data.environment.width
   };
 };
 
