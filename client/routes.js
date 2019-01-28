@@ -119,13 +119,11 @@ class Routes extends Component {
             component={Unauthorized}
           />
           <Route path="/landing" component={Landing} />
-          {isLoggedIn && (
-            <RouteWithLayout
-              layout={LayoutWithNav}
-              path="/profile/:userHandle"
-              component={Profile}
-            />
-          )}
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            path="/profile/:userHandle"
+            component={Profile}
+          />
           {isLoggedIn && (
             <RouteWithLayout
               layout={LayoutWithNav}

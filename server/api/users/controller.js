@@ -41,11 +41,13 @@ const getUsers = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const requestedUser = await User.findById(req.user.id);
+    var requestedUser;
+    if (req.user) requestedUser = await User.findById(req.user.id);
     const profile = await User.getContributions({
       userHandle: req.params.userHandle,
       includePrivateInfo:
         req.params.userHandle &&
+        requestedUser &&
         req.params.userHandle === requestedUser.user_handle
     });
     res.send(profile);
