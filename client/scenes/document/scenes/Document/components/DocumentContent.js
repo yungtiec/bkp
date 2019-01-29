@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Element } from "react-scroll";
-import { Qna, Question, Answers, VersionScorecard } from "./index";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/actions.js";

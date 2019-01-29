@@ -52,6 +52,9 @@ module.exports = (db, DataTypes) => {
     content_html: {
       type: DataTypes.TEXT
     },
+    scorecard: {
+      type: DataTypes.JSON
+    },
     category: {
       type: DataTypes.STRING
     },
@@ -194,6 +197,7 @@ module.exports = (db, DataTypes) => {
         "comment_until_unix",
         "slug",
         "content_html",
+        "scorecard",
         "category",
         "header_img_url",
         "creator_id",
