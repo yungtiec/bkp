@@ -17,6 +17,7 @@ import CategorySelect from "../../scenes/document/scenes/Document/components/Cat
 import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
 import $ from "jquery";
 import { loadModal, hideModal } from "../../data/reducer";
+import { ScorecardTable } from "../index";
 
 class CkEditor extends Component {
   constructor(props) {
@@ -85,11 +86,14 @@ class CkEditor extends Component {
   }
 
   handleImageSelection(image) {
-    this.setState({
-      headerImageUrl: image
-    }, () => {
-      this.props.hideModal();
-    });
+    this.setState(
+      {
+        headerImageUrl: image
+      },
+      () => {
+        this.props.hideModal();
+      }
+    );
   }
 
   openImageFinderModal() {
@@ -142,7 +146,8 @@ class CkEditor extends Component {
               />
               <HeaderImageSelector
                 openImageFinderModal={this.openImageFinderModal}
-                headerImageUrl={headerImageUrl}/>
+                headerImageUrl={headerImageUrl}
+              />
             </div>
             <CKEditor
               activeClass="p10"
@@ -159,6 +164,9 @@ class CkEditor extends Component {
               className="markdown-body"
               onClick={this.handleAnnotationInContentOnClick}
             >
+              {documentMetadata.document_type === "legacy_scorecard" ? (
+                <ScorecardTable scorecard={documentMetadata.scorecard} />
+              ) : null}
               {ReactHtmlParser(content)}
             </div>
           </div>
