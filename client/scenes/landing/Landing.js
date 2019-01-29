@@ -3,6 +3,18 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../data/reducer";
+import $ from "jquery";
+
+const goToSection = sectionClass => {
+  var offset = $(sectionClass).offset();
+  offset &&
+    $("html, body").animate(
+      {
+        scrollTop: offset.top
+      },
+      200
+    );
+};
 
 const Landing = ({ user, logout }) => (
   <div className="landing">
@@ -30,9 +42,7 @@ const Landing = ({ user, logout }) => (
                   </Link>
                   <a
                     class="btn btn-landing btn-xl ml-2"
-                    href="https://static1.squarespace.com/static/5a329be3d7bdce9ea2f3a738/t/5b9a09b50ebbe8e9409e291a/1536821696423/The+Brooklyn+Project%E2%80%94Framework+Version+1+09_06_18.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => goToSection(".get-involved")}
                   >
                     get involved
                   </a>
@@ -131,7 +141,7 @@ const Landing = ({ user, logout }) => (
                 Sign up here
               </a>&nbsp;to get involved or stay updated.
             </p>
-            <h3>{" "}</h3>
+            <h3> </h3>
             <h3>Resources</h3>
             <ul>
               <li>
