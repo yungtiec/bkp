@@ -76,6 +76,12 @@ const DocumentFilter = ({
               {option.label}
             </span>
           ))}
+          <span
+            className={`feed__filter-option`}
+            onClick={() => clearFilter("category")}
+          >
+            clear
+          </span>
         </Fragment>
       </DocumentFilterDropdown>
       <DocumentSearch

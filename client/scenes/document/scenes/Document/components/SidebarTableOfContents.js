@@ -4,7 +4,6 @@ import { Link as ScrollLink, Element } from "react-scroll";
 import $ from "jquery";
 
 const goToEntryInTableOfContent = heading => {
-  console.log(heading);
   var offset = $(heading).offset();
   offset &&
     $("html, body").animate(
@@ -24,7 +23,6 @@ export default ({ versionQnasById, versionQnaIds }) => {
         <p className="sidebar__title">Table of Contents</p>
       </div>
       {$.map(headings, heading => {
-        console.log(heading);
         return (
           <div
             className={"table-of-content__item table-of-content__section-title"}
