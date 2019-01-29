@@ -111,13 +111,13 @@ const Landing = ({ user, logout }) => (
             <h2>Want to join The Brooklyn Project?</h2>
             <p>
               Provide comments, suggestions and feedback on the{" "}
-              <a href="http://bit.ly/CFTC-12-2018-RFC" target="_blank">
+              <Link to="/s/Request-for-Input-on-Crypto-asset-Mechanics-and-Markets-3c854acc643b">
                 CFTC’s December 2018 Request for Input
-              </a>.
+              </Link>.
             </p>
             <p>
               Join other{" "}
-              <a href="https://collaborate.thebkp.com" target="_blank">
+              <a href="/feed" target="_blank">
                 Open Collaborations
               </a>.
             </p>
@@ -227,7 +227,7 @@ const Landing = ({ user, logout }) => (
               <li>
                 <p>
                   See many other resources on{" "}
-                  <a href="https://collaborate.thebkp.com" target="_blank">
+                  <a href="/feed" target="_blank">
                     Open Collaboration Platform
                   </a>.{" "}
                 </p>
