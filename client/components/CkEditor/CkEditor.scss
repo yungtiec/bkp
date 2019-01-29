@@ -75,3 +75,9 @@
 .header-image-selector {
   width: 15%;
 }
+
+@media (max-width: 767px) {
+  .header-image-selector {
+    width: 75%;
+  }
+}
