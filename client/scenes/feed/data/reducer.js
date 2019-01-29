@@ -77,11 +77,10 @@ export default function(state = initialState, action) {
           filters: initialState.filters
         };
       else {
-        filters = cloneDeep(filters);
-        filters[action.key] = null;
+        state = cloneDeep(state);
+        state.filters[action.key] = null;
         return {
-          ...state,
-          filters
+          ...state
         };
       }
     default:
