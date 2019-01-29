@@ -447,6 +447,12 @@
     margin-block-end: 0.83em;
   }
 
+  @media screen and (max-width: 768px) {
+    .get-involved h2 {
+      font-size: 34px;
+    }
+  }
+
   .get-involved p {
     font-weight: 300;
     white-space: pre-wrap;
