@@ -13,7 +13,7 @@ const rp = require("request-promise");
 const _ = require("lodash");
 const cheerio = require("cheerio");
 const showdown = require("showdown");
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({ tables: true });
 const { createSlug } = require("../server/api/utils");
 
 const migrate = async () => {
@@ -83,10 +83,16 @@ const mapData = async document => {
           ? dataMovingFromVersionToDocument.version_slug
           : documentSlug,
         content_html: contentHtml,
-        category: category ? newCategoryNames[category] : "thought-leadership",
+        category:
+          _.values(newCategoryNames).indexOf(document.category) !== -1
+            ? document.category
+            : category
+              ? newCategoryNames[category]
+              : "thought-leadership",
         document_type: !_.isEmpty(version.scorecard)
           ? "legacy_scorecard"
-          : "html"
+          : "html",
+        scorecard: _.isEmpty(version.scorecard) ? null : version.scorecard
       })
     );
     return await updateCommentForeignKey(comments, document.id);

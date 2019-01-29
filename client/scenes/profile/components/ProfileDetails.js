@@ -106,9 +106,8 @@ class ProfileDetails extends Component {
   }
 
   render() {
-    const { match, profile, mobile, location } = this.props;
+    const { match, profile, mobile, location, isMyProfile } = this.props;
     const routeParams = getParams(location.pathname);
-    console.log(routeParams);
 
     return (
       <div
@@ -116,7 +115,7 @@ class ProfileDetails extends Component {
       >
         <h5 className="profile-details__name ">
           {profile.name}{" "}
-          {mobile ? (
+          {mobile && isMyProfile ? (
             routeParams.scene !== "settings" ? (
               <Link
                 to={`${match.url}/settings`}

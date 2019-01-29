@@ -2,7 +2,7 @@
   "development": {
     "username": "yungtienchu",
     "password": null,
-    "database": "bkp-annotation-migration",
+    "database": "bkp-production-backup-1",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "logging": false

@@ -45,3 +45,4 @@ export {
   default as WizardDocumentViewer
 } from "./WizardDocumentViewer/WizardDocumentViewer";
 export { default as ArticleStyleLoader } from "./ArticleStyleLoader";
+export { default as ScorecardTable } from "./ScorecardTable";

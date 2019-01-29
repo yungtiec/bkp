@@ -34,7 +34,7 @@ router.get("/", ensureAuthentication, userController.getUsers);
  */
 router.get(
   "/:userHandle",
-  ensureAuthentication,
+  // ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUser
 );
@@ -82,7 +82,7 @@ router.get(
  */
 router.get(
   "/:userHandle/contributions",
-  ensureAuthentication,
+  // ensureAuthentication,
   // ensureCorrectRole,
   userController.getUserContributions
 );
@@ -98,7 +98,7 @@ router.get(
  */
 router.get(
   "/:userHandle/documents",
-  ensureAuthentication,
+  // ensureAuthentication,
   // ensureCorrectRole,
   userController.getUserDocuments
 );
@@ -135,7 +135,7 @@ router.get(
  */
 router.get(
   "/:userHandle/comments",
-  ensureAuthentication,
+  // ensureAuthentication,
   // nothing senstiive here, we can let users decide what to diclose in their profile later on
   userController.getUserComments
 );
@@ -151,7 +151,7 @@ router.get(
  */
 router.get(
   "/:userHandle/votes",
-  ensureAuthentication,
+  // ensureAuthentication,
   // ensureCorrectRole,
   userController.getUserVotes
 );
