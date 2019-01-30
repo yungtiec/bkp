@@ -36,6 +36,7 @@ class ImageFinder extends Component {
     return (
       <Modal
         isOpen={true}
+        onRequestClose={this.props.hideModal}
         contentLabel="ImageFinderModal"
         className="image-finder-modal"
       >
