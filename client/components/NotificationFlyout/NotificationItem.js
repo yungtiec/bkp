@@ -14,7 +14,7 @@ export default ({ handleClick, message, createdAt, sender, status }) => (
         <Avatar
           className="notification-item__user-avatar"
           name={sender.displayName || sender.user_handle}
-          src={sender.avatar_url}
+          src={sender.avatar_url || "/assets/blank-avatar.png"}
           color={"#999999"}
           size={50}
           onClick={() => history.push(`/profile/@${sender.user_handle}`)}
