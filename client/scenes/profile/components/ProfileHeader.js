@@ -21,7 +21,7 @@ export default ({
               size={190}
               src={
                 avatarUrl ||
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                "/assets/blank-avatar.png"
               }
               color={"#459DF9"}
               fgColor={"#ffffff"}
