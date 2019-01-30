@@ -181,7 +181,6 @@
   flex: 1;
   height: 69px;
   line-height: 74px;
-  padding: 0 20px;
   border: 0;
   background-color: transparent;
   font-size: 13px;
@@ -214,6 +213,10 @@
 
 .feed__filter-dropdown-category {
   @include breakpoint(xs) {
+    left: inherit;
+    right: 0;
+  }
+  @include breakpoint(sm) {
     left: inherit;
     right: 0;
   }
