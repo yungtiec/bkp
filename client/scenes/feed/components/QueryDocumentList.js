@@ -21,7 +21,8 @@ class QueryDocumentList extends React.Component {
   }
 
   render() {
-    if (!this.props.documentIds) return <ArticleStyleLoader />;
+    if (!this.props.documentIds)
+      return <ArticleStyleLoader mobile={this.props.mobile} />;
     else return <DocumentList {...this.props} />;
   }
 }
@@ -32,7 +33,8 @@ const mapState = (state, ownProps) => {
   return {
     documentIds,
     documentsById,
-    endOfResult
+    endOfResult,
+    mobile: state.data.environment.mobile
   };
 };
 

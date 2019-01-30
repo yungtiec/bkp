@@ -17,8 +17,9 @@ class QueryHeroHeadline extends React.Component {
   }
 
   render() {
-    if (!this.props.featureDocumentIds) return <ArticleStyleLoader />;
-    else return <HeroHeadline {...this.props} />;
+    // if (!this.props.featureDocumentIds)
+      return <ArticleStyleLoader mobile={this.props.mobile} headline={true} />;
+    // else return <HeroHeadline {...this.props} />;
   }
 }
 
@@ -27,7 +28,8 @@ const mapState = (state, ownProps) => {
 
   return {
     documentsById,
-    featureDocumentIds
+    featureDocumentIds,
+    mobile: state.data.environment.mobile
   };
 };
 
