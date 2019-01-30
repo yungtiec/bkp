@@ -326,8 +326,8 @@ const putCommentIssueStatus = async (req, res, next) => {
         sender: "",
         comment,
         messageFragment: `${req.user.name} closed your issue in ${
-          comment.doc.document.project.symbol
-        }/${comment.doc.document.title}.`
+          comment.document.project.symbol
+        }/${comment.document.title}.`
       });
     }
     if (req.body.open && req.user.id !== comment.owner_id) {
@@ -335,8 +335,8 @@ const putCommentIssueStatus = async (req, res, next) => {
         sender: "",
         comment,
         messageFragment: `${req.user.name} opened an issue on your comment in ${
-          comment.doc.document.project.symbol
-        }/${comment.doc.document.title}.`
+          comment.document.project.symbol
+        }/${comment.document.title}.`
       });
     }
 
