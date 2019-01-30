@@ -12,7 +12,7 @@ const scorecardOrder = [
   "token_safety_and_security",
   "marketing_practices",
   "protecting_and_empowering_consumers",
-  "compliance_with_application_laws"
+  "compliance_with_applicable_laws"
 ];
 
 export default ({ scorecard }) => (

@@ -8,7 +8,7 @@ module.exports = {
         [
           {
             id: 4,
-            title: "Consumer Token Framework v0.4",
+            title: "Consumer Token Framework",
             project_id: 1,
             creator_id: 1,
             latest_version: 1,
@@ -21,7 +21,17 @@ module.exports = {
       )
       .then(() => {
         return queryInterface.sequelize.query(
+          `UPDATE documents SET title = 'Consumer Token Framework v0.4' WHERE id = 1`
+        );
+      })
+      .then(() => {
+        return queryInterface.sequelize.query(
           'UPDATE versions SET document_id = 4, "hierarchyLevel" = 1, "parentId" = NULL WHERE id = 2'
+        );
+      })
+      .then(() => {
+        return queryInterface.sequelize.query(
+          "UPDATE comments SET doc_id = 4 WHERE version_id = 2"
         );
       });
   },
