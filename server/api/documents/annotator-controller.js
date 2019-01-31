@@ -1,12 +1,12 @@
 const {
-        Comment,
-        Tag,
-        Issue,
-        User,
-        Role,
-        Version,
-        Document
-      } = require("../../db/models");
+  Comment,
+  Tag,
+  Issue,
+  User,
+  Role,
+  Version,
+  Document
+} = require("../../db/models");
 const { assignIn, pick } = require("lodash");
 const { IncomingWebhook } = require("@slack/client");
 const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
@@ -20,9 +20,9 @@ const sendNotificationToSlack = annotation => {
     webhook.send(
       `Incoming annotation at ${annotation.uri}/question/${
         annotation.version_question_id
-        }/comment/${
+      }/comment/${
         annotation.id
-        }\nor view it in your admin panel at https://tbp-annotator.herokuapp.com/admin`,
+      }\nor view it in your admin panel at https://tbp-annotator.herokuapp.com/admin`,
       function(err, res) {
         if (err) {
           console.log("Error:", err);
@@ -62,19 +62,19 @@ const getAnnotatedComments = async (req, res, next) => {
 const postAnnotatedComment = async (req, res, next) => {
   try {
     const {
-            ranges,
-            quote,
-            text,
-            uri,
-            version_question_id,
-            version_id,
-            tags
-          } = req.body;
+      ranges,
+      quote,
+      text,
+      uri,
+      version_question_id,
+      version_id,
+      tags
+    } = req.body;
     const { doc_id } = req.params;
     const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
-    const document = await Document.findById(doc_id,);
+    const document = await Document.findById(doc_id);
     const isClosedForComment =
-            Number(document.comment_until_unix) - Number(moment().format("x")) <= 0;
+      Number(document.comment_until_unix) - Number(moment().format("x")) <= 0;
     if (isClosedForComment) {
       res.sendStatus(404);
       return;

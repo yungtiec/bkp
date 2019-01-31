@@ -15,17 +15,40 @@ const cheerio = require("cheerio");
 const showdown = require("showdown");
 const converter = new showdown.Converter({ tables: true });
 const { createSlug } = require("../server/api/utils");
+const fs = require("fs");
+const csv_parse = require("csv-parse");
+const parse = Promise.promisify(csv_parse);
 
 const migrate = async () => {
   try {
     await db.sync();
     await mapDocumentData();
+    await migrateAnnotationRanges();
     db.close();
   } catch (error) {
     console.log(error);
     db.close();
   }
 };
+
+async function migrateAnnotationRanges() {
+  const annotationCsv = fs.readFileSync("./data/migrate-annotation-ranges.csv");
+  var rows = await parse(annotationCsv, {
+    columns: true,
+    cast: false
+  });
+  return Promise.map(rows, row =>
+    Comment.findById(Number(row.comment)).then(comment => {
+      return comment
+        ? comment.update({
+            ranges: JSON.parse(
+              `[${unescape(row.ranges.replace(/\\/g, ``)).slice(2, -2)}]`
+            )
+          })
+        : null;
+    })
+  );
+}
 
 const mapDocumentData = async () => {
   var documents = await Document.findAll({
