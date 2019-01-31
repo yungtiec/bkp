@@ -5,7 +5,8 @@ export default ({
   documentIds,
   documentsById,
   fetchFilteredDocumentsWithStats,
-  endOfResult
+  endOfResult,
+  additionalDocumentsLoading
 }) => (
   <Fragment>
     {documentIds.map(id => (
@@ -17,7 +18,7 @@ export default ({
           className="btn btn-primary"
           onClick={fetchFilteredDocumentsWithStats}
         >
-          Load more
+          {additionalDocumentsLoading ? "Loading" : "Load more"}
         </button>
       ) : null}
     </div>

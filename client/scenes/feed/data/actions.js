@@ -10,7 +10,7 @@ export const fetchFeatureDocuments = () => async (dispatch, getState) => {
     const featureDocumentIds = featureDocuments.map(fd => fd.id);
 
     dispatch({
-      type: types.FEATURE_DOCUMENTS_FETCHED_SUCESSS,
+      type: types.FEATURE_DOCUMENTS_FETCH_SUCESSS,
       documentsById,
       featureDocumentIds
     });
@@ -69,8 +69,16 @@ async function dispatchFetchFilteredDocumentsWithStats({
 }) {
   const state = getState();
   var { offset, limit, filters } = state.scenes.feed.data;
+
   if (!loadMore) {
     offset = 0;
+    dispatch({
+      type: types.DOCUMENTS_REQUESTED
+    });
+  } else {
+    dispatch({
+      type: types.ADDITIONAL_DOCUMENTS_REQUESTED
+    });
   }
   var { count, documents } = await getFilteredDocumentsWithStats({
     offset,
@@ -80,7 +88,7 @@ async function dispatchFetchFilteredDocumentsWithStats({
   const documentsById = keyBy(documents.rows, "id");
   const documentIds = documents.rows.map(fd => fd.id);
   dispatch({
-    type: types.DOCUMENTS_FETCHED_SUCESSS,
+    type: types.DOCUMENTS_FETCH_SUCESSS,
     documentsById,
     documentIds,
     offset: offset + limit,

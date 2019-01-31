@@ -8,7 +8,8 @@ import Loadable from "react-loadable";
 import { fetchFilteredDocumentsWithStats } from "../data/actions";
 import {
   getFilteredDocuments,
-  getFilteredDocumentsOffsetAndLimit
+  getFilteredDocumentsOffsetAndLimit,
+  getFilteredDocumentsLoadingStatus
 } from "../data/reducer";
 import DocumentList from "./DocumentList";
 
@@ -22,7 +23,7 @@ class QueryDocumentList extends React.Component {
   }
 
   render() {
-    if (!this.props.documentIds)
+    if (this.props.documentsLoading)
       return (
         <Fragment>
           {range(5).map(rand => (
@@ -37,12 +38,18 @@ class QueryDocumentList extends React.Component {
 const mapState = (state, ownProps) => {
   const { documentIds, documentsById } = getFilteredDocuments(state);
   const { endOfResult } = getFilteredDocumentsOffsetAndLimit(state);
+  const {
+    additionalDocumentsLoading,
+    documentsLoading
+  } = getFilteredDocumentsLoadingStatus(state);
   return {
     documentIds,
     documentsById,
     endOfResult,
     mobile: state.data.environment.mobile,
-    screenWidth: state.data.environment.width
+    screenWidth: state.data.environment.width,
+    additionalDocumentsLoading,
+    documentsLoading
   };
 };
 
