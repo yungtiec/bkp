@@ -8,6 +8,8 @@ const initialState = {
   offset: 0,
   limit: 10,
   endOfResult: false,
+  additionalDocumentsLoading: false,
+  documentsLoading: true,
   filters: {
     category: null,
     order: { value: "date", label: "most recent" },
@@ -47,13 +49,23 @@ const initialState = {
 export default function(state = initialState, action) {
   var filters;
   switch (action.type) {
-    case types.FEATURE_DOCUMENTS_FETCHED_SUCESSS:
+    case types.FEATURE_DOCUMENTS_FETCH_SUCESSS:
       return {
         ...state,
         featureDocumentIds: action.featureDocumentIds,
         documentsById: assignIn(action.documentsById, state.documentsById)
       };
-    case types.DOCUMENTS_FETCHED_SUCESSS:
+    case types.ADDITIONAL_DOCUMENTS_REQUESTED:
+      return {
+        ...state,
+        additionalDocumentsLoading: true
+      };
+    case types.DOCUMENTS_REQUESTED:
+      return {
+        ...state,
+        documentsLoading: true
+      };
+    case types.DOCUMENTS_FETCH_SUCESSS:
       return {
         ...state,
         documentIds: action.loadMore
@@ -61,7 +73,9 @@ export default function(state = initialState, action) {
           : action.documentIds,
         documentsById: assignIn(action.documentsById, state.documentsById),
         offset: action.offset,
-        endOfResult: action.endOfResult
+        endOfResult: action.endOfResult,
+        additionalDocumentsLoading: false,
+        documentsLoading: false
       };
     case types.FILTER_UPDATED:
       filters = cloneDeep(state.filters);
@@ -98,6 +112,13 @@ export function getFilteredDocuments(state) {
 
 export function getFilteredDocumentsOffsetAndLimit(state) {
   return pick(state.scenes.feed.data, ["offset", "limit", "endOfResult"]);
+}
+
+export function getFilteredDocumentsLoadingStatus(state) {
+  return pick(state.scenes.feed.data, [
+    "additionalDocumentsLoading",
+    "documentsLoading"
+  ]);
 }
 
 export function getFilterOptionMenus(state) {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { range } from "lodash";
 import HeroHeadline from "./HeroHeadline";
 import { ArticleStyleLoader } from "../../../components";
 import { connect } from "react-redux";
@@ -7,7 +8,8 @@ import Loadable from "react-loadable";
 import { fetchFilteredDocumentsWithStats } from "../data/actions";
 import {
   getFilteredDocuments,
-  getFilteredDocumentsOffsetAndLimit
+  getFilteredDocumentsOffsetAndLimit,
+  getFilteredDocumentsLoadingStatus
 } from "../data/reducer";
 import DocumentList from "./DocumentList";
 
@@ -21,7 +23,14 @@ class QueryDocumentList extends React.Component {
   }
 
   render() {
-    if (!this.props.documentIds) return <ArticleStyleLoader />;
+    if (this.props.documentsLoading)
+      return (
+        <Fragment>
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </Fragment>
+      );
     else return <DocumentList {...this.props} />;
   }
 }
@@ -29,10 +38,18 @@ class QueryDocumentList extends React.Component {
 const mapState = (state, ownProps) => {
   const { documentIds, documentsById } = getFilteredDocuments(state);
   const { endOfResult } = getFilteredDocumentsOffsetAndLimit(state);
+  const {
+    additionalDocumentsLoading,
+    documentsLoading
+  } = getFilteredDocumentsLoadingStatus(state);
   return {
     documentIds,
     documentsById,
-    endOfResult
+    endOfResult,
+    mobile: state.data.environment.mobile,
+    screenWidth: state.data.environment.width,
+    additionalDocumentsLoading,
+    documentsLoading
   };
 };
 
