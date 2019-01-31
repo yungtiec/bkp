@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { range } from "lodash";
 import HeroHeadline from "./HeroHeadline";
 import { ArticleStyleLoader } from "../../../components";
 import { connect } from "react-redux";
@@ -22,7 +23,13 @@ class QueryDocumentList extends React.Component {
 
   render() {
     if (!this.props.documentIds)
-      return <ArticleStyleLoader mobile={this.props.mobile} />;
+      return (
+        <Fragment>
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </Fragment>
+      );
     else return <DocumentList {...this.props} />;
   }
 }
@@ -34,7 +41,8 @@ const mapState = (state, ownProps) => {
     documentIds,
     documentsById,
     endOfResult,
-    mobile: state.data.environment.mobile
+    mobile: state.data.environment.mobile,
+    screenWidth: state.data.environment.width
   };
 };
 

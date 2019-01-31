@@ -55,6 +55,7 @@ export function clearFilter(key) {
         type: types.FILTER_CLEAR,
         key
       });
+      dispatchFetchFilteredDocumentsWithStats({ dispatch, getState });
     } catch (err) {
       console.log(err);
     }
