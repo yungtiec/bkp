@@ -12,7 +12,7 @@ export default () => (
       <div className="feed__header">
         <h1 className="feed__header-title">The Brooklyn Project</h1>
         <p className="feed__header-subtitle">
-          Making public blockchains safe or another killer slogan.
+          Leading the debate on blockchain regulation.
         </p>
       </div>
       <QueryHeroHeadline />
