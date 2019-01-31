@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { range } from "lodash";
 import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserComments } from "./data/actions";
 import { getUserComments, getUserCommentsOffsetAndLimit } from "./data/reducer";
 import Comments from "./Comments";
 import { animateScroll as scroll } from "react-scroll";
+import { ArticleStyleLoader } from "../../../../../../components";
 
 class QueryComments extends React.Component {
   constructor(props) {
@@ -46,7 +48,14 @@ class QueryComments extends React.Component {
   }
 
   render() {
-    if (!this.props.commentIds && !this.props.endOfResult) return "loading";
+    if (!this.props.commentIds && !this.props.endOfResult)
+      return (
+        <div style={{ flex: "1", background: "white" }} className="p-3">
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </div>
+      );
     if (!this.props.commentIds && this.props.endOfResult) return null;
     return <Comments {...this.props} />;
   }
@@ -60,7 +69,8 @@ const mapState = (state, ownProps) => {
     commentsById,
     commentIds,
     offset,
-    endOfResult
+    endOfResult,
+    screenWidth: state.data.environment.width
   };
 };
 
