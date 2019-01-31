@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom";
 import autoBind from "react-autobind";
 import { DebounceInput } from "react-debounce-input";
 import $ from "jquery";
@@ -16,7 +16,7 @@ export default class DocumentSearch extends Component {
   render() {
     const { updateFilter, clearFilter, search } = this.props;
 
-    return this.state.enabled ? (
+    return this.state.enabled || search ? (
       <div className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
         <DebounceInput
           minLength={3}

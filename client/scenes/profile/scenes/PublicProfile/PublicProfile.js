@@ -25,7 +25,7 @@ class PublicProfile extends React.Component {
   render() {
     const { match, profile, screenWidth } = this.props;
     return (
-      <div className="app-container mt-3 pb-4 d-flex">
+      <div className={`app-container mt-3 pb-4 d-flex`}>
         {screenWidth > 992 ? (
           <LeftColumn
             gridClassnames="w-25"

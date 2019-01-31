@@ -31,11 +31,14 @@ const DocumentFilter = ({
   optionMenus,
   filters,
   updateFilter,
-  clearFilter
+  clearFilter,
+  screenWidth
 }) => (
   <div className="feed__filter-container my-5">
     <div className="feed__filter d-flex">
-      <div className="feed__filter-item feed__filter-label">sort by</div>
+      <div className="feed__filter-item feed__filter-label">
+        {screenWidth < 992 ? <i class="fas fa-sort" /> : "sort by"}
+      </div>
       <DocumentFilterDropdown name="order" label={filters.order.label}>
         <Fragment>
           {optionMenus.order.map(option => (
@@ -56,8 +59,19 @@ const DocumentFilter = ({
           ))}
         </Fragment>
       </DocumentFilterDropdown>
-      <div className="feed__filter-item feed__filter-label">filter by</div>
-      <DocumentFilterDropdown name="category" label="category">
+      <div className="feed__filter-item feed__filter-label ">
+        {screenWidth < 992 ? <i class="fas fa-filter" /> : "filter by"}
+      </div>
+      <DocumentFilterDropdown
+        name="category"
+        label={
+          !filters.category || (filters.category && !filters.category.length)
+            ? "category"
+            : filters.category.length === 1
+              ? filters.category[0].label
+              : `${filters.category[0].label} and ...`
+        }
+      >
         <Fragment>
           {optionMenus.category.map(option => (
             <span
@@ -96,7 +110,8 @@ const DocumentFilter = ({
 const mapState = (state, ownProps) => {
   return {
     filters: getFilters(state),
-    optionMenus: getFilterOptionMenus(state)
+    optionMenus: getFilterOptionMenus(state),
+    screenWidth: state.data.environment.width
   };
 };
 

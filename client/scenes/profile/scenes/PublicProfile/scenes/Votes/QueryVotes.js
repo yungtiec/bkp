@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { range } from "lodash";
 import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserVotes } from "./data/actions";
 import { getUserVotes, getUserVotesOffsetAndLimit } from "./data/reducer";
 import Votes from "./Votes";
 import { animateScroll as scroll } from "react-scroll";
+import { ArticleStyleLoader } from "../../../../../../components";
 
 class QueryVotes extends React.Component {
   constructor(props) {
@@ -46,7 +48,14 @@ class QueryVotes extends React.Component {
   }
 
   render() {
-    if (!this.props.voteIds && !this.props.endOfResult) return "loading";
+    if (!this.props.voteIds && !this.props.endOfResult)
+      return (
+        <div style={{ flex: "1", background: "white" }} className="p-3">
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </div>
+      );
     if (!this.props.voteIds && this.props.endOfResult) return null;
     return <Votes {...this.props} />;
   }
@@ -60,7 +69,8 @@ const mapState = (state, ownProps) => {
     votesById,
     voteIds,
     offset,
-    endOfResult
+    endOfResult,
+    screenWidth: state.data.environment.width
   };
 };
 
