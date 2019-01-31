@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { range } from "lodash";
 import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserDocuments } from "./data/actions";
 import {
@@ -8,6 +9,7 @@ import {
 } from "./data/reducer";
 import Documents from "./Documents";
 import { animateScroll as scroll } from "react-scroll";
+import { ArticleStyleLoader } from "../../../../../../components";
 
 class QueryDocuments extends React.Component {
   constructor(props) {
@@ -49,7 +51,14 @@ class QueryDocuments extends React.Component {
   }
 
   render() {
-    if (!this.props.documentIds && !this.props.endOfResult) return "loading";
+    if (!this.props.documentIds && !this.props.endOfResult)
+      return (
+        <div style={{ flex: "1", background: "white" }} className="p-3">
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </div>
+      );
     if (!this.props.documentIds && this.props.endOfResult) return null;
     return <Documents {...this.props} />;
   }
@@ -63,7 +72,8 @@ const mapState = (state, ownProps) => {
     documentsById,
     documentIds,
     offset,
-    endOfResult
+    endOfResult,
+    screenWidth: state.data.environment.width
   };
 };
 

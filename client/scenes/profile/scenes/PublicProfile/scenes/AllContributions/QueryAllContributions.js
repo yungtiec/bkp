@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { range } from "lodash";
 import { connect } from "react-redux";
 import { withRouter, matchPath } from "react-router-dom";
 import { fetchUserContributions } from "./data/actions";
@@ -8,6 +9,7 @@ import {
 } from "./data/reducer";
 import AllContributions from "./AllContributions";
 import { animateScroll as scroll } from "react-scroll";
+import { ArticleStyleLoader } from "../../../../../../components";
 
 class QueryAllContributions extends React.Component {
   constructor(props) {
@@ -50,7 +52,13 @@ class QueryAllContributions extends React.Component {
 
   render() {
     if (!this.props.contributionIds && !this.props.endOfResult)
-      return "loading";
+      return (
+        <div style={{flex: "1", background: 'white'}} className="p-3">
+          {range(5).map(rand => (
+            <ArticleStyleLoader mobile={this.props.screenWidth < 768} />
+          ))}
+        </div>
+      );
     if (!this.props.contributionIds && this.props.endOfResult) return null;
     return <AllContributions {...this.props} />;
   }
@@ -64,7 +72,8 @@ const mapState = (state, ownProps) => {
     contributionsById,
     contributionIds,
     offset,
-    endOfResult
+    endOfResult,
+    screenWidth: state.data.environment.width
   };
 };
 
