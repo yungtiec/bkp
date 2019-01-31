@@ -17,7 +17,13 @@ class QueryHeroHeadline extends React.Component {
   }
 
   render() {
-    if (!this.props.featureDocumentIds) return <ArticleStyleLoader />;
+    if (!this.props.featureDocumentIds)
+      return (
+        <ArticleStyleLoader
+          mobile={this.props.screenWidth < 768}
+          headline={true}
+        />
+      );
     else return <HeroHeadline {...this.props} />;
   }
 }
@@ -27,7 +33,9 @@ const mapState = (state, ownProps) => {
 
   return {
     documentsById,
-    featureDocumentIds
+    featureDocumentIds,
+    mobile: state.data.environment.mobile,
+    screenWidth: state.data.environment.width
   };
 };
 

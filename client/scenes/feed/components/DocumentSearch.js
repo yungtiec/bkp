@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from "react";
+import ReactDOM from 'react-dom'
 import autoBind from "react-autobind";
+import { DebounceInput } from "react-debounce-input";
+import $ from "jquery";
 
 export default class DocumentSearch extends Component {
   constructor(props) {
@@ -15,7 +18,9 @@ export default class DocumentSearch extends Component {
 
     return this.state.enabled ? (
       <div className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
-        <input
+        <DebounceInput
+          minLength={3}
+          debounceTimeout={500}
           type="text"
           placeholder="SEARCH"
           className="feed__filter-search-input"
@@ -34,7 +39,7 @@ export default class DocumentSearch extends Component {
         className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center"
         onClick={() => {
           this.setState({ enabled: true });
-          setTimeout(() => this.searchInput.focus(), 300);
+          setTimeout(() => ReactDOM.findDOMNode(this.searchInput).focus(), 300);
         }}
       >
         <i className="fas fa-search" />
