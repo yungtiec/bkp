@@ -134,17 +134,10 @@ const getDocumentsWithFilters = async (req, res, next) => {
 
 const getDrafts = async (req, res, next) => {
   try {
-    var { count, rows } = await Document.scope({
-      method: [
-        "includeVersions",
-        {
-          versionWhereClause: { submitted: false }
-        }
-      ]
-    }).findAndCountAll({
-      where: { creator_id: req.user.id },
+    const { count, rows } = await Document.findAndCountAll({
+      where: { creator_id: req.user.id, submitted: true, reviewed: false },
       limit: Number(req.query.limit),
-      offset: Number(req.query.offset)
+      order: [['createdAt', 'DESC']]
     });
     res.send({ count, rows });
   } catch (err) {
@@ -154,17 +147,10 @@ const getDrafts = async (req, res, next) => {
 
 const getPublishedDocuments = async (req, res, next) => {
   try {
-    var { count, rows } = await Document.scope({
-      method: [
-        "includeVersions",
-        {
-          versionWhereClause: { submitted: true }
-        }
-      ]
-    }).findAndCountAll({
-      where: { creator_id: req.user.id },
+    const { count, rows } = await Document.findAndCountAll({
+      where: { creator_id: req.user.id, submitted: true, reviewed: true },
       limit: Number(req.query.limit),
-      offset: Number(req.query.offset)
+      order: [['createdAt', 'DESC']]
     });
     res.send({ count, rows });
   } catch (err) {

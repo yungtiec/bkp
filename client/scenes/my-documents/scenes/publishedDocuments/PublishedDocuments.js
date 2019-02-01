@@ -13,8 +13,8 @@ class PublishedDocuments extends Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchOwnPublishedDocuments();
+  async componentDidMount() {
+    await this.props.fetchOwnPublishedDocuments();
   }
 
   render() {

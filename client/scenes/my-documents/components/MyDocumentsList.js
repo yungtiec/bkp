@@ -19,7 +19,7 @@ const ListMyDocuments = ({ documents }) =>
     </Fragment>
   ) : null;
 
-export default ({ documents, canLoadMore }) => (
+export default ({ documents, canLoadMore, fetchOwnDrafts }) => (
   <div class="dashboard__recent-my-documents">
     {!documents ? (
       <div className="component__loader-container d-flex">

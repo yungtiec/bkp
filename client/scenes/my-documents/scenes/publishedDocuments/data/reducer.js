@@ -11,10 +11,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.PUBLISHED_DOCUMENTS_FETCHED_SUCESSS:
-      const publishedDocuments = uniqBy((state.publishedDocuments || []).concat(action.publishedDocuments), (doc) => {
-        if(doc) return doc.id
-        return doc;
-      });
+      const publishedDocuments = action.publishedDocuments;
       console.log(publishedDocuments)
       return {
         ...state,
