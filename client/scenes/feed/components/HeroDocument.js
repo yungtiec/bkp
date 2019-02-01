@@ -7,9 +7,12 @@ export default ({ document }) => {
     <Fragment>
       <div className="feed__feature-article-title">{document.title}</div>
       <div className="feed__feature-article-content ml-3">
-        {ReactHtmlParser(document.content_html)
-          .slice(0, 5)
-          .filter(elem => elem.type === "p")}
+        {document.description ?
+          <p>{document.description}</p> :
+          ReactHtmlParser(document.content_html)
+            .slice(0, 5)
+            .filter(elem => elem.type === "p")
+        }
       </div>
       <div className="feed__feature-actions">
         <Link

@@ -23,7 +23,8 @@ export default ({ document }) => (
       <h6>{document.category.replace(/-/g, " ")}</h6>
       <h5>{document.title}</h5>
       <p>
-        {
+        {document.description ?
+          <p>{document.description}</p> :
           ReactHtmlParser(document.content_html).filter(
             elem => elem.type === "p"
           )[0]
