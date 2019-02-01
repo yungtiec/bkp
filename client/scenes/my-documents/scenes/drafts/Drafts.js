@@ -13,8 +13,8 @@ class Drafts extends Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchOwnDrafts();
+  async componentDidMount() {
+    await this.props.fetchOwnDrafts();
   }
 
   render() {
@@ -22,6 +22,7 @@ class Drafts extends Component {
       <MyDocumentsList
         documents={this.props.draftDocuments}
         canLoadMore={this.props.canLoadMore}
+        fetchOwnDrafts={this.props.fetchOwnDrafts}
       />
     );
   }
@@ -29,7 +30,6 @@ class Drafts extends Component {
 
 const mapState = state => {
   const { draftDocuments } = getOwnDrafts(state);
-  console.log({draftDocuments});
   return {
     draftDocuments,
     canLoadMore: canLoadMore(state)

@@ -3,7 +3,6 @@ import {assignIn, uniqBy} from "lodash";
 
 const initialState = {
   draftDocuments: null,
-  draftOffset: 0,
   draftLimit: 10,
   draftCount: null
 };
@@ -11,14 +10,10 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.DRAFTS_FETCHED_SUCESSS:
-      const draftDocuments = uniqBy((state.draftDocuments || []).concat(action.draftDocuments), (doc) => {
-        if(doc) return doc.id
-        return doc;
-      });
+      const draftDocuments = action.draftDocuments;
       return {
         ...state,
         draftDocuments,
-        draftOffset: action.draftOffset,
         draftCount: action.count
       };
     default:
