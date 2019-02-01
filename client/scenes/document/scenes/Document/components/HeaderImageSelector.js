@@ -14,7 +14,7 @@ class HeaderImageSelector extends React.Component {
               <img
                 onClick={() => this.props.openImageFinderModal()}
                 className="header-image-selector"
-                src={this.props.headerImageUrl}/>
+                src={`${this.props.headerImageUrl}&auto=format&fit=crop&w=800&q=80`/>
             </div> :
             <div>
               <button className="mt-2" onClick={() => this.props.openImageFinderModal()}>Add Image</button>
