@@ -34,7 +34,7 @@ export default class HeroHeadline extends React.Component {
             style={{
               backgroundImage: `url(${documentsById[
                 featureDocumentIds[this.state.index]
-              ].header_img_url || backupImgUrl})`
+              ].header_img_url || backupImgUrl}&auto=format&fit=crop&w=800&q=80)`
             }}
           />
         </div>

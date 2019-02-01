@@ -6,7 +6,7 @@ const Img = props => {
       <img
         onClick={() => props.handleImageSelection(props.url)}
         className="image-finder__image"
-        src={`${props.url}&q=90&crop=faces&fit=crop&h=420&w=520`}
+        src={`${props.url}&q=80&crop=faces&fit=crop&h=420&w=520`}
         alt="Unsplash Image here"
       />
     </div>);
