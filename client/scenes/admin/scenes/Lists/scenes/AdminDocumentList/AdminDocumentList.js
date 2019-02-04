@@ -29,7 +29,6 @@ const AdminDocumentList = ({ documents }) => {
         data={documents}
         defaultPageSize={10}
         getTrProps={(state, rowInfo, column, instance) => {
-          console.log(rowInfo);
           return {
             onClick: (e, t) => {
               history.push(
