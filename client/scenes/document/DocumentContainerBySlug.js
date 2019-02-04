@@ -18,6 +18,7 @@ import autoBind from "react-autobind";
 import { DocumentHeader, DocumentToolbar } from "./components";
 import { VersionIssues, VersionProgress } from "./scenes/Document/components";
 import history from "../../history";
+import {hideEditor, showEditor} from './data/ckEditor/actions';
 
 class DocumentContainer extends Component {
   constructor(props) {
@@ -50,7 +51,11 @@ class DocumentContainer extends Component {
       isClosedForComment,
       upvoteDocument,
       downvoteDocument,
-      match
+      match,
+      showEditor,
+      hideEditor,
+      isLoggedIn,
+      displayEditor
     } = this.props;
 
     return (
@@ -63,11 +68,19 @@ class DocumentContainer extends Component {
           documentMetadata={documentMetadata}
           upvoteDocument={upvoteDocument}
           downvoteDocument={downvoteDocument}
+          showEditor={showEditor}
+          isLoggedIn={isLoggedIn}
+          displayEditor={displayEditor}
         />
         <Switch>
           <Route
             path={`${match.path}`}
-            render={props => <QueryDocumentBySlug documentMetadata={documentMetadata} />}
+            render={props =>
+              <QueryDocumentBySlug
+                displayEditor={displayEditor}
+                documentMetadata={documentMetadata}
+                hideEditor={hideEditor}
+              />}
           />
         </Switch>
       </div>

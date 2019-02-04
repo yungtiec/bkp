@@ -124,16 +124,19 @@ class CkEditor extends Component {
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
     this.setState({
       renderHtml: !this.state.renderHtml
+    }, () => {
+      this.props.hideEditor();
     });
   }
 
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { renderHtml, content, headerImageUrl } = this.state;
-    const { documentMetadata } = this.props;
+    const { documentMetadata, displayEditor } = this.props;
+    console.log({displayEditor});
     return (
       <div>
-        {!renderHtml ? (
+        {displayEditor ? (
           <div className="mb-4">
             <div className="mb-4">
               <ActiveToggle
@@ -171,17 +174,12 @@ class CkEditor extends Component {
             </div>
           </div>
         )}
-        {!renderHtml && this.props.isLoggedIn ? (
+        {displayEditor && this.props.isLoggedIn ? (
           <button className="edit-button" onClick={this.onButtonPress}>
             save
           </button>
         ) : null}
 
-        {renderHtml && this.props.isLoggedIn ? (
-          <button className="edit-button" onClick={this.onButtonPress}>
-            edit
-          </button>
-        ) : null}
       </div>
     );
   }

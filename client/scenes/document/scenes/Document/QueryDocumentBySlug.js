@@ -36,6 +36,13 @@ import {
 } from "../../data/comments/actions";
 import { getAllComments } from "../../data/comments/reducer";
 
+
+// document/ckEditor
+import {
+  showEditor,
+  hideEditor
+} from "../../data/ckEditor/actions";
+
 // document/tags
 import {
   getAllTags,
@@ -135,7 +142,7 @@ const mapState = state => {
     commentSortBy,
     commentIssueFilter,
     sidebarContext,
-    sidebarCommentContext: getSidebarCommentContext(state)
+    sidebarCommentContext: getSidebarCommentContext(state),
   };
 };
 
@@ -159,7 +166,7 @@ const actions = {
   toggleSidebar,
   toggleSidebarContext,
   toggleAnnotationHighlight,
-  updateVerificationStatusInView
+  updateVerificationStatusInView,
 };
 
 export default withRouter(connect(mapState, actions)(MyComponent));
