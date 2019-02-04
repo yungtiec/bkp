@@ -29,21 +29,20 @@ class MyComponent extends Component {
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.props.loadInitialData();
+  async componentDidMount() {
+   await this.props.loadInitialData();
   }
 
   render() {
-    if (!this.props.documentsById || !this.props.documentIds) return null;
+    if (!this.props.documents) return null;
     else return <LoadableAdminVersionList {...this.props} />;
   }
 }
 
 const mapState = state => {
-  const { documentsById, documentIds } = getDocumentListing(state);
+  const { documents } = getDocumentListing(state);
   return {
-    documentsById,
-    documentIds
+    documents
   };
 };
 
