@@ -28,7 +28,8 @@ class DocumentToolbar extends Component {
       displayEditor,
       isLoggedIn,
       hideEditor,
-      showEditor
+      showEditor,
+      userId
     } = this.props;
 
     const document = documentMetadata;
@@ -42,6 +43,12 @@ class DocumentToolbar extends Component {
       documentMetadata.downvotesFrom,
       downvotedUser => downvotedUser.id === user.id
     );
+
+    console.log({userId});
+    console.log('doc', documentMetadata.creator_id);
+
+    const isOwnDocument = userId === documentMetadata.creator_id;
+
 
     return (
       <div>
@@ -103,7 +110,7 @@ class DocumentToolbar extends Component {
               </a>
             </button>
           ) : null}
-          {!displayEditor && isLoggedIn ? (
+          {!displayEditor && isLoggedIn && isOwnDocument ? (
             <button className="btn btn-outline-primary" onClick={showEditor}>
               edit
             </button>
