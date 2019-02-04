@@ -12,14 +12,14 @@ const AdminListContainer = ({ match }) => {
       <AdminListSidebar />
       <Switch>
         <Route
-          path={`${match.url}/version`}
+          path={`${match.url}/documents`}
           component={QueryAdminDocumentList}
         />
         <Route path={`${match.url}/users`} component={QueryAdminUserList} />
         <Redirect
           from={`${match.url}`}
           exact
-          to={`${match.url}/version`}
+          to={`${match.url}/documents`}
         />
       </Switch>
     </div>
