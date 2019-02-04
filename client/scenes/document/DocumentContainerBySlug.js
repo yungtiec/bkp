@@ -55,7 +55,8 @@ class DocumentContainer extends Component {
       showEditor,
       hideEditor,
       isLoggedIn,
-      displayEditor
+      displayEditor,
+      userId
     } = this.props;
 
     return (
@@ -71,6 +72,7 @@ class DocumentContainer extends Component {
           showEditor={showEditor}
           isLoggedIn={isLoggedIn}
           displayEditor={displayEditor}
+          userId={userId}
         />
         <Switch>
           <Route

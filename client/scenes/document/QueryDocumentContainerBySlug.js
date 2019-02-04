@@ -46,6 +46,7 @@ const mapState = state => {
     isClosedForComment: isClosedForComment(state),
     displayEditor: state.scenes.document.data.ckEditor.displayEditor,
     isLoggedIn: !!state.data.user.id,
+    userId: state.data.user.id
   };
 };
 
