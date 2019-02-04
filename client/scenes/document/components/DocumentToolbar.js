@@ -24,7 +24,11 @@ class DocumentToolbar extends Component {
       uploadMode,
       user,
       upvoteDocument,
-      downvoteDocument
+      downvoteDocument,
+      displayEditor,
+      isLoggedIn,
+      hideEditor,
+      showEditor
     } = this.props;
 
     const document = documentMetadata;
@@ -97,6 +101,11 @@ class DocumentToolbar extends Component {
               >
                 View pdf
               </a>
+            </button>
+          ) : null}
+          {!displayEditor && isLoggedIn ? (
+            <button className="btn btn-outline-primary" onClick={showEditor}>
+              edit
             </button>
           ) : null}
         </div>

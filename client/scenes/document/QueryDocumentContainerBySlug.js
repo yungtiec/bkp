@@ -16,6 +16,7 @@ import {
 } from "./data/documentMetadata/actions";
 import DocumentContainerBySlug from "./DocumentContainerBySlug";
 import history from "../../history";
+import {hideEditor, showEditor} from './data/ckEditor/actions';
 
 class QueryDocumentContainerBySlug extends Component {
   constructor(props) {
@@ -42,7 +43,9 @@ class QueryDocumentContainerBySlug extends Component {
 const mapState = state => {
   return {
     documentMetadata: getDocumentMetadata(state),
-    isClosedForComment: isClosedForComment(state)
+    isClosedForComment: isClosedForComment(state),
+    displayEditor: state.scenes.document.data.ckEditor.displayEditor,
+    isLoggedIn: !!state.data.user.id,
   };
 };
 
@@ -50,7 +53,9 @@ const actions = {
   fetchMetadataBySlug,
   resetDocumentMetadata,
   upvoteDocument,
-  downvoteDocument
+  downvoteDocument,
+  showEditor,
+  hideEditor
 };
 
 export default withRouter(

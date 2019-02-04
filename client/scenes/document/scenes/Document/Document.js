@@ -212,13 +212,6 @@ class Document extends Component {
       versionQnasLoading,
       commentsLoading,
       documentMetadata,
-      versionQnasById,
-      versionQnaIds,
-      editQuestion,
-      editAnswer,
-      editScorecard,
-      revertToPrevQuestion,
-      revertToPrevAnswer,
       versionMetadata,
       commentsById,
       commentIds,
@@ -247,7 +240,10 @@ class Document extends Component {
       toggleSidebarContext,
       upvoteDocument,
       downvoteDocument,
-      loadModal
+      loadModal,
+      displayEditor,
+      showEditor,
+      hideEditor
     } = this.props;
 
     const selectedComments = this.getSelectedComments();
@@ -287,6 +283,9 @@ class Document extends Component {
             tagFilter={tagFilter}
             commentOnClick={this.commentOnClick}
             addNewCommentSentFromServer={addNewCommentSentFromServer}
+            displayEditor={displayEditor}
+            showEditor={showEditor}
+            hideEditor={hideEditor}
           />
           <div className="d-flex project-document__footer">
             <a

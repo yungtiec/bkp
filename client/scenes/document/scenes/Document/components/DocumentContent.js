@@ -20,7 +20,9 @@ const DocumentContent = ({
   parent,
   tags,
   tagFilter,
-  addNewCommentSentFromServer
+  addNewCommentSentFromServer,
+  displayEditor,
+  hideEditor
 }) => (
   <div className="project-document" id="project-document">
     <CkEditor
@@ -30,13 +32,15 @@ const DocumentContent = ({
       updateSidebarCommentContext={updateSidebarCommentContext}
       updateContentHTMLBySlug={updateContentHTMLBySlug}
       addNewCommentSentFromServer={addNewCommentSentFromServer}
+      displayEditor={displayEditor}
+      hideEditor={hideEditor}
     />
   </div>
 );
 
 const mapState = (state, ownProps) => ({
   ...ownProps,
-  user: state.data.user
+  user: state.data.user,
 });
 
 const actions = {
