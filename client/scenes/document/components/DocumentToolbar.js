@@ -11,6 +11,7 @@ import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import { loadModal } from "../../../data/reducer";
 import policies from "../../../policies.js";
 import ReactTooltip from "react-tooltip";
+import { currentUserIsAdmin } from '../../../data/user/reducer';
 
 class DocumentToolbar extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class DocumentToolbar extends Component {
       isLoggedIn,
       hideEditor,
       showEditor,
-      userId
+      userId,
+      isUserAdmin
     } = this.props;
 
     const document = documentMetadata;
@@ -43,11 +45,8 @@ class DocumentToolbar extends Component {
       documentMetadata.downvotesFrom,
       downvotedUser => downvotedUser.id === user.id
     );
-
-    console.log({userId});
-    console.log('doc', documentMetadata.creator_id);
-
-    const isOwnDocument = userId === documentMetadata.creator_id;
+    
+    const isOwnDocument = userId === documentMetadata.creator_id || isUserAdmin;
 
 
     return (
@@ -124,7 +123,8 @@ class DocumentToolbar extends Component {
 const mapState = (state, ownProps) => ({
   ...ownProps,
   user: state.data.user,
-  width: state.data.environment.width
+  width: state.data.environment.width,
+  isUserAdmin: currentUserIsAdmin(state)
 });
 
-export default connect(mapState, { notify, loadModal })(DocumentToolbar);
+export default connect(mapState, { notify, loadModal, currentUserIsAdmin })(DocumentToolbar);

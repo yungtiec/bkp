@@ -7,7 +7,7 @@ export default function(state = defaultUser, action) {
     case types.GET_USER:
       return {
         ...state,
-        ...action.user
+        ...action.user,
       };
     case types.REMOVE_USER:
       return defaultUser;
