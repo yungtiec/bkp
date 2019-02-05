@@ -14,7 +14,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (isProduction) {
+    if (true) {
       window.addEventListener("load", function(){
         window.cookieconsent.initialise({
           "palette": {
@@ -25,6 +25,10 @@ class App extends Component {
             "button": {
               "background": "#4b81e8"
             }
+          },
+          "content": {
+            "link": "Learn more",
+            "href": "https://drive.google.com/file/d/1n_O-nF74sDkONplSrmcpZczAov30cMug/view"
           },
           "position": "bottom-right",
           "type": "opt-in",
