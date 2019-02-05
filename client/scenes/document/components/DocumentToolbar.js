@@ -45,7 +45,7 @@ class DocumentToolbar extends Component {
       documentMetadata.downvotesFrom,
       downvotedUser => downvotedUser.id === user.id
     );
-    
+
     const isOwnDocument = userId === documentMetadata.creator_id || isUserAdmin;
 
 

@@ -24,6 +24,7 @@ class CkEditor extends Component {
     super(props);
     this.contentHtml = this.props.documentMetadata.content_html;
     this.state = {
+      summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
       category: this.props.documentMetadata.category,
@@ -103,8 +104,15 @@ class CkEditor extends Component {
     });
   }
 
-  onChange(evt) {
-    var newContent = evt.editor.getData();
+  onChangeSummary(evt) {
+    const newSummary = evt.editor.getData();
+    this.setState({
+      summary: newSummary
+    });
+  }
+
+  onChangeContent(evt) {
+    const newContent = evt.editor.getData();
     this.setState({
       content: newContent
     });
@@ -112,9 +120,10 @@ class CkEditor extends Component {
 
   async onButtonPress() {
     const { documentMetadata, updateContentHTMLBySlug } = this.props;
-    const { content, status, category, headerImageUrl } = this.state;
+    const { summary, content, status, category, headerImageUrl } = this.state;
 
     const propertiesToUpdate = {
+      summary,
       content,
       status,
       category,
@@ -131,9 +140,10 @@ class CkEditor extends Component {
 
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
-    const { renderHtml, content, headerImageUrl } = this.state;
+    const { summary, content, headerImageUrl } = this.state;
     const { documentMetadata, displayEditor } = this.props;
-    console.log({displayEditor});
+    const hasSummary = !!(summary && summary.length);
+
     return (
       <div>
         {displayEditor ? (
@@ -152,14 +162,28 @@ class CkEditor extends Component {
                 headerImageUrl={headerImageUrl}
               />
             </div>
-            <CKEditor
-              activeClass="p10"
-              content={content}
-              scriptUrl={scriptUrl}
-              events={{
-                change: this.onChange
-              }}
-            />
+            <div className="mb-4">
+              <span className="mb-2">Summary:</span>
+              <CKEditor
+                activeClass="p10"
+                content={summary}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeSummary
+                }}
+              />
+            </div>
+            <div className="mb-4">
+              <span className="mb-2">Content:</span>
+              <CKEditor
+                activeClass="p10"
+                content={content}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeContent
+                }}
+              />
+            </div>
           </div>
         ) : (
           <div className="mb-4" ref={el => (this[`content`] = el)}>
@@ -170,6 +194,8 @@ class CkEditor extends Component {
               {documentMetadata.document_type === "legacy_scorecard" ? (
                 <ScorecardTable scorecard={documentMetadata.scorecard} />
               ) : null}
+              {hasSummary ? <h3>Summary</h3> : null}
+              {hasSummary ? ReactHtmlParser(summary) : null}
               {ReactHtmlParser(content)}
             </div>
           </div>

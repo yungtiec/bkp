@@ -261,6 +261,7 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug }
     });
+    documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
     documentToUpdate.category = req.body.category;
