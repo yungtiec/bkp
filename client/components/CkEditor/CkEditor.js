@@ -142,7 +142,6 @@ class CkEditor extends Component {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { summary, content, headerImageUrl } = this.state;
     const { documentMetadata, displayEditor } = this.props;
-    const hasSummary = !!(summary && summary.length);
 
     return (
       <div>
@@ -163,7 +162,7 @@ class CkEditor extends Component {
               />
             </div>
             <div className="mb-4">
-              <span className="mb-2">Summary:</span>
+              <span className="mb-2">Summary To Display:</span>
               <CKEditor
                 activeClass="p10"
                 content={summary}
@@ -194,8 +193,6 @@ class CkEditor extends Component {
               {documentMetadata.document_type === "legacy_scorecard" ? (
                 <ScorecardTable scorecard={documentMetadata.scorecard} />
               ) : null}
-              {hasSummary ? <h3>Summary</h3> : null}
-              {hasSummary ? ReactHtmlParser(summary) : null}
               {ReactHtmlParser(content)}
             </div>
           </div>
