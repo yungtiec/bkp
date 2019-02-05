@@ -11,7 +11,7 @@ class ActiveToggle extends React.Component {
   render() {
     console.log(this.props.status);
     return (
-      <div className="mb-2">
+      <div className="mb-4">
         Status:
         <Select
           name="upload__project-select"

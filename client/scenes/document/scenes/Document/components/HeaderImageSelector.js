@@ -6,7 +6,7 @@ class HeaderImageSelector extends React.Component {
 
   render() {
     return (
-      <div className="mt-2 mb-2">
+      <div className="mt-2 mb-4">
         Header Image:
         {
           this.props.headerImageUrl ?

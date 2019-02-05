@@ -49,6 +49,9 @@ class DocumentToolbar extends Component {
     const isOwnDocument = userId === documentMetadata.creator_id || isUserAdmin;
 
 
+    const isOwnDocument = userId === documentMetadata.creator_id || isUserAdmin;
+
+
     return (
       <div>
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
