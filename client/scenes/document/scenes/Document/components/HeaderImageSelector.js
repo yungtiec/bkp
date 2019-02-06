@@ -7,7 +7,7 @@ class HeaderImageSelector extends React.Component {
   render() {
     return (
       <div className="mt-2 mb-4">
-        Header Image:
+        Header Image To Display On Feed:
         {
           this.props.headerImageUrl ?
             <div>

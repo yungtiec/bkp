@@ -162,7 +162,7 @@ class CkEditor extends Component {
               />
             </div>
             <div className="mb-4">
-              <span className="mb-2">Summary To Display:</span>
+              <span className="mb-2">Summary To Display On Feed:</span>
               <CKEditor
                 activeClass="p10"
                 content={summary}
