@@ -15,12 +15,46 @@ class App extends Component {
 
   componentDidMount() {
     if (isProduction) {
-      ReactGA.initialize("UA-119328185-1", {
-        titleCase: false
-      });
-      history.listen((location, action) => {
-        ReactGA.set({ page: location.pathname });
-        ReactGA.pageview(location.pathname);
+      window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "palette": {
+            "popup": {
+              "background": "#edeff5",
+              "text": "#838391"
+            },
+            "button": {
+              "background": "#4b81e8"
+            }
+          },
+          "position": "bottom-right",
+          "type": "opt-in",
+          "onInitialise": function (status) {
+            const type = this.options.type;
+            const didConsent = this.hasConsented();
+            if (type == 'opt-in' && didConsent) {
+              ReactGA.initialize("UA-119328185-1", {
+                titleCase: false
+              });
+              history.listen((location, action) => {
+                ReactGA.set({ page: location.pathname });
+                ReactGA.pageview(location.pathname);
+              });
+            }
+          },
+          "onStatusChange": function(status, chosenBefore) {
+            var type = this.options.type;
+            var didConsent = this.hasConsented();
+            if (type == 'opt-in' && didConsent) {
+              ReactGA.initialize("UA-119328185-1", {
+                titleCase: false
+              });
+              history.listen((location, action) => {
+                ReactGA.set({ page: location.pathname });
+                ReactGA.pageview(location.pathname);
+              });
+            }
+          },
+        })
       });
     }
   }
