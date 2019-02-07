@@ -17,7 +17,7 @@ module.exports = (db, DataTypes) => {
       type: DataTypes.STRING
     },
     description: {
-      type: DataTypes.STRING
+      type: DataTypes.TEXT
     },
     forked: {
       type: DataTypes.BOOLEAN,
