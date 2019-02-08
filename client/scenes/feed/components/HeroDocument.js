@@ -9,8 +9,7 @@ export default ({ document }) => {
       <div className="feed__feature-article-content ml-3">
         {
           ReactHtmlParser(document.content_html)
-            .slice(0, 5)
-            .filter(elem => elem.type === "p")
+            .filter(elem => elem.type === "p")[0]
         }
       </div>
       <div className="feed__feature-actions">
