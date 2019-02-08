@@ -162,17 +162,6 @@ class CkEditor extends Component {
               />
             </div>
             <div className="mb-4">
-              <span className="mb-2">Summary To Display On Feed:</span>
-              <CKEditor
-                activeClass="p10"
-                content={summary}
-                scriptUrl={scriptUrl}
-                events={{
-                  change: this.onChangeSummary
-                }}
-              />
-            </div>
-            <div className="mb-4">
               <span className="mb-2">Content:</span>
               <CKEditor
                 activeClass="p10"
