@@ -90,6 +90,8 @@ export default ({
       {(comment.tags && comment.tags.length) || comment.issue ? (
         <div className="comment-item__tags">
           <ActionableIssueTag
+            user={user}
+            projectMetadata={projectMetadata}
             comment={comment}
             changeItemIssueStatus={() => changeItemIssueStatus(comment)}
           />
