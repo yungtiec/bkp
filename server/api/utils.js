@@ -1,6 +1,7 @@
 const { User, Role, Comment } = require("../db/models");
 const _ = require("lodash");
 const crypto = require("crypto");
+const sgMail = require('@sendgrid/mail');
 
 const isAdmin = user => {
   return user.roles.filter(r => r.name === "admin").length;
@@ -120,6 +121,19 @@ const createSlug = async (docTitle, contentHtml) => {
   }
 };
 
+const sendEmail = ({recipientEmail, subject, message}) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: recipientEmail,
+    from: 'info@thebkp.com',
+    subject: subject,
+    text: message,
+    html: message,
+  };
+  return sgMail.send(msg);
+};
+
+
 module.exports = {
   isAdmin,
   ensureAuthentication,
@@ -128,5 +142,6 @@ module.exports = {
   ensureAdminRoleOrOwnership,
   ensureResourceAccess,
   getEngagedUsers,
-  createSlug
+  createSlug,
+  sendEmail
 };

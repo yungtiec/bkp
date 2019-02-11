@@ -3,6 +3,7 @@ const db = require("../../db/index");
 const permission = require("../../access-control")["Comment"];
 const {
   Comment,
+  Document,
   User,
   Role,
   Tag,
@@ -14,6 +15,8 @@ const {
 } = require("../../db/models/index");
 const _ = require("lodash");
 Promise = require("bluebird");
+const generateCommentHtml = require('../generateCommentHtml');
+const { sendEmail } = require('../utils');
 
 const getComments = async (req, res, next) => {
   try {
@@ -51,6 +54,7 @@ const postComment = async (req, res, next) => {
         })
       ])
     );
+    const document = await Document.scope("includeAllEngagements").findOne({ where: { id: req.params.doc_id}});
     const autoVerify = permission(
       "AutoVerify",
       {
@@ -71,6 +75,18 @@ const postComment = async (req, res, next) => {
     comment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: comment.id } }]
     }).findOne();
+    await sendEmail({
+      recipientEmail: document.creator.email,
+      subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === 'production',
+        document.slug,
+        comment.owner.first_name,
+        comment.owner.last_name,
+        comment,
+        false
+      )
+    });
     res.send(comment);
   } catch (err) {
     next(err);
@@ -132,6 +148,18 @@ const postReply = async (req, res, next) => {
       }),
       parent,
       messageFragment: "replied to your post"
+    });
+    await sendEmail({
+      recipientEmail: ancestry.owner.email,
+      subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === 'production',
+        ancestry.document.slug,
+        user.first_name,
+        user.last_name,
+        ancestry.id,
+        true
+      )
     });
     res.send(ancestry);
   } catch (err) {
