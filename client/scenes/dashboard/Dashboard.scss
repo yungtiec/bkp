@@ -1,5 +1,7 @@
 .dashboard-sidebar {
   width: 300px;
+  height: calc(100vh - 90px);
+  overflow: auto;
 }
 
 .dashboard-listing__title {
@@ -21,11 +23,11 @@
   color: #4a9ff6;
 }
 
-.dashboard__recent-issues {
+.dashboard__recent-comments {
   width: 100%;
 }
 
-.dashboard__recent-issues-title {
+.dashboard__recent-comments-title {
   font-size: 16px;
   margin-bottom: 12px;
   letter-spacing: 0.08rem;
@@ -33,7 +35,7 @@
   text-transform: uppercase;
 }
 
-.dashboard__recent-issues .entity__title span {
+.dashboard__recent-comments .entity__title span {
   text-transform: initial;
 }
 

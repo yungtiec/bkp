@@ -1,39 +1,90 @@
 import * as types from "./actionTypes";
-import { assignIn } from "lodash";
+import { assignIn, pick } from "lodash";
 
 const initialState = {
-  issuesById: null,
-  issueIds: null,
-  issueOffset: 0,
-  issueLimit: 10,
-  issueCount: null
+  commentsById: null,
+  commentIds: null,
+  commentOffset: 0,
+  commentLimit: 10,
+  commentEndOfResult: false,
+  additionalCommentsLoading: false,
+  commentsLoading: true,
+  documentIds: null,
+  documentsById: null,
+  documentOffset: 5,
+  documentsLoading: true,
+  additionalDocumentsLoading: false,
+  allDocumentFetched: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case types.RESPONSIBLE_ISSUES_FETCHED_SUCESSS:
+    case types.ADDITIONAL_DOCUMENTS_REQUESTED:
       return {
         ...state,
-        issuesById: assignIn(action.issuesById, state.issuesById),
-        issueIds: (state.issueIds || []).concat(action.issueIds),
-        issueOffset: action.issueOffset,
-        issueCount: action.count
+        additionalDocumentsLoading: true
+      };
+    case types.DOCUMENTS_REQUESTED:
+      return {
+        ...state,
+        documentsLoading: true
+      };
+    case types.DOCUMENTS_FETCH_SUCESSS:
+      return {
+        ...state,
+        documentIds: action.loadMore
+          ? (state.documentIds || []).concat(action.documentIds || [])
+          : action.documentIds,
+        documentsById: assignIn(action.documentsById, state.documentsById),
+        additionalDocumentsLoading: false,
+        documentsLoading: false,
+        allDocumentFetched: action.loadMore
+      };
+    case types.ADDITIONAL_COMMENTS_REQUESTED:
+      return {
+        ...state,
+        additionalCommentsLoading: true
+      };
+    case types.COMMENTS_REQUESTED:
+      return {
+        ...state,
+        commentsLoading: true
+      };
+    case types.COMMENTS_FETCH_SUCESSS:
+      return {
+        ...state,
+        commentIds: action.loadMore
+          ? (state.commentIds || []).concat(action.commentIds || [])
+          : action.commentIds,
+        commentsById: assignIn(action.commentsById, state.commentsById),
+        commentOffset: action.commentOffset,
+        commentEndOfResult: action.commentEndOfResult,
+        additionalCommentsLoading: false,
+        commentsLoading: false
       };
     default:
       return state;
   }
 }
 
-export function getResponsibleIssues(state) {
-  return {
-    issuesById: state.scenes.dashboard.data.issuesById,
-    issueIds: state.scenes.dashboard.data.issueIds
-  };
+export function getDocuments(state) {
+  return pick(state.scenes.dashboard.data, [
+    "documentIds",
+    "documentsById",
+    "allDocumentFetched",
+    "documentsLoading",
+    "additionalDocumentsLoading"
+  ]);
 }
 
-export function canLoadMore(state) {
-  return (
-    state.scenes.dashboard.data.issueOffset <
-    state.scenes.dashboard.data.issueCount
-  );
+export function getComments(state) {
+  return pick(state.scenes.dashboard.data, [
+    "commentsById",
+    "commentIds",
+    "commentOffset",
+    "commentLimit",
+    "commentEndOfResult",
+    "additionalCommentsLoading",
+    "commentsLoading"
+  ]);
 }
