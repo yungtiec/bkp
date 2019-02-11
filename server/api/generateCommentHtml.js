@@ -353,8 +353,8 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
           <div class="content">
             <!-- START CENTERED WHITE CONTAINER -->
 
-            <span class="preheader">Reset you password.
-            </span>
+            <!-- <span class="preheader">Reset you password. -->
+            <!-- </span> -->
 
             <div style="text-align:center;margin-bottom: 30px;">
 
