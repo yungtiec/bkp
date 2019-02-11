@@ -1,12 +1,9 @@
 import React, { Fragment } from "react";
-import {
-  ListItemBase,
-  ListItemAttached,
-  ContributionActionBtn
-} from "../components";
+import { ListItemBase, ListItemAttached } from "./ListComponents";
+import ContributionActionBtn from "./ContributionActionBtn";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import history from "../../../../../history";
+import history from "../../history";
 
 const goToDocument = (e, document) => {
   if (e.target.className.indexOf("document-card__profile-link") !== -1) return;

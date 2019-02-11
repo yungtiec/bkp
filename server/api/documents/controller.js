@@ -71,10 +71,11 @@ const getFeatureDocuments = async (req, res, next) => {
 
 const getDocuments = async (req, res, next) => {
   try {
-    const { count, documents } = await Document.getDocumentsWithStats({
-      limit: req.query.limit,
+    var options = {
       offset: req.query.offset
-    });
+    };
+    if (req.query.limit) options.limit = req.query.limit;
+    const { count, documents } = await Document.getDocumentsWithStats(options);
     res.send({ count, documents });
   } catch (err) {
     next(err);
@@ -137,7 +138,7 @@ const getDrafts = async (req, res, next) => {
     const { count, rows } = await Document.findAndCountAll({
       where: { creator_id: req.user.id, submitted: true, reviewed: false },
       limit: Number(req.query.limit),
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]]
     });
     res.send({ count, rows });
   } catch (err) {
@@ -150,7 +151,7 @@ const getPublishedDocuments = async (req, res, next) => {
     const { count, rows } = await Document.findAndCountAll({
       where: { creator_id: req.user.id, submitted: true, reviewed: true },
       limit: Number(req.query.limit),
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]]
     });
     res.send({ count, rows });
   } catch (err) {
@@ -361,25 +362,27 @@ const createDocumentByMarkdown = async (req, res, next) => {
     }
   );
   const collaborators = req.body.collaboratorEmails
-    ? req.body.collaboratorEmails.map(emailOption => emailOption.value).map(
-        async email =>
-          await User.findOne({ where: { email } }).then(user =>
-            DocumentCollaborator.create({
-              user_id: user ? user.id : null,
-              email,
-              document_id: document.id
-            }).then(collaborator => {
-              return Notification.notifyCollaborators({
-                sender: req.user,
-                collaboratorId: user.id,
-                versionId: version.id,
-                projectSymbol: project.symbol,
-                parentVersionTitle: document.title,
-                action: "created"
-              });
-            })
-          )
-      )
+    ? req.body.collaboratorEmails
+        .map(emailOption => emailOption.value)
+        .map(
+          async email =>
+            await User.findOne({ where: { email } }).then(user =>
+              DocumentCollaborator.create({
+                user_id: user ? user.id : null,
+                email,
+                document_id: document.id
+              }).then(collaborator => {
+                return Notification.notifyCollaborators({
+                  sender: req.user,
+                  collaboratorId: user.id,
+                  versionId: version.id,
+                  projectSymbol: project.symbol,
+                  parentVersionTitle: document.title,
+                  action: "created"
+                });
+              })
+            )
+        )
     : null;
   res.send(Object.assign({ document }, version.toJSON()));
 };
@@ -418,25 +421,27 @@ const createDocumentWithSchemaId = async (req, res, next) => {
     WizardSchema.findById(req.body.wizardSchemaId)
   ]);
   const collaborators = req.body.collaboratorEmails
-    ? req.body.collaboratorEmails.map(emailOption => emailOption.value).map(
-        async email =>
-          await User.findOne({ where: { email } }).then(user =>
-            DocumentCollaborator.create({
-              user_id: user ? user.id : null,
-              email,
-              document_id: document.id
-            }).then(collaborator => {
-              return Notification.notifyCollaborators({
-                sender: req.user,
-                collaboratorId: user.id,
-                versionId: version.id,
-                projectSymbol: project.symbol,
-                parentVersionTitle: document.title,
-                action: "created"
-              });
-            })
-          )
-      )
+    ? req.body.collaboratorEmails
+        .map(emailOption => emailOption.value)
+        .map(
+          async email =>
+            await User.findOne({ where: { email } }).then(user =>
+              DocumentCollaborator.create({
+                user_id: user ? user.id : null,
+                email,
+                document_id: document.id
+              }).then(collaborator => {
+                return Notification.notifyCollaborators({
+                  sender: req.user,
+                  collaboratorId: user.id,
+                  versionId: version.id,
+                  projectSymbol: project.symbol,
+                  parentVersionTitle: document.title,
+                  action: "created"
+                });
+              })
+            )
+        )
     : null;
   res.send({ version, document, wizardSchema });
 };
@@ -480,25 +485,27 @@ const createDocumentFromHtml = async (req, res, next) => {
   });
 
   const collaborators = req.body.collaboratorEmails
-    ? req.body.collaboratorEmails.map(emailOption => emailOption.value).map(
-        async email =>
-          await User.findOne({ where: { email } }).then(user =>
-            DocumentCollaborator.create({
-              user_id: user ? user.id : null,
-              email,
-              document_id: document.id
-            }).then(collaborator => {
-              return Notification.notifyCollaborators({
-                sender: req.user,
-                collaboratorId: user.id,
-                versionId: version.id,
-                projectSymbol: project.symbol,
-                parentVersionTitle: document.title,
-                action: "created"
-              });
-            })
-          )
-      )
+    ? req.body.collaboratorEmails
+        .map(emailOption => emailOption.value)
+        .map(
+          async email =>
+            await User.findOne({ where: { email } }).then(user =>
+              DocumentCollaborator.create({
+                user_id: user ? user.id : null,
+                email,
+                document_id: document.id
+              }).then(collaborator => {
+                return Notification.notifyCollaborators({
+                  sender: req.user,
+                  collaboratorId: user.id,
+                  versionId: version.id,
+                  projectSymbol: project.symbol,
+                  parentVersionTitle: document.title,
+                  action: "created"
+                });
+              })
+            )
+        )
     : null;
   res.send(document);
 };
@@ -619,19 +626,20 @@ const postNewVersion = async (req, res, next) => {
     var prevCollaboratorEmails = parentVersion.document.collaborators.map(
       user => user.email
     );
-    var removedCollaborators = _
-      .difference(prevCollaboratorEmails, collaboratorEmails)
-      .map(async email =>
-        DocumentCollaborator.update(
-          { revoked_access: true },
-          {
-            where: {
-              email,
-              document_id: parentVersion.document.id
-            }
+    var removedCollaborators = _.difference(
+      prevCollaboratorEmails,
+      collaboratorEmails
+    ).map(async email =>
+      DocumentCollaborator.update(
+        { revoked_access: true },
+        {
+          where: {
+            email,
+            document_id: parentVersion.document.id
           }
-        )
-      );
+        }
+      )
+    );
     var collaborators = collaboratorEmails.map(
       async email =>
         await User.findOne({ where: { email } }).then(user =>

@@ -102,7 +102,7 @@ class Navbar extends Component {
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
                     <Link to="/dashboard" className="navbar__nav-item">
-                      dashboard
+                      recent comments
                     </Link>
                   </VisibleIf>
                 </PunditTypeSet>

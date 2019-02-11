@@ -1,36 +1,14 @@
 import "./Dashboard.scss";
 import React, { Component } from "react";
-import {
-  DashboardProjectList,
-  DashboardDocumentList,
-  DashboardRecentIssues
-} from "./components";
-import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../policies";
+import { QueryDashboardDocumentList, QueryDashboardComments } from "./components";
 
-export default ({
-  documentsById,
-  documentIds,
-  projectSymbolArr,
-  projectsBySymbol,
-  user
-}) => {
+export default ({}) => {
   return (
-    <div className="main-container d-flex">
-      <div className="d-flex flex-column dashboard-sidebar">
-        <DashboardDocumentList documentIds={documentIds} documentsById={documentsById} />
-        <PunditContainer policies={policies} user={user}>
-          <PunditTypeSet type="Project">
-            <VisibleIf action="ReadManagedProjects" model={{}}>
-              <DashboardProjectList
-                projectSymbolArr={projectSymbolArr}
-                projectsBySymbol={projectsBySymbol}
-              />
-            </VisibleIf>
-          </PunditTypeSet>
-        </PunditContainer>
+    <div className="app-container d-flex pt-4 mb-4">
+      <div className="d-flex flex-column dashboard-sidebar pr-4">
+        <QueryDashboardDocumentList />
       </div>
-      <DashboardRecentIssues />
+      <QueryDashboardComments />
     </div>
   );
 };

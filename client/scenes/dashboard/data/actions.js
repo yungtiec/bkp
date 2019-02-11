@@ -1,27 +1,70 @@
 import { values, keyBy } from "lodash";
 import * as types from "./actionTypes";
-import { getResponsibleIssues } from "./service";
+import { getDocumentsWithStats, getCommentsWithResponse } from "./service";
 
-export const fetchResponsibleIssues = () => async (dispatch, getState) => {
+export const fetchDocumentsWithStats = loadMore => async (
+  dispatch,
+  getState
+) => {
   try {
     const state = getState();
-    const { documentsById } = state.data.user;
-    const { issueOffset, issueLimit } = state.scenes.dashboard.data;
-    const { count, rows } = await getResponsibleIssues({
-      versionIds: values(documentsById).reduce((idArray, s) => {
-        return idArray.concat(s.versions.map(ps => ps.id));
-      }, []),
-      offset: issueOffset,
-      limit: issueLimit
+    if (!loadMore) {
+      dispatch({
+        type: types.DOCUMENTS_REQUESTED
+      });
+    } else {
+      dispatch({
+        type: types.ADDITIONAL_DOCUMENTS_REQUESTED
+      });
+    }
+    var { count, documents } = await getDocumentsWithStats({
+      offset: state.scenes.dashboard.data.documentOffset,
+      loadMore
     });
-    const issuesById = keyBy(rows, "id");
-    const issueIds = rows.map(i => i.id);
+    const documentsById = keyBy(documents.rows, "id");
+    const documentIds = documents.rows.map(fd => fd.id);
     dispatch({
-      type: types.RESPONSIBLE_ISSUES_FETCHED_SUCESSS,
-      issueOffset: issueOffset + issueLimit,
-      issuesById,
-      issueIds,
-      count
+      type: types.DOCUMENTS_FETCH_SUCESSS,
+      documentsById,
+      documentIds,
+      loadMore
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchCommentsWithResponse = loadMore => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const state = getState();
+    var { commentOffset, commentLimit } = state.scenes.dashboard.data;
+
+    if (!loadMore) {
+      commentOffset = 0;
+      dispatch({
+        type: types.COMMENTS_REQUESTED
+      });
+    } else {
+      dispatch({
+        type: types.ADDITIONAL_COMMENTS_REQUESTED
+      });
+    }
+    var comments = await getCommentsWithResponse({
+      offset: commentOffset,
+      limit: commentLimit
+    });
+    const commentsById = keyBy(comments, "id");
+    const commentIds = comments.map(fd => fd.id);
+    dispatch({
+      type: types.COMMENTS_FETCH_SUCESSS,
+      commentsById,
+      commentIds,
+      commentOffset: commentOffset + commentLimit,
+      commentEndOfResult: commentIds.length < commentLimit || !commentIds.length,
+      loadMore
     });
   } catch (err) {
     console.log(err);

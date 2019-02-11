@@ -2,11 +2,8 @@ import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
-  ListItemBase,
-  ListItemAttached,
-  ContributionActionBtn,
   CommentCard
-} from "../../components";
+} from "../../../../../../components";
 import moment from "moment";
 
 const Comments = ({

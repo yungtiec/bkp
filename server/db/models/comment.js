@@ -155,132 +155,160 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
-    Comment.addScope("flatThreadByRootId", function(options) {
-      var query = {
-        include: [
-          {
-            model: models.user,
-            as: "upvotesFrom",
-            attributes: ["first_name", "last_name", "name", "email", "id"]
-          },
-          {
-            model: models.user,
-            as: "owner",
-            attributes: [
-              "id",
-              "first_name",
-              "last_name",
-              "name",
-              "email",
-              "anonymity"
-            ],
-            include: [
-              {
-                model: models.role
-              }
-            ]
-          },
-          {
-            model: models.tag,
-            attributes: ["name", "id"]
-          },
-          {
-            model: models.document,
-            include: [
-              {
-                model: models.project,
-                attributes: ["symbol"]
-              }
-            ]
-          },
-          {
-            model: models.issue,
-            attributes: ["open", "id"],
-            include: [
-              {
-                model: models.version,
-                as: "resolvingVersion",
-                include: [
-                  {
-                    model: models.document,
-                    include: [
-                      {
-                        model: models.project,
-                        attributes: ["symbol"]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            model: Comment,
-            required: false,
-            include: [
-              {
-                model: models.user,
-                as: "upvotesFrom",
-                attributes: ["first_name", "last_name", "name", "email", "id"]
-              },
-              {
-                model: models.user,
-                as: "owner",
-                attributes: [
-                  "id",
-                  "first_name",
-                  "last_name",
-                  "name",
-                  "email",
-                  "anonymity"
-                ],
-                include: [
-                  {
-                    model: models.role
-                  }
-                ]
-              },
-              {
-                model: Comment,
-                as: "parent",
-                required: false,
-                include: [
-                  {
-                    model: models.user,
-                    as: "owner",
-                    attributes: [
-                      "id",
-                      "first_name",
-                      "last_name",
-                      "name",
-                      "email",
-                      "anonymity"
-                    ],
-                    include: [
-                      {
-                        model: models.role
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            as: "descendents"
-          }
-        ],
-        order: [
-          [
-            {
-              model: Comment,
-              as: "descendents"
-            },
-            "createdAt"
-          ]
-        ]
-      };
-      if (options) query = assignIn(options, query);
-      return query;
+    Comment.addScope(
+      "flatThreadByRootId",
+      generateScopeForAncestry(models, "descendents")
+    );
+    Comment.addScope("withParent", generateScopeForAncestry(models, "parent"));
+  };
+  Comment.getCommentsWitRoot = async function(options) {
+    var comments = await Comment.scope({
+      method: ["flatThreadByRootId", options]
+    }).findAll();
+    return Promise.map(comments, async comment => {
+      if (comment.hierarchyLevel === 1) return comment;
+      var rootComment = await comment.getAncestors({
+        where: { hierarchyLevel: 1 }
+      });
+      return assignIn(comment.toJSON(), {
+        root_comment_id: rootComment[0].id,
+        root_comment: rootComment[0]
+      });
     });
   };
   return Comment;
 };
+
+function generateScopeForAncestry(models, ancestry) {
+  return function(options) {
+    var query = {
+      include: [
+        {
+          model: models.user,
+          as: "upvotesFrom",
+          attributes: ["first_name", "last_name", "name", "email", "id"]
+        },
+        {
+          model: models.user,
+          as: "owner",
+          attributes: [
+            "id",
+            "first_name",
+            "last_name",
+            "name",
+            "email",
+            "anonymity",
+            "user_handle"
+          ],
+          include: [
+            {
+              model: models.role
+            }
+          ]
+        },
+        {
+          model: models.tag,
+          attributes: ["name", "id"]
+        },
+        {
+          model: models.document,
+          include: [
+            {
+              model: models.project,
+              attributes: ["symbol"]
+            },
+            {
+              model: models.user,
+              as: "creator",
+              attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "name",
+                "email",
+                "anonymity",
+                "user_handle"
+              ]
+            }
+          ]
+        },
+        {
+          model: models.issue,
+          attributes: ["open", "id"],
+          include: [
+            {
+              model: models.version,
+              as: "resolvingVersion",
+              include: [
+                {
+                  model: models.document,
+                  include: [
+                    {
+                      model: models.project,
+                      attributes: ["symbol"]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          model: models.comment,
+          required: false,
+          include: [
+            {
+              model: models.user,
+              as: "upvotesFrom",
+              attributes: ["first_name", "last_name", "name", "email", "id"]
+            },
+            {
+              model: models.user,
+              as: "owner",
+              attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "name",
+                "email",
+                "anonymity"
+              ],
+              include: [
+                {
+                  model: models.role
+                }
+              ]
+            },
+            {
+              model: models.comment,
+              as: "parent",
+              required: false,
+              include: [
+                {
+                  model: models.user,
+                  as: "owner",
+                  attributes: [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "name",
+                    "email",
+                    "anonymity"
+                  ],
+                  include: [
+                    {
+                      model: models.role
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          as: ancestry
+        }
+      ]
+    };
+    if (options) query = assignIn(options, query);
+    return query;
+  };
+}

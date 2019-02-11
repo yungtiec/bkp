@@ -2,14 +2,11 @@ import React, { Component, Fragment } from "react";
 import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
-  ListItemBase,
-  ListItemAttached,
-  ContributionActionBtn,
   CommentCard,
   DocumentCard,
   DocumentVoteCard,
   CommentVoteCard
-} from "../../components";
+} from "../../../../../../components";
 import moment from "moment";
 
 const AllContribution = ({
