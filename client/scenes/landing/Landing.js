@@ -38,7 +38,7 @@ const Landing = ({ user, logout }) => (
               <div className="row">
                 <div className="col-lg-12 my-auto">
                   <Link class="btn btn-landing btn-xl" to="/feed">
-                    commnunity collaborations
+                    latest stories
                   </Link>
                   <a
                     class="btn btn-landing btn-xl ml-2"

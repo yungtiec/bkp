@@ -134,7 +134,7 @@ class AuthWidget extends Component {
                         style={{ display: "block", margin: "0px" }}
                       >
                         <div className={`${className}__dropdown-item`}>
-                          dashboard
+                          recent comments
                         </div>
                       </Link>
                     </VisibleIf>
