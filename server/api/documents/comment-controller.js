@@ -75,8 +75,9 @@ const postComment = async (req, res, next) => {
     comment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: comment.id } }]
     }).findOne();
+    const isRepostedByBKPEmail = document.creator.email.includes('tbp.admin');
     await sendEmail({
-      recipientEmail: document.creator.email,
+      recipientEmail: isRepostedByBKPEmail ? 'info@thebkp.com' : document.creator.email,
       subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
       message: generateCommentHtml(
         process.env.NODE_ENV === 'production',
@@ -87,6 +88,22 @@ const postComment = async (req, res, next) => {
         false
       )
     });
+    // Send this to info@thebkp.com
+    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+      await sendEmail({
+        recipientEmail: 'info@thebkp.com',
+        subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+        message: generateCommentHtml(
+          process.env.NODE_ENV === 'production',
+          document.slug,
+          comment.owner.first_name,
+          comment.owner.last_name,
+          comment,
+          false
+        )
+      });
+    }
+
     res.send(comment);
   } catch (err) {
     next(err);
@@ -161,6 +178,20 @@ const postReply = async (req, res, next) => {
         true
       )
     });
+    if (ancestry.owner.id !== 12) {
+      await sendEmail({
+        recipientEmail: 'info@thebkp.com',
+        subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+        message: generateCommentHtml(
+          process.env.NODE_ENV === 'production',
+          document.slug,
+          comment.owner.first_name,
+          comment.owner.last_name,
+          comment,
+          false
+        )
+      });
+    }
     res.send(ancestry);
   } catch (err) {
     next(err);
