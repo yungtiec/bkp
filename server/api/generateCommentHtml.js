@@ -419,7 +419,7 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
 
                                             <a href="${
   inProduction
-    ? "https://collaborate.thebkp.com"
+    ? "https://bkp-staging.herokuapp.com"
     : "http://localhost:8000"
   }/s/${slug}/comment/${commentId}"
                                               target="_blank">See New ${isReply ? 'Reply' : 'Comment'}
