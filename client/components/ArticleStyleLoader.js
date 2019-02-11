@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import "./ArticleStyleLoader.scss";
 
-export default ({ mobile, headline }) => (
+export default ({ mobile, headline, hideImg }) => (
   <div className="loader__wrapper" style={headline ? { height: "400px" } : {}}>
     <div className="loader__wrapper-cell">
-      {mobile && headline ? null : (
+      {(mobile && headline) || hideImg ? null : (
         <div
           className="loader__image"
           style={
@@ -17,7 +17,7 @@ export default ({ mobile, headline }) => (
           }
         />
       )}
-      <div className="loader__text">
+      <div className="loader__text" style={hideImg ? { marginLeft: 0 } : {}}>
         {headline ? (
           <Fragment>
             <div className="loader__headline" />

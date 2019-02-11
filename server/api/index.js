@@ -7,6 +7,7 @@ module.exports = router;
 router.use("/users", require("./users"));
 router.use("/projects", require("./projects"));
 router.use("/documents", require("./documents"));
+router.use("/comments", require("./comments"));
 router.use("/versions", require("./versions"));
 router.use("/issues", require("./issues"));
 router.use("/tags", require("./tags"));

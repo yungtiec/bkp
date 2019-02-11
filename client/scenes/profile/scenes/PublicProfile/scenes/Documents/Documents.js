@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { DocumentCard } from "../../components";
+import { DocumentCard } from "../../../../../../components";
 
 const Documents = ({
   gridClassnames,
@@ -14,7 +14,9 @@ const Documents = ({
 }) => {
   return (
     <div className={`${gridClassnames}`}>
-      {documentIds.map(id => <DocumentCard document={documentsById[id]} />)}
+      {documentIds.map(id => (
+        <DocumentCard document={documentsById[id]} />
+      ))}
       {!(offset === 0 && endOfResult) && (
         <div className="my-3">
           <button

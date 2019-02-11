@@ -1,7 +1,10 @@
 import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { DocumentVoteCard, CommentVoteCard } from "../../components";
+import {
+  DocumentVoteCard,
+  CommentVoteCard
+} from "../../../../../../components";
 import moment from "moment";
 
 const Votes = ({

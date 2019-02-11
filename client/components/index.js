@@ -46,3 +46,11 @@ export {
 } from "./WizardDocumentViewer/WizardDocumentViewer";
 export { default as ArticleStyleLoader } from "./ArticleStyleLoader";
 export { default as ScorecardTable } from "./ScorecardTable";
+export { default as CommentCard } from "./ContributionCards/CommentCard";
+export { default as DocumentCard } from "./ContributionCards/DocumentCard";
+export {
+  default as CommentVoteCard
+} from "./ContributionCards/CommentVoteCard";
+export {
+  default as DocumentVoteCard
+} from "./ContributionCards/DocumentVoteCard";
