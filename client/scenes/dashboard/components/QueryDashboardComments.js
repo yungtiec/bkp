@@ -20,14 +20,14 @@ class QueryDashboardComments extends React.Component {
   render() {
     if (this.props.commentsLoading)
       return (
-        <Fragment>
+        <div style={{flex: 1}}>
           {range(5).map(rand => (
             <ArticleStyleLoader
               hideImg={true}
               mobile={this.props.screenWidth < 768}
             />
           ))}
-        </Fragment>
+        </div>
       );
     else return <DashboardComments {...this.props} />;
   }

@@ -21,7 +21,7 @@ class QueryDashboardDocumentList extends React.Component {
     if (this.props.documentsLoading)
       return (
         <Fragment>
-          {range(5).map(rand => (
+          {range(2).map(rand => (
             <ArticleStyleLoader
               hideImg={true}
               mobile={this.props.screenWidth < 768}
