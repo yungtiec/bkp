@@ -1,13 +1,9 @@
 import React, { Fragment } from "react";
-import {
-  ListItemBase,
-  ListItemAttached,
-  ContributionActionBtn
-} from "../components";
+import { ListItemBase, ListItemAttached } from "./ListComponents";
+import ContributionActionBtn from "./ContributionActionBtn";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import history from "../../../../../history";
-
+import history from "../../history";
 
 export default ({ cid, vote, userHandle }) => (
   <ListItemBase
@@ -19,9 +15,7 @@ export default ({ cid, vote, userHandle }) => (
         <Link className="text-primary" to={`/profile/@${userHandle}`}>
           @{userHandle}
         </Link>
-        <span>
-          {vote.type === "upvoteDocument" ? "upvote" : "downvote"}d
-        </span>
+        <span>{vote.type === "upvoteDocument" ? "upvote" : "downvote"}d</span>
         <Link className="text-dark" to={`/s/${vote.slug}`}>
           {vote.title}
         </Link>

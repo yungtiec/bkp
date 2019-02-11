@@ -1,31 +1,39 @@
-import React, { Component } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { maxBy } from "lodash";
 
-export default ({ documentIds, documentsById }) => {
+export default ({
+  documentIds,
+  documentsById,
+  fetchDocumentsWithStats,
+  additionalDocumentsLoading
+}) => {
   return (
     <div className="d-flex flex-column">
-      <p className="dashboard-listing__title mb-2 pb-3 pl-1">My Documents</p>
+      <p className="dashboard-listing__title mb-2 pb-2 pl-1">All Documents</p>
       {documentIds && documentIds.length ? (
-        documentIds.map(id => (
-          <div
-            key={`dashboard-document-listing__${id}`}
-            className="dashboard-listing__item py-2 pl-1"
-          >
-            <Link
-              to={`/project/${
-                documentsById[id].project.symbol
-              }/document/${id}/version/${
-                maxBy(documentsById[id].versions, "hierarchyLevel").id
-              }`}
-              className="d-flex align-items-start"
+        <Fragment>
+          {documentIds.map(id => (
+            <div
+              key={`dashboard-document-listing__${id}`}
+              className="dashboard-listing__item py-2 pl-1"
             >
-              <p className="mb-0">{documentsById[id].project.symbol}</p>
-              <p className="ml-3 mb-0">{documentsById[id].title}</p>
-            </Link>
-          </div>
-        ))
+              <Link
+                to={`/s/${documentsById[id].slug}`}
+                className="d-flex align-items-start"
+              >
+                {documentsById[id].title}
+              </Link>
+            </div>
+          ))}
+          <a
+            className="dashboard-listing__item py-2 pl-1 text-primary"
+            onClick={() => fetchDocumentsWithStats(true)}
+          >
+            {additionalDocumentsLoading ? "loading" : "show more"}
+          </a>
+        </Fragment>
       ) : (
         <div>currently has no document available</div>
       )}
