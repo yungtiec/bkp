@@ -28,7 +28,12 @@ class CkEditor extends Component {
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
-      category: this.props.documentMetadata.category,
+      category: this.props.documentMetadata.category
+        ? {
+            label: this.props.documentMetadata.category,
+            value: this.props.documentMetadata.category.replace(" ", "-")
+          }
+        : null,
       headerImageUrl: this.props.documentMetadata.header_img_url,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
@@ -175,8 +180,21 @@ class CkEditor extends Component {
               </div>
             </div>
             <div className="mb-4">
+              <span className="mb-2">Summary:</span>
+              <CKEditor
+                name="document-summary"
+                activeClass="p10"
+                content={summary}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeSummary
+                }}
+              />
+            </div>
+            <div className="mb-4">
               <span className="mb-2">Content:</span>
               <CKEditor
+                name="document-content"
                 activeClass="p10"
                 content={content}
                 scriptUrl={scriptUrl}
