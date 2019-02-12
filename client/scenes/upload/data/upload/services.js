@@ -9,6 +9,8 @@ export function postHtml({
   commentPeriodUnit,
   selectedProjectSymbol,
   scorecard,
+  category,
+  description,
   // todo: add input for document type: regulatory...etc
   documentType
 }) {
@@ -23,6 +25,8 @@ export function postHtml({
       selectedProjectSymbol,
       scorecard,
       documentFormat: "html",
+      category,
+      description,
       documentType
     })
     .then(res => res.data);

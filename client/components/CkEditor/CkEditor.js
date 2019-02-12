@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import CKEditor from "react-ckeditor-component";
@@ -12,6 +12,7 @@ import annotator from "annotator";
 import { draw, undraw } from "../../annotator/highlight";
 import { isEmpty, uniq, cloneDeep } from "lodash";
 import { withRouter } from "react-router-dom";
+import { DocumentCategorySelect } from "../index";
 import ActiveToggle from "../../scenes/document/scenes/Document/components/ActiveToggle";
 import CategorySelect from "../../scenes/document/scenes/Document/components/CategorySelect";
 import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
@@ -27,7 +28,12 @@ class CkEditor extends Component {
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
-      category: this.props.documentMetadata.category,
+      category: this.props.documentMetadata.category
+        ? {
+            label: this.props.documentMetadata.category,
+            value: this.props.documentMetadata.category.replace(" ", "-")
+          }
+        : null,
       headerImageUrl: this.props.documentMetadata.header_img_url,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
@@ -131,11 +137,14 @@ class CkEditor extends Component {
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
-    this.setState({
-      renderHtml: !this.state.renderHtml
-    }, () => {
-      this.props.hideEditor();
-    });
+    this.setState(
+      {
+        renderHtml: !this.state.renderHtml
+      },
+      () => {
+        this.props.hideEditor();
+      }
+    );
   }
 
   render() {
@@ -148,22 +157,44 @@ class CkEditor extends Component {
         {displayEditor ? (
           <div className="mb-4">
             <div className="mb-4">
-              <ActiveToggle
-                handleStatusChange={this.handleStatusChange}
-                status={this.state.status}
-              />
-              <CategorySelect
-                handleCategoryChange={this.handleCategoryChange}
-                category={this.state.category}
-              />
-              <HeaderImageSelector
-                openImageFinderModal={this.openImageFinderModal}
-                headerImageUrl={headerImageUrl}
+              <div className="mb-4">
+                Status:
+                <ActiveToggle
+                  handleStatusChange={this.handleStatusChange}
+                  status={this.state.status}
+                />
+              </div>
+              <div className="mb-4">
+                Category:
+                <DocumentCategorySelect
+                  handleCategoryChange={this.handleCategoryChange}
+                  category={this.state.category}
+                />
+              </div>
+              <div className="mt-2 mb-4">
+                Header Image To Display On Feed:
+                <HeaderImageSelector
+                  openImageFinderModal={this.openImageFinderModal}
+                  headerImageUrl={headerImageUrl}
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <span className="mb-2">Summary:</span>
+              <CKEditor
+                name="document-summary"
+                activeClass="p10"
+                content={summary}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeSummary
+                }}
               />
             </div>
             <div className="mb-4">
               <span className="mb-2">Content:</span>
               <CKEditor
+                name="document-content"
                 activeClass="p10"
                 content={content}
                 scriptUrl={scriptUrl}
@@ -174,15 +205,25 @@ class CkEditor extends Component {
             </div>
           </div>
         ) : (
-          <div className="mb-4" ref={el => (this[`content`] = el)}>
-            <div
-              className="markdown-body"
-              onClick={this.handleAnnotationInContentOnClick}
-            >
-              {documentMetadata.document_type === "legacy_scorecard" ? (
-                <ScorecardTable scorecard={documentMetadata.scorecard} />
-              ) : null}
-              {ReactHtmlParser(content)}
+          <div className="mb-4">
+            {summary ? (
+              <div className="document-summary ">
+                <div className="markdown-body">
+                  {ReactHtmlParser(summary)}
+                </div>
+                <hr />
+              </div>
+            ) : null}
+            <div ref={el => (this[`content`] = el)}>
+              <div
+                className="markdown-body"
+                onClick={this.handleAnnotationInContentOnClick}
+              >
+                {documentMetadata.document_type === "legacy_scorecard" ? (
+                  <ScorecardTable scorecard={documentMetadata.scorecard} />
+                ) : null}
+                {ReactHtmlParser(content)}
+              </div>
             </div>
           </div>
         )}
@@ -191,7 +232,6 @@ class CkEditor extends Component {
             save
           </button>
         ) : null}
-
       </div>
     );
   }

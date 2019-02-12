@@ -13,7 +13,7 @@ module.exports = {
     return queryInterface.bulkInsert(
       "tags",
       citiesArray
-        // .slice(0, 100)
+        .slice(0, 100)
         .map(data => ({
           name: `${data.name}, ${data.country}`.toLowerCase(),
           display_name: `${data.name}, ${data.country}`,

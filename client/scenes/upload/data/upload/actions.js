@@ -14,7 +14,9 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       commentPeriodValue,
       commentPeriodUnit,
       selectedProject,
-      scorecard
+      scorecard,
+      summary,
+      category
     } = state.scenes.upload.data.upload;
     const document = await postHtml({
       title,
@@ -24,7 +26,9 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       commentPeriodValue,
       commentPeriodUnit,
       selectedProjectSymbol: selectedProject.symbol,
-      scorecard
+      scorecard,
+      description: summary,
+      category
     });
     history.push(
       `/s/${document.slug}`
@@ -67,9 +71,19 @@ export const updateContentHtml = contentHtml => ({
   contentHtml
 });
 
+export const updateSummary = summary => ({
+  type: types.SUMMARY_UPDATED,
+  summary
+});
+
 export const updateTitle = title => ({
   type: types.TITLE_UPDATED,
   title
+});
+
+export const updateCategory = category => ({
+  type: types.CATAGORY_UPDATED,
+  category
 });
 
 export const updateHeaderImageUrl = headerImageUrl => ({

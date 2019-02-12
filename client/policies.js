@@ -10,10 +10,10 @@ module.exports = {
 
     const isAdmin = userRole === "admin";
     const isProjectAdmin =
-      userRole === "project_admin" &&
+      model.project && userRole === "project_admin" &&
       !!find(model.project.admins, a => a.id === user.id);
     const isProjectEditor =
-      userRole === "project_editor" &&
+      model.project && userRole === "project_editor" &&
       !!find(model.project.editors, a => a.id === user.id);
     const isCommentOwner = user.id === model.comment.owner_id;
     const needVerification = model.comment.reviewed === "pending";
