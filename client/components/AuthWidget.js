@@ -130,11 +130,11 @@ class AuthWidget extends Component {
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
                       <Link
-                        to="/dashboard"
+                        to="/recent-comments"
                         style={{ display: "block", margin: "0px" }}
                       >
                         <div className={`${className}__dropdown-item`}>
-                          dashboard
+                          recent comments
                         </div>
                       </Link>
                     </VisibleIf>

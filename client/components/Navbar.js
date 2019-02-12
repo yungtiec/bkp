@@ -101,8 +101,8 @@ class Navbar extends Component {
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
-                    <Link to="/dashboard" className="navbar__nav-item">
-                      dashboard
+                    <Link to="/recent-comments" className="navbar__nav-item">
+                      recent comments
                     </Link>
                   </VisibleIf>
                 </PunditTypeSet>

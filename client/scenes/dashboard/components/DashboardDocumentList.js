@@ -7,8 +7,10 @@ export default ({
   documentIds,
   documentsById,
   fetchDocumentsWithStats,
-  additionalDocumentsLoading
+  additionalDocumentsLoading,
+  allDocumentsFetched
 }) => {
+  console.log(allDocumentsFetched)
   return (
     <div className="d-flex flex-column">
       <p className="dashboard-listing__title mb-2 pb-2 pl-1">All Documents</p>
@@ -27,12 +29,14 @@ export default ({
               </Link>
             </div>
           ))}
-          <a
-            className="dashboard-listing__item py-2 pl-1 text-primary"
-            onClick={() => fetchDocumentsWithStats(true)}
-          >
-            {additionalDocumentsLoading ? "loading" : "show more"}
-          </a>
+          {allDocumentsFetched ? null : (
+            <a
+              className="dashboard-listing__item py-2 pl-1 text-primary"
+              onClick={() => fetchDocumentsWithStats(true)}
+            >
+              {additionalDocumentsLoading ? "loading" : "show more"}
+            </a>
+          )}
         </Fragment>
       ) : (
         <div>currently has no document available</div>

@@ -57,7 +57,7 @@ class Routes extends Component {
           {isLoggedIn && (
             <RouteWithLayout
               layout={LayoutWithNav}
-              path="/dashboard"
+              path="/recent-comments"
               component={Dashboard}
             />
           )}
