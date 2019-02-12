@@ -135,11 +135,11 @@ class Routes extends Component {
             path="/dex-overview"
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
-          {/* Displays our Collaborations component as a fallback */}
+          {/* Displays our Landing component as a fallback */}
           <RouteWithLayout
             layout={LayoutWithNav}
             path="/"
-            component={Collaborations}
+            component={Landing}
           />
         </Switch>
       </div>

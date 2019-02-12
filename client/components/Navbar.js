@@ -177,9 +177,9 @@ const mapDispatch = dispatch => {
     markAllAsRead: () => dispatch(updateAllNotificationStatus("read")),
     updateStatus: notification => {
       dispatch(updateNotificationStatus(notification, "read"));
-      console.log(notification, notification.uri)
+      console.log(notification, notification.uri);
       if (notification.uri) {
-        console.log("hello???")
+        console.log("hello???");
         history.push(notification.uri);
       }
     }
