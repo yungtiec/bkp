@@ -205,15 +205,21 @@ module.exports = (db, DataTypes) => {
         "updatedAt",
         [
           Sequelize.literal(
-            "(SELECT COUNT(*) FROM comments WHERE comments.doc_id = Document.id)"
+            "(SELECT COUNT(*) FROM comments WHERE comments.doc_id = document.id)"
           ),
           "num_comments"
         ],
         [
           Sequelize.literal(
-            "(SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = Document.id)"
+            "(SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = document.id)"
           ),
           "num_upvotes"
+        ],
+        [
+          Sequelize.literal(
+            "(SELECT COUNT(*) FROM document_downvotes WHERE document_downvotes.document_id = document.id)"
+          ),
+          "num_downvotes"
         ]
       ];
       return {

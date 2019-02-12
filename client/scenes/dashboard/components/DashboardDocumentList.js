@@ -10,7 +10,6 @@ export default ({
   additionalDocumentsLoading,
   allDocumentsFetched
 }) => {
-  console.log(allDocumentsFetched)
   return (
     <div className="d-flex flex-column">
       <p className="dashboard-listing__title mb-2 pb-2 pl-1">All Documents</p>
