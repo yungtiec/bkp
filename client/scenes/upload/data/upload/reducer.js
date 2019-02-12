@@ -13,7 +13,8 @@ const initialState = {
   collaboratorOptions: [],
   scorecard: {},
   title: '',
-  headerImageUrl: ''
+  headerImageUrl: '',
+  category: null
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -68,6 +69,11 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         title: action.title
       };
+    case types.CATAGORY_UPDATED:
+      return {
+        ...state,
+        category: action.category
+      }
     case types.HEADER_IMAGE_URL_UPDATED:
       return {
         ...state,
@@ -92,6 +98,7 @@ export function getUploadMetadata(state) {
     commentPeriodUnit,
     commentPeriodValue,
     title,
+    category,
     headerImageUrl,
     scorecard,
   } = state.scenes.upload.data.upload;
@@ -103,6 +110,7 @@ export function getUploadMetadata(state) {
     commentPeriodUnit,
     commentPeriodValue,
     title,
+    category,
     headerImageUrl,
     scorecard,
     scorecardCompleted:

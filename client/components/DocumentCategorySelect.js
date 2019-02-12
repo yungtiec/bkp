@@ -6,18 +6,26 @@ import Select from "react-select";
 import { SquareLoader } from "halogenium";
 import moment from "moment";
 
-class ActiveToggle extends React.Component {
+const categories = [
+  {
+    label: "Proposed Laws And Regulations",
+    value: "proposed-laws-regulations"
+  },
+  { label: "General", value: "general" },
+  { label: "Regulatory", value: "regulatory" },
+  { label: "Regulatory For Comment", value: "regulatory-for-comment" },
+  { label: "Scorecard", value: "scorecard" }
+];
+
+class DocumentCategorySelect extends React.Component {
   render() {
     return (
       <Select
         name="upload__project-select"
-        value={this.props.status}
-        onChange={this.props.handleStatusChange}
+        value={this.props.category}
         style={{ width: "300px" }}
-        options={[
-          { label: "Draft", value: false },
-          { label: "Published", value: true }
-        ]}
+        onChange={this.props.handleCategoryChange}
+        options={categories}
         placeholder="select..."
       />
     );
@@ -34,5 +42,5 @@ export default withRouter(
   connect(
     mapState,
     actions
-  )(ActiveToggle)
+  )(DocumentCategorySelect)
 );

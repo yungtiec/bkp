@@ -12,6 +12,7 @@ import annotator from "annotator";
 import { draw, undraw } from "../../annotator/highlight";
 import { isEmpty, uniq, cloneDeep } from "lodash";
 import { withRouter } from "react-router-dom";
+import { DocumentCategorySelect } from "../index";
 import ActiveToggle from "../../scenes/document/scenes/Document/components/ActiveToggle";
 import CategorySelect from "../../scenes/document/scenes/Document/components/CategorySelect";
 import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
@@ -131,11 +132,14 @@ class CkEditor extends Component {
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
-    this.setState({
-      renderHtml: !this.state.renderHtml
-    }, () => {
-      this.props.hideEditor();
-    });
+    this.setState(
+      {
+        renderHtml: !this.state.renderHtml
+      },
+      () => {
+        this.props.hideEditor();
+      }
+    );
   }
 
   render() {
@@ -148,18 +152,27 @@ class CkEditor extends Component {
         {displayEditor ? (
           <div className="mb-4">
             <div className="mb-4">
-              <ActiveToggle
-                handleStatusChange={this.handleStatusChange}
-                status={this.state.status}
-              />
-              <CategorySelect
-                handleCategoryChange={this.handleCategoryChange}
-                category={this.state.category}
-              />
-              <HeaderImageSelector
-                openImageFinderModal={this.openImageFinderModal}
-                headerImageUrl={headerImageUrl}
-              />
+              <div className="mb-4">
+                Status:
+                <ActiveToggle
+                  handleStatusChange={this.handleStatusChange}
+                  status={this.state.status}
+                />
+              </div>
+              <div className="mb-4">
+                Category:
+                <DocumentCategorySelect
+                  handleCategoryChange={this.handleCategoryChange}
+                  category={this.state.category}
+                />
+              </div>
+              <div className="mt-2 mb-4">
+                Header Image To Display On Feed:
+                <HeaderImageSelector
+                  openImageFinderModal={this.openImageFinderModal}
+                  headerImageUrl={headerImageUrl}
+                />
+              </div>
             </div>
             <div className="mb-4">
               <span className="mb-2">Content:</span>
@@ -191,7 +204,6 @@ class CkEditor extends Component {
             save
           </button>
         ) : null}
-
       </div>
     );
   }

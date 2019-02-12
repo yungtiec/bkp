@@ -16,6 +16,7 @@ import {
   updateProjectScorecard,
   updateContentHtml,
   updateTitle,
+  updateCategory,
   updateHeaderImageUrl
 } from "./data/upload/actions";
 import {
@@ -69,6 +70,7 @@ const mapState = state => {
     commentPeriodUnit,
     commentPeriodValue,
     title,
+    category,
     headerImageUrl,
     scorecard,
     scorecardCompleted
@@ -91,6 +93,7 @@ const mapState = state => {
     projectSymbolArr,
     contentHtml,
     title,
+    category,
     headerImageUrl
   };
 };
@@ -111,6 +114,7 @@ const actions = {
   updateProjectScorecard,
   updateContentHtml,
   updateTitle,
+  updateCategory,
   updateHeaderImageUrl
 };
 

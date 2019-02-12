@@ -54,3 +54,4 @@ export {
 export {
   default as DocumentVoteCard
 } from "./ContributionCards/DocumentVoteCard";
+export { default as DocumentCategorySelect } from "./DocumentCategorySelect";

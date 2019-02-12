@@ -72,6 +72,11 @@ export const updateTitle = title => ({
   title
 });
 
+export const updateCategory = category => ({
+  type: types.CATAGORY_UPDATED,
+  category
+});
+
 export const updateHeaderImageUrl = headerImageUrl => ({
   type: types.HEADER_IMAGE_URL_UPDATED,
   headerImageUrl

@@ -6,7 +6,6 @@ import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/action
 import { updateSidebarCommentContext } from "../../../reducer";
 import CkEditor from "../../../../../../client/components/CkEditor/CkEditor.js";
 import ActiveToggle from "./ActiveToggle";
-import CategorySelect from "./CategorySelect";
 
 const DocumentContent = ({
   updateSidebarCommentContext,
