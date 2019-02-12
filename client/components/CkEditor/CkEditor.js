@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import CKEditor from "react-ckeditor-component";
@@ -205,15 +205,25 @@ class CkEditor extends Component {
             </div>
           </div>
         ) : (
-          <div className="mb-4" ref={el => (this[`content`] = el)}>
-            <div
-              className="markdown-body"
-              onClick={this.handleAnnotationInContentOnClick}
-            >
-              {documentMetadata.document_type === "legacy_scorecard" ? (
-                <ScorecardTable scorecard={documentMetadata.scorecard} />
-              ) : null}
-              {ReactHtmlParser(content)}
+          <div className="mb-4">
+            {summary ? (
+              <div className="document-summary ">
+                <div className="markdown-body">
+                  {ReactHtmlParser(summary)}
+                </div>
+                <hr />
+              </div>
+            ) : null}
+            <div ref={el => (this[`content`] = el)}>
+              <div
+                className="markdown-body"
+                onClick={this.handleAnnotationInContentOnClick}
+              >
+                {documentMetadata.document_type === "legacy_scorecard" ? (
+                  <ScorecardTable scorecard={documentMetadata.scorecard} />
+                ) : null}
+                {ReactHtmlParser(content)}
+              </div>
             </div>
           </div>
         )}

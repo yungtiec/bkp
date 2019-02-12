@@ -23,11 +23,13 @@ export default ({ document }) => (
       <h6>{document.category.replace(/-/g, " ")}</h6>
       <h5>{document.title}</h5>
       <p>
-        {
-          ReactHtmlParser(document.content_html).filter(
-            elem => elem.type === "p"
-          )[0]
-        }
+        {document.description
+          ? ReactHtmlParser(document.description).filter(
+              elem => elem.type === "p"
+            )[0]
+          : ReactHtmlParser(document.content_html).filter(
+              elem => elem.type === "p"
+            )[0]}
       </p>
       <div className="document-preview__content-bottom d-flex justify-content-between align-items-center">
         <span>{moment(document.createdAt).fromNow()}</span>

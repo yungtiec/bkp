@@ -268,7 +268,9 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
-    documentToUpdate.category = req.body.category;
+    documentToUpdate.category = req.body.category
+      ? req.body.category.value
+      : null;
     documentToUpdate.header_img_url = req.body.headerImageUrl;
     const document = await documentToUpdate.save();
     res.send(document);
@@ -476,7 +478,7 @@ const createDocumentFromHtml = async (req, res, next) => {
       .format("x");
 
     const slug = await createSlug(req.body.title, req.body.contentHtml);
-    console.log(req.body.description)
+    console.log(req.body.description);
 
     const document = await Document.create({
       title: req.body.title,

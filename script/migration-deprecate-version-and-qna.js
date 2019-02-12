@@ -24,6 +24,7 @@ const migrate = async () => {
     await db.sync();
     await mapDocumentData();
     await migrateAnnotationRanges();
+    await migrateDocumentHeaderImages();
     db.close();
   } catch (error) {
     console.log(error);
@@ -44,6 +45,25 @@ async function migrateAnnotationRanges() {
             ranges: JSON.parse(
               `[${unescape(row.ranges.replace(/\\/g, ``)).slice(2, -2)}]`
             )
+          })
+        : null;
+    })
+  );
+}
+
+async function migrateDocumentHeaderImages() {
+  const documentHeaderImagesCsv = fs.readFileSync(
+    "./data/migrate-document-header-images.csv"
+  );
+  var rows = await parse(documentHeaderImagesCsv, {
+    columns: true,
+    cast: false
+  });
+  return Promise.map(rows, row =>
+    Document.findById(row.id).then(document => {
+      return document
+        ? document.update({
+            header_img_url: row.header_img_url
           })
         : null;
     })
@@ -110,8 +130,8 @@ const mapData = async document => {
           _.values(newCategoryNames).indexOf(document.category) !== -1
             ? document.category
             : category
-              ? newCategoryNames[category]
-              : "thought-leadership",
+            ? newCategoryNames[category]
+            : "thought-leadership",
         document_type: !_.isEmpty(version.scorecard)
           ? "legacy_scorecard"
           : "html",
@@ -121,8 +141,13 @@ const mapData = async document => {
     return await updateCommentForeignKey(comments, document.id);
   } else {
     document = await document.update({
-      category: document.document_type,
-      document_type: null
+      category:
+        _.values(newCategoryNames).indexOf(document.category) !== -1
+          ? document.category
+          : category
+          ? newCategoryNames[category]
+          : "thought-leadership",
+      document_type: "html"
     });
   }
 };
