@@ -33,9 +33,10 @@ class Upload extends Component {
       scorecardError: false,
       titleError: false,
       headerImageUrlError: false,
+      contentHtmlError: false,
+      summaryError: false,
       isScorecard: false,
       uploadClicked: false,
-      content: this.props.contentHtml,
       headerImageUrl: ""
     };
   }
@@ -82,9 +83,14 @@ class Upload extends Component {
     this.props.updateTitle(title);
   }
 
-  handleCkEditorChange(evt) {
+  handleContentCkEditorChange(evt) {
     var newContent = evt.editor.getData();
     this.props.updateContentHtml(newContent);
+  }
+
+  handleSummaryCkEditorChange(evt) {
+    var newContent = evt.editor.getData();
+    this.props.updateSummary(newContent);
   }
 
   handleImageSelection(headerImageUrl) {
@@ -110,13 +116,11 @@ class Upload extends Component {
     if (key > 0)
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: key,
-        categoryError: !this.props.category
+        titleError: !this.props.title
       }));
     if (key > 3)
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: key,
         scorecardError:
           this.state.isScorecard && !this.props.scorecardCompleted,
         projectError: this.state.isScorecard && !this.props.selectedProject
@@ -124,19 +128,26 @@ class Upload extends Component {
     if (key > 4)
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: key,
-        titleError: !this.props.title
+        categoryError: !this.props.category
       }));
     if (key > 5)
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: key,
         headerImageUrlError: !this.props.headerImageUrl
       }));
-    if (key === 0 || key === 3 || key === 4 || key === 5)
-      this.setState({
-        activeAccordionItemId: key
-      });
+    if (key > 6)
+      this.setState(prevState => ({
+        ...prevState,
+        summaryError: !this.props.summary
+      }));
+    if (key > 7)
+      this.setState(prevState => ({
+        ...prevState,
+        contentHtmlError: !this.props.contentHtml
+      }));
+    this.setState({
+      activeAccordionItemId: key
+    });
   }
 
   next(currentField) {
@@ -165,6 +176,16 @@ class Upload extends Component {
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
+    else if (currentField === "contentHtml" && !this.props.contentHtml)
+      this.setState(prevState => ({
+        ...prevState,
+        contentHtmlError: !this.props.contentHtml
+      }));
+    else if (currentField === "summary" && !this.props.summary)
+      this.setState(prevState => ({
+        ...prevState,
+        summaryError: !this.props.summary
+      }));
     else
       this.setState(prevState => ({
         ...prevState,
@@ -174,15 +195,23 @@ class Upload extends Component {
         categoryError: !this.props.category,
         projectError: this.state.isScorecard && !this.props.selectedProject,
         headerImageUrlError: !this.props.headerImageUrl,
-        titleError: !this.props.title
+        titleError: !this.props.title,
+        contentHtmlError: !this.props.contentHtml,
+        summaryError: !this.props.summary
       }));
   }
 
   submit() {
     if (
-      !!this.props.selectedProject &&
-      ((this.state.isScorecard && this.props.scorecardCompleted) ||
-        !this.state.isScorecard)
+      (this.state.isScorecard &&
+        !!this.props.selectedProject &&
+        this.props.scorecardCompleted) ||
+      (!this.state.isScorecard &&
+        !this.state.categoryError &&
+        !this.state.titleError &&
+        !this.state.headerImageUrlError &&
+        !this.state.contentHtmlError &&
+        !this.state.summaryError)
     ) {
       this.props.uploadHtmlToServer();
     } else {
@@ -211,8 +240,10 @@ class Upload extends Component {
       sidebarOpen,
       toggleSidebar,
       scorecardCompleted,
+      contentHtml,
       headerImageUrl,
-      category
+      category,
+      summary
     } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
@@ -227,17 +258,20 @@ class Upload extends Component {
           <Accordion onChange={this.handleAccordionChange}>
             <AccordionItem expanded={this.state.activeAccordionItemId === 0}>
               <AccordionItemTitle>
-                <p className="upload-accordion__item-header">Category</p>
+                <p className="upload-accordion__item-header">title</p>
               </AccordionItemTitle>
               <AccordionItemBody>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <p style={{ marginBottom: "0px" }}>document title</p>
+                </div>
+                <input
+                  type="text"
+                  name="name"
+                  onChange={this.handleTitleChange}
+                />
                 <div className="d-flex flex-column">
-                  <p>pick a category for your document</p>
-                  <DocumentCategorySelect
-                    handleCategoryChange={this.handleCategoryChange}
-                    category={category}
-                  />
                   <button
-                    onClick={() => this.next("category")}
+                    onClick={() => this.next("title")}
                     className="btn btn-primary mt-4 align-self-end"
                   >
                     next
@@ -369,20 +403,17 @@ class Upload extends Component {
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
-                <p className="upload-accordion__item-header">title</p>
+                <p className="upload-accordion__item-header">Category</p>
               </AccordionItemTitle>
               <AccordionItemBody>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>document title</p>
-                </div>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={this.handleTitleChange}
-                />
                 <div className="d-flex flex-column">
+                  <p>pick a category for your document</p>
+                  <DocumentCategorySelect
+                    handleCategoryChange={this.handleCategoryChange}
+                    category={category}
+                  />
                   <button
-                    onClick={() => this.next("title")}
+                    onClick={() => this.next("category")}
                     className="btn btn-primary mt-4 align-self-end"
                   >
                     next
@@ -412,6 +443,35 @@ class Upload extends Component {
             <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
+                  Document Summary
+                </p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <p style={{ marginBottom: "0px" }}>Summarize your document</p>
+                </div>
+                <CKEditor
+                  name="document-summary"
+                  activeClass="p10"
+                  content={this.props.summary}
+                  scriptUrl={scriptUrl}
+                  events={{
+                    change: this.handleSummaryCkEditorChange
+                  }}
+                />
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={() => this.next("summary")}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
+              <AccordionItemTitle>
+                <p className="upload-accordion__item-header">
                   Document Content
                 </p>
               </AccordionItemTitle>
@@ -420,11 +480,12 @@ class Upload extends Component {
                   <p style={{ marginBottom: "0px" }}>create document content</p>
                 </div>
                 <CKEditor
+                  name="document-content"
                   activeClass="p10"
                   content={this.props.contentHtml}
                   scriptUrl={scriptUrl}
                   events={{
-                    change: this.handleCkEditorChange
+                    change: this.handleContentCkEditorChange
                   }}
                 />
               </AccordionItemBody>
@@ -451,10 +512,10 @@ class Upload extends Component {
                 direction="vertical"
               >
                 <Step
-                  title="category"
-                  description="pick a category for your document"
+                  title="title"
+                  description="set document title"
                   status={
-                    this.state.categoryError
+                    this.state.titleError
                       ? "error"
                       : this.state.activeAccordionItemId > 0
                       ? "finish"
@@ -481,10 +542,10 @@ class Upload extends Component {
                   }
                 />
                 <Step
-                  title="title"
-                  description="set document title"
+                  title="category"
+                  description="pick a category for your document"
                   status={
-                    this.state.titleError
+                    this.state.categoryError
                       ? "error"
                       : this.state.activeAccordionItemId > 4
                       ? "finish"
@@ -503,12 +564,24 @@ class Upload extends Component {
                   }
                 />
                 <Step
+                  title="summary"
+                  description="create document summary"
+                  status={
+                    this.state.summaryError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 6
+                      ? "finish"
+                      : "wait"
+                  }
+                />
+                <Step
                   title="content"
                   description="create document content"
                   status={
-                    !importedMarkdown
-                      ? "wait"
-                      : this.state.activeAccordionItemId === 6
+                    this.state.contentHtmlError
+                      ? "error"
+                      : this.state.activeAccordionItemId === 7 &&
+                        this.props.contentHtml
                       ? "finish"
                       : "wait"
                   }
@@ -524,10 +597,15 @@ class Upload extends Component {
                 </button>
                 {this.state.uploadClicked &&
                 !(
-                  (!!this.props.selectedProject &&
-                    this.state.isScorecard &&
+                  (this.state.isScorecard &&
+                    !!this.props.selectedProject &&
                     this.props.scorecardCompleted) ||
-                  !this.state.isScorecard
+                  (!this.state.isScorecard &&
+                    !this.state.categoryError &&
+                    !this.state.titleError &&
+                    !this.state.headerImageUrlError &&
+                    !this.state.contentHtmlError &&
+                    !this.state.summaryError)
                 ) ? (
                   <p className="text-danger">
                     Please go through all the mandatory fields

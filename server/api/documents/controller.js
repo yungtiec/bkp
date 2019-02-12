@@ -450,67 +450,74 @@ const createDocumentWithSchemaId = async (req, res, next) => {
 };
 
 const createDocumentFromHtml = async (req, res, next) => {
-  const project = await Project.findOne({
-    where: { symbol: req.body.selectedProjectSymbol },
-    include: [
-      {
-        model: User,
-        through: ProjectAdmin,
-        as: "admins"
-      },
-      {
-        model: User,
-        through: ProjectEditor,
-        as: "editors"
-      }
-    ]
-  });
-  const canCreate = permission("Create", { project }, req.user);
-  if (!canCreate) {
-    res.sendStatus(403);
-    return;
+  try {
+    const project = await Project.findOne({
+      where: { symbol: req.body.selectedProjectSymbol },
+      include: [
+        {
+          model: User,
+          through: ProjectAdmin,
+          as: "admins"
+        },
+        {
+          model: User,
+          through: ProjectEditor,
+          as: "editors"
+        }
+      ]
+    });
+    const canCreate = permission("Create", { project }, req.user);
+    if (!canCreate) {
+      res.sendStatus(403);
+      return;
+    }
+    const commentUntilInUnix = moment()
+      .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
+      .format("x");
+
+    const slug = await createSlug(req.body.title, req.body.contentHtml);
+    console.log(req.body.description)
+
+    const document = await Document.create({
+      title: req.body.title,
+      header_img_url: req.body.headerImageUrl,
+      creator_id: req.user.id,
+      project_id: project ? project.id : null,
+      comment_until_unix: commentUntilInUnix,
+      content_html: req.body.contentHtml,
+      submitted: true,
+      description: req.body.description,
+      category: req.body.category ? req.body.category.value : null,
+      slug
+    });
+
+    const collaborators = req.body.collaboratorEmails
+      ? req.body.collaboratorEmails
+          .map(emailOption => emailOption.value)
+          .map(
+            async email =>
+              await User.findOne({ where: { email } }).then(user =>
+                DocumentCollaborator.create({
+                  user_id: user ? user.id : null,
+                  email,
+                  document_id: document.id
+                }).then(collaborator => {
+                  return Notification.notifyCollaborators({
+                    sender: req.user,
+                    collaboratorId: user.id,
+                    versionId: version.id,
+                    projectSymbol: project.symbol,
+                    parentVersionTitle: document.title,
+                    action: "created"
+                  });
+                })
+              )
+          )
+      : null;
+    res.send(document);
+  } catch (err) {
+    next(err);
   }
-  const commentUntilInUnix = moment()
-    .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
-    .format("x");
-
-  const slug = await createSlug(req.body.title, req.body.contentHtml);
-
-  const document = await Document.create({
-    title: req.body.title,
-    header_img_url: req.body.headerImageUrl,
-    creator_id: req.user.id,
-    project_id: project.id,
-    comment_until_unix: commentUntilInUnix,
-    content_html: req.body.contentHtml,
-    submitted: true,
-    slug
-  });
-
-  const collaborators = req.body.collaboratorEmails
-    ? req.body.collaboratorEmails
-        .map(emailOption => emailOption.value)
-        .map(
-          async email =>
-            await User.findOne({ where: { email } }).then(user =>
-              DocumentCollaborator.create({
-                user_id: user ? user.id : null,
-                email,
-                document_id: document.id
-              }).then(collaborator => {
-                return Notification.notifyCollaborators({
-                  sender: req.user,
-                  collaboratorId: user.id,
-                  versionId: version.id,
-                  projectSymbol: project.symbol,
-                  parentVersionTitle: document.title,
-                  action: "created"
-                });
-              })
-            )
-        )
-    : null;
-  res.send(document);
 };
 
 const postUpvote = async (req, res, next) => {

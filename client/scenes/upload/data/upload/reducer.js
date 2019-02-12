@@ -14,7 +14,8 @@ const initialState = {
   scorecard: {},
   title: '',
   headerImageUrl: '',
-  category: null
+  category: null,
+  summary: ''
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -84,6 +85,11 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         contentHtml: action.contentHtml
       };
+    case types.SUMMARY_UPDATED:
+      return {
+        ...state,
+        summary: action.summary
+      }
     default:
       return state;
   }
@@ -101,6 +107,7 @@ export function getUploadMetadata(state) {
     category,
     headerImageUrl,
     scorecard,
+    summary
   } = state.scenes.upload.data.upload;
   return {
     contentHtml,
@@ -113,6 +120,7 @@ export function getUploadMetadata(state) {
     category,
     headerImageUrl,
     scorecard,
+    summary,
     scorecardCompleted:
       !isEmpty(scorecard) &&
       values(scorecard).reduce((bool, score) => !!score && bool, true)

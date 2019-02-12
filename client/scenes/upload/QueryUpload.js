@@ -17,7 +17,8 @@ import {
   updateContentHtml,
   updateTitle,
   updateCategory,
-  updateHeaderImageUrl
+  updateHeaderImageUrl,
+  updateSummary
 } from "./data/upload/actions";
 import {
   fetchAllProjects,
@@ -72,6 +73,7 @@ const mapState = state => {
     title,
     category,
     headerImageUrl,
+    summary,
     scorecard,
     scorecardCompleted
   } = getUploadMetadata(state);
@@ -94,7 +96,8 @@ const mapState = state => {
     contentHtml,
     title,
     category,
-    headerImageUrl
+    headerImageUrl,
+    summary
   };
 };
 
@@ -115,7 +118,8 @@ const actions = {
   updateContentHtml,
   updateTitle,
   updateCategory,
-  updateHeaderImageUrl
+  updateHeaderImageUrl,
+  updateSummary
 };
 
 export default withRouter(connect(mapState, actions)(MyComponent));

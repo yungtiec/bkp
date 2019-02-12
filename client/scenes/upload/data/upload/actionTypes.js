@@ -11,3 +11,4 @@ export const CONTENT_HTML_UPDATED = "upload.CONTENT_HTML_UPDATED";
 export const TITLE_UPDATED = "upload.TITLE_UPDATED";
 export const HEADER_IMAGE_URL_UPDATED = "upload.HEADER_IMAGE_URL_UPDATED";
 export const CATAGORY_UPDATED = "upload.CATAGORY_UPDATED";
+export const SUMMARY_UPDATED = "upload.SUMMARY_UPDATED";
