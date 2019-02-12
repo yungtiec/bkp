@@ -99,7 +99,7 @@ const getDocumentsWithFilters = async (req, res, next) => {
         .join("");
     }
     var limit = Number(req.query.limit);
-    var offset = Number(req.query.limit) * Number(req.query.offset);
+    var offset = Number(req.query.offset);
     var category =
       req.query.category && req.query.category.length
         ? {
