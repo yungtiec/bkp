@@ -71,7 +71,7 @@ export default function(state = initialState, action) {
         documentIds: action.loadMore
           ? (state.documentIds || []).concat(action.documentIds || [])
           : action.documentIds,
-        documentsById: assignIn(action.documentsById, state.documentsById),
+        documentsById: assignIn(state.documentsById, action.documentsById),
         offset: action.offset,
         endOfResult: action.endOfResult,
         additionalDocumentsLoading: false,

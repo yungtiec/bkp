@@ -14,7 +14,7 @@ const initialState = {
   documentOffset: 5,
   documentsLoading: true,
   additionalDocumentsLoading: false,
-  allDocumentFetched: false
+  allDocumentsFetched: false
 };
 
 export default function(state = initialState, action) {
@@ -38,7 +38,7 @@ export default function(state = initialState, action) {
         documentsById: assignIn(action.documentsById, state.documentsById),
         additionalDocumentsLoading: false,
         documentsLoading: false,
-        allDocumentFetched: action.loadMore
+        allDocumentsFetched: action.loadMore
       };
     case types.ADDITIONAL_COMMENTS_REQUESTED:
       return {
@@ -71,7 +71,7 @@ export function getDocuments(state) {
   return pick(state.scenes.dashboard.data, [
     "documentIds",
     "documentsById",
-    "allDocumentFetched",
+    "allDocumentsFetched",
     "documentsLoading",
     "additionalDocumentsLoading"
   ]);

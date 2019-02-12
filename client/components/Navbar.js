@@ -101,7 +101,7 @@ class Navbar extends Component {
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
-                    <Link to="/dashboard" className="navbar__nav-item">
+                    <Link to="/recent-comments" className="navbar__nav-item">
                       recent comments
                     </Link>
                   </VisibleIf>
@@ -177,9 +177,9 @@ const mapDispatch = dispatch => {
     markAllAsRead: () => dispatch(updateAllNotificationStatus("read")),
     updateStatus: notification => {
       dispatch(updateNotificationStatus(notification, "read"));
-      console.log(notification, notification.uri)
+      console.log(notification, notification.uri);
       if (notification.uri) {
-        console.log("hello???")
+        console.log("hello???");
         history.push(notification.uri);
       }
     }

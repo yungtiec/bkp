@@ -80,13 +80,13 @@ async function dispatchFetchFilteredDocumentsWithStats({
       type: types.ADDITIONAL_DOCUMENTS_REQUESTED
     });
   }
-  var { count, documents } = await getFilteredDocumentsWithStats({
+  var documents = await getFilteredDocumentsWithStats({
     offset,
     limit,
     ...filters
   });
-  const documentsById = keyBy(documents.rows, "id");
-  const documentIds = documents.rows.map(fd => fd.id);
+  const documentIds = documents.map(fd => fd.id);
+  const documentsById = keyBy(documents, "id");
   dispatch({
     type: types.DOCUMENTS_FETCH_SUCESSS,
     documentsById,

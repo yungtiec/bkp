@@ -84,6 +84,7 @@ const getDocuments = async (req, res, next) => {
 
 const getDocumentsWithFilters = async (req, res, next) => {
   try {
+    var where;
     if (req.query.order) req.query.order = JSON.parse(req.query.order);
     if (req.query.category)
       req.query.category = req.query.category.map(JSON.parse);
@@ -116,18 +117,20 @@ const getDocumentsWithFilters = async (req, res, next) => {
     } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
     }
-    var query = {
-      limit: req.query.limit,
-      offset: req.query.offset
-    };
-    if (order) query.order = order;
-    if (category) query.where = { category };
+    if (category) where = { category };
     if (formattedSearchTerms)
-      query.where = query.where
-        ? _.assign(query.where, { title: { $iLike: formattedSearchTerms } })
+      where = where
+        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
         : { title: { $iLike: formattedSearchTerms } };
-    const { count, documents } = await Document.getDocumentsWithStats(query);
-    res.send({ count, documents });
+
+    var documentQueryResult = await Document.scope({
+      method: ["includeAllEngagements", where]
+    }).findAndCountAll({
+      limit,
+      offset,
+      order
+    });
+    res.send(documentQueryResult.rows);
   } catch (err) {
     next(err);
   }

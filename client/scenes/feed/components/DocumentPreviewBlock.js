@@ -42,7 +42,7 @@ export default ({ document }) => (
           </a>
           <a className="contribution__action-btn">
             <i className="fas fa-comment" />
-            <span>{Number(document.num_total_comments) || 0}</span>
+            <span>{Number(document.num_comments) || 0}</span>
           </a>
         </div>
       </div>
