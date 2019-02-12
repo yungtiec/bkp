@@ -118,7 +118,6 @@ class Routes extends Component {
             path="/unauthorized"
             component={Unauthorized}
           />
-          <Route path="/landing" component={Landing} />
           <RouteWithLayout
             layout={LayoutWithNav}
             path="/profile/:userHandle"
@@ -136,11 +135,7 @@ class Routes extends Component {
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
           {/* Displays our Landing component as a fallback */}
-          <RouteWithLayout
-            layout={LayoutWithNav}
-            path="/"
-            component={Landing}
-          />
+          <Route path="/" component={Landing} />
         </Switch>
       </div>
     );
