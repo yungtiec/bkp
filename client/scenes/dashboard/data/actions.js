@@ -17,12 +17,12 @@ export const fetchDocumentsWithStats = loadMore => async (
         type: types.ADDITIONAL_DOCUMENTS_REQUESTED
       });
     }
-    var { count, documents } = await getDocumentsWithStats({
+    var documents = await getDocumentsWithStats({
       offset: state.scenes.dashboard.data.documentOffset,
       loadMore
     });
-    const documentsById = keyBy(documents.rows, "id");
-    const documentIds = documents.rows.map(fd => fd.id);
+    const documentsById = keyBy(documents, "id");
+    const documentIds = documents.map(fd => fd.id);
     dispatch({
       type: types.DOCUMENTS_FETCH_SUCESSS,
       documentsById,
@@ -63,7 +63,8 @@ export const fetchCommentsWithResponse = loadMore => async (
       commentsById,
       commentIds,
       commentOffset: commentOffset + commentLimit,
-      commentEndOfResult: commentIds.length < commentLimit || !commentIds.length,
+      commentEndOfResult:
+        commentIds.length < commentLimit || !commentIds.length,
       loadMore
     });
   } catch (err) {
