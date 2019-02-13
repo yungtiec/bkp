@@ -122,14 +122,14 @@ const getDocumentsWithFilters = async (req, res, next) => {
       where = where
         ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
         : { title: { $iLike: formattedSearchTerms } };
-
-    var documentQueryResult = await Document.scope({
-      method: ["includeAllEngagements", where]
-    }).findAndCountAll({
-      limit,
+    var options = {
       offset,
       order
-    });
+    };
+    if (req.query.limit) options.limit = limit;
+    var documentQueryResult = await Document.scope({
+      method: ["includeAllEngagements", where]
+    }).findAndCountAll(options);
     res.send(documentQueryResult.rows);
   } catch (err) {
     next(err);
