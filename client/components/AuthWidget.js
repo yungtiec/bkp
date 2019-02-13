@@ -89,20 +89,20 @@ class AuthWidget extends Component {
               >
                 <div className={`${className}__dropdown-item`}>profile</div>
               </Link>
-              {width < 600 && isAdmin ? (
+              {width < 970 && isAdmin ? (
                 <Link to="/admin" style={{ display: "block", margin: "0px" }}>
                   <div className={`${className}__dropdown-item`}>admin</div>
                 </Link>
               ) : (
                 ""
               )}
-              {width < 600 ? (
+              {width < 970 ? (
                 <a
                   href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
                   target="_blank"
                   style={{ display: "block", margin: "0px" }}
                 >
-                  <div className={`${className}__dropdown-item`}>discuss</div>
+                  <div className={`${className}__dropdown-item`}>join telegram</div>
                 </a>
               ) : (
                 ""
