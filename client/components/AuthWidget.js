@@ -89,14 +89,14 @@ class AuthWidget extends Component {
               >
                 <div className={`${className}__dropdown-item`}>profile</div>
               </Link>
-              {width < 970 && isAdmin ? (
+              {width < 600 && isAdmin ? (
                 <Link to="/admin" style={{ display: "block", margin: "0px" }}>
                   <div className={`${className}__dropdown-item`}>admin</div>
                 </Link>
               ) : (
                 ""
               )}
-              {width < 970 ? (
+              {width < 600 ? (
                 <a
                   href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
                   target="_blank"
@@ -107,7 +107,7 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
-              {width < 970 ? (
+              {width < 1060 ? (
                 <PunditContainer policies={policies} user={user}>
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
@@ -125,7 +125,7 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
-              {width < 970 ? (
+              {width < 1060 ? (
                 <PunditContainer policies={policies} user={user}>
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>

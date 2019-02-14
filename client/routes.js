@@ -63,11 +63,6 @@ class Routes extends Component {
           )}
           <RouteWithLayout
             layout={LayoutWithNav}
-            path="/feed"
-            component={Feed}
-          />
-          <RouteWithLayout
-            layout={LayoutWithNav}
             path="/projects"
             component={Projects}
           />
@@ -135,7 +130,11 @@ class Routes extends Component {
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
           {/* Displays our Landing component as a fallback */}
-          <Route path="/" component={Landing} />
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            path="/"
+            component={Feed}
+          />
         </Switch>
       </div>
     );

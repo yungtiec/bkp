@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { debounce } from "lodash";
 import CKEditor from "./CKEditor";
-import RichTextEditor from "react-rte";
 import "./DocumentEditor.scss";
 import ReactHtmlParser, {
   processNodes,
