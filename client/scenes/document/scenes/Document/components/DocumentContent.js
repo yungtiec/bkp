@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/actions.js";
 import { updateSidebarCommentContext } from "../../../reducer";
-import CkEditor from "../../../../../../client/components/CkEditor/CkEditor.js";
+import DocumentEditor from "../../../../../../client/components/DocumentEditor/DocumentEditor.js";
 import ActiveToggle from "./ActiveToggle";
 
 const DocumentContent = ({
@@ -24,7 +24,7 @@ const DocumentContent = ({
   hideEditor
 }) => (
   <div className="project-document" id="project-document">
-    <CkEditor
+    <DocumentEditor
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}
       documentMetadata={documentMetadata}

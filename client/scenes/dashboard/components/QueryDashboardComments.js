@@ -44,6 +44,7 @@ const mapState = (state, ownProps) => {
     commentsLoading
   } = getComments(state);
   return {
+    ...ownProps,
     commentsById,
     commentIds,
     commentOffset,
