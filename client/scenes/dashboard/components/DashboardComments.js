@@ -6,9 +6,10 @@ export default ({
   commentIds,
   commentEndOfResult,
   additionalCommentsLoading,
-  fetchCommentsWithResponse
+  fetchCommentsWithResponse,
+  mobile
 }) => (
-  <div class="dashboard__recent-comments ml-5">
+  <div class={`dashboard__recent-comments ${mobile ? "" : "ml-5"}`}>
     <p className="dashboard__recent-comments-title pl-1">Recent comments</p>
     {!commentIds || (commentIds && !commentIds.length) ? (
       <div className="component__loader-container d-flex">
