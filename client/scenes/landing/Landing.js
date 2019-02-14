@@ -104,7 +104,7 @@ const Landing = ({ user, logout }) => (
             <h3>Get Involved</h3>
             <h2>Want to join The Brooklyn Project?</h2>
             <p>
-              Join other{" "}
+              Join{" "}
               <a href="/feed" target="_blank">
                 Open Collaborations
               </a>.
