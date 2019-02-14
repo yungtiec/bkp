@@ -38,14 +38,8 @@ const Landing = ({ user, logout }) => (
               <div className="row">
                 <div className="col-lg-12 my-auto">
                   <Link class="btn btn-landing btn-xl" to="/feed">
-                    latest stories
+                    latest articles
                   </Link>
-                  <a
-                    class="btn btn-landing btn-xl ml-2"
-                    onClick={() => goToSection(".get-involved")}
-                  >
-                    get involved
-                  </a>
                 </div>
               </div>
             </div>
@@ -109,12 +103,6 @@ const Landing = ({ user, logout }) => (
           <div className="col-12 col-md-8 col-lg-8 col-xl-8">
             <h3>Get Involved</h3>
             <h2>Want to join The Brooklyn Project?</h2>
-            <p>
-              Provide comments, suggestions and feedback on the{" "}
-              <Link to="/s/Request-for-Input-on-Crypto-asset-Mechanics-and-Markets-3c854acc643b">
-                CFTC’s December 2018 Request for Input
-              </Link>.
-            </p>
             <p>
               Join other{" "}
               <a href="/feed" target="_blank">

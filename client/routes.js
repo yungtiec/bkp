@@ -115,6 +115,11 @@ class Routes extends Component {
           />
           <RouteWithLayout
             layout={LayoutWithNav}
+            path="/about"
+            component={Landing}
+          />
+          <RouteWithLayout
+            layout={LayoutWithNav}
             path="/profile/:userHandle"
             component={Profile}
           />

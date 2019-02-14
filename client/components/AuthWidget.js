@@ -146,6 +146,14 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
+              <Link
+                to={{
+                  pathname: "/about",
+                }}
+                style={{ display: "block", margin: "0px" }}
+              >
+                <div className={`${className}__dropdown-item`}>about</div>
+              </Link>
               <div
                 className={`${className}__dropdown-item last`}
                 onClick={logout}
@@ -182,6 +190,14 @@ class AuthWidget extends Component {
             >
               <div className={`${className}__dropdown-item`}>twitter</div>
             </a>
+            <Link
+              to={{
+                pathname: "/about",
+              }}
+              style={{ display: "block", margin: "0px" }}
+            >
+              <div className={`${className}__dropdown-item`}>about</div>
+            </Link>
             <Link
               to={{
                 pathname: "/login",
