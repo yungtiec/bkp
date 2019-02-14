@@ -96,17 +96,20 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
-              {width < 600 ? (
-                <a
-                  href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
-                  target="_blank"
-                  style={{ display: "block", margin: "0px" }}
-                >
-                  <div className={`${className}__dropdown-item`}>join telegram</div>
-                </a>
-              ) : (
-                ""
-              )}
+              <a
+                href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
+                target="_blank"
+                style={{ display: "block", margin: "0px" }}
+              >
+                <div className={`${className}__dropdown-item`}>telegram</div>
+              </a>
+              <a
+                href="https://twitter.com/thebkp_official"
+                target="_blank"
+                style={{ display: "block", margin: "0px" }}
+              >
+                <div className={`${className}__dropdown-item`}>twitter</div>
+              </a>
               {width < 1060 ? (
                 <PunditContainer policies={policies} user={user}>
                   <PunditTypeSet type="Disclosure">
@@ -153,7 +156,45 @@ class AuthWidget extends Component {
           )}
         </div>
       );
-    else return <div />;
+    else return (
+      <div
+        className={className}
+        ref={this.setWrapperRef}
+        data-tip={dataTip}
+        data-for={dataFor}
+      >
+        <div className={`${className}__avatar-container`}>
+          <i className="fa fa-bars" onClick={this.toggleDropdown} />
+        </div>
+        {this.state.dropdown && (
+          <div className={`${className}__dropdown`}>
+            <a
+              href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
+              target="_blank"
+              style={{ display: "block", margin: "0px" }}
+            >
+              <div className={`${className}__dropdown-item`}>telegram</div>
+            </a>
+            <a
+              href="https://twitter.com/thebkp_official"
+              target="_blank"
+              style={{ display: "block", margin: "0px" }}
+            >
+              <div className={`${className}__dropdown-item`}>twitter</div>
+            </a>
+            <Link
+              to={{
+                pathname: "/login",
+                state: { lastPath: this.props.lastPath }
+              }}
+              style={{ display: "block", margin: "0px" }}
+            >
+              <div className={`${className}__dropdown-item last`}>login</div>
+            </Link>
+          </div>
+        )}
+      </div>
+    );
   }
 }
 

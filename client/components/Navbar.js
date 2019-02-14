@@ -66,24 +66,6 @@ class Navbar extends Component {
             ) : (
               ""
             )}
-            {width > 600 ? (
-              <Link to="/" className="navbar__nav-item">
-                home
-              </Link>
-            ) : (
-              ""
-            )}
-            {width > 600 ? (
-              <a
-                href="https://t.me/joinchat/HRhhQEvAeC2t4wiYHquYUg"
-                target="_blank"
-                className="navbar__nav-item"
-              >
-                join telegram
-              </a>
-            ) : (
-              ""
-            )}
             {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
@@ -134,18 +116,8 @@ class Navbar extends Component {
                 updateStatus={updateStatus}
                 isLoggedIn={isLoggedIn}
               />
-            ) : (
-              <Link
-                to={{
-                  pathname: "/login",
-                  state: { lastPath: this.props.location.pathname }
-                }}
-                className="navbar__nav-item last"
-              >
-                login
-              </Link>
-            )}
-            <AuthWidget inNavbar={true} />
+            ) : null }
+            <AuthWidget inNavbar={true} lastPath={this.props.location.pathname}/>
           </div>
         </nav>
       </div>

@@ -309,6 +309,7 @@ class Document extends Component {
             </a>
           </div>
           <SidebarLayout
+            isLoggedIn={isLoggedIn}
             width={width}
             selectedComments={selectedComments}
             sidebarOpen={sidebarOpen}

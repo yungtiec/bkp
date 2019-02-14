@@ -16,6 +16,7 @@ class Sidebar extends Component {
 
   render() {
     const {
+      isLoggedIn,
       toggleSidebar,
       sidebarOpen,
       width,
@@ -23,7 +24,7 @@ class Sidebar extends Component {
       sidebarContext,
       toggleSidebarContext
     } = this.props;
-    var style = sidebarOpen
+    const style = sidebarOpen
       ? {
           marginLeft:
             width < 767 ? "-350px" : width > 1300 ? "-450px" : "-410px"
@@ -31,17 +32,18 @@ class Sidebar extends Component {
       : {
           marginLeft: "-10px"
         };
-    var sizeBtnAngle = sidebarOpen ? "right" : "left";
-    var book = sidebarContext === "comments" ? "list-ul" : "arrow-left";
-    var tabStyle = {
+    const sizeBtnAngle = sidebarOpen ? "right" : "left";
+    const book = sidebarContext === "comments" ? "list-ul" : "arrow-left";
+    const tabStyle = {
       width: width < 767 ? "348px" : width > 1300 ? "-448px" : "408px"
     };
+    const showAuthWidget = sidebarOpen && isLoggedIn;
 
     return (
       <div className="sidebar" style={style}>
         <div className="annotation-coordinate__container" />
         <div className="sidebar__toolbar">
-          {sidebarOpen && <AuthWidget dataTip={true} dataFor="auth-widget" />}
+          {showAuthWidget && <AuthWidget dataTip={true} dataFor="auth-widget" />}
           {sidebarOpen && (
             <ReactTooltip id="auth-widget" type="dark">
               <span>Your profile</span>
