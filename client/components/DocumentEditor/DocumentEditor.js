@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
-import CKEditor from "react-ckeditor-component";
-import "./CkEditor.scss";
+import { debounce } from "lodash";
+import CKEditor from "./CKEditor";
+import RichTextEditor from "react-rte";
+import "./DocumentEditor.scss";
 import ReactHtmlParser, {
   processNodes,
   convertNodeToElement,
@@ -20,7 +22,7 @@ import $ from "jquery";
 import { loadModal, hideModal } from "../../data/reducer";
 import { ScorecardTable } from "../index";
 
-class CkEditor extends Component {
+class DocumentEditor extends Component {
   constructor(props) {
     super(props);
     this.contentHtml = this.props.documentMetadata.content_html;
@@ -39,6 +41,8 @@ class CkEditor extends Component {
       temporaryHighlight: {}
     };
     autoBind(this);
+    this.onChangeSummary = debounce(this.onChangeSummary, 500);
+    this.onChangeContent = debounce(this.onChangeContent, 500);
   }
 
   async componentDidMount() {
@@ -111,14 +115,14 @@ class CkEditor extends Component {
   }
 
   onChangeSummary(evt) {
-    const newSummary = evt.editor.getData();
+    const newSummary = this.ckeditorSummary.editorInstance.getData()
     this.setState({
       summary: newSummary
     });
   }
 
   onChangeContent(evt) {
-    const newContent = evt.editor.getData();
+    const newContent = this.ckeditorContent.editorInstance.getData()
     this.setState({
       content: newContent
     });
@@ -189,6 +193,8 @@ class CkEditor extends Component {
                 events={{
                   change: this.onChangeSummary
                 }}
+                config={{ id: "cke-document-summary" }}
+                ref={instance => { this.ckeditorSummary = instance; }}
               />
             </div>
             <div className="mb-4">
@@ -201,6 +207,8 @@ class CkEditor extends Component {
                 events={{
                   change: this.onChangeContent
                 }}
+                config={{ id: "cke-document-content" }}
+                ref={instance => { this.ckeditorContent = instance; }}
               />
             </div>
           </div>
@@ -208,9 +216,7 @@ class CkEditor extends Component {
           <div className="mb-4">
             {summary ? (
               <div className="document-summary ">
-                <div className="markdown-body">
-                  {ReactHtmlParser(summary)}
-                </div>
+                <div className="markdown-body">{ReactHtmlParser(summary)}</div>
                 <hr />
               </div>
             ) : null}
@@ -249,7 +255,7 @@ const actions = {
 export default connect(
   mapState,
   actions
-)(withRouter(CkEditor));
+)(withRouter(DocumentEditor));
 
 async function loadAnnotation(self) {
   if (!self.annotator) {
