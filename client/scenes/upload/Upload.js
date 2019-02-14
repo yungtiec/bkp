@@ -7,7 +7,8 @@ import {
   CustomScrollbar,
   requiresAuthorization,
   ProjectScorecardInputs,
-  DocumentCategorySelect
+  DocumentCategorySelect,
+  CKEditor
 } from "../../components";
 import UploadInterface from "./components/UploadInterface";
 import {
@@ -18,7 +19,6 @@ import {
 } from "react-accessible-accordion";
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
-import CKEditor from "react-ckeditor-component";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
 
 class Upload extends Component {
@@ -458,6 +458,7 @@ class Upload extends Component {
                   events={{
                     change: this.handleSummaryCkEditorChange
                   }}
+                  config={{ id: "cke-document-summary" }}
                 />
                 <div className="d-flex flex-column">
                   <button
@@ -487,6 +488,7 @@ class Upload extends Component {
                   events={{
                     change: this.handleContentCkEditorChange
                   }}
+                  config={{ id: "cke-document-content" }}
                 />
               </AccordionItemBody>
             </AccordionItem>

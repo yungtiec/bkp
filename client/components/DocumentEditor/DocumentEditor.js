@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { debounce } from "lodash";
 import CKEditor from "./CKEditor";
-import RichTextEditor from "react-rte";
 import "./DocumentEditor.scss";
 import ReactHtmlParser, {
   processNodes,
@@ -115,14 +114,16 @@ class DocumentEditor extends Component {
   }
 
   onChangeSummary(evt) {
-    const newSummary = this.ckeditorSummary.editorInstance.getData()
+    // const newSummary = this.ckeditorSummary.editorInstance.getData()
+    var newSummary = evt.editor.getData();
     this.setState({
       summary: newSummary
     });
   }
 
   onChangeContent(evt) {
-    const newContent = this.ckeditorContent.editorInstance.getData()
+    // const newContent = this.ckeditorContent.editorInstance.getData()
+    var newContent = evt.editor.getData();
     this.setState({
       content: newContent
     });
@@ -194,7 +195,6 @@ class DocumentEditor extends Component {
                   change: this.onChangeSummary
                 }}
                 config={{ id: "cke-document-summary" }}
-                ref={instance => { this.ckeditorSummary = instance; }}
               />
             </div>
             <div className="mb-4">
@@ -208,7 +208,6 @@ class DocumentEditor extends Component {
                   change: this.onChangeContent
                 }}
                 config={{ id: "cke-document-content" }}
-                ref={instance => { this.ckeditorContent = instance; }}
               />
             </div>
           </div>

@@ -51,7 +51,7 @@ class Navbar extends Component {
       <div className="header">
         <nav className="navbar navbar-expand-md no-gutters navbar--logo app-container">
           <div className="box--left">
-            <Link className="logo-header my-0 ml-0" to="/feed">
+            <Link className="logo-header my-0 ml-0" to="/">
               <img
                 width="100px"
                 height="auto"
@@ -67,7 +67,7 @@ class Navbar extends Component {
               ""
             )}
             {width > 600 ? (
-              <Link to="/feed" className="navbar__nav-item">
+              <Link to="/" className="navbar__nav-item">
                 home
               </Link>
             ) : (
@@ -84,7 +84,7 @@ class Navbar extends Component {
             ) : (
               ""
             )}
-            {width > 970 ? (
+            {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
@@ -97,7 +97,7 @@ class Navbar extends Component {
             ) : (
               ""
             )}
-            {width > 970 ? (
+            {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
@@ -110,7 +110,7 @@ class Navbar extends Component {
             ) : (
               ""
             )}
-            {width > 970 ? (
+            {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>

@@ -477,8 +477,7 @@ const createDocumentFromHtml = async (req, res, next) => {
       .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
       .format("x");
 
-    const slug = await createSlug(req.body.title, req.body.contentHtml);
-    console.log(req.body.description);
+    const slug = await createSlug(req.body.title.toLowerCase(), req.body.contentHtml);
 
     const document = await Document.create({
       title: req.body.title,
