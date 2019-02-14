@@ -55,3 +55,4 @@ export {
   default as DocumentVoteCard
 } from "./ContributionCards/DocumentVoteCard";
 export { default as DocumentCategorySelect } from "./DocumentCategorySelect";
+export { default as CKEditor } from "./DocumentEditor/CKEditor";
