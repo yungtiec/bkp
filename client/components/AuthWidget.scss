@@ -46,14 +46,14 @@
   border-style: solid;
   border-color: #459df9;
   color: #459df9;
-  border-width: 2px 2px 0px 2px;
+  border-width: 2px 2px 0;
   padding-left: 10px;
-  width: 150px;
-  height: 48px;
-  background: white;
-  line-height: 46px;
+  width: 190px;
+  padding: 10px 20px;
+  background: #fff;
   text-transform: uppercase;
   font-size: 15px;
+  line-height: 18px;
 }
 
 .auth-widget--navbar__dropdown-item.last {
