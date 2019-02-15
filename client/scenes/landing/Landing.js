@@ -18,35 +18,6 @@ const goToSection = sectionClass => {
 
 const Landing = ({ user, logout }) => (
   <div className="landing">
-    <header className="masthead">
-      <nav className="navbar navbar-expand-lg navbar-light" id="mainNav">
-        <div className="container d-flex justify-content-center mt-5">
-          <a
-            className="navbar-brand js-scroll-trigger"
-            href="https://thebkp.com/"
-          />
-        </div>
-      </nav>
-      <div className="container h-fill">
-        <div className="row">
-          <div className="col-lg-12 my-auto">
-            <div className="header-content mx-auto d-flex flex-column justify-content-center align-items-center">
-              <img
-                className="header-content__hero-img mb-5"
-                src="/assets/the-brooklyn-project-logo-white-transparent.png"
-              />
-              <div className="row">
-                <div className="col-lg-12 my-auto">
-                  <Link class="btn btn-landing btn-xl" to="/feed">
-                    latest articles
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
     <section className="open-letter" id="open-letter">
       <div className="container">
         <div className="row">
