@@ -197,7 +197,7 @@ const Landing = ({ user, logout }) => (
         </div>
       </div>
     </section>
-    <footer>
+    <footer id="footer">
       <div className="container d-flex flex-column align-items-center">
         <img src="assets/consensys-logo-white-transparent.png" />
         <div className="mt-5">
