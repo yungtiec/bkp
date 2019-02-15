@@ -21,20 +21,20 @@
   <script>
     window.cookieconsent.initialise({
       content: {
-        message: 'We use cookies to optimize your experience.',
-        allow: 'privacy policy',
-        deny: 'terms of use',
-        link: 'Learn more',
-        href: 'http://cookiesandyou.com',
-        close: '&#x274c;',
-        policy: 'Cookie Policy',
-        target: '_blank',
+      message: 'We use cookies to optimize your experience.',
+      dismiss: 'Allow cookies',
+      allow: 'Allow cookies',
+      deny: 'Decline',
+      link: 'Privacy policy',
+      href: '/about#footer',
+      close: '&#x274c;',
+      policy: 'Cookie Policy',
+      target: '_blank'
       },
       elements: {
-        header: '<span class="cc-header">{{header}}</span>&nbsp;',
-        allow: '<a aria-label="allow cookies" tabindex="0" class="cc-btn cc-allow" href="https://tinyurl.com/y94wspyg" target="_blank">{{allow}}</a>',
+        messagelink: '<span id="cookieconsent:desc" class="cc-message">{{message}} <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="/about#footer" target="_blank">See privacy policy and terms of use</a></span>',
+        allow: '<a aria-label="allow cookies" tabindex="0" class="cc-btn cc-allow">{{allow}}</a>',
         deny: '<a aria-label="deny cookies" tabindex="0" class="cc-btn cc-deny" href="https://drive.google.com/open?id=1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV" target="_blank">{{deny}}</a>',
-        link: '<a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="https://tinyurl.com/y94wspyg" target="_blank">{{link}}</a>',
         close: '<span aria-label="dismiss cookie message" tabindex="0" class="cc-close">{{close}}</span>',
       }
     });
