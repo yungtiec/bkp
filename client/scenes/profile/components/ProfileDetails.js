@@ -13,7 +13,6 @@ const getParams = pathname => {
     exact: true,
     strict: false
   });
-  console.log(pathname);
   return (match && match.params) || {};
 };
 
