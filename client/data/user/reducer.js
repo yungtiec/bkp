@@ -18,7 +18,8 @@ export default function(state = defaultUser, action) {
         last_name: action.profile.lastName,
         name: action.profile.name,
         displayName: action.profile.displayName,
-        organization: action.profile.organization
+        organization: action.profile.organization,
+        user_handle: action.profile.user_handle
       };
     case types.ONBOARD_STATUS_UPDATED:
       return {
