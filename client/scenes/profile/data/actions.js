@@ -56,9 +56,9 @@ export function updateProfile(profile) {
 export function updateAvatar(formData) {
   return async (dispatch, getState) => {
     try {
-      console.log(formData.get("file"))
+      console.log(formData.get("file"));
       const result = await putUserAvatar(formData);
-      console.log(result)
+      console.log(result);
       dispatch({
         type: types.USER_AVATAR_UPDATED,
         avatar_url: result.data.Location
@@ -81,10 +81,12 @@ export function updateAccount(account) {
       var updatedProfile = await putUserAccount(
         assignIn(account, { current_user_handle: profile.user_handle })
       );
-      if (profile.user_handle !== account.user_handle)
-        history.push(`/profile/@${account.user_handle}/settings/account`);
       dispatch({
         type: types.USER_ACCOUNT_UPDATED,
+        profile: updatedProfile
+      });
+      dispatch({
+        type: "me.PROFILE_UPDATED",
         profile: updatedProfile
       });
       dispatch(
@@ -96,6 +98,8 @@ export function updateAccount(account) {
           dismissAfter: 3000
         })
       );
+      if (profile.user_handle !== account.user_handle)
+        history.push(`/profile/@${account.user_handle}/settings/account`);
     } catch (error) {
       console.error(error);
     }

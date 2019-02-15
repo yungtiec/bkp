@@ -34,7 +34,7 @@ describe('thunk creators', () => {
       return store.dispatch(me())
         .then(() => {
           const actions = store.getActions()
-          expect(actions[0].type).to.be.equal('user.GET_USER')
+          expect(actions[0].type).to.be.equal('me.GET_USER')
           expect(actions[0].user).to.be.deep.equal(fakeUser)
         })
     })
@@ -46,7 +46,7 @@ describe('thunk creators', () => {
       return store.dispatch(logout())
         .then(() => {
           const actions = store.getActions()
-          expect(actions[0].type).to.be.equal('user.REMOVE_USER')
+          expect(actions[0].type).to.be.equal('me.REMOVE_USER')
           expect(history.location.pathname).to.be.equal('/login')
         })
     })
