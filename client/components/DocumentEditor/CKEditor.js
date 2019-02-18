@@ -61,8 +61,6 @@ class CKEditor extends React.Component {
       return;
     }
 
-    console.log(window.CKEDITOR.appendTo);
-
     this.editorInstance = window.CKEDITOR.appendTo(
       ReactDOM.findDOMNode(this),
       this.props.config,

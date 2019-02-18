@@ -189,7 +189,7 @@ class Upload extends Component {
     else
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: (prevState.activeAccordionItemId + 1) % 7,
+        activeAccordionItemId: (prevState.activeAccordionItemId + 1),
         scorecardError:
           this.state.isScorecard && !this.props.scorecardCompleted,
         categoryError: !this.props.category,
@@ -490,6 +490,14 @@ class Upload extends Component {
                   }}
                   config={{ id: "cke-document-content" }}
                 />
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={() => this.next("contentHtml")}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    done
+                  </button>
+                </div>
               </AccordionItemBody>
             </AccordionItem>
           </Accordion>
