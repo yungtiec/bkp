@@ -123,7 +123,6 @@ class FormsyImageUpload extends React.Component {
   }
 
   render() {
-
     // An error message is returned only if the component is invalid
     const errorMessage = this.props.getErrorMessage(),
       isPristine = this.props.isPristine(),
@@ -149,14 +148,14 @@ class FormsyImageUpload extends React.Component {
 
     return (
       <div style={{ margin: 0, width: "100%" }}>
-        {/*<input*/}
-          {/*onChange={this.changeValue}*/}
-          {/*onBlur={this.validateValue}*/}
-          {/*type="file"*/}
-          {/*className={`form-control ${showRequiredMessage &&*/}
-            {/*"form-control--invalid"} ${this.props.inputClassname}`}*/}
-          {/*value={this.props.getValue() || ""}*/}
-        {/*/>*/}
+        <input
+          onChange={this.changeValue}
+          onBlur={this.validateValue}
+          type="file"
+          className={`form-control ${showRequiredMessage &&
+            "form-control--invalid"} ${this.props.inputClassname}`}
+          value={this.props.getValue() || ""}
+        />
         {!isEmpty(this.props.message) && (
           <div
             className={`text-${this.props.message.status} mr-2`}
@@ -165,16 +164,16 @@ class FormsyImageUpload extends React.Component {
             {this.props.message.text}
           </div>
         )}
-        {/*{showRequiredMessage && (*/}
-          {/*<div className="text-danger mr-2" style={{ fontSize: "12px" }}>*/}
-            {/*This is required*/}
-          {/*</div>*/}
-        {/*)}*/}
-        {/*{errorMessage && (*/}
-          {/*<div className="text-danger mr-2" style={{ fontSize: "12px" }}>*/}
-            {/*{errorMessage}*/}
-          {/*</div>*/}
-        {/*)}*/}
+        {showRequiredMessage && (
+          <div className="text-danger mr-2" style={{ fontSize: "12px" }}>
+            This is required
+          </div>
+        )}
+        {errorMessage && (
+          <div className="text-danger mr-2" style={{ fontSize: "12px" }}>
+            {errorMessage}
+          </div>
+        )}
       </div>
     );
   }
