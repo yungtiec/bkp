@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 const loadScript = require("load-script");
 
-var defaultScriptUrl = "https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js";
+var defaultScriptUrl = "https://cdn.ckeditor.com/4.6.2/standard/ckeditor-2.js";
 
 /**
  * @author codeslayer1
@@ -22,7 +22,7 @@ class CKEditor extends React.Component {
     };
   }
 
-  //load ckeditor script as soon as component mounts if not already loaded
+  //load ckeditor-2 script as soon as component mounts if not already loaded
   componentDidMount() {
     if (!this.state.isScriptLoaded) {
       loadScript(this.props.scriptUrl, this.onLoad);
