@@ -60,8 +60,13 @@ const getFeatureDocuments = async (req, res, next) => {
           model: User,
           as: "creator"
         }
+      ],
+      order: [
+        ["feature_order", "ASC"],
       ]
     });
+
+    console.log(documents);
 
     res.send(documents);
   } catch (err) {
