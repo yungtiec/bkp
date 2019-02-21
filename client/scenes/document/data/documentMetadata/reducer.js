@@ -20,6 +20,11 @@ export default function reduce(state = initialState, action = {}) {
       };
     case types.DOCUMENT_METADATA_RESET:
       return initialState;
+    case types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS:
+      return {
+        ...state,
+        ...action.documentMetadata
+      };
     case types.SURVEY_VOTED:
       return addVotesToDocument(action, state);
     default:

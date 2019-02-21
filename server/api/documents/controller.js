@@ -265,6 +265,13 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug }
     });
+
+    if (req.body.newTitle) {
+      const slug = await createSlug(req.body.newTitle.toLowerCase(), req.body.contentHTML);
+      documentToUpdate.title = req.body.newTitle;
+      documentToUpdate.slug = slug;
+    }
+
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
@@ -272,6 +279,7 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       ? req.body.category.value
       : null;
     documentToUpdate.header_img_url = req.body.headerImageUrl;
+
     const document = await documentToUpdate.save();
     res.send(document);
   } catch (err) {

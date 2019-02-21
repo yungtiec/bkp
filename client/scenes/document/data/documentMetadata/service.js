@@ -10,13 +10,14 @@ export function getMetadataBySlug(slug) {
   });
 }
 
-export function putContentHTMLBySlug(slug, { summary, content, status, category, headerImageUrl}) {
+export function putContentHTMLBySlug(slug, { summary, content, status, category, headerImageUrl, newTitle}) {
   return axios.put(`/api/documents/slug/${slug}`, {
     description: summary,
     contentHTML: content,
     status,
     category,
-    headerImageUrl
+    headerImageUrl,
+    newTitle
   }).then(res => {
     return res.data
   });
