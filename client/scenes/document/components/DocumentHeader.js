@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import autoBind from "react-autobind";
 import history from "../../../history";
 import { ProjectAuthorName } from "../../../components";
+import { DocumentToolbar } from './index';
 
 export default class DocumentHeader extends Component {
   constructor(props) {
@@ -16,6 +17,12 @@ export default class DocumentHeader extends Component {
   render() {
     const {
       documentMetadata,
+      upvoteDocument,
+      downvoteDocument,
+      showEditor,
+      isLoggedIn,
+      displayEditor,
+      userId,
     } = this.props;
     const { creator, createdAt } = documentMetadata;
     const collaborators = documentMetadata.collaborators
@@ -34,6 +41,15 @@ export default class DocumentHeader extends Component {
       <div className="project-document__header">
         <p className="document__title">{`${documentMetadata.title}`}</p>
         <ProjectAuthorName name={creator.displayName} createdAt={createdAt} />
+        <DocumentToolbar
+          documentMetadata={documentMetadata}
+          upvoteDocument={upvoteDocument}
+          downvoteDocument={downvoteDocument}
+          showEditor={showEditor}
+          isLoggedIn={isLoggedIn}
+          displayEditor={displayEditor}
+          userId={userId}
+        />
       </div>
     );
   }

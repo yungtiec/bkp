@@ -45,7 +45,7 @@ export const toggleSidebarContext = () => ({
 });
 
 const initialState = {
-  sidebarOpen: true,
+  sidebarOpen: false,
   annotationHighlight: true,
   verificationStatus: "all",
   commentSortBy: "position",

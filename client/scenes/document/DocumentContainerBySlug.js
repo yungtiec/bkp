@@ -60,13 +60,10 @@ class DocumentContainer extends Component {
     } = this.props;
 
     return (
-      <div className="main-container">
+      <div className="main-container document-container">
         <DocumentHeader
           documentMetadata={documentMetadata}
           isClosedForComment={isClosedForComment}
-        />
-        <DocumentToolbar
-          documentMetadata={documentMetadata}
           upvoteDocument={upvoteDocument}
           downvoteDocument={downvoteDocument}
           showEditor={showEditor}
