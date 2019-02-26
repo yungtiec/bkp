@@ -8,6 +8,7 @@ import {
   putContentHTMLBySlug
 } from "./service";
 import { loadModal } from "../../../../data/reducer";
+import history from "../../../../history";
 
 export function fetchMetadataByDocumentId(documentId, versionId) {
   return async (dispatch, getState) => {
@@ -54,6 +55,9 @@ export function updateContentHTMLBySlug(slug, propertiesToUpdate) {
         type: types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS,
         documentMetadata
       });
+      if (slug !== documentMetadata.slug) {
+        history.push(`/s/${documentMetadata.slug}`)
+      }
     } catch (error) {
       console.error(error);
     }

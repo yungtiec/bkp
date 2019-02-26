@@ -25,7 +25,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       collaboratorEmails,
       commentPeriodValue,
       commentPeriodUnit,
-      selectedProjectSymbol: selectedProject.symbol,
+      selectedProjectSymbol: selectedProject.symbol || 'GEN',
       scorecard,
       description: summary,
       category

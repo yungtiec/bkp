@@ -26,6 +26,7 @@ class DocumentEditor extends Component {
     super(props);
     this.contentHtml = this.props.documentMetadata.content_html;
     this.state = {
+      title: this.props.documentMetadata.title,
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
@@ -83,6 +84,13 @@ class DocumentEditor extends Component {
     });
   }
 
+  handleTitleChange(evt) {
+    console.log(evt.target.value);
+    this.setState({
+      title: evt.target.value
+    });
+  }
+
   handleStatusChange(status) {
     this.setState({
       status: status.value
@@ -132,13 +140,16 @@ class DocumentEditor extends Component {
   async onButtonPress() {
     const { documentMetadata, updateContentHTMLBySlug } = this.props;
     const { summary, content, status, category, headerImageUrl } = this.state;
+    const hasNewTitle = this.props.documentMetadata.title !== this.state.title;
+    const newTitle = hasNewTitle ? this.state.title : null;
 
     const propertiesToUpdate = {
       summary,
       content,
       status,
       category,
-      headerImageUrl
+      headerImageUrl,
+      newTitle
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
@@ -162,6 +173,17 @@ class DocumentEditor extends Component {
         {displayEditor ? (
           <div className="mb-4">
             <div className="mb-4">
+              <div className="mb-4">
+                Title:
+                <div>
+                  <input
+                    name="title"
+                    class="Select-control"
+                    value={this.state.title}
+                    onChange={this.handleTitleChange}
+                  />
+                </div>
+              </div>
               <div className="mb-4">
                 Status:
                 <ActiveToggle
