@@ -15,8 +15,8 @@ const {
 } = require("../../db/models/index");
 const _ = require("lodash");
 Promise = require("bluebird");
-const generateCommentHtml = require('../generateCommentHtml');
-const { sendEmail } = require('../utils');
+const generateCommentHtml = require("../generateCommentHtml");
+const { sendEmail } = require("../utils");
 
 const getComments = async (req, res, next) => {
   try {
@@ -54,7 +54,9 @@ const postComment = async (req, res, next) => {
         })
       ])
     );
-    const document = await Document.scope("includeAllEngagements").findOne({ where: { id: req.params.doc_id}});
+    const document = await Document.scope("includeAllEngagements").findOne({
+      where: { id: req.params.doc_id }
+    });
     const autoVerify = permission(
       "AutoVerify",
       {
@@ -71,16 +73,26 @@ const postComment = async (req, res, next) => {
       });
     const autoVerifyPromise =
       autoVerify && comment.update({ reviewed: "verified" });
-    await Promise.all([issuePromise, autoVerifyPromise]);
+    const tagPromises = Promise.map(req.body.tags, tag =>
+      Tag.findOrCreate({
+        where: { name: tag.value },
+        default: { name: tag.value.toLowerCase(), display_name: tag.value }
+      }).spread((tag, created) => comment.addTag(tag))
+    );
+    await Promise.all([issuePromise, autoVerifyPromise, tagPromises]);
     comment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: comment.id } }]
     }).findOne();
-    const isRepostedByBKPEmail = document.creator.email.includes('tbp.admin');
+    const isRepostedByBKPEmail = document.creator.email.includes("tbp.admin");
     await sendEmail({
-      recipientEmail: isRepostedByBKPEmail ? 'info@thebkp.com' : document.creator.email,
-      subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+      recipientEmail: isRepostedByBKPEmail
+        ? "info@thebkp.com"
+        : document.creator.email,
+      subject: `New Comment Activity From ${comment.owner.first_name} ${
+        comment.owner.last_name
+      }`,
       message: generateCommentHtml(
-        process.env.NODE_ENV === 'production',
+        process.env.NODE_ENV === "production",
         document.slug,
         comment.owner.first_name,
         comment.owner.last_name,
@@ -91,10 +103,12 @@ const postComment = async (req, res, next) => {
     // Send this to info@thebkp.com
     if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
       await sendEmail({
-        recipientEmail: 'info@thebkp.com',
-        subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+        recipientEmail: "info@thebkp.com",
+        subject: `New Comment Activity From ${comment.owner.first_name} ${
+          comment.owner.last_name
+        }`,
         message: generateCommentHtml(
-          process.env.NODE_ENV === 'production',
+          process.env.NODE_ENV === "production",
           document.slug,
           comment.owner.first_name,
           comment.owner.last_name,
@@ -170,7 +184,7 @@ const postReply = async (req, res, next) => {
       recipientEmail: ancestry.owner.email,
       subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
       message: generateCommentHtml(
-        process.env.NODE_ENV === 'production',
+        process.env.NODE_ENV === "production",
         ancestry.document.slug,
         user.first_name,
         user.last_name,
@@ -180,10 +194,12 @@ const postReply = async (req, res, next) => {
     });
     if (ancestry.owner.id !== 12) {
       await sendEmail({
-        recipientEmail: 'info@thebkp.com',
-        subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+        recipientEmail: "info@thebkp.com",
+        subject: `New Comment Activity From ${comment.owner.first_name} ${
+          comment.owner.last_name
+        }`,
         message: generateCommentHtml(
-          process.env.NODE_ENV === 'production',
+          process.env.NODE_ENV === "production",
           document.slug,
           comment.owner.first_name,
           comment.owner.last_name,

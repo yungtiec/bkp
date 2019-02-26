@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import CommentBox from "./CommentBox";
-import Select from "react-select";
+import { AsyncCreatable } from "react-select";
 import { TagChip } from "../../../../../../components";
+import axios from "axios";
+import { assignIn } from "lodash";
 
 export default class CommentBoxWithTagField extends Component {
   constructor(props) {
@@ -58,6 +60,16 @@ export default class CommentBoxWithTagField extends Component {
     });
   }
 
+  async getTags(input, callback) {
+    input = input.toLowerCase();
+    var tags = await axios
+      .get("/api/tags/autocomplete", {
+        params: { term: input }
+      })
+      .then(res => res.data);
+    return { options: tags };
+  }
+
   render() {
     const {
       onSubmit,
@@ -68,6 +80,29 @@ export default class CommentBoxWithTagField extends Component {
     } = this.props;
     return (
       <div>
+        {showTags && (
+          <div>
+            <AsyncCreatable
+              multi={true}
+              placeholder="add or create tag(s)"
+              loadOptions={this.getTags}
+              onChange={this.handleTagOnChange}
+              value={[]}
+            />
+            <div className="comment-item__tags mt-2 mb-2">
+              {this.state.selectedTags && this.state.selectedTags.length
+                ? this.state.selectedTags.map((tag, index) => (
+                    <TagChip
+                      key={`comment-tag__${tag.name}`}
+                      containerClassname="comment-item__tag dark-bg"
+                      tagValue={tag.name}
+                      closeIconOnClick={() => this.handleRemoveTag(index)}
+                    />
+                  ))
+                : ""}
+            </div>
+          </div>
+        )}
         <CommentBox
           {...otherProps}
           onSubmit={this.handleSubmitEditedCommentAndTag}
