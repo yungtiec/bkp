@@ -328,12 +328,13 @@ async function loadAnnotation(self) {
     });
     self.annotator = app;
     $(".annotator__tag-container").tagsInput({
+      minChars: 3,
       autocomplete_url: "/api/tags/autocomplete",
       defaultText: "add tag(s)",
       height: "70px",
       width: "100%",
       interactive: true,
-      delimiter: [" "]
+      delimiter: [";"]
     });
     $(".annotator-cancel").click(evt => {
       if (!isEmpty(self.state.temporaryHighlight))

@@ -189,15 +189,7 @@ class Upload extends Component {
     else
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: (prevState.activeAccordionItemId + 1),
-        scorecardError:
-          this.state.isScorecard && !this.props.scorecardCompleted,
-        categoryError: !this.props.category,
-        projectError: this.state.isScorecard && !this.props.selectedProject,
-        headerImageUrlError: !this.props.headerImageUrl,
-        titleError: !this.props.title,
-        contentHtmlError: !this.props.contentHtml,
-        summaryError: !this.props.summary
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
   }
 
