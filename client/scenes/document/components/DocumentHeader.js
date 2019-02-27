@@ -50,6 +50,7 @@ export default class DocumentHeader extends Component {
           displayEditor={displayEditor}
           userId={userId}
         />
+        <img className="project-document__header-image" src={`${documentMetadata.header_img_url}&auto=format&fit=crop&w=800&q=80`}/>
       </div>
     );
   }

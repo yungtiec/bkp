@@ -5,7 +5,10 @@
   flex-direction: column;
   align-items: center;
   align-content: center;
-  margin-top: 100px;
+  margin-top: 50px;
+  @include breakpoint(xs) {
+    margin-top: 25px;
+  }
 }
 
 .project-document {
@@ -25,6 +28,7 @@
   text-transform: capitalize;
   margin-bottom: 1rem;
   max-width: 740px;
+  font-family: "Playfair Display", Helvetica, sans-serif;
   @include breakpoint(xs) {
     width: 100%;
     font-size: 36px;
@@ -44,6 +48,13 @@
 .project-document__header {
   display: flex;
   flex-direction: column;
+}
+
+.project-document__header-image {
+  max-width: 740px;
+  @include breakpoint(xs) {
+    max-width: 375px;
+  }
 }
 
 .document__request-btn {

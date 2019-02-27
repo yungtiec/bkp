@@ -61,8 +61,8 @@ const initialState = {
 export default function reduce(state = initialState, action) {
   switch (action.type) {
     case "environment.CHANGE_WIDTH_AND_HEIGHT":
-      if (action.width < 600) return { ...state, sidebarOpen: false };
-      else return { ...state, sidebarOpen: true };
+      if (action.width < 600) return { ...state };
+      else return { ...state };
     case VERIFICATION_STATUS_IN_VIEW:
       return { ...state, verificationStatus: action.verificationStatus };
     case SIDEBAR_OPEN_TOGGLE:
