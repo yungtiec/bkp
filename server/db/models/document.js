@@ -166,6 +166,9 @@ module.exports = (db, DataTypes) => {
             as: "creator"
           },
           {
+            model: models["tag"]
+          },
+          {
             model: models["user"],
             as: "upvotesFrom",
             attributes: ["name", "first_name", "last_name", "email", "id"]

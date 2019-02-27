@@ -16,7 +16,7 @@ const {
 const _ = require("lodash");
 Promise = require("bluebird");
 const generateCommentHtml = require("../generateCommentHtml");
-const { sendEmail } = require("../utils");
+const { sendEmail, getAddedAndRemovedTags } = require("../utils");
 
 const getComments = async (req, res, next) => {
   try {
@@ -263,17 +263,10 @@ const putEditedComment = async (req, res, next) => {
     });
     if (comment.owner.email !== req.user.email) res.sendStatus(401);
     else {
-      var prevTags = comment.tags || [];
-      var removedTags = prevTags.filter(function(prevTag) {
-        return req.body.tags.map(tag => tag.name).indexOf(prevTag.name) === -1;
+      var { addedTags, removedTags } = getAddedAndRemovedTags({
+        prevTags: comment.tags,
+        curTags: req.body.tags
       });
-      var addedTags = req.body.tags
-        ? req.body.tags.filter(tag => {
-            return (
-              prevTags.map(prevTag => prevTag.name).indexOf(tag.name) === -1
-            );
-          })
-        : [];
       var removedTagPromises, addedTagPromises, issuePromise;
       await comment.update({ comment: req.body.newComment });
       removedTagPromises = Promise.map(removedTags, tag =>
@@ -281,8 +274,8 @@ const putEditedComment = async (req, res, next) => {
       );
       addedTagPromises = Promise.map(addedTags, async addedTag => {
         const [tag, created] = await Tag.findOrCreate({
-          where: { name: addedTag.name },
-          default: { name: addedTag.name }
+          where: { name: addedTag.value, display_name: addedTag.label },
+          default: { name: addedTag.value, display_name: addedTag.label }
         });
         return comment.addTag(tag.id);
       });

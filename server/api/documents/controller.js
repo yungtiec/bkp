@@ -14,9 +14,14 @@ const {
   ProjectAdmin,
   ProjectEditor,
   WizardSchema,
-  Comment
+  Comment,
+  Tag
 } = require("../../db/models");
-const { getEngagedUsers, createSlug } = require("../utils");
+const {
+  getEngagedUsers,
+  createSlug,
+  getAddedAndRemovedTags
+} = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
@@ -61,9 +66,7 @@ const getFeatureDocuments = async (req, res, next) => {
           as: "creator"
         }
       ],
-      order: [
-        ["feature_order", "ASC"],
-      ]
+      order: [["feature_order", "ASC"]]
     });
 
     console.log(documents);
@@ -268,14 +271,34 @@ const addHistory = versionQuestionOrAnswer => {
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
   try {
     const documentToUpdate = await Document.findOne({
-      where: { slug: req.params.slug }
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
     });
 
     if (req.body.newTitle) {
-      const slug = await createSlug(req.body.newTitle.toLowerCase(), req.body.contentHTML);
+      const slug = await createSlug(
+        req.body.newTitle.toLowerCase(),
+        req.body.contentHTML
+      );
       documentToUpdate.title = req.body.newTitle;
       documentToUpdate.slug = slug;
     }
+
+    var { addedTags, removedTags } = getAddedAndRemovedTags({
+      prevTags: documentToUpdate.tags,
+      curTags: req.body.tags
+    });
+    var removedTagPromises = Promise.map(removedTags, tag =>
+      documentToUpdate.removeTag(tag.id)
+    );
+    var addedTagPromises = Promise.map(addedTags, async addedTag => {
+      const [tag, created] = await Tag.findOrCreate({
+        where: { name: addedTag.value, display_name: addedTag.label },
+        default: { name: addedTag.value, display_name: addedTag.label }
+      });
+      return documentToUpdate.addTag(tag.id);
+    });
+    await Promise.all([removedTagPromises, addedTagPromises]);
 
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
@@ -285,7 +308,11 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       : null;
     documentToUpdate.header_img_url = req.body.headerImageUrl;
 
-    const document = await documentToUpdate.save();
+    await documentToUpdate.save();
+    const document = await Document.findOne({
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
+    });
     res.send(document);
   } catch (err) {
     next(err);
@@ -490,7 +517,10 @@ const createDocumentFromHtml = async (req, res, next) => {
       .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
       .format("x");
 
-    const slug = await createSlug(req.body.title.toLowerCase(), req.body.contentHtml);
+    const slug = await createSlug(
+      req.body.title.toLowerCase(),
+      req.body.contentHtml
+    );
 
     const document = await Document.create({
       title: req.body.title,

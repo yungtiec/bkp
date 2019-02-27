@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import CommentBox from "./CommentBox";
-import { AsyncCreatable } from "react-select";
-import { TagChip } from "../../../../../../components";
+import { TagChip, TagField } from "../../../../../../components";
 import axios from "axios";
-import { assignIn } from "lodash";
 
 export default class CommentBoxWithTagField extends Component {
   constructor(props) {
@@ -81,27 +79,12 @@ export default class CommentBoxWithTagField extends Component {
     return (
       <div>
         {showTags && (
-          <div>
-            <AsyncCreatable
-              multi={true}
-              placeholder="add or create tag(s)"
-              loadOptions={this.getTags}
-              onChange={this.handleTagOnChange}
-              value={[]}
-            />
-            <div className="comment-item__tags mt-2 mb-2">
-              {this.state.selectedTags && this.state.selectedTags.length
-                ? this.state.selectedTags.map((tag, index) => (
-                    <TagChip
-                      key={`comment-tag__${tag.name}`}
-                      containerClassname="comment-item__tag dark-bg"
-                      tagValue={tag.name}
-                      closeIconOnClick={() => this.handleRemoveTag(index)}
-                    />
-                  ))
-                : ""}
-            </div>
-          </div>
+          <TagField
+            fetchTags={this.getTags}
+            handleOnSelect={this.handleTagOnChange}
+            handleRemoveTag={this.handleRemoveTag}
+            selectedTags={this.state.selectedTags}
+          />
         )}
         <CommentBox
           {...otherProps}

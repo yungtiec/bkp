@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
-import { debounce } from "lodash";
+import axios from "axios";
+import { debounce, assignIn } from "lodash";
 import CKEditor from "./CKEditor";
 import "./DocumentEditor.scss";
 import ReactHtmlParser, {
@@ -19,7 +20,7 @@ import CategorySelect from "../../scenes/document/scenes/Document/components/Cat
 import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
 import $ from "jquery";
 import { loadModal, hideModal } from "../../data/reducer";
-import { ScorecardTable } from "../index";
+import { ScorecardTable, TagField } from "../index";
 
 class DocumentEditor extends Component {
   constructor(props) {
@@ -36,6 +37,11 @@ class DocumentEditor extends Component {
             value: this.props.documentMetadata.category.replace(" ", "-")
           }
         : null,
+      selectedTags: this.props.documentMetadata.tags
+        ? this.props.documentMetadata.tags.map(t =>
+            assignIn({ label: t.display_name, value: t.name }, t)
+          )
+        : [],
       headerImageUrl: this.props.documentMetadata.header_img_url,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
@@ -85,7 +91,6 @@ class DocumentEditor extends Component {
   }
 
   handleTitleChange(evt) {
-    console.log(evt.target.value);
     this.setState({
       title: evt.target.value
     });
@@ -149,7 +154,8 @@ class DocumentEditor extends Component {
       status,
       category,
       headerImageUrl,
-      newTitle
+      newTitle,
+      tags: this.state.selectedTags || []
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
@@ -161,6 +167,36 @@ class DocumentEditor extends Component {
         this.props.hideEditor();
       }
     );
+  }
+
+  onTagSelect(selected) {
+    selected = selected[0].name
+      ? selected[0]
+      : { ...selected[0], name: selected[0].value };
+    if (
+      this.state.selectedTags.map(tag => tag.name).indexOf(selected.value) ===
+      -1
+    ) {
+      this.setState(prevState => ({
+        selectedTags: [...prevState.selectedTags, selected]
+      }));
+    }
+  }
+
+  onRemoveTag(index) {
+    this.setState({
+      selectedTags: this.state.selectedTags.filter((tag, i) => i !== index)
+    });
+  }
+
+  async getTags(input, callback) {
+    input = input.toLowerCase();
+    var tags = await axios
+      .get("/api/tags/autocomplete", {
+        params: { term: input }
+      })
+      .then(res => res.data);
+    return { options: tags };
   }
 
   render() {
@@ -196,6 +232,16 @@ class DocumentEditor extends Component {
                 <DocumentCategorySelect
                   handleCategoryChange={this.handleCategoryChange}
                   category={this.state.category}
+                />
+              </div>
+              <div className="mb-4">
+                Tags:
+                <TagField
+                  fetchTags={this.getTags}
+                  handleOnSelect={this.onTagSelect}
+                  handleRemoveTag={this.onRemoveTag}
+                  selectedTags={this.state.selectedTags}
+                  width="300px"
                 />
               </div>
               <div className="mt-2 mb-4">
