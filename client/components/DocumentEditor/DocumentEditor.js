@@ -189,16 +189,6 @@ class DocumentEditor extends Component {
     });
   }
 
-  async getTags(input, callback) {
-    input = input.toLowerCase();
-    var tags = await axios
-      .get("/api/tags/autocomplete", {
-        params: { term: input }
-      })
-      .then(res => res.data);
-    return { options: tags };
-  }
-
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { summary, content, headerImageUrl } = this.state;
@@ -237,7 +227,6 @@ class DocumentEditor extends Component {
               <div className="mb-4">
                 Tags:
                 <TagField
-                  fetchTags={this.getTags}
                   handleOnSelect={this.onTagSelect}
                   handleRemoveTag={this.onRemoveTag}
                   selectedTags={this.state.selectedTags}

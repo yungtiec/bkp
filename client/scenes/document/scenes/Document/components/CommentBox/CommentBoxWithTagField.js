@@ -58,16 +58,6 @@ export default class CommentBoxWithTagField extends Component {
     });
   }
 
-  async getTags(input, callback) {
-    input = input.toLowerCase();
-    var tags = await axios
-      .get("/api/tags/autocomplete", {
-        params: { term: input }
-      })
-      .then(res => res.data);
-    return { options: tags };
-  }
-
   render() {
     const {
       onSubmit,
@@ -80,7 +70,6 @@ export default class CommentBoxWithTagField extends Component {
       <div>
         {showTags && (
           <TagField
-            fetchTags={this.getTags}
             handleOnSelect={this.handleTagOnChange}
             handleRemoveTag={this.handleRemoveTag}
             selectedTags={this.state.selectedTags}

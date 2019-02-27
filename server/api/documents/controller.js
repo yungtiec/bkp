@@ -175,6 +175,7 @@ const getDocumentBySlug = async (req, res, next) => {
     const document = await Document.scope({
       method: ["includeOutstandingIssues", { slug: req.params.version_slug }]
     }).findOne();
+    console.log(document.tags);
     res.send(document);
   } catch (err) {
     next(err);
@@ -558,7 +559,19 @@ const createDocumentFromHtml = async (req, res, next) => {
               )
           )
       : null;
-    res.send(document);
+    const tags = req.body.tags
+      ? req.body.tags.map(
+          async tag =>
+            await Tag.findOrCreate({
+              where: { name: tag.value },
+              default: {
+                name: tag.value.toLowerCase(),
+                display_name: tag.value
+              }
+            }).spread((tag, created) => document.addTag(tag))
+        )
+      : null;
+    res.send(_.assignIn({ tags: req.body.tags }, document.toJSON()));
   } catch (err) {
     next(err);
   }

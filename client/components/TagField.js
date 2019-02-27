@@ -1,19 +1,24 @@
 import React from "react";
 import { AsyncCreatable } from "react-select";
 import TagChip from "./TagChip";
+import axios from "axios";
 
-export default ({
-  fetchTags,
-  handleOnSelect,
-  handleRemoveTag,
-  selectedTags,
-  width
-}) => (
+const getTags = async (input, callback) => {
+  input = input.toLowerCase();
+  var tags = await axios
+    .get("/api/tags/autocomplete", {
+      params: { term: input }
+    })
+    .then(res => res.data);
+  return { options: tags };
+};
+
+export default ({ handleOnSelect, handleRemoveTag, selectedTags, width }) => (
   <div>
     <AsyncCreatable
       multi={true}
       placeholder="add or create tag(s)"
-      loadOptions={fetchTags}
+      loadOptions={getTags}
       onChange={handleOnSelect}
       value={[]}
       style={width ? { width } : null}
