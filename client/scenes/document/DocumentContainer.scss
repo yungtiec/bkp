@@ -12,11 +12,12 @@
 
 .project-document__header .document__title {
   font-weight: 700;
-  font-size: 42px;
+  font-size: 40px;
   line-height: 1.58;
   text-transform: capitalize;
   width: 70%;
   margin-bottom: 1rem;
+  max-width: 740px;
   @include breakpoint(xs) {
     width: 100%;
     font-size: 36px;
