@@ -11,6 +11,7 @@ const db = require("./db").sequelize;
 const sessionStore = new SequelizeStore({ db: db });
 const PORT = process.env.PORT || 8000;
 const app = express();
+const prerenderNode = require('prerender-node');
 module.exports = app;
 
 /**
@@ -71,6 +72,12 @@ const createApp = () => {
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, "..", "public")));
+
+  const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
+  prerender.crawlerUserAgents.push('googlebot');
+  prerender.crawlerUserAgents.push('bingbot');
+  prerender.crawlerUserAgents.push('yandex');
+  app.use(prerender);
 
   app.get("/:route/public/:file", (req, res, next) => {
     res.redirect(`/${req.params.file}`);
