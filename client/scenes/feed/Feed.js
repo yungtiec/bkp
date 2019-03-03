@@ -1,5 +1,6 @@
 import "./Feed.scss";
 import React, { Fragment } from "react";
+import { Helmet } from 'react-helmet';
 import {
   QueryDocumentList,
   QueryHeroHeadline,
@@ -8,6 +9,10 @@ import {
 
 export default () => (
   <Fragment>
+    <Helmet>
+      <title>The Brooklyn Project</title>
+      <meta name="description" content="Join the collaboration on blockchain law, regulation, and policy." />
+    </Helmet>
     <div className="app-container">
       <div className="feed__header">
         <h1 className="feed__header-title">The Brooklyn Project</h1>
