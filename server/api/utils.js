@@ -95,6 +95,7 @@ const getEngagedUsers = async ({ version, creator, collaboratorEmails }) => {
 };
 
 const createSlug = async (docTitle, contentHtml) => {
+  const strippedTitle  = docTitle.replace(/[^a-zA-Z 0-9 -]+/g, '');
   const sha256 = crypto.createHash("sha256");
 
   try {
@@ -108,7 +109,7 @@ const createSlug = async (docTitle, contentHtml) => {
     // Convert base64 to hex string
     const docHash = Buffer.from(base64Key, "base64").toString("hex");
 
-    const docSlug = `${docTitle
+    const docSlug = `${strippedTitle
       .toLowerCase()
       .split(" ")
       .join("-")}-${docHash}`;

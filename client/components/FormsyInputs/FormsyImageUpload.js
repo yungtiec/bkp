@@ -123,7 +123,6 @@ class FormsyImageUpload extends React.Component {
   }
 
   render() {
-
     // An error message is returned only if the component is invalid
     const errorMessage = this.props.getErrorMessage(),
       isPristine = this.props.isPristine(),

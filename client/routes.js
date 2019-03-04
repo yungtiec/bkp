@@ -137,6 +137,11 @@ class Routes extends Component {
           {/* Displays our Landing component as a fallback */}
           <RouteWithLayout
             layout={LayoutWithNav}
+            path="/feed"
+            component={Feed}
+          />
+          <RouteWithLayout
+            layout={LayoutWithNav}
             path="/"
             component={Feed}
           />

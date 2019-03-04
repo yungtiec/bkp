@@ -19,6 +19,7 @@ import { DocumentHeader, DocumentToolbar } from "./components";
 import { VersionIssues, VersionProgress } from "./scenes/Document/components";
 import history from "../../history";
 import {hideEditor, showEditor} from './data/ckEditor/actions';
+import {Helmet} from 'react-helmet';
 
 class DocumentContainer extends Component {
   constructor(props) {
@@ -61,6 +62,9 @@ class DocumentContainer extends Component {
 
     return (
       <div className="main-container">
+        <Helmet>
+          <title>{documentMetadata.title}</title>
+        </Helmet>
         <DocumentHeader
           documentMetadata={documentMetadata}
           isClosedForComment={isClosedForComment}
