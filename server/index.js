@@ -65,6 +65,12 @@ const createApp = () => {
 
   app.use(sslRedirect());
 
+  const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
+  prerender.crawlerUserAgents.push('googlebot');
+  prerender.crawlerUserAgents.push('bingbot');
+  prerender.crawlerUserAgents.push('yandex');
+  app.use(prerender);
+
   // auth and api routes
   app.use("/auth", require("./auth"));
   app.use("/api", require("./api"));
@@ -158,12 +164,6 @@ const createApp = () => {
   app.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public/index.html"));
   });
-
-  const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
-  prerender.crawlerUserAgents.push('googlebot');
-  prerender.crawlerUserAgents.push('bingbot');
-  prerender.crawlerUserAgents.push('yandex');
-  app.use(prerender);
 
   // error handling endware
   app.use((err, req, res, next) => {
