@@ -1,10 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://thebkp.com/</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/search</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/open-roundtable-discussions</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/crypto-asset-written-evidence</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/request-password-reset</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/landing</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/s/Bill-To-Provide-Safe-Harbor-For-Certain-Blockchain-Developers-(116th-Congress-HR-528)-b672e04cafa7</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/s/CFTC-Request-For-Input-On-Crypto-Asset-Mechanics-And-Markets-144f36b857e1</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/s/consensys-response-to-cftc-a0ab2428c3f7</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/s/COLORADO-DIGITAL-TOKEN-ACT-c9c8565675a3</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/request-password-reset</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/login</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/feed</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/about</loc>
+  </url>
+  <url>
+    <loc>https://www.thebkp.com/login</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/token-taxonomy-deprecated/</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/token-taxonomy/</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/token-taxonomy</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/landing</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/project/BKP/document/4/version/2</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/signup</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/open-roundtable-discussions/2018/8/1/open-roundtable-discussion-on-law-regulation-policy</loc>
+  </url>
+  <url>
     <loc>https://thebkp.com/s/consumer-token-framework-879873</loc>
   </url>
   <url>
     <loc>https://thebkp.com/s/consumer-token-framework-567823</loc>
+  </url>
+  <url>
+    <loc>https://thebkp.com/s/slug-6</loc>
   </url>
   <url>
     <loc>https://thebkp.com/s/ilep-2018-new-frontiers-in-securities-fraud-890813</loc>
@@ -44,8 +116,5 @@
   </url>
   <url>
     <loc>https://thebkp.com/s/10-questions-on-crypto-regulation-from-uk-regulator-fca-0a075c8d9405</loc>
-  </url>
-  <url>
-    <loc>https://thebkp.com</loc>
   </url>
 </urlset>
