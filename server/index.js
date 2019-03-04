@@ -70,14 +70,14 @@ const createApp = () => {
   app.use("/api", require("./api"));
   app.use("/admin", require("./admin"));
 
-  // static file-serving middleware
-  app.use(express.static(path.join(__dirname, "..", "public")));
-
   const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
   prerender.crawlerUserAgents.push('googlebot');
   prerender.crawlerUserAgents.push('bingbot');
   prerender.crawlerUserAgents.push('yandex');
   app.use(prerender);
+
+  // static file-serving middleware
+  app.use(express.static(path.join(__dirname, "..", "public")));
 
   app.get("/:route/public/:file", (req, res, next) => {
     res.redirect(`/${req.params.file}`);

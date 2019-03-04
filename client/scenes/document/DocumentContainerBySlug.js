@@ -60,10 +60,25 @@ class DocumentContainer extends Component {
       userId
     } = this.props;
 
+    var wrapper= document.createElement('div');
+    wrapper.innerHTML = documentMetadata.description;
+
     return (
       <div className="main-container">
         <Helmet>
           <title>{documentMetadata.title}</title>
+          <meta name="description" itemProp="description" content={wrapper.textContent} />
+          <meta property="fb:app_id" content="312700812765621" />
+          <meta property="og:type" content="article" />
+          <meta property="og:title" content={documentMetadata.title} />
+          <meta property="og:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
+          <meta property="og:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
+          <meta property="og:description" content={wrapper.textContent} />
+          <meta name="twitter:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
+          <meta name="twitter:title" content={documentMetadata.title} />
+          <meta name="twitter:description" content={wrapper.textContent} />
+          <meta name="twitter:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
+          <meta name="twitter:card" content="summary" />
         </Helmet>
         <DocumentHeader
           documentMetadata={documentMetadata}
