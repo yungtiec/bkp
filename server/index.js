@@ -73,12 +73,6 @@ const createApp = () => {
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, "..", "public")));
 
-  const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
-  prerender.crawlerUserAgents.push('googlebot');
-  prerender.crawlerUserAgents.push('bingbot');
-  prerender.crawlerUserAgents.push('yandex');
-  app.use(prerender);
-
   app.get("/:route/public/:file", (req, res, next) => {
     res.redirect(`/${req.params.file}`);
   });
@@ -164,6 +158,12 @@ const createApp = () => {
   app.use("*", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public/index.html"));
   });
+
+  const prerender = prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN);
+  prerender.crawlerUserAgents.push('googlebot');
+  prerender.crawlerUserAgents.push('bingbot');
+  prerender.crawlerUserAgents.push('yandex');
+  app.use(prerender);
 
   // error handling endware
   app.use((err, req, res, next) => {
