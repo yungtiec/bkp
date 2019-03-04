@@ -92,7 +92,16 @@ const postAnnotatedComment = async (req, res, next) => {
       comment_id: newComment.id
     });
     const ownerPromise = newComment.setOwner(req.user.id);
-    await Promise.all([ownerPromise, issuePromise]);
+    const tagPromises = Promise.map(tags, tag =>
+      Tag.findOrCreate({
+        where: { name: tag },
+        default: {
+          name: tag,
+          display_name: tag
+        }
+      }).spread((tag, created) => newComment.addTag(tag))
+    );
+    await Promise.all([ownerPromise, issuePromise, tagPromises]);
     newComment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: newComment.id } }]
     }).findOne();

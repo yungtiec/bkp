@@ -31,7 +31,7 @@
     "@react-schema-form/core": "git+https://github.com/yungtiec/react-schema-form-core.git",
     "@sendgrid/mail": "^6.3.1",
     "@slack/client": "^4.6.0",
-    "annotator": "git+https://github.com/yungtiec/tbp-annotator.git",
+    "annotator": "git+https://github.com/yungtiec/bkp-annotator.git",
     "aws-sdk": "^2.388.0",
     "axios": "^0.15.3",
     "babel-plugin-import-inspector": "^2.0.0",

@@ -4,6 +4,7 @@ import DocumentSearch from "./DocumentSearch";
 import { connect } from "react-redux";
 import { getFilterOptionMenus, getFilters } from "../data/reducer";
 import { updateFilter, clearFilter } from "../data/actions";
+import { Async } from "react-select";
 
 const handleMultiOptionOnClick = ({
   key,
@@ -25,6 +26,16 @@ const handleMultiOptionOnClick = ({
 
 const handleOptionOnClick = ({ key, selected, updateFilter }) => {
   updateFilter({ key, value: selected });
+};
+
+const getTags = async (input, callback) => {
+  input = input.toLowerCase();
+  var tags = await axios
+    .get("/api/tags/autocomplete", {
+      params: { term: input }
+    })
+    .then(res => res.data);
+  return { options: tags };
 };
 
 const DocumentFilter = ({
@@ -68,8 +79,8 @@ const DocumentFilter = ({
           !filters.category || (filters.category && !filters.category.length)
             ? "category"
             : filters.category.length === 1
-              ? filters.category[0].label
-              : `${filters.category[0].label} and ...`
+            ? filters.category[0].label
+            : `${filters.category[0].label} and ...`
         }
       >
         <Fragment>

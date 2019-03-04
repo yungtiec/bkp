@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import CommentBox from "./CommentBox";
-import Select from "react-select";
-import { TagChip } from "../../../../../../components";
+import { TagChip, TagField } from "../../../../../../components";
+import axios from "axios";
 
 export default class CommentBoxWithTagField extends Component {
   constructor(props) {
@@ -68,6 +68,13 @@ export default class CommentBoxWithTagField extends Component {
     } = this.props;
     return (
       <div>
+        {showTags && (
+          <TagField
+            handleOnSelect={this.handleTagOnChange}
+            handleRemoveTag={this.handleRemoveTag}
+            selectedTags={this.state.selectedTags}
+          />
+        )}
         <CommentBox
           {...otherProps}
           onSubmit={this.handleSubmitEditedCommentAndTag}
