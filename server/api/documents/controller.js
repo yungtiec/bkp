@@ -92,10 +92,12 @@ const getDocuments = async (req, res, next) => {
 
 const getDocumentsWithFilters = async (req, res, next) => {
   try {
-    var where;
+    var where, include, includeTag;
+    // parse query
     if (req.query.order) req.query.order = JSON.parse(req.query.order);
     if (req.query.category)
       req.query.category = req.query.category.map(JSON.parse);
+    // format search terms
     var formattedSearchTerms;
     if (!req.query.search) formattedSearchTerms = null;
     else {
@@ -106,8 +108,7 @@ const getDocumentsWithFilters = async (req, res, next) => {
         })
         .join("");
     }
-    var limit = Number(req.query.limit);
-    var offset = Number(req.query.offset);
+    // construct where clause
     var category =
       req.query.category && req.query.category.length
         ? {
@@ -116,8 +117,29 @@ const getDocumentsWithFilters = async (req, res, next) => {
             }))
           }
         : null;
+    if (category) where = { category };
+    if (formattedSearchTerms)
+      where = where
+        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
+        : { title: { $iLike: formattedSearchTerms } };
+    // construct include clause
+    if (req.query.tags && req.query.tags.length) {
+      includeTag = {
+        model: Tag,
+        require: true,
+        where: {
+          name: {
+            [Sequelize.Op.or]: req.query.tags.map(c => ({
+              [Sequelize.Op.eq]: c.value.toLowerCase()
+            }))
+          }
+        }
+      };
+    }
+    // construct limit, offset and order options
+    var limit = Number(req.query.limit);
+    var offset = Number(req.query.offset);
     var order = req.query.order;
-    var attributes;
     if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
     } else if (order && order.value === "most-upvoted") {
@@ -125,18 +147,14 @@ const getDocumentsWithFilters = async (req, res, next) => {
     } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
     }
-    if (category) where = { category };
-    if (formattedSearchTerms)
-      where = where
-        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
-        : { title: { $iLike: formattedSearchTerms } };
     var options = {
       offset,
       order
     };
     if (req.query.limit) options.limit = limit;
+    // query
     var documentQueryResult = await Document.scope({
-      method: ["includeAllEngagements", where]
+      method: ["includeAllEngagements", where, includeTag]
     }).findAndCountAll(options);
     res.send(documentQueryResult.rows);
   } catch (err) {
@@ -175,7 +193,6 @@ const getDocumentBySlug = async (req, res, next) => {
     const document = await Document.scope({
       method: ["includeOutstandingIssues", { slug: req.params.version_slug }]
     }).findOne();
-    console.log(document.tags);
     res.send(document);
   } catch (err) {
     next(err);

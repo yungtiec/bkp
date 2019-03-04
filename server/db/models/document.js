@@ -182,7 +182,8 @@ module.exports = (db, DataTypes) => {
       };
     });
     Document.addScope("includeAllEngagements", function(
-      extendedWhereOptions = {}
+      extendedWhereOptions = {},
+      extendedIncludeOptions
     ) {
       var defaultWhereOptions = {
         submitted: true,
@@ -225,66 +226,66 @@ module.exports = (db, DataTypes) => {
           "num_downvotes"
         ]
       ];
+      var include = [
+        {
+          model: models["user"],
+          as: "upvotesFrom",
+          attributes: ["name", "first_name", "last_name", "email", "id"]
+        },
+        {
+          model: models["user"],
+          as: "downvotesFrom",
+          attributes: ["name", "first_name", "last_name", "email", "id"]
+        },
+        {
+          model: models["user"],
+          as: "creator",
+          include: [
+            {
+              model: models.role
+            }
+          ]
+        },
+        {
+          model: models["project"]
+        },
+        {
+          model: models["comment"],
+          required: false,
+          attributes: ["id", "reviewed", "hierarchyLevel"],
+          where: {
+            reviewed: {
+              [Sequelize.Op.or]: [
+                { [Sequelize.Op.eq]: "pending" },
+                { [Sequelize.Op.eq]: "verified" }
+              ]
+            },
+            hierarchyLevel: 1
+          },
+          include: [
+            {
+              model: models["issue"],
+              required: false
+            },
+            {
+              model: models["user"],
+              as: "upvotesFrom",
+              attributes: ["id"],
+              required: false
+            },
+            { model: models["comment"], as: "descendents" }
+          ],
+          order: [
+            [{ model: models["comment"], as: "descendents" }, "hierarchyLevel"]
+          ]
+        }
+      ];
+      if (extendedIncludeOptions)
+        include = include.concat(extendedIncludeOptions);
       return {
         where,
         attributes,
-        include: [
-          {
-            model: models["user"],
-            as: "upvotesFrom",
-            attributes: ["name", "first_name", "last_name", "email", "id"]
-          },
-          {
-            model: models["user"],
-            as: "downvotesFrom",
-            attributes: ["name", "first_name", "last_name", "email", "id"]
-          },
-          {
-            model: models["user"],
-            as: "creator",
-            include: [
-              {
-                model: models.role
-              }
-            ]
-          },
-          {
-            model: models["project"]
-          },
-          {
-            model: models["comment"],
-            required: false,
-            attributes: ["id", "reviewed", "hierarchyLevel"],
-            where: {
-              reviewed: {
-                [Sequelize.Op.or]: [
-                  { [Sequelize.Op.eq]: "pending" },
-                  { [Sequelize.Op.eq]: "verified" }
-                ]
-              },
-              hierarchyLevel: 1
-            },
-            include: [
-              {
-                model: models["issue"],
-                required: false
-              },
-              {
-                model: models["user"],
-                as: "upvotesFrom",
-                attributes: ["id"],
-                required: false
-              },
-              { model: models["comment"], as: "descendents" }
-            ],
-            order: [
-              [
-                { model: models["comment"], as: "descendents" },
-                "hierarchyLevel"
-              ]
-            ]
-          }
-        ]
+        include
       };
     });
     Document.addScope("includeVersionsWithAllEngagements", {

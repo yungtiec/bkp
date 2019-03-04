@@ -12,6 +12,7 @@ const initialState = {
   documentsLoading: true,
   filters: {
     category: null,
+    tags: null,
     order: { value: "date", label: "most recent" },
     search: ""
   },
