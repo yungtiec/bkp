@@ -73,11 +73,11 @@ class DocumentContainer extends Component {
           <meta property="og:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
           <meta property="og:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
           <meta property="og:description" content={wrapper.textContent} />
-          <meta property="twitter:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
-          <meta property="twitter:title" content={documentMetadata.title} />
-          <meta property="twitter:description" content={wrapper.textContent} />
-          <meta property="twitter:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
-          <meta property="twitter:card" content="summary" />
+          <meta name="twitter:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
+          <meta name="twitter:title" content={documentMetadata.title} />
+          <meta name="twitter:description" content={wrapper.textContent} />
+          <meta name="twitter:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
+          <meta name="twitter:card" content="summary" />
         </Helmet>
         <DocumentHeader
           documentMetadata={documentMetadata}
