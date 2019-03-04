@@ -68,6 +68,7 @@ class DocumentContainer extends Component {
         <Helmet>
           <title>{documentMetadata.title}</title>
           <meta name="description" itemProp="description" content={wrapper.textContent} />
+          <meta property="fb:app_id" content="312700812765621" />
           <meta property="og:type" content="article" />
           <meta property="og:title" content={documentMetadata.title} />
           <meta property="og:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
