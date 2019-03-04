@@ -134,13 +134,14 @@ class Routes extends Component {
             path="/dex-overview"
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
-          {/* Displays our Landing component as a fallback */}
           <RouteWithLayout
             layout={LayoutWithNav}
             exact
             path="/"
             component={Feed}
           />
+          {/* Displays our feed component as a fallback */}
+          <Redirect to='/'/>
         </Switch>
       </div>
     );
