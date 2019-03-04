@@ -42,6 +42,12 @@ class Routes extends Component {
       <div>
         <Switch>
           {/* Routes placed here are available to all visitors */}
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            exact
+            path="/"
+            component={Feed}
+          />
           <RouteWithLayout layout={Layout} path="/login" component={Login} />
           <RouteWithLayout layout={Layout} path="/signup" component={Signup} />
           <RouteWithLayout
@@ -133,12 +139,6 @@ class Routes extends Component {
           <Route
             path="/dex-overview"
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
-          />
-          <RouteWithLayout
-            layout={LayoutWithNav}
-            exact
-            path="/"
-            component={Feed}
           />
           {/* Displays our feed component as a fallback */}
           <Redirect to='/'/>
