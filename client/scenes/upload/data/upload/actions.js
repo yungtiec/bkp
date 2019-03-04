@@ -16,7 +16,8 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       selectedProject,
       scorecard,
       summary,
-      category
+      category,
+      tags
     } = state.scenes.upload.data.upload;
     const document = await postHtml({
       title,
@@ -25,14 +26,13 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       collaboratorEmails,
       commentPeriodValue,
       commentPeriodUnit,
-      selectedProjectSymbol: selectedProject.symbol || 'GEN',
+      selectedProjectSymbol: selectedProject.symbol || "GEN",
       scorecard,
       description: summary,
-      category
+      category,
+      tags
     });
-    history.push(
-      `/s/${document.slug}`
-    );
+    history.push(`/s/${document.slug}`);
     dispatch({
       type: types.MARKDOWN_UPLOADED
     });
@@ -84,6 +84,11 @@ export const updateTitle = title => ({
 export const updateCategory = category => ({
   type: types.CATAGORY_UPDATED,
   category
+});
+
+export const updateTags = tags => ({
+  type: types.TAGS_UPDATED,
+  tags
 });
 
 export const updateHeaderImageUrl = headerImageUrl => ({

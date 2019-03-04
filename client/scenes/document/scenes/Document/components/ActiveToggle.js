@@ -14,6 +14,7 @@ class ActiveToggle extends React.Component {
         value={this.props.status}
         onChange={this.props.handleStatusChange}
         style={{ width: "300px" }}
+        menuContainerStyle={{ width: "300px" }}
         options={[
           { label: "Draft", value: false },
           { label: "Published", value: true }

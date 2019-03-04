@@ -14,9 +14,14 @@ const {
   ProjectAdmin,
   ProjectEditor,
   WizardSchema,
-  Comment
+  Comment,
+  Tag
 } = require("../../db/models");
-const { getEngagedUsers, createSlug } = require("../utils");
+const {
+  getEngagedUsers,
+  createSlug,
+  getAddedAndRemovedTags
+} = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
@@ -61,9 +66,7 @@ const getFeatureDocuments = async (req, res, next) => {
           as: "creator"
         }
       ],
-      order: [
-        ["feature_order", "ASC"],
-      ]
+      order: [["feature_order", "ASC"]]
     });
 
     console.log(documents);
@@ -89,10 +92,12 @@ const getDocuments = async (req, res, next) => {
 
 const getDocumentsWithFilters = async (req, res, next) => {
   try {
-    var where;
+    var where, include, includeTag;
+    // parse query
     if (req.query.order) req.query.order = JSON.parse(req.query.order);
     if (req.query.category)
       req.query.category = req.query.category.map(JSON.parse);
+    // format search terms
     var formattedSearchTerms;
     if (!req.query.search) formattedSearchTerms = null;
     else {
@@ -103,8 +108,7 @@ const getDocumentsWithFilters = async (req, res, next) => {
         })
         .join("");
     }
-    var limit = Number(req.query.limit);
-    var offset = Number(req.query.offset);
+    // construct where clause
     var category =
       req.query.category && req.query.category.length
         ? {
@@ -113,8 +117,29 @@ const getDocumentsWithFilters = async (req, res, next) => {
             }))
           }
         : null;
+    if (category) where = { category };
+    if (formattedSearchTerms)
+      where = where
+        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
+        : { title: { $iLike: formattedSearchTerms } };
+    // construct include clause
+    if (req.query.tags && req.query.tags.length) {
+      includeTag = {
+        model: Tag,
+        require: true,
+        where: {
+          name: {
+            [Sequelize.Op.or]: req.query.tags.map(c => ({
+              [Sequelize.Op.eq]: c.value.toLowerCase()
+            }))
+          }
+        }
+      };
+    }
+    // construct limit, offset and order options
+    var limit = Number(req.query.limit);
+    var offset = Number(req.query.offset);
     var order = req.query.order;
-    var attributes;
     if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
     } else if (order && order.value === "most-upvoted") {
@@ -122,18 +147,14 @@ const getDocumentsWithFilters = async (req, res, next) => {
     } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
     }
-    if (category) where = { category };
-    if (formattedSearchTerms)
-      where = where
-        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
-        : { title: { $iLike: formattedSearchTerms } };
     var options = {
       offset,
       order
     };
     if (req.query.limit) options.limit = limit;
+    // query
     var documentQueryResult = await Document.scope({
-      method: ["includeAllEngagements", where]
+      method: ["includeAllEngagements", where, includeTag]
     }).findAndCountAll(options);
     res.send(documentQueryResult.rows);
   } catch (err) {
@@ -268,14 +289,34 @@ const addHistory = versionQuestionOrAnswer => {
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
   try {
     const documentToUpdate = await Document.findOne({
-      where: { slug: req.params.slug }
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
     });
 
     if (req.body.newTitle) {
-      const slug = await createSlug(req.body.newTitle.toLowerCase(), req.body.contentHTML);
+      const slug = await createSlug(
+        req.body.newTitle.toLowerCase(),
+        req.body.contentHTML
+      );
       documentToUpdate.title = req.body.newTitle;
       documentToUpdate.slug = slug;
     }
+
+    var { addedTags, removedTags } = getAddedAndRemovedTags({
+      prevTags: documentToUpdate.tags,
+      curTags: req.body.tags
+    });
+    var removedTagPromises = Promise.map(removedTags, tag =>
+      documentToUpdate.removeTag(tag.id)
+    );
+    var addedTagPromises = Promise.map(addedTags, async addedTag => {
+      const [tag, created] = await Tag.findOrCreate({
+        where: { name: addedTag.value, display_name: addedTag.label },
+        default: { name: addedTag.value, display_name: addedTag.label }
+      });
+      return documentToUpdate.addTag(tag.id);
+    });
+    await Promise.all([removedTagPromises, addedTagPromises]);
 
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
@@ -285,7 +326,11 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       : null;
     documentToUpdate.header_img_url = req.body.headerImageUrl;
 
-    const document = await documentToUpdate.save();
+    await documentToUpdate.save();
+    const document = await Document.findOne({
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
+    });
     res.send(document);
   } catch (err) {
     next(err);
@@ -490,7 +535,10 @@ const createDocumentFromHtml = async (req, res, next) => {
       .add(req.body.commentPeriodValue, req.body.commentPeriodUnit)
       .format("x");
 
-    const slug = await createSlug(req.body.title.toLowerCase(), req.body.contentHtml);
+    const slug = await createSlug(
+      req.body.title.toLowerCase(),
+      req.body.contentHtml
+    );
 
     const document = await Document.create({
       title: req.body.title,
@@ -528,7 +576,19 @@ const createDocumentFromHtml = async (req, res, next) => {
               )
           )
       : null;
-    res.send(document);
+    const tags = req.body.tags
+      ? req.body.tags.map(
+          async tag =>
+            await Tag.findOrCreate({
+              where: { name: tag.value },
+              default: {
+                name: tag.value.toLowerCase(),
+                display_name: tag.value
+              }
+            }).spread((tag, created) => document.addTag(tag))
+        )
+      : null;
+    res.send(_.assignIn({ tags: req.body.tags }, document.toJSON()));
   } catch (err) {
     next(err);
   }

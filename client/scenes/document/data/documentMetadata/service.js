@@ -6,21 +6,27 @@ export function getMetadataByDocumentId(documentId) {
 
 export function getMetadataBySlug(slug) {
   return axios.get(`/api/documents/slug/${slug}`).then(res => {
-    return res.data
+    return res.data;
   });
 }
 
-export function putContentHTMLBySlug(slug, { summary, content, status, category, headerImageUrl, newTitle}) {
-  return axios.put(`/api/documents/slug/${slug}`, {
-    description: summary,
-    contentHTML: content,
-    status,
-    category,
-    headerImageUrl,
-    newTitle
-  }).then(res => {
-    return res.data
-  });
+export function putContentHTMLBySlug(
+  slug,
+  { summary, content, status, category, headerImageUrl, newTitle, tags }
+) {
+  return axios
+    .put(`/api/documents/slug/${slug}`, {
+      description: summary,
+      contentHTML: content,
+      status,
+      category,
+      headerImageUrl,
+      newTitle,
+      tags
+    })
+    .then(res => {
+      return res.data;
+    });
 }
 
 export function postUpvoteToDocument({

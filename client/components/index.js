@@ -56,3 +56,4 @@ export {
 } from "./ContributionCards/DocumentVoteCard";
 export { default as DocumentCategorySelect } from "./DocumentCategorySelect";
 export { default as CKEditor } from "./DocumentEditor/CKEditor";
+export { default as TagField } from "./TagField";

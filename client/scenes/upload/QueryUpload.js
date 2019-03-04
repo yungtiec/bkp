@@ -17,6 +17,7 @@ import {
   updateContentHtml,
   updateTitle,
   updateCategory,
+  updateTags,
   updateHeaderImageUrl,
   updateSummary
 } from "./data/upload/actions";
@@ -72,6 +73,7 @@ const mapState = state => {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     summary,
     scorecard,
@@ -96,6 +98,7 @@ const mapState = state => {
     contentHtml,
     title,
     category,
+    tags,
     headerImageUrl,
     summary
   };
@@ -118,8 +121,14 @@ const actions = {
   updateContentHtml,
   updateTitle,
   updateCategory,
+  updateTags,
   updateHeaderImageUrl,
   updateSummary
 };
 
-export default withRouter(connect(mapState, actions)(MyComponent));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(MyComponent)
+);
