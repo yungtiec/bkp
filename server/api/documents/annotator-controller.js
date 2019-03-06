@@ -12,6 +12,8 @@ const { IncomingWebhook } = require("@slack/client");
 const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
 const webhook = new IncomingWebhook(slackWebhookUrl);
 const moment = require("moment");
+const generateCommentHtml = require('../generateCommentHtml');
+const { sendEmail } = require('../utils');
 Promise = require("bluebird");
 
 const sendNotificationToSlack = annotation => {
@@ -72,7 +74,7 @@ const postAnnotatedComment = async (req, res, next) => {
     } = req.body;
     const { doc_id } = req.params;
     const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
-    const document = await Document.findById(doc_id);
+    const document = await Document.scope("includeAllEngagements").findOne({ where: { id: doc_id}});
     const isClosedForComment =
       Number(document.comment_until_unix) - Number(moment().format("x")) <= 0;
     if (isClosedForComment) {
@@ -106,6 +108,34 @@ const postAnnotatedComment = async (req, res, next) => {
       method: ["flatThreadByRootId", { where: { id: newComment.id } }]
     }).findOne();
     // sendNotificationToSlack(newComment);
+    const isRepostedByBKPEmail = document.creator.email.includes('tbp.admin');
+    await sendEmail({
+      recipientEmail: isRepostedByBKPEmail ? 'info@thebkp.com' : document.creator.email,
+      subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === 'production',
+        document.slug,
+        newComment.owner.first_name,
+        newComment.owner.last_name,
+        newComment,
+        false
+      )
+    });
+    // Send this to info@thebkp.com
+    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+      await sendEmail({
+        recipientEmail: 'info@thebkp.com',
+        subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
+        message: generateCommentHtml(
+          process.env.NODE_ENV === 'production',
+          document.slug,
+          newComment.owner.first_name,
+          newComment.owner.last_name,
+          newComment,
+          false
+        )
+      });
+    }
     res.send(newComment);
   } catch (err) {
     next(err);
