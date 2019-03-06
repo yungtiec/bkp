@@ -36,22 +36,23 @@ export default ({ document }) => {
             : ReactHtmlParser(document.content_html).filter(
               elem => elem.type === "p"
             )[0]}
-      </p>
-      <div className="document-preview__content-bottom d-flex justify-content-between align-items-center">
-        <span>{moment(document.createdAt).format("LL")} - {document.creator.displayName}</span>
-        <div>
-          <a className="contribution__action-btn">
-            <i className="fas fa-thumbs-up" />
-            <span>{Number(document.num_upvotes) || 0}</span>
-          </a>
-          <a className="contribution__action-btn">
-            <i className="fas fa-thumbs-down" />
-            <span>{Number(document.num_downvotes) || 0}</span>
-          </a>
-          <a className="contribution__action-btn">
-            <i className="fas fa-comment" />
-            <span>{Number(document.num_comments) || 0}</span>
-          </a>
+        </p>
+        <div className="document-preview__content-bottom d-flex justify-content-between align-items-center">
+          <span>{moment(document.createdAt).format("LL")} - {document.creator.displayName}</span>
+          <div>
+            <a className="contribution__action-btn">
+              <i className="fas fa-thumbs-up" />
+              <span>{Number(document.num_upvotes) || 0}</span>
+            </a>
+            <a className="contribution__action-btn">
+              <i className="fas fa-thumbs-down" />
+              <span>{Number(document.num_downvotes) || 0}</span>
+            </a>
+            <a className="contribution__action-btn">
+              <i className="fas fa-comment" />
+              <span>{Number(document.num_comments) || 0}</span>
+            </a>
+          </div>
         </div>
       </div>
     </Link>
