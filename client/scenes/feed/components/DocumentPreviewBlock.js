@@ -32,7 +32,11 @@ export default ({ document }) => (
             )[0]}
       </p>
       <div className="document-preview__content-bottom d-flex justify-content-between align-items-center">
-        <span>{moment(document.createdAt).format("LL")} - {document.creator.displayName}</span>
+        <span>
+          {moment(document.createdAt).format("LL")} -{" "}
+          {document.creator.displayName}
+          {document.creator.delegate ? " (Reposted by BKP Admin)" : ""}
+        </span>
         <div>
           <a className="contribution__action-btn">
             <i className="fas fa-thumbs-up" />

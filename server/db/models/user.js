@@ -32,6 +32,9 @@ module.exports = (db, DataTypes) => {
           return () => this.getDataValue("salt");
         }
       },
+      delegate: {
+        type: Sequelize.BOOLEAN
+      },
       user_handle: {
         type: Sequelize.TEXT
       },
@@ -224,7 +227,8 @@ module.exports = (db, DataTypes) => {
           "last_name",
           "organization",
           "anonymity",
-          "onboard"
+          "onboard",
+          "delegate"
         ],
         include: [commentQueryObj]
       };
@@ -290,7 +294,8 @@ module.exports = (db, DataTypes) => {
         "github_url",
         "user_handle",
         "avatar_url",
-        "createdAt"
+        "createdAt",
+        "delegate"
       ];
       if (userId) query = { id: userId };
       if (googleId) query = { googleId };
@@ -355,7 +360,8 @@ module.exports = (db, DataTypes) => {
                   "last_name",
                   "organization",
                   "user_handle",
-                  "avatar_url"
+                  "avatar_url",
+                  "delegate"
                 ]
               }
             ]

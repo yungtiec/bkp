@@ -8,7 +8,7 @@ const isDev = process.env.NODE_ENV === "development";
 
 const LeftColumn = ({ gridClassnames, profile }) => {
   return (
-    <div className={`${gridClassnames} py-4 px-1`}>
+    <div className={`${gridClassnames} py-4 pr-3`}>
       <ProfileDetails profile={profile} />
     </div>
   );

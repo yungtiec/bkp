@@ -163,7 +163,27 @@ module.exports = (db, DataTypes) => {
           },
           {
             model: models["user"],
-            as: "creator"
+            as: "creator",
+            attributes: [
+              "id",
+              "email",
+              "name",
+              "first_name",
+              "last_name",
+              "organization",
+              "restricted_access",
+              "short_profile_url",
+              "self_introduction",
+              "linkedin_url",
+              "twitter_url",
+              "stackoverflow_url",
+              "website_url",
+              "github_url",
+              "user_handle",
+              "avatar_url",
+              "createdAt",
+              "delegate"
+            ]
           },
           {
             model: models["tag"]
@@ -240,6 +260,26 @@ module.exports = (db, DataTypes) => {
         {
           model: models["user"],
           as: "creator",
+          attributes: [
+            "id",
+            "email",
+            "name",
+            "first_name",
+            "last_name",
+            "organization",
+            "restricted_access",
+            "short_profile_url",
+            "self_introduction",
+            "linkedin_url",
+            "twitter_url",
+            "stackoverflow_url",
+            "website_url",
+            "github_url",
+            "user_handle",
+            "avatar_url",
+            "createdAt",
+            "delegate"
+          ],
           include: [
             {
               model: models.role

@@ -14,9 +14,7 @@ export default class DocumentHeader extends Component {
   }
 
   render() {
-    const {
-      documentMetadata,
-    } = this.props;
+    const { documentMetadata } = this.props;
     const { creator, createdAt } = documentMetadata;
     const collaborators = documentMetadata.collaborators
       .map((c, i) => {
@@ -33,7 +31,12 @@ export default class DocumentHeader extends Component {
     return (
       <div className="project-document__header">
         <p className="document__title">{`${documentMetadata.title}`}</p>
-        <ProjectAuthorName name={creator.displayName} userHandle={creator.user_handle} createdAt={createdAt} />
+        <ProjectAuthorName
+          name={creator.displayName}
+          userHandle={creator.user_handle}
+          delegate={creator.delegate}
+          createdAt={createdAt}
+        />
       </div>
     );
   }
