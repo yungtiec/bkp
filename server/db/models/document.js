@@ -63,7 +63,7 @@ module.exports = (db, DataTypes) => {
     }
   });
   Document.associate = function(models) {
-    Document.hasMany(models.version, {
+    Document.hasMany(models.question, {
       foreignKey: "document_id"
     });
     Document.belongsTo(models.project, {
@@ -287,85 +287,6 @@ module.exports = (db, DataTypes) => {
         attributes,
         include
       };
-    });
-    Document.addScope("includeVersionsWithAllEngagements", {
-      where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
-      include: [
-        {
-          model: models["user"],
-          as: "upvotesFrom",
-          attributes: ["name", "first_name", "last_name", "email", "id"]
-        },
-        {
-          model: models["user"],
-          as: "downvotesFrom",
-          attributes: ["name", "first_name", "last_name", "email", "id"]
-        },
-        {
-          model: models["version"],
-          where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
-          include: [
-            {
-              model: models["comment"],
-              required: false,
-              attributes: ["id", "reviewed", "hierarchyLevel"],
-              where: {
-                reviewed: {
-                  [Sequelize.Op.or]: [
-                    { [Sequelize.Op.eq]: "pending" },
-                    { [Sequelize.Op.eq]: "verified" }
-                  ]
-                },
-                hierarchyLevel: 1
-              },
-              include: [
-                {
-                  model: models["issue"],
-                  required: false
-                },
-                {
-                  model: models["user"],
-                  as: "upvotesFrom",
-                  attributes: ["id"],
-                  required: false
-                },
-                { model: models["comment"], as: "descendents" }
-              ],
-              order: [
-                [
-                  { model: models["comment"], as: "descendents" },
-                  "hierarchyLevel"
-                ]
-              ]
-            }
-          ]
-        },
-        {
-          model: models["user"],
-          as: "creator",
-          include: [
-            {
-              model: models.role
-            }
-          ]
-        },
-        {
-          model: models["user"],
-          as: "collaborators",
-          through: {
-            model: models["document_collaborator"],
-            where: { revoked_access: false }
-          },
-          required: false
-        },
-        {
-          model: models["project"]
-        }
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        [{ model: models["version"] }, "hierarchyLevel", "DESC"]
-      ]
     });
     Document.addScope("includeVersions", function({
       documentId,

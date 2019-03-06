@@ -174,9 +174,8 @@ module.exports = (db, DataTypes) => {
       foreignKey: "creator_id",
       as: "documents"
     });
-    User.hasMany(models.version, {
-      foreignKey: "creator_id",
-      as: "createdVersions"
+    User.hasMany(models.question, {
+      foreignKey: "owner_id"
     });
     User.belongsToMany(models.document, {
       as: "upvotedDocuments",

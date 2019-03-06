@@ -11,14 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     step_schemas_json: {
       type: DataTypes.JSON
-    },
+    }
   });
 
   WizardSchema.isHierarchy();
-  WizardSchema.associate = function(models) {
-    WizardSchema.hasOne(models.version, {
-      foreignKey: "wizard_schema_id"
-    });
-  };
+  WizardSchema.associate = function(models) {};
   return WizardSchema;
 };
