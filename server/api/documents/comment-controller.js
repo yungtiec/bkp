@@ -192,20 +192,18 @@ const postReply = async (req, res, next) => {
         true
       )
     });
-    if (ancestry.owner.id !== 12) {
-      await sendEmail({
-        recipientEmail: 'info@thebkp.com',
-        subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
-        message: generateCommentHtml(
-          process.env.NODE_ENV === 'production',
-          ancestry.document.slug,
-          user.first_name,
-          user.last_name,
-          ancestry.id,
-          false
-        )
-      });
-    }
+    await sendEmail({
+      recipientEmail: 'info@thebkp.com',
+      subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === 'production',
+        ancestry.document.slug,
+        user.first_name,
+        user.last_name,
+        ancestry.id,
+        false
+      )
+    });
     res.send(ancestry);
   } catch (err) {
     next(err);
