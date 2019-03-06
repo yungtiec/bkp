@@ -4,12 +4,16 @@ import { withRouter } from "react-router-dom";
 
 class HeaderImageSelector extends React.Component {
   render() {
+    const imgUrl = this.props.headerImageUrl && this.props.headerImageUrl.includes("unsplash") ?
+      this.props.headerImageUrl.concat('&auto=format&fit=crop&w=800&q=80') :
+      this.props.headerImageUrl;
+
     return this.props.headerImageUrl ? (
       <div>
         <img
           onClick={() => this.props.openImageFinderModal()}
           className="header-image-selector"
-          src={`${this.props.headerImageUrl}&auto=format&fit=crop&w=800&q=80`}
+          src={imgUrl}
         />
       </div>
     ) : (
