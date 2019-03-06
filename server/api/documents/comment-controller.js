@@ -181,13 +181,13 @@ const postReply = async (req, res, next) => {
     if (ancestry.owner.id !== 12) {
       await sendEmail({
         recipientEmail: 'info@thebkp.com',
-        subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
+        subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
         message: generateCommentHtml(
           process.env.NODE_ENV === 'production',
-          document.slug,
-          comment.owner.first_name,
-          comment.owner.last_name,
-          comment,
+          ancestry.document.slug,
+          user.first_name,
+          user.last_name,
+          ancestry.id,
           false
         )
       });
