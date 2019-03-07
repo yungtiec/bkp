@@ -75,21 +75,25 @@ const postComment = async (req, res, next) => {
     comment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: comment.id } }]
     }).findOne();
-    const isRepostedByBKPEmail = document.creator.email.includes('tbp.admin');
-    await sendEmail({
-      recipientEmail: isRepostedByBKPEmail ? 'info@thebkp.com' : document.creator.email,
-      subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
-      message: generateCommentHtml(
-        process.env.NODE_ENV === 'production',
-        document.slug,
-        comment.owner.first_name,
-        comment.owner.last_name,
-        comment,
-        false
-      )
-    });
+    const isRepostedByBKPEmail = document.creator.email.includes("tbp.admin");
+    //await sendEmail({
+    //  recipientEmail: isRepostedByBKPEmail
+    //    ? "info@thebkp.com"
+    //    : document.creator.email,
+    //  subject: `New Comment Activity From ${comment.owner.first_name} ${
+    //    comment.owner.last_name
+    //  }`,
+    //  message: generateCommentHtml(
+    //    process.env.NODE_ENV === "production",
+    //    document.slug,
+    //    comment.owner.first_name,
+    //    comment.owner.last_name,
+    //    comment,
+    //    false
+    //  )
+    //});
     // Send this to info@thebkp.com
-    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+    //if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
       await sendEmail({
         recipientEmail: 'info@thebkp.com',
         subject: `New Comment Activity From ${comment.owner.first_name} ${comment.owner.last_name}`,
@@ -102,7 +106,7 @@ const postComment = async (req, res, next) => {
           false
         )
       });
-    }
+    //}
 
     res.send(comment);
   } catch (err) {
@@ -166,18 +170,18 @@ const postReply = async (req, res, next) => {
       parent,
       messageFragment: "replied to your post"
     });
-    await sendEmail({
-      recipientEmail: ancestry.owner.email,
-      subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
-      message: generateCommentHtml(
-        process.env.NODE_ENV === 'production',
-        ancestry.document.slug,
-        user.first_name,
-        user.last_name,
-        ancestry.id,
-        true
-      )
-    });
+    //await sendEmail({
+    //  recipientEmail: ancestry.owner.email,
+    //  subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
+    //  message: generateCommentHtml(
+    //    process.env.NODE_ENV === "production",
+    //    ancestry.document.slug,
+    //    user.first_name,
+    //    user.last_name,
+    //    ancestry.id,
+    //    true
+    //  )
+    //});
     await sendEmail({
       recipientEmail: 'info@thebkp.com',
       subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
