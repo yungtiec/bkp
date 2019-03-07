@@ -6,7 +6,7 @@ var parent, child, grandChild;
 
 describe("Comment thread", () => {
   before(async () => {
-    await db.sequelize.sync({ force: true });
+    await db.sequelize.sync({});
     parent = await Comment.create({
       uri: "http://localhost:8080/project/DG/survey/3",
       quote:

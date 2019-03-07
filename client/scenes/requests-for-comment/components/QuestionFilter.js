@@ -4,8 +4,9 @@ import { getFilterOptionMenus, getFilters } from "../data/reducer";
 import { updateFilter, clearFilter } from "../data/actions";
 import { Async } from "react-select";
 import { FilterItem, FilterBar, FilterSearch } from "../../../components";
+import { Link } from "react-router-dom";
 
-const DocumentFilter = ({
+const QuestionFilter = ({
   optionMenus,
   filters,
   updateFilter,
@@ -24,21 +25,18 @@ const DocumentFilter = ({
       options={optionMenus.order}
       updateFilter={updateFilter}
     />
-    <FilterItem
-      screenWidth={screenWidth}
-      icon="filter"
-      filterLabel="filter by"
-      filterKey="category"
-      multi={true}
-      selected={filters.category}
-      options={optionMenus.category}
-      updateFilter={updateFilter}
-    />
     <FilterSearch
       clearFilter={clearFilter}
       updateFilter={updateFilter}
       value={filters.search}
-    />
+    >
+      <Link
+        className={`btn btn-primary ${screenWidth < 992 ? "ml-2" : "ml-4"}`}
+        to="/requests-for-comment/create"
+      >
+        New request
+      </Link>
+    </FilterSearch>
   </FilterBar>
 );
 
@@ -59,4 +57,4 @@ const actions = {
 export default connect(
   mapState,
   actions
-)(DocumentFilter);
+)(QuestionFilter);

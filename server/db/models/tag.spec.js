@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 const db = require("../index");
-const { User, Document, Comment, Tag } = require("../index");
+const { User, Document, Comment, Tag, TagLink } = require("../index");
 Promise = require("bluebird");
 
 describe("Tag", () => {
@@ -12,12 +12,10 @@ describe("Tag", () => {
         email: "cody@puppybook.com",
         password: "bones"
       });
-      tag = await Tag.create({
-        name: "web designer",
-        display_name: "Web Designer",
-        type: "role"
+      tag = await Tag.findOne({
+        where: { name: "web designer" }
       });
-      var res = await user.addTag(tag);
+      var res = await user.addTag(tag.id);
       user = await User.findOne({
         where: { email: "cody@puppybook.com" },
         include: [
@@ -27,16 +25,19 @@ describe("Tag", () => {
         ]
       });
     });
+
     it("includes tags in the user instance", () => {
       expect(user.tags.length).to.be.equal(1);
       expect(user.tags[0].name).to.be.equal("web designer");
     });
 
     after(async () => {
-      await User.destroy({ where: { email: "cody@puppybook.com" } });
-      await Tag.destroy({ where: { name: "web designer" } });
+      await User.destroy({ where: { id: user.id } }).catch(err =>
+        console.log(err)
+      );
     });
   });
+
   describe("can be added to any document", () => {
     var document, tag;
 
@@ -67,9 +68,11 @@ describe("Tag", () => {
 
     after(async () => {
       await Document.destroy({ where: { title: "test" } });
+      await TagLink.destroy({ where: { tagId: tag.id } });
       await Tag.destroy({ where: { name: "blockchain regulation" } });
     });
   });
+
   describe("can be added to any comment", () => {
     var comment, tag;
 
@@ -100,6 +103,7 @@ describe("Tag", () => {
 
     after(async () => {
       await Comment.destroy({ where: { comment: "test" } });
+      await TagLink.destroy({ where: { tagId: tag.id } });
       await Tag.destroy({ where: { name: "blockchain regulation" } });
     });
   });

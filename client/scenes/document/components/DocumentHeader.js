@@ -1,7 +1,22 @@
+import "./DocumentHeader.scss";
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import history from "../../../history";
-import { ProjectAuthorName } from "../../../components";
+import { Link } from "react-router-dom";
+import moment from "moment";
+
+const DocumentAuthorName = ({ name, userHandle, delegate, createdAt }) => (
+  <p className="document-author__header">
+    By{" "}
+    <Link to={`/profile/@${userHandle}`}>
+      {name}
+      {delegate ? " (Reposted By BKP Admin)" : ""} |
+    </Link>
+    <span className="document-published-date__header">
+      Published {moment(createdAt).format("MM.DD.YYYY")}
+    </span>
+  </p>
+);
 
 export default class DocumentHeader extends Component {
   constructor(props) {
@@ -31,7 +46,7 @@ export default class DocumentHeader extends Component {
     return (
       <div className="project-document__header">
         <p className="document__title">{`${documentMetadata.title}`}</p>
-        <ProjectAuthorName
+        <DocumentAuthorName
           name={creator.displayName}
           userHandle={creator.user_handle}
           delegate={creator.delegate}
@@ -41,9 +56,3 @@ export default class DocumentHeader extends Component {
     );
   }
 }
-
-// <p className="document__subtitle  mb-4">
-//   {`version ${
-//     versionMetadata.version_number
-//   } created by ${creator} ${collaborators}`}
-// </p>

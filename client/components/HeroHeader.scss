@@ -1,0 +1,23 @@
+@import "../breakpoint";
+
+.hero__header {
+  margin: 80px 10px 50px 10px;
+}
+
+.hero__header-title {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  @include breakpoint(xs) {
+    font-size: 34px;
+  }
+}
+
+.hero__header-subtitle {
+  font-size: 24px;
+  font-weight: 300;
+  @include breakpoint(xs) {
+    font-size: 20px;
+  }
+}

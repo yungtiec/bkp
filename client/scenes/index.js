@@ -16,3 +16,6 @@ export { default as Admin } from "./admin/AdminContainer";
 export { default as Wizard } from "./wizard/QueryWizard";
 export { default as MyDocuments } from "./my-documents/QueryMyDocuments";
 export { default as Feed } from "./feed/Feed";
+export {
+  default as RequestsForComment
+} from "./requests-for-comment/RequestsForComment";

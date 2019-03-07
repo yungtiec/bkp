@@ -18,7 +18,8 @@ module.exports = {
           "version_questionsancestors",
           "version_questions",
           "versionsancestors",
-          "versions"
+          "versions",
+          "questions"
         ],
         function(table) {
           return queryInterface.dropTable(table);

@@ -190,6 +190,16 @@ module.exports = (db, DataTypes) => {
       through: "document_downvotes",
       foreignKey: "user_id"
     });
+    User.belongsToMany(models.question, {
+      as: "upvotedQuestions",
+      through: "question_upvotes",
+      foreignKey: "user_id"
+    });
+    User.belongsToMany(models.question, {
+      as: "downvotedQuestions",
+      through: "question_downvotes",
+      foreignKey: "user_id"
+    });
     User.belongsToMany(models.document, {
       through: "document_collaborator",
       foreignKey: "user_id",

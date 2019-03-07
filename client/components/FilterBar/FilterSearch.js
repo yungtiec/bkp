@@ -4,7 +4,7 @@ import autoBind from "react-autobind";
 import { DebounceInput } from "react-debounce-input";
 import $ from "jquery";
 
-export default class DocumentSearch extends Component {
+export default class FilterSearch extends Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -13,11 +13,33 @@ export default class DocumentSearch extends Component {
     };
   }
 
-  render() {
-    const { updateFilter, clearFilter, search } = this.props;
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
 
-    return this.state.enabled || search ? (
-      <div className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(evt) {
+    if (this.wrapperRef && !this.wrapperRef.contains(evt.target))
+      this.setState({
+        enabled: false
+      });
+  }
+
+  render() {
+    const { updateFilter, clearFilter, value, children } = this.props;
+
+    return this.state.enabled || value ? (
+      <div
+        className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center"
+        ref={this.setWrapperRef}
+      >
         <DebounceInput
           minLength={3}
           debounceTimeout={500}
@@ -25,7 +47,7 @@ export default class DocumentSearch extends Component {
           placeholder="SEARCH"
           className="feed__filter-search-input"
           onChange={e => updateFilter({ key: "search", value: e.target.value })}
-          value={search}
+          value={value}
           ref={input => {
             this.searchInput = input;
           }}
@@ -43,9 +65,12 @@ export default class DocumentSearch extends Component {
         }}
       >
         <i className="fas fa-search" />
-        <a className="feed__filter-clear" onClick={() => clearFilter()}>
-          CLEAR FILTERS
-        </a>
+        <div>
+          <a className="feed__filter-clear" onClick={() => clearFilter()}>
+            CLEAR FILTERS
+          </a>
+          {children}
+        </div>
       </div>
     );
   }

@@ -8,7 +8,7 @@ const { User } = require("../../db/models");
 
 describe("User routes", () => {
   beforeEach(() => {
-    return db.sequelize.sync({ force: true });
+    return db.sequelize.sync({});
   });
 
   describe("/api/users/", () => {
