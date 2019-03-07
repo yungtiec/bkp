@@ -122,7 +122,7 @@ const postAnnotatedComment = async (req, res, next) => {
     //  )
     //});
     // Send this to info@thebkp.com
-    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+    //if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
       await sendEmail({
         recipientEmail: 'info@thebkp.com',
         subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
@@ -135,7 +135,7 @@ const postAnnotatedComment = async (req, res, next) => {
           false
         )
       });
-    }
+    //}
     res.send(newComment);
   } catch (err) {
     next(err);
