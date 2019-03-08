@@ -3,7 +3,8 @@ import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { keys } from "lodash";
-import { InputGrid, AvatarInput } from "../../components";
+import { AvatarInput } from "../../components";
+import { InlineInputGrid } from "../../../../../../components";
 import Formsy from "formsy-react";
 
 const createSyncProfilePicMessage = ({
@@ -61,20 +62,20 @@ const EditProfile = ({
       >
         <div className={screenWidth > 768 ? "d-flex w-100" : ""}>
           <div className={`${inputWidth} ${screenWidth > 768 ? "pr-4" : ""}`}>
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="Name"
               name="name"
               value={profile.name}
               required
             />
-            <InputGrid
+            <InlineInputGrid
               type="textarea"
               label="Self Introduction"
               name="self_introduction"
               value={profile.self_introduction}
             />
-            <InputGrid type="file" label="Avatar">
+            <InlineInputGrid type="file" label="Avatar">
               <AvatarInput
                 name="avatar_pic"
                 message={createSyncProfilePicMessage({
@@ -104,25 +105,24 @@ const EditProfile = ({
                   updateAvatar(formData);
                 }}
               />
-            </InputGrid>
-            <InputGrid
+            </InlineInputGrid>
+            <InlineInputGrid
               type="input"
               label="Organization"
               name="organization"
               value={profile.organization}
             />
-            <InputGrid
+            <InlineInputGrid
               type="asyncSelect"
               label="Location"
               name="location"
-              value={(profile.location || []).map(
-                tag =>
-                  "id" in tag
-                    ? {
-                        value: tag.id,
-                        label: tag.display_name
-                      }
-                    : tag
+              value={(profile.location || []).map(tag =>
+                "id" in tag
+                  ? {
+                      value: tag.id,
+                      label: tag.display_name
+                    }
+                  : tag
               )}
               multi={true}
               loadOptions={input => {
@@ -141,18 +141,17 @@ const EditProfile = ({
                   });
               }}
             />
-            <InputGrid
+            <InlineInputGrid
               type="asyncSelect"
               label="Role"
               name="careerRole"
-              value={(profile.careerRole || []).map(
-                tag =>
-                  "id" in tag
-                    ? {
-                        value: tag.id,
-                        label: tag.display_name
-                      }
-                    : tag
+              value={(profile.careerRole || []).map(tag =>
+                "id" in tag
+                  ? {
+                      value: tag.id,
+                      label: tag.display_name
+                    }
+                  : tag
               )}
               multi={true}
               loadOptions={input => {
@@ -171,10 +170,10 @@ const EditProfile = ({
                   });
               }}
             />
-            <InputGrid type="input" label="Role" name="role" />
+            <InlineInputGrid type="input" label="Role" name="role" />
           </div>
           <div className={`${inputWidth} ${screenWidth > 768 ? "pl-4" : ""}`}>
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="LinkedIn"
               name="linkedin_url"
@@ -182,7 +181,7 @@ const EditProfile = ({
               validations="isUrl"
               validationError="Please provide a valid url."
             />
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="Twitter"
               name="twitter_url"
@@ -190,7 +189,7 @@ const EditProfile = ({
               validations="isUrl"
               validationError="Please provide a valid url."
             />
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="Github"
               name="github_url"
@@ -198,7 +197,7 @@ const EditProfile = ({
               validations="isUrl"
               validationError="Please provide a valid url."
             />
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="Stack Overflow"
               name="stack-overflow_url"
@@ -206,7 +205,7 @@ const EditProfile = ({
               validations="isUrl"
               validationError="Please provide a valid url."
             />
-            <InputGrid
+            <InlineInputGrid
               type="input"
               label="Website"
               name="website_url"

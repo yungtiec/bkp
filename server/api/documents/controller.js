@@ -25,7 +25,6 @@ const {
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
-const crypto = require("crypto");
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {

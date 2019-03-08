@@ -31,6 +31,7 @@ export { default as FormsyScoreInput } from "./FormsyInputs/FormsyScoreInput";
 export { default as FormsyTextArea } from "./FormsyInputs/FormsyTextArea";
 export { default as FormsyAsyncSelect } from "./FormsyInputs/FormsyAsyncSelect";
 export { default as FormsyImageUpload } from "./FormsyInputs/FormsyImageUpload";
+export { default as InlineInputGrid } from "./FormsyInputs/InlineInputGrid";
 export { default as ProjectScorecardInputs } from "./ProjectScorecardInputs";
 export { default as FeedbackModal } from "./FeedbackModal";
 export {
@@ -53,3 +54,4 @@ export { default as FilterItem } from "./FilterBar/FilterItem";
 export { default as FilterBar } from "./FilterBar/FilterBar";
 export { default as FilterSearch } from "./FilterBar/FilterSearch";
 export { default as HeroHeader } from "./HeroHeader";
+export { default as FeedItem } from "./FeedItem";

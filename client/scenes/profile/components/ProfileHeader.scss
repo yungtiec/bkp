@@ -47,9 +47,11 @@ $profile-avatar-z-index: 4;
   padding-left: 33%;
   @include breakpoint(xs) {
     padding-left: inherit;
+    padding-right: 0;
   }
   @include breakpoint(sm) {
     padding-left: inherit;
+    padding-right: 0;
   }
 }
 

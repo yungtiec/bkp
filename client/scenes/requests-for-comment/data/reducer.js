@@ -2,13 +2,12 @@ import * as types from "./actionTypes";
 import { assignIn, pick, cloneDeep } from "lodash";
 
 const initialState = {
-  questionIds: null,
+  questionSlugs: null,
   featureQuestionIds: null,
-  questionsById: null,
+  questionsBySlug: null,
   offset: 0,
   limit: 10,
   endOfResult: false,
-  additionalQuestionsLoading: false,
   questionsLoading: true,
   filters: {
     tags: null,
@@ -47,6 +46,34 @@ export default function(state = initialState, action) {
           ...state
         };
       }
+    case types.QUESTIONS_REQUESTED:
+      return {
+        ...state,
+        questionsLoading: true
+      };
+    case types.QUESTIONS_FETCH_SUCCESS:
+      return {
+        ...state,
+        questionSlugs: (state.questionSlugs || []).concat(
+          action.questionSlugs || []
+        ),
+        questionsBySlug: assignIn(
+          state.questionsBySlug,
+          action.questionsBySlug
+        ),
+        offset: action.offset,
+        endOfResult: action.endOfResult,
+        questionsLoading: false
+      };
+    case types.QUESTION_POSTED:
+    case types.QUESTION_FETCHED:
+      return {
+        ...state,
+        questionsBySlug: assignIn(
+          { [action.question.slug]: action.question },
+          state.questionsBySlug
+        )
+      };
     default:
       return state;
   }
@@ -58,4 +85,24 @@ export function getFilterOptionMenus(state) {
 
 export function getFilters(state) {
   return state.scenes.requestsForComment.data.filters;
+}
+
+export function getQuestionsBySlug(state) {
+  return state.scenes.requestsForComment.data.questionsBySlug;
+}
+
+export function getQuestionSlugs(state) {
+  return state.scenes.requestsForComment.data.questionSlugs;
+}
+
+export function getFilteredQuestionsOffsetAndLimit(state) {
+  return pick(state.scenes.requestsForComment.data, [
+    "offset",
+    "limit",
+    "endOfResult"
+  ]);
+}
+
+export function getFilteredQuestionsLoadingStatus(state) {
+  return state.scenes.requestsForComment.data.questionsLoading;
 }

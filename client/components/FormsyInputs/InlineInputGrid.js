@@ -7,7 +7,7 @@ import {
   FormsyTextArea,
   FormsyAsyncSelect,
   FormsyInputFile
-} from "../../../../../components";
+} from "../index";
 
 const FORMSY_INPUT_TYPE = {
   input: FormsyInputText,
@@ -17,7 +17,7 @@ const FORMSY_INPUT_TYPE = {
   asyncSelect: FormsyAsyncSelect
 };
 
-const InputGrid = ({ type, label, name, children, ...props }) => {
+const InlineInputGrid = ({ type, label, name, children, ...props }) => {
   const Input = FORMSY_INPUT_TYPE[type];
   return (
     <Fragment>
@@ -33,4 +33,4 @@ const InputGrid = ({ type, label, name, children, ...props }) => {
   );
 };
 
-export default InputGrid;
+export default InlineInputGrid;

@@ -31,4 +31,4 @@ router.post("/", questionController.postQuestion);
  * @routeparam {String} questionId
  *
  */
-router.get("/:questionId", questionController.getQuestionById);
+router.get("/:slug", questionController.getQuestionBySlug);

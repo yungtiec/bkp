@@ -2,13 +2,9 @@ import React, { Fragment } from "react";
 import { QuestionFilter } from "./components";
 import { HeroHeader } from "../../components";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-
-const List = () => "There's no request for comment at this moment";
-
-const Temp = () => "temp";
+import { NewQuestion, QueryQuestion, QueryQuestionList } from "./components";
 
 const RequestsForComment = ({ match }) => {
-  console.log(match.url);
   return (
     <Fragment>
       <div className="app-container">
@@ -20,8 +16,9 @@ const RequestsForComment = ({ match }) => {
       <QuestionFilter marginClass="mb-5 pt-4" />
       <div className="app-container">
         <Switch>
-          <Route path={`${match.url}`} component={List} />
-          <Route path={`${match.url}/create`} component={Temp} />
+          <Route path={`${match.url}/create`} component={NewQuestion} />
+          <Route path={`${match.url}/:slug`} component={QueryQuestion} />
+          <Route path={`${match.url}`} component={QueryQuestionList} />
         </Switch>
       </div>
     </Fragment>

@@ -18,6 +18,15 @@ module.exports = (db, DataTypes) => {
     },
     description: {
       type: DataTypes.TEXT
+    },
+    slug: {
+      type: DataTypes.STRING
+    },
+    feature: {
+      type: DataTypes.BOOLEAN
+    },
+    feature_order: {
+      type: DataTypes.INTEGER
     }
   });
   Question.isHierarchy();
@@ -26,7 +35,8 @@ module.exports = (db, DataTypes) => {
       foreignKey: "document_id"
     });
     Question.belongsTo(models.user, {
-      foreignKey: "owner_id"
+      foreignKey: "owner_id",
+      as: "owner"
     });
     Question.hasMany(models.comment, {
       foreignKey: "question_id"
@@ -43,7 +53,8 @@ module.exports = (db, DataTypes) => {
     });
   };
   Question.loadScopes = function(models) {
-    Question.addScope("default", function({
+    Question.addScope("main", function({
+      extendedWhere,
       extendedInclude,
       extendedAttributes
     }) {
@@ -54,6 +65,9 @@ module.exports = (db, DataTypes) => {
         "document_id",
         "order_in_document",
         "owner_id",
+        "slug",
+        "feature",
+        "feature_order",
         "createdAt",
         "updatedAt",
         [
@@ -78,7 +92,6 @@ module.exports = (db, DataTypes) => {
       var include = [
         {
           model: models["user"],
-          as: "owner",
           attributes: [
             "id",
             "email",
@@ -98,16 +111,19 @@ module.exports = (db, DataTypes) => {
             "avatar_url",
             "createdAt",
             "delegate"
-          ]
+          ],
+
+          as: "owner"
         },
         {
           model: models["tag"]
         }
       ];
-      var query = {};
+      var query = { include, attributes };
+      if (extendedWhere) query.where = extendedWhere;
       if (extendedInclude) query.include = include.concat(extendedInclude);
       if (extendedAttributes)
-        query.attributes = include.concat(extendedAttributes);
+        query.attributes = attributes.concat(extendedAttributes);
       return query;
     });
     Question.addScope("withComments", function() {

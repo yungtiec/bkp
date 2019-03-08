@@ -36,41 +36,49 @@ export default class FilterSearch extends Component {
     const { updateFilter, clearFilter, value, children } = this.props;
 
     return this.state.enabled || value ? (
-      <div
-        className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center"
-        ref={this.setWrapperRef}
-      >
-        <DebounceInput
-          minLength={3}
-          debounceTimeout={500}
-          type="text"
-          placeholder="SEARCH"
-          className="feed__filter-search-input"
-          onChange={e => updateFilter({ key: "search", value: e.target.value })}
-          value={value}
-          ref={input => {
-            this.searchInput = input;
-          }}
-        />
-        <a className="feed__filter-clear" onClick={() => clearFilter()}>
-          CLEAR FILTERS
-        </a>
-      </div>
-    ) : (
-      <div
-        className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center"
-        onClick={() => {
-          this.setState({ enabled: true });
-          setTimeout(() => ReactDOM.findDOMNode(this.searchInput).focus(), 300);
-        }}
-      >
-        <i className="fas fa-search" />
-        <div>
+      <div className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
+        <div
+          className="d-flex justify-content-between align-items-center w-100"
+          ref={this.setWrapperRef}
+        >
+          <DebounceInput
+            minLength={3}
+            debounceTimeout={500}
+            type="text"
+            placeholder="SEARCH"
+            className="feed__filter-search-input"
+            onChange={e =>
+              updateFilter({ key: "search", value: e.target.value })
+            }
+            value={value}
+            ref={input => {
+              this.searchInput = input;
+            }}
+          />
           <a className="feed__filter-clear" onClick={() => clearFilter()}>
             CLEAR FILTERS
           </a>
-          {children}
         </div>
+      </div>
+    ) : (
+      <div className="feed__filter-item feed__filter-search d-flex justify-content-between align-items-center">
+        <div
+          className="d-flex justify-content-between align-items-center w-100"
+          onClick={() => {
+            this.setState({ enabled: true });
+            setTimeout(
+              () => ReactDOM.findDOMNode(this.searchInput).focus(),
+              300
+            );
+          }}
+        >
+          <i className="fas fa-search" />
+
+          <a className="feed__filter-clear" onClick={() => clearFilter()}>
+            CLEAR FILTERS
+          </a>
+        </div>
+        {children}
       </div>
     );
   }

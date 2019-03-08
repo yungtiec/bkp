@@ -32,6 +32,7 @@ const QuestionFilter = ({
     >
       <Link
         className={`btn btn-primary ${screenWidth < 992 ? "ml-2" : "ml-4"}`}
+        style={{ fontSize: "inherit" }}
         to="/requests-for-comment/create"
       >
         New request
