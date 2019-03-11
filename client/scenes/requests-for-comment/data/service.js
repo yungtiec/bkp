@@ -19,3 +19,25 @@ export const getFilteredQuestions = ({ offset, limit, ...queries }) => {
     })
     .then(res => res.data);
 };
+
+export function postUpvoteToQuestion({ questionId, hasUpvoted, hasDownvoted }) {
+  return axios
+    .post(`/api/questions/${questionId}/upvote`, {
+      hasUpvoted,
+      hasDownvoted
+    })
+    .then(res => res.data);
+}
+
+export function postDownvoteToQuestion({
+  questionId,
+  hasUpvoted,
+  hasDownvoted
+}) {
+  return axios
+    .post(`/api/questions/${questionId}/downvote`, {
+      hasUpvoted,
+      hasDownvoted
+    })
+    .then(res => res.data);
+}

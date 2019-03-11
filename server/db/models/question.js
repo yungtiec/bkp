@@ -116,6 +116,16 @@ module.exports = (db, DataTypes) => {
           as: "owner"
         },
         {
+          model: models.user,
+          as: "upvotesFrom",
+          attributes: ["first_name", "last_name", "name", "email", "id"]
+        },
+        {
+          model: models.user,
+          as: "downvotesFrom",
+          attributes: ["first_name", "last_name", "name", "email", "id"]
+        },
+        {
           model: models["tag"]
         }
       ];

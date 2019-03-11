@@ -1,19 +1,20 @@
 import React, { Fragment } from "react";
 import moment from "moment";
 import ReactHtmlParser from "react-html-parser";
-import { FeedItem } from "../../../components";
+import { FeedItem, HeroHeader } from "../../../components";
+import { QuestionFilter } from "./index";
 
 export default ({
   questionSlugs,
   questionsBySlug,
   fetchQuestions,
   endOfResult,
-  questionsLoading
+  additionalQuestionsLoading
 }) => (
-  <Fragment>
+  <div className="app-container">
     {questionSlugs.map(slug => (
       <FeedItem
-        slug={questionsBySlug[slug].slug}
+        linkUrl={`/requests-for-comment/${questionsBySlug[slug].slug}`}
         title={questionsBySlug[slug].title}
         description={
           questionsBySlug[slug].description
@@ -35,9 +36,9 @@ export default ({
     <div className="text-center mb-5">
       {!endOfResult ? (
         <button className="btn btn-primary" onClick={fetchQuestions}>
-          {questionsLoading ? "Loading" : "Load more"}
+          {additionalQuestionsLoading ? "Loading" : "Load more"}
         </button>
       ) : null}
     </div>
-  </Fragment>
+  </div>
 );

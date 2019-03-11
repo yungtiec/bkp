@@ -1,7 +1,11 @@
 import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchQuestionBySlug } from "../data/actions";
+import {
+  fetchQuestionBySlug,
+  downvoteQuestion,
+  upvoteQuestion
+} from "../data/actions";
 import { getQuestionsBySlug } from "../data/reducer";
 import { Question } from "./index";
 
@@ -28,12 +32,15 @@ const mapState = (state, ownProps) => {
       ownProps.match &&
       ownProps.match.params &&
       questionsBySlug &&
-      questionsBySlug[ownProps.match.params.slug]
+      questionsBySlug[ownProps.match.params.slug],
+    me: state.data.user
   };
 };
 
 const action = {
-  fetchQuestionBySlug
+  fetchQuestionBySlug,
+  downvoteQuestion,
+  upvoteQuestion
 };
 
 export default withRouter(

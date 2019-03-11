@@ -7,3 +7,4 @@ export const QUESTIONS_FETCH_SUCCESS =
 export const QUESTIONS_REQUESTED = "requestsForComment.QUESTIONS_REQUESTED";
 export const ADDITIONAL_QUESTIONS_REQUESTED =
   "requestsForComment.ADDITIONAL_QUESTIONS_REQUESTED";
+export const QUESTION_VOTED = "requestsForComment.QUESTION_VOTED";

@@ -36,7 +36,7 @@ const NewQuestion = ({ me, createQuestion }) => {
   }, [me]);
 
   return (
-    <Fragment>
+    <div className="app-container">
       {isAdmin ? (
         <div className="mb-3">
           Post on behalf of:
@@ -116,7 +116,7 @@ const NewQuestion = ({ me, createQuestion }) => {
         Submit
       </button>
       <div className="mb-5 text-danger">{error ? "must have title" : ""}</div>
-    </Fragment>
+    </div>
   );
 };
 

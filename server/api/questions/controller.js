@@ -25,8 +25,18 @@ const getQuestions = async (req, res, next) => {
     // construct where clause
     if (formattedSearchTerms)
       where = where
-        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
-        : { title: { $iLike: formattedSearchTerms } };
+        ? _.assign(where, {
+            [Sequelize.Op.or]: [
+              { title: { $iLike: formattedSearchTerms } },
+              { description: { $iLike: formattedSearchTerms } }
+            ]
+          })
+        : {
+            [Sequelize.Op.or]: [
+              { title: { $iLike: formattedSearchTerms } },
+              { description: { $iLike: formattedSearchTerms } }
+            ]
+          };
     // construct include clause
     if (req.query.tags && req.query.tags.length) {
       includeTag = {
@@ -118,8 +128,46 @@ const getQuestionBySlug = async (req, res, next) => {
   }
 };
 
+const postUpvote = async (req, res, next) => {
+  try {
+    if (req.body.hasDownvoted)
+      await req.user.removeDownvotedQuestions(req.params.questionId);
+    if (!req.body.hasUpvoted) {
+      await req.user.addUpvotedQuestions(req.params.questionId);
+    } else {
+      await req.user.removeUpvotedQuestions(req.params.questionId);
+    }
+    const [upvotesFrom, downvotesFrom] = await Question.findById(
+      req.params.questionId
+    ).then(ps => Promise.all([ps.getUpvotesFrom(), ps.getDownvotesFrom()]));
+    res.send([upvotesFrom, downvotesFrom]);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const postDownvote = async (req, res, next) => {
+  try {
+    if (req.body.hasUpvoted)
+      await req.user.removeUpvotedQuestions(req.params.questionId);
+    if (!req.body.hasDownvoted) {
+      await req.user.addDownvotedQuestions(req.params.questionId);
+    } else {
+      await req.user.removeDownvotedQuestions(req.params.questionId);
+    }
+    const [upvotesFrom, downvotesFrom] = await Question.findById(
+      req.params.questionId
+    ).then(ps => Promise.all([ps.getUpvotesFrom(), ps.getDownvotesFrom()]));
+    res.send([upvotesFrom, downvotesFrom]);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getQuestions,
   postQuestion,
-  getQuestionBySlug
+  getQuestionBySlug,
+  postUpvote,
+  postDownvote
 };

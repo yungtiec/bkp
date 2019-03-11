@@ -4,7 +4,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 export default ({
-  slug,
+  linkUrl,
   imgUrl,
   category,
   title,
@@ -18,7 +18,7 @@ export default ({
 }) => (
   <Link
     className="feed-item__bloc d-flex align-items-stretch mb-5"
-    to={`/s/${slug}`}
+    to={linkUrl}
   >
     {imgUrl ? (
       <div className="feed-item__img-wrapper mr-4">

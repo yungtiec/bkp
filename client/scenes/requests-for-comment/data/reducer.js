@@ -8,6 +8,7 @@ const initialState = {
   offset: 0,
   limit: 10,
   endOfResult: false,
+  additionalQuestionsLoading: false,
   questionsLoading: true,
   filters: {
     tags: null,
@@ -51,19 +52,25 @@ export default function(state = initialState, action) {
         ...state,
         questionsLoading: true
       };
+    case types.ADDITIONAL_QUESTIONS_REQUESTED:
+      return {
+        ...state,
+        additionalQuestionsLoading: true
+      };
     case types.QUESTIONS_FETCH_SUCCESS:
       return {
         ...state,
-        questionSlugs: (state.questionSlugs || []).concat(
-          action.questionSlugs || []
-        ),
+        questionSlugs: action.loadMore
+          ? (state.questionSlugs || []).concat(action.questionSlugs || [])
+          : action.questionSlugs,
         questionsBySlug: assignIn(
           state.questionsBySlug,
           action.questionsBySlug
         ),
         offset: action.offset,
         endOfResult: action.endOfResult,
-        questionsLoading: false
+        questionsLoading: false,
+        additionalQuestionsLoading: false
       };
     case types.QUESTION_POSTED:
     case types.QUESTION_FETCHED:
@@ -74,10 +81,19 @@ export default function(state = initialState, action) {
           state.questionsBySlug
         )
       };
+    case types.QUESTION_VOTED:
+      return addVotesToQuestion(action, state);
     default:
       return state;
   }
 }
+
+const addVotesToQuestion = (action, state) => {
+  var newState = cloneDeep(state);
+  newState.questionsBySlug[action.slug].downvotesFrom = action.downvotesFrom;
+  newState.questionsBySlug[action.slug].upvotesFrom = action.upvotesFrom;
+  return { ...newState };
+};
 
 export function getFilterOptionMenus(state) {
   return state.scenes.requestsForComment.data.optionMenus;
@@ -104,5 +120,8 @@ export function getFilteredQuestionsOffsetAndLimit(state) {
 }
 
 export function getFilteredQuestionsLoadingStatus(state) {
-  return state.scenes.requestsForComment.data.questionsLoading;
+  return pick(state.scenes.requestsForComment.data, [
+    "additionalQuestionsLoading",
+    "questionsLoading"
+  ]);
 }

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { ensureAuthentication } = require("../utils");
+const { ensureAuthentication, ensureResourceAccess } = require("../utils");
 const questionController = require("./controller");
 module.exports = router;
 
@@ -27,8 +27,45 @@ router.post("/", questionController.postQuestion);
  * Getting question by id
  *
  * @name Get question by tag
- * @route {GET} /api/questions/:questionId
- * @routeparam {String} questionId
+ * @route {GET} /api/questions/:slug
+ * @routeparam {String} slug
  *
  */
 router.get("/:slug", questionController.getQuestionBySlug);
+
+/**
+ * Upvote question
+ *
+ * @name Post upvote
+ * @authentication
+ * @route {POST} /api/questions/:questionId/upvote
+ * @authentication
+ * @routeparam {Number} questionId
+ * @bodyparam {Boolean} hasUpvoted
+ * @bodyparam {Boolean} hasDownvoted
+ *
+ */
+router.post(
+  "/:questionId/upvote",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postUpvote
+);
+
+/**
+ * Downvote question
+ *
+ * @name Post downvote
+ * @route {POST} /api/questions/:questionId/downvote
+ * @authentication
+ * @routeparam {Number} questionId
+ * @bodyparam {Boolean} hasUpvoted
+ * @bodyparam {Boolean} hasDownvoted
+ *
+ */
+router.post(
+  "/:questionId/downvote",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postDownvote
+);

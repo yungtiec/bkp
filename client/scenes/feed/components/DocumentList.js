@@ -13,7 +13,7 @@ export default ({
   <Fragment>
     {documentIds.map(id => (
       <FeedItem
-        slug={documentsById[id].slug}
+        linkUrl={`/s/${documentsById[id].slug}`}
         imgUrl={documentsById[id].header_img_url}
         category={documentsById[id].category.replace(/-/g, " ")}
         title={documentsById[id].title}
