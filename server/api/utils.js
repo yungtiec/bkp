@@ -148,6 +148,29 @@ const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
   };
 };
 
+const hasNotificationPermission = async (userId, commentType) => {
+  const COMMENT = 'comments_and_replies';
+  const VOTE = 'upvotes_and_downvotes';
+
+  try {
+    const requester = await User.findOne({
+      where: { id: userId }
+    });
+    const notificationConfig = requester.notification_config;
+    switch (commentType) {
+      case 'COMMENT':
+        return notificationConfig[COMMENT];
+      case 'VOTE':
+        return notificationConfig[VOTE];
+      default:
+        return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
+
 module.exports = {
   isAdmin,
   ensureAuthentication,
@@ -158,5 +181,6 @@ module.exports = {
   getEngagedUsers,
   createSlug,
   sendEmail,
-  getAddedAndRemovedTags
+  getAddedAndRemovedTags,
+  hasNotificationPermission
 };

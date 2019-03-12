@@ -278,7 +278,7 @@ Fixed Issues:
 * [#605](https://github.com/ckeditor/ckeditor-dev/issues/605): Fixed: Inline widgets do not preserve trailing spaces.
 * [#1008](https://github.com/ckeditor/ckeditor-dev/issues/1008): Fixed: Shorthand Hex colors from the [`config.colorButton_colors`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-colorButton_colors) option are not correctly highlighted in the [Color Button](https://ckeditor.com/cke4/addon/colorbutton) Text Color or Background Color panel.
 * [#1094](https://github.com/ckeditor/ckeditor-dev/issues/1094): Fixed: Widget definition [`upcast`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins_widget_definition.html#property-upcasts) methods are called for every element.
-* [#1057](https://github.com/ckeditor/ckeditor-dev/issues/1057): Fixed: The [Notification](https://ckeditor.com/addon/notification) plugin overwrites Web Notifications API due to leakage to the global scope.
+* [#1057](https://github.com/ckeditor/ckeditor-dev/issues/1057): Fixed: The [Notification](https://ckeditor.com/addon/notification) plugin overwrites Web NotificationSettings API due to leakage to the global scope.
 * [#1068](https://github.com/ckeditor/ckeditor-dev/issues/1068): Fixed: Upload widget paste listener ignores changes to the [`uploadWidgetDefinition`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.fileTools.uploadWidgetDefinition.html).
 * [#921](https://github.com/ckeditor/ckeditor-dev/issues/921): Fixed: [Edge] CKEditor erroneously perceives internal copy and paste as type "external".
 * [#1213](https://github.com/ckeditor/ckeditor-dev/issues/1213): Fixed: Multiple images uploaded using [Upload Image](https://ckeditor.com/cke4/addon/uploadimage) plugin are randomly duplicated or mangled.
@@ -788,7 +788,7 @@ Fixed Issues:
 * [#13003](https://dev.ckeditor.com/ticket/13003): Fixed: Anchors are uploaded when moving them by drag and drop.
 * [#13032](https://dev.ckeditor.com/ticket/13032): Fixed: When upload is done, notification update should be marked as important.
 * [#13300](https://dev.ckeditor.com/ticket/13300): Fixed: The `internalCommit` argument in the [Image](https://ckeditor.com/cke4/addon/image) dialog seems to be never used.
-* [#13036](https://dev.ckeditor.com/ticket/13036): Fixed: Notifications are moved 10px to the right.
+* [#13036](https://dev.ckeditor.com/ticket/13036): Fixed: NotificationSettings are moved 10px to the right.
 * [#13280](https://dev.ckeditor.com/ticket/13280): [IE8] Fixed: Undo after inline widget drag&drop throws an error.
 * [#13186](https://dev.ckeditor.com/ticket/13186): Fixed: Content dropped into a nested editable is not filtered by [Advanced Content Filter](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_acf.html).
 * [#13140](https://dev.ckeditor.com/ticket/13140): Fixed: Error thrown when dropping a block widget right after itself.

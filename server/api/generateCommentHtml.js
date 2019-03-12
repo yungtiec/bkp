@@ -1,4 +1,4 @@
-module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) => `<!DOCTYPE html>
+module.exports = (inProduction, slug, firstName, lastName, commentId, user_handle, isReply) => `<!DOCTYPE html>
 
 
 <html>
@@ -97,6 +97,8 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
     }
 
     .footer {
+      color: gray;
+      font-size: 12px;
       clear: both;
       margin-top: 10px;
       text-align: center;
@@ -444,7 +446,11 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
             <!-- START FOOTER -->
 
             <div class="footer">
-
+              This message was intended for @${user_handle}. If you do not wish to receive this type of email from The Brooklyn Project in the future, please click <a href="${
+  inProduction
+    ? "https://thebkp.com"
+    : "http://localhost:8000"
+  }/profile/@${user_handle}/settings/notification-settings">here</a> to unsubscribe.
               <table border="0"
                 cellpadding="0"
                 cellspacing="0"

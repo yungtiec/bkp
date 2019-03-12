@@ -16,7 +16,7 @@ const {
 const _ = require("lodash");
 Promise = require("bluebird");
 const generateCommentHtml = require("../generateCommentHtml");
-const { sendEmail, getAddedAndRemovedTags } = require("../utils");
+const { sendEmail, getAddedAndRemovedTags, hasNotificationPermission } = require("../utils");
 
 const getComments = async (req, res, next) => {
   try {
@@ -102,20 +102,23 @@ const postComment = async (req, res, next) => {
     //});
     // Send this to info@thebkp.com
     //if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
-      await sendEmail({
-        recipientEmail: "info@thebkp.com",
-        subject: `New Comment Activity From ${comment.owner.first_name} ${
-          comment.owner.last_name
-        }`,
-        message: generateCommentHtml(
-          process.env.NODE_ENV === "production",
-          document.slug,
-          comment.owner.first_name,
-          comment.owner.last_name,
-          comment,
-          false
-        )
-      });
+    const shouldSendEmail = await hasNotificationPermission(24, 'COMMENT');
+    console.log(shouldSendEmail);
+      //await sendEmail({
+      //  recipientEmail: "info@thebkp.com",
+      //  subject: `New Comment Activity From ${comment.owner.first_name} ${
+      //    comment.owner.last_name
+      //  }`,
+      //  message: generateCommentHtml(
+      //    process.env.NODE_ENV === "production",
+      //    document.slug,
+      //    comment.owner.first_name,
+      //    comment.owner.last_name,
+      //    comment,
+      //    comment.owner.user_handle,
+      //    false
+      //  )
+      //});
     //}
 
     res.send(comment);

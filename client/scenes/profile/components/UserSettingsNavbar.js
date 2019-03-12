@@ -26,6 +26,11 @@ const UserSettingsNavbar = ({ tab, match, location, getParams, mobile }) => {
             displayName: "Edit Profile",
             name: "edit",
             to: `${match.url}/settings/edit`
+          },
+          {
+            displayName: "Notifications",
+            name: "notification-settings",
+            to: `${match.url}/settings/notification-settings`
           }
         ]}
         currentTab={routeParams.tab}

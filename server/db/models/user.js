@@ -122,6 +122,15 @@ module.exports = (db, DataTypes) => {
       },
       reset_password_expiration: {
         type: DataTypes.INTEGER
+      },
+      notification_config: {
+        type: DataTypes.JSON,
+        defaultValue: {
+          new_articles: false,
+          upvotes_and_downvotes: false,
+          comments_and_replies: false,
+          monthly_update: false
+        }
       }
     },
     {
@@ -308,7 +317,8 @@ module.exports = (db, DataTypes) => {
           "googleConnected",
           "uportConnected",
           "githubConnected",
-          "email_verified"
+          "email_verified",
+          "notification_config"
         ]);
       return {
         where: query,
