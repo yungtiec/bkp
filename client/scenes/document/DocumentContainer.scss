@@ -1,6 +1,7 @@
 @import "../../breakpoint";
 
-.document-container__sidebar-closed {
+.document-container {
+  transition: all 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,10 +12,13 @@
   }
 }
 
-.document-container__sidebar-open {
+.sidebar-open {
+  transition: all 0.2s ease-in-out;
   margin-top: 50px;
+  margin-right: 950px;
   @include breakpoint(xs) {
     margin-top: 25px;
+    margin-right: 10px;
   }
 }
 

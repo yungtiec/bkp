@@ -24,6 +24,7 @@ class DocumentCategorySelect extends React.Component {
         name="upload__project-select"
         value={this.props.category}
         style={{ width: "300px" }}
+        menuContainerStyle={{ width: "300px" }}
         onChange={this.props.handleCategoryChange}
         options={categories}
         placeholder="select..."

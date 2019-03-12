@@ -40,7 +40,7 @@ export default class DocumentHeader extends Component {
     return (
       <div className="project-document__header">
         <p className="document__title">{`${documentMetadata.title}`}</p>
-        <ProjectAuthorName name={creator.displayName} createdAt={createdAt} />
+        <ProjectAuthorName name={creator.displayName} userHandle={creator.user_handle} createdAt={createdAt} />
         <DocumentToolbar
           documentMetadata={documentMetadata}
           upvoteDocument={upvoteDocument}

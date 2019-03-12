@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../../data/reducer";
 import $ from "jquery";
+import {Helmet} from 'react-helmet';
 
 const goToSection = sectionClass => {
   var offset = $(sectionClass).offset();
@@ -18,6 +19,11 @@ const goToSection = sectionClass => {
 
 const Landing = ({ user, logout }) => (
   <div className="landing">
+    <Helmet>
+      <title>About | The Brooklyn Project</title>
+      <meta name="description"
+            content="An industry-wide initiative to promote token-powered economic growth and consumer protection." />
+    </Helmet>
     <section className="open-letter" id="open-letter">
       <div className="container">
         <div className="row">

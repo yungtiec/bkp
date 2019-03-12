@@ -3,7 +3,7 @@ import { uniq, isEmpty, values } from "lodash";
 
 const initialState = {
   markdown: null,
-  versionNumber: '',
+  versionNumber: "",
   collaboratorEmails: [],
   commentPeriodValue: 3,
   commentPeriodUnit: "days",
@@ -12,10 +12,11 @@ const initialState = {
   projectsBySymbol: {},
   collaboratorOptions: [],
   scorecard: {},
-  title: '',
-  headerImageUrl: '',
+  title: "",
+  headerImageUrl: "",
   category: null,
-  summary: ''
+  tags: [],
+  summary: ""
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -74,7 +75,12 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         category: action.category
-      }
+      };
+    case types.TAGS_UPDATED:
+      return {
+        ...state,
+        tags: action.tags
+      };
     case types.HEADER_IMAGE_URL_UPDATED:
       return {
         ...state,
@@ -89,7 +95,7 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         summary: action.summary
-      }
+      };
     default:
       return state;
   }
@@ -105,6 +111,7 @@ export function getUploadMetadata(state) {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     scorecard,
     summary
@@ -118,6 +125,7 @@ export function getUploadMetadata(state) {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     scorecard,
     summary,

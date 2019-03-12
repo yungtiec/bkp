@@ -11,6 +11,7 @@ export function postHtml({
   scorecard,
   category,
   description,
+  tags,
   // todo: add input for document type: regulatory...etc
   documentType
 }) {
@@ -26,6 +27,7 @@ export function postHtml({
       scorecard,
       documentFormat: "html",
       category,
+      tags,
       description,
       documentType
     })
