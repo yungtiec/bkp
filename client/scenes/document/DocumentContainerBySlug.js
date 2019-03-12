@@ -56,11 +56,12 @@ class DocumentContainer extends Component {
       hideEditor,
       isLoggedIn,
       displayEditor,
-      userId
+      userId,
+      sidebarOpen
     } = this.props;
 
     return (
-      <div className="main-container document-container">
+      <div className={`main-container ${sidebarOpen ? "document-container__sidebar-open" :  "document-container__sidebar-closed"}`}>
         <DocumentHeader
           documentMetadata={documentMetadata}
           isClosedForComment={isClosedForComment}
