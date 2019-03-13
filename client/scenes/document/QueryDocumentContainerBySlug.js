@@ -42,6 +42,7 @@ class QueryDocumentContainerBySlug extends Component {
 
 const mapState = state => {
   return {
+    width: state.data.environment.width,
     documentMetadata: getDocumentMetadata(state),
     isClosedForComment: isClosedForComment(state),
     displayEditor: state.scenes.document.data.ckEditor.displayEditor,
