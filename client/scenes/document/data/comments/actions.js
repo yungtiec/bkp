@@ -31,7 +31,12 @@ export const fetchCommentsByDocId = docId => {
   };
 };
 
-export const addNewComment = ({ documentId, newComment, tags, issueOpen }) => {
+export const addNewComment = ({
+  documentId,
+  newComment,
+  selectedTags,
+  issueOpen
+}) => {
   return async (dispatch, getState) => {
     try {
       const projectSymbol = getState().scenes.document.data.documentMetadata
@@ -40,7 +45,7 @@ export const addNewComment = ({ documentId, newComment, tags, issueOpen }) => {
         projectSymbol,
         documentId,
         newComment,
-        tags,
+        selectedTags,
         issueOpen
       });
       dispatch({
@@ -109,7 +114,7 @@ export const replyToComment = ({
   };
 };
 
-export const upvoteComment = ({ rootId, comment, hasUpvoted }) => {
+export const upvoteComment = ({ comment, hasUpvoted }) => {
   return async (dispatch, getState) => {
     try {
       const { commentId, upvotesFrom } = await postUpvoteToComment({
@@ -122,7 +127,6 @@ export const upvoteComment = ({ rootId, comment, hasUpvoted }) => {
       dispatch({
         type: types.COMMENT_UPVOTED,
         commentId,
-        rootId,
         upvotesFrom
       });
     } catch (err) {
@@ -135,7 +139,7 @@ export const editComment = ({
   documentId,
   commentId,
   newComment,
-  tags,
+  selectedTags,
   issueOpen
 }) => {
   return async (dispatch, getState) => {
@@ -146,7 +150,7 @@ export const editComment = ({
         documentId,
         commentId,
         newComment,
-        tags,
+        selectedTags,
         issueOpen
       });
       dispatch({

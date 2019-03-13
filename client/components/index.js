@@ -55,3 +55,10 @@ export { default as FilterBar } from "./FilterBar/FilterBar";
 export { default as FilterSearch } from "./FilterBar/FilterSearch";
 export { default as HeroHeader } from "./HeroHeader";
 export { default as FeedItem } from "./FeedItem";
+export { default as CommentBox } from "./CommentBox/CommentBox";
+export {
+  default as CommentBoxWithTagField
+} from "./CommentBox/CommentBoxWithTagField";
+export {
+  default as CommentContainer
+} from "./CommentContainer/CommentContainer";

@@ -7,13 +7,13 @@ export function getCommentsByVersionId(doc_id) {
 export function postComment({
   documentId,
   newComment,
-  tags,
+  selectedTags,
   issueOpen
 }) {
   return axios
     .post(`/api/documents/${documentId}/comments`, {
       newComment,
-      tags,
+      selectedTags,
       issueOpen
     })
     .then(res => res.data);
@@ -22,13 +22,11 @@ export function postComment({
 export function postReplyToComment({
   projectSymbol,
   documentId,
-  rootId,
   parentId,
   newComment
 }) {
   return axios
     .post(`/api/documents/${documentId}/comments/${parentId}/reply`, {
-      rootId,
       newComment
     })
     .then(res => res.data);
@@ -53,13 +51,13 @@ export function updateComment({
   documentId,
   commentId,
   newComment,
-  tags,
+  selectedTags,
   issueOpen
 }) {
   return axios
     .put(`/api/documents/${documentId}/comments/${commentId}/edit`, {
       newComment,
-      tags,
+      selectedTags,
       issueOpen
     })
     .then(res => res.data);

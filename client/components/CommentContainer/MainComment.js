@@ -9,8 +9,7 @@ import { clone, find } from "lodash";
 import { CommentBox } from "../index";
 import { ActionableIssueTag, CommentItem } from "./index";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../../../../../policies.js";
-
+import policies from "../../policies.js";
 
 export default ({
   collaboratorsArray,
@@ -25,39 +24,45 @@ export default ({
   promptLoginToast,
   openModal,
   labelAsSpam,
-  labelAsNotSpam
+  labelAsNotSpam,
+  darkText
 }) => {
   const hasUpvoted = find(
     comment.upvotesFrom,
     upvotedUser => upvotedUser.id === user.id
   );
-  const regex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+  const regex = new RegExp(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+  );
   let embeddedUrls = Array.from(getUrls(comment.comment));
 
   // Check for URL formatting issues
   // If URL is surrounded by parenthesis, find the URL
   // If URL cannot be parsed, don't add to embeddedUrls array
-  embeddedUrls = embeddedUrls.map((url) => {
-    if (url.includes('.)') || url.includes(')')) {
-      const matchedUrl = url.match(regex);
-      if (matchedUrl) {
-        const urlToReturn = matchedUrl[0];
-        if (urlToReturn[urlToReturn.length-1] === '.') {
-          return urlToReturn.slice(0, urlToReturn.length - 1);
+  embeddedUrls = embeddedUrls
+    .map(url => {
+      if (url.includes(".)") || url.includes(")")) {
+        const matchedUrl = url.match(regex);
+        if (matchedUrl) {
+          const urlToReturn = matchedUrl[0];
+          if (urlToReturn[urlToReturn.length - 1] === ".") {
+            return urlToReturn.slice(0, urlToReturn.length - 1);
+          }
+          return urlToReturn;
         }
-        return urlToReturn;
+        return null;
       }
-      return null;
-    }
-    return url;
-  }).filter((url) => url !== null);
+      return url;
+    })
+    .filter(url => url !== null);
 
   const commentText = embeddedUrls.reduce(
-    (comment, url) =>
-      comment.replace(new RegExp(url, "g"), `[${url}](${url})`),
+    (comment, url) => comment.replace(new RegExp(url, "g"), `[${url}](${url})`),
     comment.comment
   );
-  const isAdmin = collaboratorsArray ? collaboratorsArray.includes(comment.owner.id) : false;
+  const isAdmin = collaboratorsArray
+    ? collaboratorsArray.includes(comment.owner.id)
+    : false;
 
   return (
     <CommentItem
@@ -86,7 +91,11 @@ export default ({
       labelAsSpam={labelAsSpam}
       labelAsNotSpam={labelAsNotSpam}
     >
-      {comment.quote && <p className="comment-item__quote">{comment.quote}</p>}
+      {comment.quote && (
+        <p className={`comment-item__quote ${darkText ? "text-dark" : ""}`}>
+          {comment.quote}
+        </p>
+      )}
       {(comment.tags && comment.tags.length) || comment.issue ? (
         <div className="comment-item__tags">
           <ActionableIssueTag
@@ -108,7 +117,10 @@ export default ({
             : ""}
         </div>
       ) : null}
-      <ReactMarkdown className="comment-item__comment" source={commentText} />
+      <ReactMarkdown
+        className={`comment-item__comment ${darkText ? "text-dark" : ""}`}
+        source={commentText}
+      />
       {embeddedUrls.length
         ? embeddedUrls.map((url, i) => (
             <Microlink

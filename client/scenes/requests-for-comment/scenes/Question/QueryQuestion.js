@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import {
   fetchQuestionBySlug,
   downvoteQuestion,
-  upvoteQuestion
-} from "../data/actions";
-import { getQuestionsBySlug } from "../data/reducer";
-import { Question } from "./index";
+  upvoteQuestion,
+  addNewComment
+} from "./data/actions";
+import { getQuestion } from "./data/reducer";
+import Question from "./Question";
 
 class QueryQuestion extends React.Component {
   constructor(props) {
@@ -25,14 +26,9 @@ class QueryQuestion extends React.Component {
 }
 
 const mapState = (state, ownProps) => {
-  var questionsBySlug = getQuestionsBySlug(state);
   return {
     ...ownProps,
-    question:
-      ownProps.match &&
-      ownProps.match.params &&
-      questionsBySlug &&
-      questionsBySlug[ownProps.match.params.slug],
+    question: getQuestion(state),
     me: state.data.user
   };
 };
@@ -40,7 +36,8 @@ const mapState = (state, ownProps) => {
 const action = {
   fetchQuestionBySlug,
   downvoteQuestion,
-  upvoteQuestion
+  upvoteQuestion,
+  addNewComment
 };
 
 export default withRouter(

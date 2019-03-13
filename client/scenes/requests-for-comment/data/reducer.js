@@ -73,7 +73,6 @@ export default function(state = initialState, action) {
         additionalQuestionsLoading: false
       };
     case types.QUESTION_POSTED:
-    case types.QUESTION_FETCHED:
       return {
         ...state,
         questionsBySlug: assignIn(
@@ -81,8 +80,6 @@ export default function(state = initialState, action) {
           state.questionsBySlug
         )
       };
-    case types.QUESTION_VOTED:
-      return addVotesToQuestion(action, state);
     default:
       return state;
   }

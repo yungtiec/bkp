@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import { connect } from "react-redux";
-import { CommentItem } from "../index";
+import { CommentContainer } from "../../../../../../components";
 import { Link as ScrollLink, Element } from "react-scroll";
 import {
   replyToComment,
@@ -59,15 +59,12 @@ function renderSidebarWithSelectedComments(props) {
       {selectedComments
         // .filter(a => commentsById[a.id].reviewed !== "spam")
         .map(comment => (
-          <CommentItem
+          <CommentContainer
             key={`comment-${comment.id}`}
             isClosedForComment={isClosedForComment}
             comment={comment}
             projectMetadata={projectMetadata}
-            user={user}
             replyToItem={replyToComment}
-            initiateReplyToItem={initiateReplyToComment}
-            cancelReplyToItem={cancelReplyToComment}
             verifyItemAsAdmin={verifyCommentAsAdmin}
             upvoteItem={upvoteComment}
             editItem={editComment}
@@ -109,7 +106,7 @@ function renderSidebarWithAllComments(props) {
       // .filter(id => commentsById[id].reviewed !== "spam")
       .map(id => {
         return (
-          <CommentItem
+          <CommentContainer
             collaboratorsArray={collaboratorsArray}
             key={`comment-${id}`}
             isClosedForComment={isClosedForComment}

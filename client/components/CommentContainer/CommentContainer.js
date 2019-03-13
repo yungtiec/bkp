@@ -1,15 +1,32 @@
 import "./CommentContainer.scss";
 import React, { Component } from "react";
 import autoBind from "react-autobind";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { cloneDeep, isEmpty, find, orderBy, assignIn } from "lodash";
+import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import { CommentBox } from "../index";
 import { Replies, MainComment } from "./index";
-import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../../../../../policies.js";
+import policies from "../../policies.js";
 
-export default class MainContainer extends Component {
+export default class CommentContainer extends Component {
+  static propTypes = {
+    comment: PropTypes.object.isRequired,
+    projectMetadata: PropTypes.object,
+    user: PropTypes.object.isRequired,
+    replyToItem: PropTypes.func,
+    verifyItemAsAdmin: PropTypes.func,
+    upvoteItem: PropTypes.func,
+    editItem: PropTypes.func,
+    changeItemIssueStatus: PropTypes.func,
+    loadModal: PropTypes.func,
+    notify: PropTypes.func,
+    isLoggedIn: PropTypes.boolean,
+    isClosedForComment: PropTypes.boolean,
+    darkText: PropTypes.boolean
+  };
+
   constructor(props) {
     super(props);
     autoBind(this);
@@ -84,7 +101,9 @@ export default class MainContainer extends Component {
       isClosedForComment,
       isLoggedIn,
       upvoteItem,
-      changeItemIssueStatus
+      changeItemIssueStatus,
+      verifyItemAsAdmin,
+      darkText
     } = this.props;
 
     return (
@@ -108,7 +127,8 @@ export default class MainContainer extends Component {
                 promptLoginToast={this.promptLoginToast}
                 openModal={this.openModal}
                 labelAsSpam={this.labelAsSpam}
-                labelAsNotSpam={this.labelAsNotSpam}
+                labelAsNotSpam={verifyItemAsAdmin ? this.labelAsNotSpam : null}
+                darkText={darkText}
               />
               <Replies
                 collaboratorsArray={collaboratorsArray}
@@ -124,7 +144,8 @@ export default class MainContainer extends Component {
                 promptLoginToast={this.promptLoginToast}
                 isClosedForComment={isClosedForComment}
                 labelAsSpam={this.labelAsSpam}
-                labelAsNotSpam={this.labelAsNotSpam}
+                labelAsNotSpam={verifyItemAsAdmin ? this.labelAsNotSpam : null}
+                darkText={darkText}
               />
               {this.state.isCommenting ? (
                 <div>
@@ -140,7 +161,6 @@ export default class MainContainer extends Component {
                         ? this.state.replyTarget.id
                         : comment.id
                     }
-                    versionId={comment.version_id}
                     onSubmit={this.props.replyToItem}
                     onCancel={this.hideCommentBox}
                   />

@@ -1,12 +1,6 @@
 import * as types from "./actionTypes";
 import { values, keyBy } from "lodash";
-import {
-  postQuestion,
-  getQuestionBySlug,
-  getFilteredQuestions,
-  postDownvoteToQuestion,
-  postUpvoteToQuestion
-} from "./service";
+import { postQuestion, getFilteredQuestions } from "./service";
 import history from "../../../history";
 
 export function updateFilter({ key, value }) {
@@ -59,20 +53,6 @@ export function createQuestion(q) {
   };
 }
 
-export function fetchQuestionBySlug(slug) {
-  return async (dispatch, getState) => {
-    try {
-      const question = await getQuestionBySlug(slug);
-      dispatch({
-        type: types.QUESTION_FETCHED,
-        question
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
-
 export function fetchQuestions() {
   return async (dispatch, getState) => {
     try {
@@ -119,44 +99,4 @@ async function dispatchFetchFilteredQuestions({
     endOfResult: questionSlugs.length < limit || !questionSlugs.length,
     loadMore
   });
-}
-
-export function downvoteQuestion({ question, hasUpvoted, hasDownvoted }) {
-  return async (dispatch, getState) => {
-    try {
-      const [upvotesFrom, downvotesFrom] = await postDownvoteToQuestion({
-        questionId: question.id,
-        hasUpvoted,
-        hasDownvoted
-      });
-      dispatch({
-        type: types.QUESTION_VOTED,
-        upvotesFrom,
-        downvotesFrom,
-        slug: question.slug
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
-
-export function upvoteQuestion({ question, hasUpvoted, hasDownvoted }) {
-  return async (dispatch, getState) => {
-    try {
-      const [upvotesFrom, downvotesFrom] = await postUpvoteToQuestion({
-        questionId: question.id,
-        hasUpvoted,
-        hasDownvoted
-      });
-      dispatch({
-        type: types.QUESTION_VOTED,
-        upvotesFrom,
-        downvotesFrom,
-        slug: question.slug
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
 }

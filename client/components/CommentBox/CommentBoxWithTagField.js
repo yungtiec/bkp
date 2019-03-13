@@ -1,15 +1,30 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import autoBind from "react-autobind";
 import CommentBox from "./CommentBox";
-import { TagChip, TagField } from "../../../../../../components";
+import { TagChip, TagField } from "../index";
 import axios from "axios";
 
 export default class CommentBoxWithTagField extends Component {
+  static propTypes = {
+    className: PropTypes.string,
+    selectedTags: PropTypes.arrayOf(PropTypes.object),
+    issueOpen: PropTypes.boolean,
+    showTags: PropTypes.boolean,
+    showIssueCheckbox: PropTypes.boolean,
+    initialValue: PropTypes.string,
+    documentId: PropTypes.number,
+    question: PropTypes.object,
+    onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
+    notLoggedin: PropTypes.boolean,
+    blockSubmitBtn: PropTypes.boolean
+  };
+
   constructor(props) {
     super(props);
     autoBind(this);
     this.state = {
-      tags: this.props.tags,
       selectedTags: this.props.selectedTags,
       issueOpen: this.props.issueOpen
     };
@@ -47,6 +62,7 @@ export default class CommentBoxWithTagField extends Component {
     const { onSubmit } = this.props;
     const newArgObj = {
       ...argObj,
+      ...this.props,
       tags: this.state.selectedTags,
       issueOpen: this.state.issueOpen,
       documentId: this.props.documentId
@@ -60,14 +76,14 @@ export default class CommentBoxWithTagField extends Component {
 
   render() {
     const {
+      className,
       onSubmit,
-      tags,
       showTags,
       showIssueCheckbox,
       ...otherProps
     } = this.props;
     return (
-      <div>
+      <div className={className}>
         {showTags && (
           <TagField
             handleOnSelect={this.handleTagOnChange}

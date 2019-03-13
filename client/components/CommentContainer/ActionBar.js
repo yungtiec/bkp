@@ -1,6 +1,6 @@
 import React from "react";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../../../../../policies.js";
+import policies from "../../policies.js";
 import { connect } from "react-redux";
 
 const ActionBar = ({
@@ -18,33 +18,35 @@ const ActionBar = ({
   <div className="comment-item__action--bottom">
     <PunditContainer policies={policies} user={user}>
       <PunditTypeSet type="Comment">
-        <VisibleIf
-          action="Verify"
-          model={{ project: projectMetadata, comment: item }}
-        >
-          <div className="btn-group" role="group" aria-label="Basic example">
-            <button
-              type="button"
-              className={`btn ${
-                item.reviewed === "spam" ? "btn-danger" : "btn-outline-danger"
-              } btn-sm`}
-              onClick={labelAsSpam}
-            >
-              spam
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                item.reviewed === "verified"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              } btn-sm`}
-              onClick={labelAsNotSpam}
-            >
-              verify
-            </button>
-          </div>
-        </VisibleIf>
+        {labelAsSpam && labelAsNotSpam ? (
+          <VisibleIf
+            action="Verify"
+            model={{ project: projectMetadata, comment: item }}
+          >
+            <div className="btn-group" role="group" aria-label="Basic example">
+              <button
+                type="button"
+                className={`btn ${
+                  item.reviewed === "spam" ? "btn-danger" : "btn-outline-danger"
+                } btn-sm`}
+                onClick={labelAsSpam}
+              >
+                spam
+              </button>
+              <button
+                type="button"
+                className={`btn ${
+                  item.reviewed === "verified"
+                    ? "btn-primary"
+                    : "btn-outline-primary"
+                } btn-sm`}
+                onClick={labelAsNotSpam}
+              >
+                verify
+              </button>
+            </div>
+          </VisibleIf>
+        ) : null}
         <div />
         <div>
           <VisibleIf

@@ -5,7 +5,7 @@ import {
   IfElseButton,
   VisibleIf
 } from "react-pundit";
-import policies from "../../../../../../policies.js";
+import policies from "../../policies.js";
 import { connect } from "react-redux";
 
 const ActionableIssueTag = ({
@@ -59,4 +59,7 @@ const mapState = (state, ownProps) => ({
   projectMetadata: state.scenes.project.data.metadata
 });
 
-export default connect(mapState, {})(ActionableIssueTag);
+export default connect(
+  mapState,
+  {}
+)(ActionableIssueTag);

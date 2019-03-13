@@ -73,7 +73,7 @@ const postComment = async (req, res, next) => {
       });
     const autoVerifyPromise =
       autoVerify && comment.update({ reviewed: "verified" });
-    const tagPromises = Promise.map(req.body.tags, tag =>
+    const tagPromises = Promise.map(req.body.selectedTags, tag =>
       Tag.findOrCreate({
         where: { name: tag.value },
         default: { name: tag.value.toLowerCase(), display_name: tag.value }
@@ -93,6 +93,7 @@ const postComment = async (req, res, next) => {
       }`,
       message: generateCommentHtml(
         process.env.NODE_ENV === "production",
+        "s",
         document.slug,
         comment.owner.first_name,
         comment.owner.last_name,
@@ -109,6 +110,7 @@ const postComment = async (req, res, next) => {
         }`,
         message: generateCommentHtml(
           process.env.NODE_ENV === "production",
+          "s",
           document.slug,
           comment.owner.first_name,
           comment.owner.last_name,
@@ -185,6 +187,7 @@ const postReply = async (req, res, next) => {
       subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
       message: generateCommentHtml(
         process.env.NODE_ENV === "production",
+        "s",
         ancestry.document.slug,
         user.first_name,
         user.last_name,
@@ -200,6 +203,7 @@ const postReply = async (req, res, next) => {
         }`,
         message: generateCommentHtml(
           process.env.NODE_ENV === "production",
+          "s",
           document.slug,
           comment.owner.first_name,
           comment.owner.last_name,
@@ -265,7 +269,7 @@ const putEditedComment = async (req, res, next) => {
     else {
       var { addedTags, removedTags } = getAddedAndRemovedTags({
         prevTags: comment.tags,
-        curTags: req.body.tags
+        curTags: req.body.selectedTags
       });
       var removedTagPromises, addedTagPromises, issuePromise;
       await comment.update({ comment: req.body.newComment });

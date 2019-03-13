@@ -6,7 +6,7 @@ import { cloneDeep, isEmpty, find, orderBy, assignIn } from "lodash";
 import { CommentBox } from "../index";
 import { ActionBar } from "./index";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../../../../../policies.js";
+import policies from "../../policies.js";
 import $ from "jquery";
 
 const commentInSidebarOnClick = comment => {

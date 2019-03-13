@@ -1,4 +1,4 @@
-@import "../../../../../../breakpoint";
+@import "../../breakpoint";
 
 .comment-item {
   background: #113954;
@@ -44,6 +44,26 @@
   a:hover {
     color: #9ca6af;
   }
+}
+
+.comment-item__tags .badge,
+.comment-item__tags button {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  line-height: 1.25;
+}
+
+.comment-item__tags .badge.issue {
+  cursor: pointer;
+}
+
+.comment-item__tags .badge .fas {
+  font-size: 9px;
+  margin-left: 3px;
+}
+
+.comment-item__tags {
+  margin-bottom: 1rem;
 }
 
 .comment-item__edit .comment-item__quote {
@@ -123,26 +143,6 @@
 .comment-item__edit label {
   line-height: 2;
   margin-right: 5px;
-}
-
-.comment-item__tags .badge,
-.comment-item__tags button {
-  margin-right: 5px;
-  margin-bottom: 5px;
-  line-height: 1.25;
-}
-
-.comment-item__tags .badge.issue {
-  cursor: pointer;
-}
-
-.comment-item__tags .badge .fas {
-  font-size: 9px;
-  margin-left: 3px;
-}
-
-.comment-item__tags {
-  margin-bottom: 1rem;
 }
 
 .comment-item__reply-item {

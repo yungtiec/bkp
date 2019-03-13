@@ -230,6 +230,24 @@ function generateScopeForAncestry(models, ancestry) {
           ]
         },
         {
+          model: models.question,
+          include: [
+            {
+              model: models.user,
+              as: "owner",
+              attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "name",
+                "email",
+                "anonymity",
+                "user_handle"
+              ]
+            }
+          ]
+        },
+        {
           model: models.issue,
           attributes: ["open", "id"],
           include: [

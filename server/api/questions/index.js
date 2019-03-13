@@ -69,3 +69,34 @@ router.post(
   ensureResourceAccess,
   questionController.postDownvote
 );
+
+/**
+ * Comment on question
+ *
+ * @name Post comment
+ * @route {POST} /api/questions/:questionId/comment
+ * @authentication
+ * @routeparam {Number} questionId
+ * @bodyparam {String} comment
+ *
+ */
+router.post(
+  "/:questionId/comments",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postComment
+);
+
+/**
+ * Get a list of comments on question
+ *
+ * @name Get question's comments
+ * @route {GET} /api/questions/:questionId/comment
+ * @authentication
+ * @routeparam {Number} questionId
+ * @queryparam {Number} offset
+ * @queryparam {Number} limit
+ * @queryparam {string} order
+ *
+ */
+router.get("/:slug/comments", questionController.getComments);

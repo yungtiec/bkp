@@ -6,7 +6,7 @@ import { cloneDeep, isEmpty, find, orderBy, assignIn } from "lodash";
 import { CommentBox } from "../index";
 import { ActionBar, CommentItem } from "./index";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
-import policies from "../../../../../../policies.js";
+import policies from "../../policies.js";
 
 export default class Replies extends Component {
   constructor(props) {
@@ -58,11 +58,10 @@ export default class Replies extends Component {
       labelAsNotSpam
     } = this.props;
     return orderBy(
-      replies.map(
-        reply =>
-          isEmpty(reply)
-            ? reply
-            : assignIn({ unix: moment(reply.createdAt).format("X") }, reply)
+      replies.map(reply =>
+        isEmpty(reply)
+          ? reply
+          : assignIn({ unix: moment(reply.createdAt).format("X") }, reply)
       ),
       ["unix", "upvotesFrom.length"],
       ["asc", "desc"]

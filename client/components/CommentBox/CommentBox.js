@@ -1,7 +1,20 @@
 import React, { Component } from "react";
 import autoBind from "react-autobind";
+import PropTypes from "prop-types";
 
 export default class CommentBox extends Component {
+  static propTypes = {
+    rootId: PropTypes.number,
+    parentId: PropTypes.number,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
+    notLoggedin: PropTypes.boolean,
+    blockSubmitBtn: PropTypes.boolean,
+    initialValue: PropTypes.string,
+    documentId: PropTypes.number,
+    question: PropTypes.object
+  };
+
   constructor(props) {
     super(props);
     this.state = { value: this.props.initialValue };
@@ -34,10 +47,15 @@ export default class CommentBox extends Component {
           value={this.state.value}
           onChange={this.handleChange}
           placeholder="Please give feedback..."
+          disabled={this.props.notLoggedin}
         />
-        {this.props.onCancel ? (
+        {this.props.notLoggedin ? null : this.props.onCancel ? (
           <div className="comment-box__actions">
-            <button className="btn btn-primary" onClick={this.handleSubmit}>
+            <button
+              className="btn btn-primary"
+              onClick={this.handleSubmit}
+              disabled={this.props.notLoggedin}
+            >
               comment
             </button>
             <button className="btn" onClick={this.props.onCancel}>
@@ -46,8 +64,11 @@ export default class CommentBox extends Component {
           </div>
         ) : (
           <button
-            className="btn btn-primary btn-block mt-4"
+            className={`btn btn-primary ${
+              this.props.blockSubmitBtn ? "btn-block" : "btn-right-align"
+            } mt-4`}
             onClick={this.handleSubmit}
+            disabled={this.props.notLoggedin}
           >
             comment
           </button>

@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
+import PropTypes from "prop-types";
 import Modal from "react-modal";
-import { hideModal } from "../../../../../../data/reducer";
-import { editComment } from "../../../../data/comments/actions";
-import { getAllTags } from "../../../../data/tags/reducer";
-import { CommentBox, CommentBoxWithTagField } from "../index";
-import { TagChip } from "../../../../../../components";
+import { CommentBoxWithTagField } from "../index";
 import Select from "react-select";
 
 class EditCommentModal extends Component {
+  static propTypes = {
+    id: PropTypes.number,
+    issue: PropTypes.object,
+    quote: PropTypes.string,
+    comment: PropTypes.comment,
+    tags: PropTypes.array,
+    editItem: PropTypes.func,
+    loadModal: PropTypes.func,
+    hideModal: PropTypes.func,
+    showIssueCheckbox: PropTypes.boolean,
+    showTags: PropTypes.boolean
+  };
+
   constructor(props) {
     super(props);
     autoBind(this);
@@ -38,7 +48,6 @@ class EditCommentModal extends Component {
           </p>
           <CommentBoxWithTagField
             issueOpen={this.props.issue ? this.props.issue.open : false}
-            tags={this.props.availableTags}
             selectedTags={this.props.tags}
             initialValue={this.props.comment}
             commentId={this.props.id}
@@ -54,15 +63,3 @@ class EditCommentModal extends Component {
     );
   }
 }
-
-const mapState = (state, ownProps) => ({
-  ...ownProps,
-  availableTags: getAllTags(state)
-});
-
-const actions = {
-  hideModal,
-  editComment
-};
-
-export default connect(mapState, actions)(EditCommentModal);
