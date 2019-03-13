@@ -273,7 +273,6 @@ class DocumentEditor extends Component {
             {summary ? (
               <div className="document-summary ">
                 <div className="markdown-body">{ReactHtmlParser(summary)}</div>
-                <hr />
               </div>
             ) : null}
             <div ref={el => (this[`content`] = el)}>
