@@ -50,7 +50,8 @@ describe("Question routes", () => {
             "Do you agree with our assessment that exchange tokens could be used to facilitate regulated payments?",
           description:
             "<p>The FCA reports a use case in their regulatory “sandbox” where firms have experimented using exchange tokens to facilitate foreign currency transactions. They claim that beneficiaries of these foreign currency transactions are not exposed to cryptoasset risk, since the currency is only used by the provider of the service.</p>",
-          owner_id: 12
+          selectedTags: [],
+          owner: { value: 12 }
         })
         .expect(200)
         .then(res => {

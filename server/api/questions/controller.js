@@ -61,7 +61,7 @@ const getQuestions = async (req, res, next) => {
     }
     // construct limit, offset and order options
     var limit = Number(req.query.limit);
-    var offset = Number(req.query.offset);
+    var offset = Number(req.query.offset) || 0;
     var order = req.query.order;
     if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
