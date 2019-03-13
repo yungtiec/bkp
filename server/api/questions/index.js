@@ -100,3 +100,59 @@ router.post(
  *
  */
 router.get("/:slug/comments", questionController.getComments);
+
+/**
+ * Posting reply
+ *
+ * @name Post reply
+ * @route {POST} /api/questions/:questionId/comments/:parentId/reply
+ * @authentication
+ * @routeparam {Number} questionId
+ * @routeparam {Number} parentId
+ * @bodyparam {String} newComment
+ *
+ */
+router.post(
+  "/:questionId/comments/:parentId/reply",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postReply
+);
+
+/**
+ * Posting upvote
+ *
+ * @name Post upvote
+ * @route {POST} /api/questions/:questionId/comments/:commentId/upvote
+ * @authentication
+ * @routeparam {Number} questionId
+ * @routeparam {Number} commentId
+ * @bodyparam {Boolean} hasUpvoted
+ *
+ */
+router.post(
+  "/:questionId/comments/:commentId/upvote",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postCommentUpvote
+);
+
+/**
+ * Updating comment
+ *
+ * @name Put comment
+ * @route {PUT} /api/questions/:questionId/comments/:commentId/edit
+ * @authentication
+ * @routeparam {Number} questionId
+ * @routeparam {Number} commentId
+ * @bodyparam {String} newComment
+ * @bodyparam {Array} tags
+ * @bodyparam {Boolean} issueOpen
+ *
+ */
+router.put(
+  "/:questionId/comments/:commentId/edit",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.putEditedComment
+);

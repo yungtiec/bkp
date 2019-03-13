@@ -114,7 +114,7 @@ export const replyToComment = ({
   };
 };
 
-export const upvoteComment = ({ comment, hasUpvoted }) => {
+export const upvoteComment = ({ rootId, comment, hasUpvoted }) => {
   return async (dispatch, getState) => {
     try {
       const { commentId, upvotesFrom } = await postUpvoteToComment({
@@ -127,6 +127,7 @@ export const upvoteComment = ({ comment, hasUpvoted }) => {
       dispatch({
         type: types.COMMENT_UPVOTED,
         commentId,
+        rootId,
         upvotesFrom
       });
     } catch (err) {

@@ -21,10 +21,15 @@ export default class CommentContainer extends Component {
     editItem: PropTypes.func,
     changeItemIssueStatus: PropTypes.func,
     loadModal: PropTypes.func,
+    hideModal: PropTypes.func,
     notify: PropTypes.func,
     isLoggedIn: PropTypes.boolean,
     isClosedForComment: PropTypes.boolean,
-    darkText: PropTypes.boolean
+    lightMode: PropTypes.boolean
+  };
+
+  static defaultProps = {
+    user: {}
   };
 
   constructor(props) {
@@ -56,7 +61,8 @@ export default class CommentContainer extends Component {
       ...comment,
       showIssueCheckbox,
       showTags,
-      editItem: this.props.editItem
+      editItem: this.props.editItem,
+      hideModal: this.props.hideModal
     });
   }
 
@@ -103,7 +109,7 @@ export default class CommentContainer extends Component {
       upvoteItem,
       changeItemIssueStatus,
       verifyItemAsAdmin,
-      darkText
+      lightMode
     } = this.props;
 
     return (
@@ -113,7 +119,7 @@ export default class CommentContainer extends Component {
             action="Read"
             model={{ project: projectMetadata, comment }}
           >
-            <div className="comment-item">
+            <div className={`comment-item ${lightMode ? "light-mode" : ""}`}>
               <MainComment
                 collaboratorsArray={collaboratorsArray}
                 comment={comment}
@@ -126,9 +132,9 @@ export default class CommentContainer extends Component {
                 initReply={this.initReply}
                 promptLoginToast={this.promptLoginToast}
                 openModal={this.openModal}
-                labelAsSpam={this.labelAsSpam}
+                labelAsSpam={verifyItemAsAdmin ? this.labelAsSpam : null}
                 labelAsNotSpam={verifyItemAsAdmin ? this.labelAsNotSpam : null}
-                darkText={darkText}
+                lightMode={lightMode}
               />
               <Replies
                 collaboratorsArray={collaboratorsArray}
@@ -143,12 +149,12 @@ export default class CommentContainer extends Component {
                 initReply={this.initReply}
                 promptLoginToast={this.promptLoginToast}
                 isClosedForComment={isClosedForComment}
-                labelAsSpam={this.labelAsSpam}
+                labelAsSpam={verifyItemAsAdmin ? this.labelAsSpam : null}
                 labelAsNotSpam={verifyItemAsAdmin ? this.labelAsNotSpam : null}
-                darkText={darkText}
+                lightMode={lightMode}
               />
               {this.state.isCommenting ? (
-                <div>
+                <div className="mb-3">
                   {this.state.replyTarget && (
                     <span className="ml-1">{`replying to ${
                       this.state.replyTarget.owner.displayName

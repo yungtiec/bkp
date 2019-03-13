@@ -25,7 +25,7 @@ export default ({
   openModal,
   labelAsSpam,
   labelAsNotSpam,
-  darkText
+  lightMode
 }) => {
   const hasUpvoted = find(
     comment.upvotesFrom,
@@ -69,7 +69,9 @@ export default ({
       isAdmin={isAdmin}
       containerClassName="comment-item__main"
       containerStyle={
-        comment.descendents.length ? { borderBottom: "1px solid" } : {}
+        comment.descendents && comment.descendents.length
+          ? { borderBottom: "1px solid" }
+          : {}
       }
       comment={comment}
       projectMetadata={projectMetadata}
@@ -90,20 +92,23 @@ export default ({
       openModal={() => openModal(comment, true, true)}
       labelAsSpam={labelAsSpam}
       labelAsNotSpam={labelAsNotSpam}
+      lightMode={lightMode}
     >
       {comment.quote && (
-        <p className={`comment-item__quote ${darkText ? "text-dark" : ""}`}>
+        <p className={`comment-item__quote ${lightMode ? "text-dark" : ""}`}>
           {comment.quote}
         </p>
       )}
       {(comment.tags && comment.tags.length) || comment.issue ? (
         <div className="comment-item__tags">
-          <ActionableIssueTag
-            user={user}
-            projectMetadata={projectMetadata}
-            comment={comment}
-            changeItemIssueStatus={() => changeItemIssueStatus(comment)}
-          />
+          {changeItemIssueStatus ? (
+            <ActionableIssueTag
+              user={user}
+              projectMetadata={projectMetadata}
+              comment={comment}
+              changeItemIssueStatus={() => changeItemIssueStatus(comment)}
+            />
+          ) : null}
           {comment.tags && comment.tags.length
             ? comment.tags.map(tag => (
                 <span
@@ -118,7 +123,7 @@ export default ({
         </div>
       ) : null}
       <ReactMarkdown
-        className={`comment-item__comment ${darkText ? "text-dark" : ""}`}
+        className={`comment-item__comment ${lightMode ? "text-dark" : ""}`}
         source={commentText}
       />
       {embeddedUrls.length

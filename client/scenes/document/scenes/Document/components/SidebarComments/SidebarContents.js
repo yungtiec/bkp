@@ -12,7 +12,7 @@ import {
   editComment,
   changeCommentIssueStatus
 } from "../../../../data/comments/actions";
-import { loadModal } from "../../../../../../data/reducer";
+import { loadModal, hideModal } from "../../../../../../data/reducer";
 import { notify } from "reapop";
 
 const SidebarContents = props => {
@@ -70,6 +70,7 @@ function renderSidebarWithSelectedComments(props) {
             editItem={editComment}
             changeItemIssueStatus={changeCommentIssueStatus}
             loadModal={loadModal}
+            hideModal={hideModal}
             notify={notify}
             user={user}
             isLoggedIn={isLoggedIn}
@@ -114,13 +115,12 @@ function renderSidebarWithAllComments(props) {
             projectMetadata={projectMetadata}
             user={user}
             replyToItem={replyToComment}
-            initiateReplyToItem={initiateReplyToComment}
-            cancelReplyToItem={cancelReplyToComment}
             verifyItemAsAdmin={verifyCommentAsAdmin}
             upvoteItem={upvoteComment}
             editItem={editComment}
             changeItemIssueStatus={changeCommentIssueStatus}
             loadModal={loadModal}
+            hideModal={hideModal}
             notify={notify}
             user={user}
             isLoggedIn={isLoggedIn}
@@ -148,6 +148,7 @@ const actions = {
   editComment,
   changeCommentIssueStatus,
   loadModal,
+  hideModal,
   notify
 };
 

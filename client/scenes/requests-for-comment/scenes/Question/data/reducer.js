@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { assignIn, pick, cloneDeep } from "lodash";
+import { assignIn, pick, cloneDeep, keys, find } from "lodash";
 
 const initialState = {
   question: null,
@@ -9,9 +9,9 @@ const initialState = {
   commentOffset: 0,
   commentLimit: 10,
   commentEndOfResult: false,
-  commentsLoading: false,
+  commentsLoading: true,
   additionalCommentsLoading: false,
-  commentfilters: {
+  commentFilters: {
     tags: null,
     order: { value: "date", label: "most recent" },
     search: ""
@@ -26,7 +26,6 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  var filters;
   switch (action.type) {
     case types.QUESTION_REQUESTED:
       return {
@@ -63,16 +62,65 @@ export default function(state = initialState, action) {
         commentsLoading: false,
         additionalCommentsLoading: false
       };
+    case types.COMMENT_ADDED:
+      return addNewCommentSentFromServer({
+        state: cloneDeep(state),
+        comment: action.comment,
+        isReply: false
+      });
+    case types.COMMENT_UPDATED:
+      return addNewCommentSentFromServer({
+        state: cloneDeep(state),
+        comment: action.rootComment,
+        isReply: true
+      });
+    case types.COMMENT_UPVOTED:
+      return updateUpvotesForComment({
+        state: cloneDeep(state),
+        rootId: action.rootId,
+        commentId: action.commentId,
+        upvotesFrom: action.upvotesFrom
+      });
+    case types.CLEAR_COMMENTS:
+      return {
+        ...state,
+        commentIds: null,
+        commentOffset: 0,
+        commentEndOfResult: false,
+        commentFilters: initialState.commentFilters
+      };
     default:
       return state;
   }
 }
+
+const addNewCommentSentFromServer = ({ state, comment, isReply }) => {
+  state.commentsById[comment.id] = comment;
+  if (!isReply) state.commentIds = [comment.id].concat(state.commentIds || []);
+  return state;
+};
 
 const addVotesToQuestion = (action, state) => {
   var newState = cloneDeep(state);
   newState.question.downvotesFrom = action.downvotesFrom;
   newState.question.upvotesFrom = action.upvotesFrom;
   return { ...newState };
+};
+
+const updateUpvotesForComment = ({ state, commentId, rootId, upvotesFrom }) => {
+  var target;
+  if (state.commentsById[commentId]) {
+    // itself is root
+    state.commentsById[commentId].upvotesFrom = upvotesFrom;
+  } else {
+    // its descendant(reply) to another comment
+    target = find(
+      state.commentsById[rootId].descendents,
+      a => a.id === commentId
+    );
+    target.upvotesFrom = upvotesFrom;
+  }
+  return state;
 };
 
 export function getQuestion(state) {
@@ -103,9 +151,10 @@ export function getCommentsLoadingStatus(state) {
 }
 
 export function getFilterOptionMenus(state) {
-  return state.scenes.requestsForComment.data.optionMenus;
+  return state.scenes.requestsForComment.scenes.question.data
+    .commentOptionMenus;
 }
 
 export function getFilters(state) {
-  return state.scenes.requestsForComment.data.filters;
+  return state.scenes.requestsForComment.scenes.question.data.commentFilters;
 }

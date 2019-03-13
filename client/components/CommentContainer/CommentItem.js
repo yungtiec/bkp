@@ -36,7 +36,8 @@ export default ({
   upvoteItem,
   openModal,
   labelAsSpam,
-  labelAsNotSpam
+  labelAsNotSpam,
+  lightMode
 }) => (
   <div
     className={containerClassName}
@@ -45,25 +46,27 @@ export default ({
   >
     <div class="mt-3 comment-item__header">
       <p className="comment-item__owner-name d-flex flex-direction-column">
-        <PunditContainer policies={policies} user={comment.owner}>
-          <PunditTypeSet type="Comment">
-            <VisibleIf
-              action="isProjectAdmin"
-              model={{ project: projectMetadata, comment }}
-            >
-              <span class="text-primary">
-                <i class="text-primary mr-2 fas fa-certificate" />
-                {isAdmin
-                  ? `${comment.owner.displayName} (admin) (from ${
-                      projectMetadata.symbol
-                    })`
-                  : `${comment.owner.displayName} (from ${
-                      projectMetadata.symbol
-                    })`}
-              </span>
-            </VisibleIf>
-          </PunditTypeSet>
-        </PunditContainer>
+        {projectMetadata && (
+          <PunditContainer policies={policies} user={comment.owner}>
+            <PunditTypeSet type="Comment">
+              <VisibleIf
+                action="isProjectAdmin"
+                model={{ project: projectMetadata, comment }}
+              >
+                <span class="text-primary">
+                  <i class="text-primary mr-2 fas fa-certificate" />
+                  {isAdmin
+                    ? `${comment.owner.displayName} (admin) (from ${
+                        projectMetadata.symbol
+                      })`
+                    : `${comment.owner.displayName} (from ${
+                        projectMetadata.symbol
+                      })`}
+                </span>
+              </VisibleIf>
+            </PunditTypeSet>
+          </PunditContainer>
+        )}
         <PunditContainer policies={policies} user={comment.owner}>
           <PunditTypeSet type="Comment">
             <VisibleIf
@@ -92,8 +95,10 @@ export default ({
       initReplyToThis={initReplyToThis}
       upvoteItem={upvoteItem}
       openModal={openModal}
-      labelAsSpam={() => labelAsSpam(comment, null)}
-      labelAsNotSpam={() => labelAsNotSpam(comment, null)}
+      labelAsSpam={labelAsSpam ? () => labelAsSpam(comment, null) : null}
+      labelAsNotSpam={
+        labelAsNotSpam ? () => labelAsNotSpam(comment, null) : null
+      }
     />
   </div>
 );

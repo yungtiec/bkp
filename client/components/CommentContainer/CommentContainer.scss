@@ -1,6 +1,7 @@
 @import "../../breakpoint";
 
 .comment-item {
+  width: 100%;
   background: #113954;
   padding: 20px;
   margin-bottom: 30px;
@@ -9,12 +10,22 @@
   }
 }
 
+.comment-item.light-mode {
+  background: white;
+  color: inherit;
+  padding: 0px;
+  margin-bottom: 0px;
+}
+
+.comment-item.light-mode p {
+  font-size: 15px;
+}
+
 .comment-item__header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   @include breakpoint(xs) {
-    flex-direction: column;
     margin-bottom: 7px;
     p {
       font-size: 12px;
@@ -44,6 +55,10 @@
   a:hover {
     color: #9ca6af;
   }
+}
+
+.light-mode .comment-item__comment {
+  color: #020721;
 }
 
 .comment-item__tags .badge,
@@ -82,17 +97,25 @@
   margin-bottom: 10px;
 }
 
+.light-mode .comment-item__action--bottom {
+  color: #828282;
+}
+
 .comment-item__action--bottom .btn {
   border-radius: 0;
 }
 
 .comment-item__action--bottom .fas {
-  padding: 5px;
+  padding: 5px 5px 5px 0;
   cursor: pointer;
 }
 
 .comment-item__action--bottom .upvoted {
   color: white;
+}
+
+.light-mode .comment-item__action--bottom .upvoted {
+  color: #414141;
 }
 
 .comment-item__verified-message {
@@ -155,6 +178,12 @@
 
 .comment-item__reply-item.last-item {
   border-bottom: 0px;
+}
+
+.light-mode .comment-item__at-someone {
+  background: #bfc0c1;
+  padding: 5px;
+  border-radius: 3px;
 }
 
 .comment-item__at-someone {

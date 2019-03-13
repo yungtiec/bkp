@@ -47,7 +47,6 @@ const ActionBar = ({
             </div>
           </VisibleIf>
         ) : null}
-        <div />
         <div>
           <VisibleIf
             action="Edit"

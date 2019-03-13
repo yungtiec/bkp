@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import { CommentBoxWithTagField } from "../index";
 import Select from "react-select";
 
-class EditCommentModal extends Component {
+export default class EditCommentModal extends Component {
   static propTypes = {
     id: PropTypes.number,
     issue: PropTypes.object,

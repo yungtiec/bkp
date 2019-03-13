@@ -19,12 +19,7 @@ export function postComment({
     .then(res => res.data);
 }
 
-export function postReplyToComment({
-  projectSymbol,
-  documentId,
-  parentId,
-  newComment
-}) {
+export function postReplyToComment({ documentId, parentId, newComment }) {
   return axios
     .post(`/api/documents/${documentId}/comments/${parentId}/reply`, {
       newComment
@@ -32,12 +27,7 @@ export function postReplyToComment({
     .then(res => res.data);
 }
 
-export function postUpvoteToComment({
-  projectSymbol,
-  documentId,
-  commentId,
-  hasUpvoted
-}) {
+export function postUpvoteToComment({ documentId, commentId, hasUpvoted }) {
   return axios
     .post(`/api/documents/${documentId}/comments/${commentId}/upvote`, {
       commentId,
@@ -47,7 +37,6 @@ export function postUpvoteToComment({
 }
 
 export function updateComment({
-  projectSymbol,
   documentId,
   commentId,
   newComment,

@@ -94,8 +94,10 @@ export default class Replies extends Component {
             })
           }
           openModal={() => openModal(reply, false, false)}
-          labelAsSpam={() => labelAsSpam(reply, rootId)}
-          labelAsNotSpam={() => labelAsNotSpam(reply, rootId)}
+          labelAsSpam={labelAsSpam ? () => labelAsSpam(reply, rootId) : null}
+          labelAsNotSpam={
+            labelAsNotSpam ? () => labelAsNotSpam(reply, rootId) : null
+          }
         >
           {reply.reviewed === "spam" ? (
             <p className="comment-item__comment">[deleted]</p>

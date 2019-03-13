@@ -2,8 +2,9 @@ import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import Select from "react-select";
-import { TagField, CKEditor } from "../../../components";
+import { TagField, CKEditor, HeroHeader } from "../../../components";
 import { createQuestion } from "../data/actions";
+import history from "../../../history";
 
 const fetchRequesters = async me => {
   const users = await axios.get("/api/users/delegated").then(res => res.data);
@@ -37,6 +38,16 @@ const NewQuestion = ({ me, createQuestion }) => {
 
   return (
     <div className="app-container">
+      <HeroHeader
+        title="Requests For Comment"
+        subtitle="Join the collaboration on blockchain law, regulation, and policy."
+      />
+      <button
+        className="btn btn-outline-primary mb-5"
+        onClick={() => history.push("/requests-for-comment")}
+      >
+        Back to browse
+      </button>
       {isAdmin ? (
         <div className="mb-3">
           Post on behalf of:

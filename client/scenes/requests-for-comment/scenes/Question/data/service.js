@@ -51,3 +51,34 @@ export function getCommentsByQuestionId({
     })
     .then(res => res.data);
 }
+
+export function postReplyToComment({ questionId, parentId, newComment }) {
+  return axios
+    .post(`/api/questions/${questionId}/comments/${parentId}/reply`, {
+      newComment
+    })
+    .then(res => res.data);
+}
+
+export function postUpvoteToComment({ questionId, commentId, hasUpvoted }) {
+  return axios
+    .post(`/api/questions/${questionId}/comments/${commentId}/upvote`, {
+      commentId,
+      hasUpvoted
+    })
+    .then(res => res.data);
+}
+
+export function putComment({
+  questionId,
+  commentId,
+  newComment,
+  selectedTags
+}) {
+  return axios
+    .put(`/api/questions/${questionId}/comments/${commentId}/edit`, {
+      newComment,
+      selectedTags
+    })
+    .then(res => res.data);
+}

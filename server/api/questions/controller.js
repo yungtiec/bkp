@@ -1,4 +1,10 @@
-const { Question, Comment, Tag } = require("../../db/models");
+const {
+  Question,
+  Comment,
+  Tag,
+  Notification,
+  User
+} = require("../../db/models");
 const _ = require("lodash");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
@@ -165,8 +171,11 @@ const postComment = async (req, res, next) => {
     var comment = await Comment.create({
       owner_id: req.user.id,
       question_id: Number(req.params.questionId),
-      comment: req.body.comment
+      comment: req.body.newComment
     });
+    comment = await Comment.scope([{ method: ["flatThreadByRootId"] }]).findOne(
+      { where: { id: comment.id } }
+    );
     res.send(comment);
     const question = await Question.scope([
       {
@@ -246,12 +255,184 @@ const getComments = async (req, res, next) => {
     };
     if (req.query.limit) options.limit = limit;
     // query
-    options.where = { question_id: question.id };
+    options.where = { question_id: question.id, hierarchyLevel: 1 };
     const comments = await Comment.scope({
       method: ["flatThreadByRootId"]
     }).findAll(options);
-    console.log(comments);
     res.send(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// this is exact copy and paste from document's comment controller
+// TODO: refactor
+const postReply = async (req, res, next) => {
+  try {
+    var ancestry;
+    const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
+    const parent = await Comment.findById(Number(req.params.parentId));
+    const child = _.assignIn(
+      _.omit(parent.toJSON(), [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "hierarchyLevel",
+        "parentId",
+        "comment",
+        "reviewed",
+        "owner"
+      ]),
+      {
+        comment: req.body.newComment,
+        reviewed: isAdmin ? "verified" : "pending"
+      }
+    );
+    var [ancestors, reply, user] = await Promise.all([
+      parent
+        .getAncestors({
+          include: [
+            {
+              model: User,
+              as: "owner",
+              required: false
+            }
+          ]
+        })
+        .then(ancestors =>
+          _.orderBy(ancestors, ["hierarchyLevel"], ["asc"]).concat(parent)
+        ),
+      Comment.create(child),
+      User.findById(req.user.id)
+    ]);
+    var rootAncestor = ancestors[0];
+    reply = await reply.setParent(parent.toJSON().id);
+    reply = await reply.setOwner(req.user.id);
+    ancestry = await Comment.scope({
+      method: [
+        "flatThreadByRootId",
+        { where: { id: rootAncestor ? rootAncestor.id : parent.id } }
+      ]
+    }).findOne();
+    await Notification.notifyRootAndParent({
+      sender: user,
+      comment: _.assignIn(reply.toJSON(), {
+        ancestors,
+        question: ancestry.question
+      }),
+      parent,
+      messageFragment: "replied to your post"
+    });
+    await sendEmail({
+      recipientEmail: ancestry.owner.email,
+      subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === "production",
+        "requests-for-comment",
+        ancestry.question.slug,
+        user.first_name,
+        user.last_name,
+        ancestry.id,
+        true
+      )
+    });
+    if (ancestry.owner.id !== 12) {
+      await sendEmail({
+        recipientEmail: "info@thebkp.com",
+        subject: `New Comment Activity From ${comment.owner.first_name} ${
+          comment.owner.last_name
+        }`,
+        message: generateCommentHtml(
+          process.env.NODE_ENV === "production",
+          "requests-for-comment",
+          ancestry.question.slug,
+          comment.owner.first_name,
+          comment.owner.last_name,
+          comment,
+          false
+        )
+      });
+    }
+    res.send(ancestry);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const postCommentUpvote = async (req, res, next) => {
+  try {
+    if (!req.body.hasUpvoted) {
+      await req.user.addUpvotedComment(req.params.commentId);
+    } else {
+      await req.user.removeUpvotedComment(req.params.commentId);
+    }
+    const comment = await Comment.scope({
+      method: ["upvotes", req.params.commentId]
+    }).findOne();
+    if (!req.body.hasUpvoted) {
+      await Notification.notify({
+        sender: req.user,
+        comment,
+        messageFragment: "liked your post"
+      });
+    }
+    res.send({
+      upvotesFrom: comment.upvotesFrom,
+      commentId: comment.id
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const putEditedComment = async (req, res, next) => {
+  try {
+    var comment = await Comment.findOne({
+      where: { id: req.params.commentId },
+      include: [
+        {
+          model: User,
+          as: "owner",
+          attributes: ["first_name", "last_name", "email", "name", "anonymity"]
+        },
+        {
+          model: Tag,
+          attributes: ["name", "id"],
+          required: false
+        }
+      ]
+    });
+    if (comment.owner.email !== req.user.email) res.sendStatus(401);
+    else {
+      var { addedTags, removedTags } = getAddedAndRemovedTags({
+        prevTags: comment.tags,
+        curTags: req.body.selectedTags
+      });
+      var removedTagPromises, addedTagPromises, issuePromise;
+      await comment.update({ comment: req.body.newComment });
+      removedTagPromises = Promise.map(removedTags, tag =>
+        comment.removeTag(tag.id)
+      );
+      addedTagPromises = Promise.map(addedTags, async addedTag => {
+        const [tag, created] = await Tag.findOrCreate({
+          where: { name: addedTag.value, display_name: addedTag.label },
+          default: { name: addedTag.value, display_name: addedTag.label }
+        });
+        return comment.addTag(tag.id);
+      });
+      await Promise.all([removedTagPromises, addedTagPromises]);
+      const ancestors = await comment.getAncestors({
+        raw: true
+      });
+      const rootAncestor = _.orderBy(ancestors, ["hierarchyLevel"], ["asc"])[0];
+      const ancestry = await Comment.scope({
+        method: [
+          "flatThreadByRootId",
+          { where: { id: rootAncestor ? rootAncestor.id : comment.id } }
+        ]
+      }).findOne();
+      res.send(ancestry);
+    }
   } catch (err) {
     next(err);
   }
@@ -264,5 +445,8 @@ module.exports = {
   postUpvote,
   postDownvote,
   postComment,
-  getComments
+  getComments,
+  postReply,
+  postCommentUpvote,
+  putEditedComment
 };

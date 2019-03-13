@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import {
   fetchCommentsById,
   updateCommentFilter,
+  clearCommentFilter,
+  replyToComment,
+  upvoteComment,
+  editComment,
   clearCommentFilter
 } from "../data/actions";
 import {
@@ -17,6 +21,8 @@ import {
 } from "../data/reducer";
 import { ArticleStyleLoader } from "../../../../../components";
 import { Comments } from "./index";
+import { loadModal, hideModal } from "../../../../../data/reducer";
+import { notify } from "reapop";
 
 class QueryComments extends React.Component {
   constructor(props) {
@@ -25,6 +31,10 @@ class QueryComments extends React.Component {
 
   componentDidMount() {
     this.props.fetchCommentsById(this.props.match.params.slug);
+  }
+
+  componentWillUnmount() {
+    this.props.clearCommentFilter();
   }
 
   render() {
@@ -64,14 +74,22 @@ const mapState = (state, ownProps) => {
     commentsLoading,
     additionalCommentsLoading,
     commentfilters: getFilters(state),
-    commentOptionMenus: getFilterOptionMenus(state)
+    commentOptionMenus: getFilterOptionMenus(state),
+    me: state.data.user
   };
 };
 
 const action = {
   fetchCommentsById,
   updateCommentFilter,
-  clearCommentFilter
+  clearCommentFilter,
+  replyToComment,
+  upvoteComment,
+  editComment,
+  clearCommentFilter,
+  loadModal,
+  hideModal,
+  notify
 };
 
 export default withRouter(

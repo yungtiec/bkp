@@ -59,15 +59,14 @@ export default class CommentBoxWithTagField extends Component {
   }
 
   handleSubmitEditedCommentAndTag(argObj) {
-    const { onSubmit } = this.props;
     const newArgObj = {
       ...argObj,
       ...this.props,
-      tags: this.state.selectedTags,
+      selectedTags: this.state.selectedTags,
       issueOpen: this.state.issueOpen,
       documentId: this.props.documentId
     };
-    onSubmit(newArgObj);
+    this.props.onSubmit(newArgObj);
     this.setState({
       selectedTags: [],
       issueOpen: false
