@@ -2,6 +2,7 @@ const passport = require("passport");
 const router = require("express").Router();
 const GitHubStrategy = require("passport-github").Strategy;
 const { User, Role } = require("../db/models");
+const { generateUserHandle } = require("./utils");
 module.exports = router;
 
 /**
@@ -65,7 +66,9 @@ if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
                   githubId,
                   first_name: firstName,
                   last_name: lastName,
-                  name: name
+                  name: name,
+                  user_handle:
+                    generateUserHandle(name) || generateUserHandle(displayName)
                 }
               }).spread(async (user, created) => {
                 if (!created) user = await user.update({ githubId });

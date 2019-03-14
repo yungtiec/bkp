@@ -1,4 +1,4 @@
-.comment-item__tag {
+.tag-field__tag {
   background-color: #ebf5ff;
   background-color: rgba(0, 126, 255, 0.08);
   border-radius: 2px;
@@ -13,11 +13,11 @@
   vertical-align: top;
 }
 
-.comment-item__tag.dark-bg {
+.tag-field__tag.dark-bg {
   background: rgb(235, 244, 253);
 }
 
-.comment-item__tag .close-icon {
+.tag-field__tag .close-icon {
   cursor: pointer;
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
@@ -28,7 +28,7 @@
   vertical-align: middle;
 }
 
-.comment-item__tag .select-value-label {
+.tag-field__tag .select-value-label {
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
   cursor: default;
@@ -37,7 +37,7 @@
   vertical-align: middle;
 }
 
-.comment-item__tag .select-value-label .select-aria-only {
+.tag-field__tag .select-value-label .select-aria-only {
   position: absolute;
   display: inline-block;
   height: 1px;

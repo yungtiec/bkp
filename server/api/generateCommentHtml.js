@@ -1,4 +1,12 @@
-module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) => `<!DOCTYPE html>
+module.exports = (
+  inProduction,
+  postType,
+  slug,
+  firstName,
+  lastName,
+  commentId,
+  isReply
+) => `<!DOCTYPE html>
 
 
 <html>
@@ -389,7 +397,9 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
 
                           <td>
 
-                            <h4 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">New ${isReply ? 'Reply' : 'Comment'}
+                            <h4 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">New ${
+                              isReply ? "Reply" : "Comment"
+                            }
                             </h4>
 
                             <p style="margin-bottom: 30px;">From ${firstName} ${lastName}
@@ -418,11 +428,13 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
                                           <td>
 
                                             <a href="${
-  inProduction
-    ? "https://thebkp.com"
-    : "http://localhost:8000"
-  }/s/${slug}/comment/${commentId}"
-                                              target="_blank">See New ${isReply ? 'Reply' : 'Comment'}
+                                              inProduction
+                                                ? "https://thebkp.com"
+                                                : "http://localhost:8000"
+                                            }/${postType}/${slug}/comment/${commentId}"
+                                              target="_blank">See New ${
+                                                isReply ? "Reply" : "Comment"
+                                              }
                                             </a>
                                           </td>
                                         </tr>

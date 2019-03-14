@@ -12,12 +12,6 @@ module.exports = (db, DataTypes) => {
     uri: {
       type: DataTypes.STRING
     },
-    version_question_id: {
-      type: DataTypes.INTEGER
-    },
-    version_answer_id: {
-      type: DataTypes.INTEGER
-    },
     quote: {
       type: DataTypes.TEXT
     },
@@ -55,6 +49,9 @@ module.exports = (db, DataTypes) => {
     });
     Comment.belongsTo(models.document, {
       foreignKey: "doc_id"
+    });
+    Comment.belongsTo(models.question, {
+      foreignKey: "question_id"
     });
   };
   Comment.loadScopes = function(models) {
@@ -233,21 +230,34 @@ function generateScopeForAncestry(models, ancestry) {
           ]
         },
         {
+          model: models.question,
+          include: [
+            {
+              model: models.user,
+              as: "owner",
+              attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "name",
+                "email",
+                "anonymity",
+                "user_handle"
+              ]
+            }
+          ]
+        },
+        {
           model: models.issue,
           attributes: ["open", "id"],
           include: [
             {
-              model: models.version,
-              as: "resolvingVersion",
+              model: models.document,
+              as: "resolvingDocument",
               include: [
                 {
-                  model: models.document,
-                  include: [
-                    {
-                      model: models.project,
-                      attributes: ["symbol"]
-                    }
-                  ]
+                  model: models.project,
+                  attributes: ["symbol"]
                 }
               ]
             }

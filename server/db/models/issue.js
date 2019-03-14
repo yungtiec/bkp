@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     Issue.belongsTo(models.comment, {
       foreignKey: "comment_id"
     });
-    Issue.belongsTo(models.version, {
-      foreignKey: "resolving_version_id",
-      as: "resolvingVersion"
+    Issue.belongsTo(models.document, {
+      foreignKey: "resolving_doc_id",
+      as: "resolvingDocument"
     });
   };
   return Issue;
