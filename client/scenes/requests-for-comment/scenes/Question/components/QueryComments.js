@@ -8,8 +8,7 @@ import {
   clearCommentFilter,
   replyToComment,
   upvoteComment,
-  editComment,
-  clearCommentFilter
+  editComment
 } from "../data/actions";
 import {
   getCommentsById,
