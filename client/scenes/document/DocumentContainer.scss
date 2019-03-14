@@ -70,15 +70,14 @@
 }
 
 .project-document__header-image {
-  width: 100%;
+  background-position: center !important;
+  background-origin: border-box !important;
+  background-size: cover !important;
+  display: block;
   height: 400px;
   position: relative;
-  display: inline-block;
   overflow: hidden;
   margin: 0;
-  //@include breakpoint(xs) {
-  //  max-width: 100%;
-  //}
 }
 
 .document__request-btn {
