@@ -275,7 +275,7 @@ class DocumentEditor extends Component {
                 <div className="markdown-body">{ReactHtmlParser(summary)}</div>
               </div>
             ) : null}
-            <div ref={el => (this[`content`] = el)}>
+            <div className="document-content" ref={el => (this[`content`] = el)}>
               <div
                 className="markdown-body"
                 onClick={this.handleAnnotationInContentOnClick}

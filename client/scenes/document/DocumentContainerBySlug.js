@@ -65,7 +65,7 @@ class DocumentContainer extends Component {
     wrapper.innerHTML = documentMetadata.description;
 
     return (
-      <div className={`main-container document-container ${sidebarOpen ? "sidebar-open" :  ""}`}>
+      <div className={`main-container document-container ${sidebarOpen ? "sidebar-open" :  "sidebar-closed"}`}>
         <Helmet>
           <title>{documentMetadata.title}</title>
           <meta name="description" itemProp="description" content={wrapper.textContent} />

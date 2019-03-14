@@ -101,6 +101,12 @@
   border: 0;
 }
 
+.document-content {
+  @media (max-width: 767px) {
+    padding: 0 15px 0 5px;
+  }
+}
+
 input[name="title"] {
   width: 300px;
   padding-left: 10px;

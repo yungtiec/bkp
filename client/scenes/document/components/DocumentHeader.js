@@ -39,18 +39,22 @@ export default class DocumentHeader extends Component {
 
     return (
       <div className="project-document__header">
-        <p className="document__title">{`${documentMetadata.title}`}</p>
-        <ProjectAuthorName name={creator.displayName} userHandle={creator.user_handle} createdAt={createdAt} />
-        <DocumentToolbar
-          documentMetadata={documentMetadata}
-          upvoteDocument={upvoteDocument}
-          downvoteDocument={downvoteDocument}
-          showEditor={showEditor}
-          isLoggedIn={isLoggedIn}
-          displayEditor={displayEditor}
-          userId={userId}
-        />
-        <img className="project-document__header-image" src={`${documentMetadata.header_img_url}&auto=format&fit=crop&w=800&q=80`}/>
+        <div className="project-document__header-text">
+          <p className="document__title">{`${documentMetadata.title}`}</p>
+          <ProjectAuthorName name={creator.displayName} userHandle={creator.user_handle} createdAt={createdAt} />
+          <DocumentToolbar
+            documentMetadata={documentMetadata}
+            upvoteDocument={upvoteDocument}
+            downvoteDocument={downvoteDocument}
+            showEditor={showEditor}
+            isLoggedIn={isLoggedIn}
+            displayEditor={displayEditor}
+            userId={userId}
+          />
+        </div>
+        <div className="project-document__header-image" style={{
+          backgroundImage: `url(${documentMetadata.header_img_url}`
+        }}/>
       </div>
     );
   }

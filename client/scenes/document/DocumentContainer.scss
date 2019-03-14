@@ -1,11 +1,8 @@
 @import "../../breakpoint";
 
 .document-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
   margin-top: 50px;
+  width: 740px;
   @include breakpoint(xs) {
     margin-top: 25px;
     display: initial;
@@ -19,16 +16,16 @@
   transition: all 0.2s ease-in-out;
   margin-top: 50px;
   margin-right: 750px;
-  align-items: start;
-  width: 100%;
-  @media (max-width: 1350px) {
-    align-items: start;
-  }
+}
+
+.sidebar-closed {
+  transition: all 0.2s ease-in-out;
+  margin: 50px auto 0px auto;
 }
 
 
 .project-document {
-  max-width: 740px;
+  width: 100%;
   padding: 27px 0px 6rem;
 }
 
@@ -38,17 +35,17 @@
 }
 
 .project-document__header .document__title {
+  width: 100%;
   font-weight: 700;
   font-size: 32px;
   line-height: 1.58;
   text-transform: capitalize;
   margin-bottom: 1rem;
-  max-width: 740px;
   font-family: "Merriweather", Helvetica, sans-serif;
   @include breakpoint(xs) {
     width: 100%;
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 32px;
+    line-height: 1.58;
   }
   @include breakpoint(sm) {
     width: 100%;
@@ -66,11 +63,22 @@
   flex-direction: column;
 }
 
-.project-document__header-image {
-  max-width: 740px;
-  @include breakpoint(xs) {
-    max-width: 100%;
+.project-document__header-text {
+  @media (max-width: 767px) {
+    padding: 0 15px 0 5px;
   }
+}
+
+.project-document__header-image {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0;
+  //@include breakpoint(xs) {
+  //  max-width: 100%;
+  //}
 }
 
 .document__request-btn {
@@ -80,6 +88,7 @@
 
 .project-document__footer {
   @include breakpoint(xs) {
+    padding: 0 15px 0 5px;
     flex-direction: column;
   }
 }
