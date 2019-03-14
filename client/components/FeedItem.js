@@ -16,9 +16,10 @@ export default ({
   numDownvotes,
   numComments
 }) => {
-  imgUrl = imgUrl.includes("unsplash")
-    ? imgUrl.concat("&auto=format&fit=crop&w=800&q=80")
-    : imgUrl;
+  imgUrl =
+    imgUrl && imgUrl.includes("unsplash")
+      ? imgUrl.concat("&auto=format&fit=crop&w=800&q=80")
+      : imgUrl;
   const backgroundImage = `url(${imgUrl ||
     "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"}`;
 

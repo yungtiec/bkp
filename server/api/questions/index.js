@@ -21,7 +21,12 @@ router.get("/", questionController.getQuestions);
  * @body {Object} question object
  *
  */
-router.post("/", questionController.postQuestion);
+router.post(
+  "/",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postQuestion
+);
 
 /**
  * Getting question by id
