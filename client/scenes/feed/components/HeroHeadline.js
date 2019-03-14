@@ -23,6 +23,14 @@ export default class HeroHeadline extends React.Component {
     const { documentsById, featureDocumentIds } = this.props;
     const hiddenOnXsSmScreenSize = "d-none d-sm-none d-md-block";
     const hiddenOnMdLgXlScreenSize = "d-md-none d-lg-none d-xl-none";
+    const currentImage = documentsById[ featureDocumentIds[this.state.index] ];
+    const imgUrl = currentImage.header_img_url.includes("unsplash") ?
+      currentImage.header_img_url.concat('&auto=format&fit=crop&w=800&q=80') :
+      currentImage.header_img_url;
+
+    console.log({imgUrl})
+    const backgroundImage = `url(${imgUrl ||
+    "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"}`;
     const backupImgUrl =
       "https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-1.2.1&auto=format&fit=crop&w=2492&q=80";
 
@@ -32,9 +40,7 @@ export default class HeroHeadline extends React.Component {
           <a
             className="feed__feature-img"
             style={{
-              backgroundImage: `url(${documentsById[
-                featureDocumentIds[this.state.index]
-              ].header_img_url || backupImgUrl}&auto=format&fit=crop&w=800&q=80)`
+              backgroundImage: `url(${imgUrl || backupImgUrl}`
             }}
           />
         </div>
