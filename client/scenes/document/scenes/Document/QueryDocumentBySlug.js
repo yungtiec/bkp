@@ -32,16 +32,12 @@ import { getDocumentMetadata } from "../../data/documentMetadata/reducer";
 import {
   fetchCommentsByDocId,
   addNewCommentSentFromServer,
-  addNewComment,
+  addNewComment
 } from "../../data/comments/actions";
 import { getAllComments } from "../../data/comments/reducer";
 
-
 // document/ckEditor
-import {
-  showEditor,
-  hideEditor
-} from "../../data/ckEditor/actions";
+import { showEditor, hideEditor } from "../../data/ckEditor/actions";
 
 // document/tags
 import {
@@ -77,9 +73,7 @@ class MyComponent extends React.Component {
   componentDidUpdate(prevProps) {
     const docId = this.props.documentMetadata.id;
     const previousDocId = prevProps.documentMetadata.id;
-    if (
-      previousDocId !== docId
-    ) {
+    if (previousDocId !== docId) {
       this.loadData({
         docId: docId
       });
@@ -98,20 +92,20 @@ class MyComponent extends React.Component {
 const mapState = state => {
   const documentMetadata = getDocumentMetadata(state);
   const {
-          commentsById,
-          commentIds,
-          unfilteredCommentIds,
-          nonSpamCommentIds,
-          commentsLoading
-        } = getAllComments(state, documentMetadata.content_html);
+    commentsById,
+    commentIds,
+    unfilteredCommentIds,
+    nonSpamCommentIds,
+    commentsLoading
+  } = getAllComments(state, documentMetadata.content_html);
   const {
-          sidebarOpen,
-          annotationHighlight,
-          verificationStatus,
-          commentSortBy,
-          commentIssueFilter,
-          sidebarContext
-        } = state.scenes.document;
+    sidebarOpen,
+    annotationHighlight,
+    verificationStatus,
+    commentSortBy,
+    commentIssueFilter,
+    sidebarContext
+  } = state.scenes.document;
 
   return {
     // global
@@ -121,9 +115,9 @@ const mapState = state => {
     onboard: state.data.user.onboard,
     // metadata
     isClosedForComment:
-    Number(documentMetadata.comment_until_unix) -
-    Number(moment().format("x")) <=
-    0,
+      Number(documentMetadata.comment_until_unix) -
+        Number(moment().format("x")) <=
+      0,
     documentMetadata: getDocumentMetadata(state),
     // comments
     commentsLoading,
@@ -142,7 +136,7 @@ const mapState = state => {
     commentSortBy,
     commentIssueFilter,
     sidebarContext,
-    sidebarCommentContext: getSidebarCommentContext(state),
+    sidebarCommentContext: getSidebarCommentContext(state)
   };
 };
 
@@ -166,7 +160,12 @@ const actions = {
   toggleSidebar,
   toggleSidebarContext,
   toggleAnnotationHighlight,
-  updateVerificationStatusInView,
+  updateVerificationStatusInView
 };
 
-export default withRouter(connect(mapState, actions)(MyComponent));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(MyComponent)
+);

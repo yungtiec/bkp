@@ -20,7 +20,11 @@ const renderTags = (tags, icon) =>
   tags && (
     <div className="profile-details--with-icons d-flex">
       <i class={`fas fa-${icon}`} style={{ lineHeight: 1.5 }} />
-      <div>{tags.map(l => <div>{l.display_name}</div>)}</div>
+      <div>
+        {tags.map(l => (
+          <div>{l.display_name}</div>
+        ))}
+      </div>
     </div>
   );
 
@@ -67,8 +71,8 @@ class ProfileDetails extends Component {
           {renderTags(profile.careerRole, "briefcase")}
           {renderTags(profile.location, "map-marker-alt")}
           <p className="profile-details--with-icons">
-            <i class="fas fa-clock" />Joined{" "}
-            {moment(profile.createdAt).format("MMM YYYY")}
+            <i class="fas fa-clock" />
+            Joined {moment(profile.createdAt).format("MMM YYYY")}
           </p>
           {renderTags(profile.education, "map-marker-alt")}
           {profile.website_url && (
@@ -134,6 +138,9 @@ class ProfileDetails extends Component {
             )
           ) : null}
         </h5>
+        {profile.delegate ? (
+          <p className="profile-details__user-handle">(managed by BKP admin)</p>
+        ) : null}
         <p className="profile-details__user-handle">@{profile.user_handle}</p>
         {profile.self_introduction ? (
           <p className="profile-details__self-introduction">

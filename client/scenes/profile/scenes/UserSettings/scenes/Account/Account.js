@@ -4,7 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Formsy from "formsy-react";
-import { InputGrid } from "../../components";
+import { InlineInputGrid } from "../../../../../../components";
 
 class Account extends React.Component {
   constructor(props) {
@@ -13,8 +13,6 @@ class Account extends React.Component {
       userHandleRequestMessage: {}
     };
   }
-
-  componentWillReceiveProps(nextProps) {}
 
   render() {
     const {
@@ -40,7 +38,7 @@ class Account extends React.Component {
                 <h6 className="font-weight-bold mb-0">Account</h6>
               </div>
               <div className="user-account__fieldset">
-                <InputGrid
+                <InlineInputGrid
                   type="email"
                   label="Email"
                   name="email"
@@ -49,7 +47,7 @@ class Account extends React.Component {
                   validationError="Please provide a valid email."
                   required
                 />
-                <InputGrid
+                <InlineInputGrid
                   type="input"
                   label="User handle"
                   name="user_handle"
@@ -102,7 +100,7 @@ class Account extends React.Component {
                 <h6 className="font-weight-bold mb-0">Password</h6>
               </div>
               <div className="user-account__fieldset">
-                <InputGrid
+                <InlineInputGrid
                   type="password"
                   label="Current Password"
                   name="password"
@@ -117,14 +115,14 @@ class Account extends React.Component {
                   }}
                   required
                 />
-                <InputGrid
+                <InlineInputGrid
                   type="password"
                   label="New Password"
                   name="newPassword"
                   value=""
                   required
                 />
-                <InputGrid
+                <InlineInputGrid
                   type="password"
                   label="Confirm Password"
                   name="confirmPassword"

@@ -6,10 +6,6 @@ const { User, Role } = require("../index");
 Promise = require("bluebird");
 
 describe("User model", () => {
-  beforeEach(() => {
-    // return db.sync({ force: true });
-  });
-
   describe("instanceMethods", () => {
     describe("correctPassword", () => {
       let cody;
@@ -29,6 +25,12 @@ describe("User model", () => {
 
       it("returns false if the password is incorrect", () => {
         expect(cody.correctPassword("bonez")).to.be.equal(false);
+      });
+
+      after(async () => {
+        await User.destroy({ where: { id: cody.id } }).catch(err =>
+          console.log(err)
+        );
       });
     }); // end describe('correctPassword')
   }); // end describe('instanceMethods')

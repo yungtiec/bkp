@@ -39,6 +39,18 @@ const getUsers = async (req, res, next) => {
   }
 };
 
+const getDelegatedUsers = async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      where: { delegate: true },
+      attributes: ["id", "name", "user_handle"]
+    });
+    res.send(users);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getUser = async (req, res, next) => {
   try {
     var requestedUser;
@@ -321,6 +333,7 @@ const checkUserHandle = async (req, res, next) => {
 
 module.exports = {
   getUsers,
+  getDelegatedUsers,
   getUser,
   getUserContributions,
   getUserProjects,

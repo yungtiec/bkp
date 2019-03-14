@@ -14,7 +14,7 @@ const getTags = async (input, callback) => {
 };
 
 export default ({ handleOnSelect, handleRemoveTag, selectedTags, width }) => (
-  <div>
+  <div className="tag-field">
     <AsyncCreatable
       multi={true}
       placeholder="add or create tag(s)"
@@ -24,12 +24,12 @@ export default ({ handleOnSelect, handleRemoveTag, selectedTags, width }) => (
       style={width ? { width } : null}
       menuContainerStyle={width ? { width } : null}
     />
-    <div className="comment-item__tags mt-2 mb-2">
+    <div className="tag-field__tags mt-2 mb-2">
       {selectedTags && selectedTags.length
         ? selectedTags.map((tag, index) => (
             <TagChip
-              key={`comment-tag__${tag.name}`}
-              containerClassname="comment-item__tag dark-bg"
+              key={`tag__${tag.name}`}
+              containerClassname="tag-field__tag dark-bg"
               tagValue={tag.name}
               closeIconOnClick={() => handleRemoveTag(index)}
             />

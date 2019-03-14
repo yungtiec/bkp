@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import autoBind from "react-autobind";
 import Select from "react-select";
 import { keys } from "lodash";
-import { CommentBoxWithTagField, Countdown } from "../index";
+import { Countdown } from "../index";
 import { withRouter } from "react-router-dom";
-import { signinWithUport } from './../../../../../../../client/data/reducer.js'
+import { CommentBoxWithTagField } from "../../../../../../components";
+import { signinWithUport } from "./../../../../../../../client/data/reducer.js";
 
 class SidebarHeader extends Component {
   constructor(props) {
@@ -108,7 +109,6 @@ class SidebarHeader extends Component {
               <CommentBoxWithTagField
                 showTags={true}
                 showIssueCheckbox={true}
-                tags={tags}
                 selectedTags={[]}
                 initialValue=""
                 documentId={documentMetadata.id}
@@ -149,7 +149,10 @@ class SidebarHeader extends Component {
                   <p className="mb-0">
                     <div className="sidebar__login-container-flex">
                       <div className="sidebar__login-container d-flex">
-                        <span className="sidebar__signin-text mb-2"> To join the conversation: </span>
+                        <span className="sidebar__signin-text mb-2">
+                          {" "}
+                          To join the conversation:{" "}
+                        </span>
                         <a
                           href={`/auth/google?state=${encodeURI(
                             this.props.location.pathname
@@ -158,18 +161,22 @@ class SidebarHeader extends Component {
                           <img src="/assets/btn_google_signin_dark_normal_web.png" />
                         </a>
                         <a onClick={signinWithUport}>
-                          <img src="/assets/btn_uport_signin_dark_normal_web.png"
-                          />
+                          <img src="/assets/btn_uport_signin_dark_normal_web.png" />
                         </a>
                         <a
                           href={`/auth/github?state=${encodeURI(
                             this.props.location.pathname
                           )}`}
                         >
-                          <img className="btn-github" src="/assets/btn-github-dark.png" />
+                          <img
+                            className="btn-github"
+                            src="/assets/btn-github-dark.png"
+                          />
                         </a>
                         <div class="d-flex mt-2">
-                          <span className="sidebar__signin-text">or sign in with</span>
+                          <span className="sidebar__signin-text">
+                            or sign in with
+                          </span>
                           <Link
                             to={{
                               pathname: "/login",
@@ -181,7 +188,7 @@ class SidebarHeader extends Component {
                           </Link>
                         </div>
                       </div>
-                      </div>
+                    </div>
                   </p>
                 )}
               </div>

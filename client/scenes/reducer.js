@@ -10,6 +10,7 @@ import { default as documentReducer } from "./document/reducer";
 import { default as wizardReducer } from "./wizard/reducer";
 import { default as myDocumentsReducer } from "./my-documents/reducer";
 import { default as feedReducer } from "./feed/reducer";
+import { default as requestsForCommentReducer } from "./requests-for-comment/reducer";
 
 export default combineReducers({
   project: projectReducer,
@@ -21,5 +22,6 @@ export default combineReducers({
   document: documentReducer,
   wizard: wizardReducer,
   myDocuments: myDocumentsReducer,
-  feed: feedReducer
+  feed: feedReducer,
+  requestsForComment: requestsForCommentReducer
 });

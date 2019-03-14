@@ -13,6 +13,7 @@ const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const moment = require("moment");
+const { generateUserHandle } = require("./utils");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const aws = require("aws-sdk");
@@ -66,6 +67,7 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", (req, res, next) => {
   User.create(req.body)
     .then(async user => {
+      user = await user.update({ user_handle: generateUserHandle(user) });
       user = await User.getContributions({
         includePrivateInfo: true,
         userId: user.id

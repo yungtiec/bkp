@@ -2,6 +2,7 @@ const passport = require("passport");
 const router = require("express").Router();
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const { User, Role } = require("../db/models");
+const { generateUserHandle } = require("./utils");
 module.exports = router;
 
 /**
@@ -66,7 +67,8 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
                   googleId,
                   first_name: firstName,
                   last_name: lastName,
-                  name: firstName + " " + lastName
+                  name: firstName + " " + lastName,
+                  user_handle: generateUserHandle(name)
                 }
               }).spread(async (user, created) => {
                 if (!created) user = await user.update({ googleId });

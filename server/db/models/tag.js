@@ -22,7 +22,12 @@ module.exports = (db, DataTypes) => {
     }
   });
   Tag.polymorphicAssociate = function(models) {
-    const ModelsTobeAssociate = [models.user, models.document, models.comment];
+    const ModelsTobeAssociate = [
+      models.user,
+      models.document,
+      models.comment,
+      models.question
+    ];
     for (const Model of ModelsTobeAssociate) {
       Model.belongsToMany(Tag, {
         foreignKey: "foreign_key",

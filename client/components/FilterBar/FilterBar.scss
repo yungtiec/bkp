@@ -1,0 +1,135 @@
+@import "../../breakpoint";
+
+.feed__filter {
+  border-top: 1px solid #e6eaea;
+  border-bottom: 1px solid #e6eaea;
+  flex-wrap: wrap;
+}
+
+.feed__filter-item-container {
+  position: relative;
+}
+
+.feed__filter-item {
+  position: relative;
+  float: left;
+  height: 69px;
+  padding: 0 20px;
+  line-height: 70px;
+  color: #202121;
+  font-size: 13px;
+  text-transform: uppercase;
+  text-align: center;
+  border-right: 1px solid #e6eaea;
+  cursor: pointer;
+}
+
+.feed__filter-item,
+.feed__filter-dropdown {
+  @include breakpoint(sm) {
+    text-align: left;
+    width: 42%;
+    border-bottom: 1px solid #e6eaea;
+    font-size: 10px;
+  }
+  @include breakpoint(xs) {
+    text-align: left;
+    width: 92%;
+    border-bottom: 1px solid #e6eaea;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+}
+
+.feed__filter-search {
+  flex: 1;
+  border-right: none;
+  justify-self: flex-start;
+  align-self: flex-start;
+  text-align: left;
+  border-bottom: 0px;
+  @include breakpoint(xs) {
+    width: 100%;
+  }
+}
+
+.feed__filter-search i {
+  font-size: 15px;
+}
+
+.feed__filter-search-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 69px;
+  line-height: 74px;
+  border: 0;
+  background-color: transparent;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  margin-bottom: -2px;
+  font-weight: 800;
+  @include breakpoint(xs) {
+    padding: 0px;
+  }
+}
+
+.feed__filter-search-input:focus {
+  outline: none;
+}
+
+.feed__filter-dropdown {
+  @include breakpoint(xs) {
+    width: 100vw;
+  }
+  position: absolute;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  width: 400px;
+  left: 0;
+  top: 70px;
+  height: auto;
+  background: white;
+  text-align: initial;
+  padding: 20px 20px 12px 20px;
+  line-height: 14px;
+  z-index: 2;
+}
+
+.feed__filter-option {
+  display: inline-block;
+  text-transform: lowercase;
+  border: 1px solid grey;
+  padding: 10px 10px 10px 10px;
+  line-height: 14px;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+  margin: 0 8px 8px 0;
+}
+
+.feed__filter-option:hover,
+.feed__filter-option--active {
+  border-color: #3f9bfc;
+  color: #3f9bfc;
+  background-color: transparent;
+}
+
+.feed__filter-label {
+  font-weight: 800;
+  cursor: inherit;
+  @include breakpoint(xs) {
+    width: 8%;
+    font-size: 10px;
+  }
+  @include breakpoint(sm) {
+    width: 8%;
+    font-size: 10px;
+  }
+}
+
+.feed__filter-clear {
+  text-decoration: underline !important;
+}
