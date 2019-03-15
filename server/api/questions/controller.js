@@ -140,6 +140,50 @@ const getQuestionBySlug = async (req, res, next) => {
   }
 };
 
+const putQuestion = async (req, res, next) => {
+  try {
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
+    var question = await Question.scope([
+      {
+        method: ["main", {}]
+      }
+    ]).findById(req.params.questionId);
+    if (!isAdmin && question.owner.id !== req.user.id) res.sendStatus(401);
+    var { addedTags, removedTags } = getAddedAndRemovedTags({
+      prevTags: question.tags,
+      curTags: req.body.selectedTags
+    });
+    var removedTagPromises, addedTagPromises;
+    question = await question.update({
+      title: req.body.title,
+      description: req.body.description,
+      owner_id: req.body.owner.value
+    });
+    removedTagPromises = Promise.map(removedTags, tag =>
+      question.removeTag(tag.id)
+    );
+    addedTagPromises = Promise.map(addedTags, async addedTag => {
+      const [tag, created] = await Tag.findOrCreate({
+        where: { name: addedTag.value, display_name: addedTag.label },
+        default: { name: addedTag.value, display_name: addedTag.label }
+      });
+      return question.addTag(tag.id);
+    });
+    await Promise.all([removedTagPromises, addedTagPromises]);
+    question = await Question.scope([
+      {
+        method: ["main", {}]
+      }
+    ]).findById(req.params.questionId);
+    res.send(question);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const postUpvote = async (req, res, next) => {
   try {
     if (req.body.hasDownvoted)
@@ -455,6 +499,7 @@ module.exports = {
   getQuestions,
   postQuestion,
   getQuestionBySlug,
+  putQuestion,
   postUpvote,
   postDownvote,
   postComment,

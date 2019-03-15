@@ -1,9 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
 import axios from "axios";
+import { assignIn } from "lodash";
 import Select from "react-select";
 import { TagField, CKEditor, HeroHeader } from "../../../components";
-import { createQuestion } from "../data/actions";
 import history from "../../../history";
 
 const fetchRequesters = async me => {
@@ -17,17 +16,32 @@ const fetchRequesters = async me => {
     .concat([{ label: "myself", value: me.id }]);
 };
 
-const NewQuestion = ({ me, createQuestion }) => {
+const QuestionEditor = ({ me, question, createQuestion, editQuestion }) => {
   const ckeScriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
   const isAdmin =
     me.roles &&
     me.roles.length &&
     me.roles.filter(r => r.name === "admin").length;
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [owner, setOwner] = useState({});
+  const [title, setTitle] = useState(question ? question.title : "");
+  const [description, setDescription] = useState(
+    question ? question.description : ""
+  );
+  const [selectedTags, setSelectedTags] = useState(
+    question
+      ? question.tags.map(t =>
+          assignIn({ label: t.display_name || t.name, value: t.name }, t)
+        )
+      : []
+  );
+  const [owner, setOwner] = useState(
+    question
+      ? assignIn(
+          { label: question.owner.name, value: question.owner.id },
+          question.owner
+        )
+      : {}
+  );
   const [delegatedAccounts, setDelegatedAccounts] = useState([]);
   const [error, setError] = useState(false);
 
@@ -44,9 +58,11 @@ const NewQuestion = ({ me, createQuestion }) => {
       />
       <button
         className="btn btn-outline-primary mb-5"
-        onClick={() => history.push("/requests-for-comment")}
+        onClick={() =>
+          history.push(`/requests-for-comment/${question ? question.slug : ""}`)
+        }
       >
-        Back to browse
+        Back to {question ? "question" : " browse"}
       </button>
       {isAdmin ? (
         <div className="mb-3">
@@ -115,12 +131,21 @@ const NewQuestion = ({ me, createQuestion }) => {
         onClick={() => {
           if (!title) setError(true);
           else {
-            createQuestion({
-              title,
-              description,
-              owner,
-              selectedTags
-            });
+            if (!question)
+              createQuestion({
+                title,
+                description,
+                owner,
+                selectedTags
+              });
+            else
+              editQuestion({
+                title,
+                description,
+                owner,
+                selectedTags,
+                question
+              });
           }
         }}
       >
@@ -131,18 +156,4 @@ const NewQuestion = ({ me, createQuestion }) => {
   );
 };
 
-const mapState = (state, ownProps) => {
-  return {
-    ...ownProps,
-    me: state.data.user
-  };
-};
-
-const actions = {
-  createQuestion
-};
-
-export default connect(
-  mapState,
-  actions
-)(NewQuestion);
+export default QuestionEditor;
