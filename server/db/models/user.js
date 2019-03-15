@@ -32,8 +32,12 @@ module.exports = (db, DataTypes) => {
           return () => this.getDataValue("salt");
         }
       },
+      delegate: {
+        type: Sequelize.BOOLEAN
+      },
       user_handle: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        unique: true
       },
       githubId: {
         type: DataTypes.STRING
@@ -183,9 +187,8 @@ module.exports = (db, DataTypes) => {
       foreignKey: "creator_id",
       as: "documents"
     });
-    User.hasMany(models.version, {
-      foreignKey: "creator_id",
-      as: "createdVersions"
+    User.hasMany(models.question, {
+      foreignKey: "owner_id"
     });
     User.belongsToMany(models.document, {
       as: "upvotedDocuments",
@@ -195,6 +198,16 @@ module.exports = (db, DataTypes) => {
     User.belongsToMany(models.document, {
       as: "downvotedDocuments",
       through: "document_downvotes",
+      foreignKey: "user_id"
+    });
+    User.belongsToMany(models.question, {
+      as: "upvotedQuestions",
+      through: "question_upvotes",
+      foreignKey: "user_id"
+    });
+    User.belongsToMany(models.question, {
+      as: "downvotedQuestions",
+      through: "question_downvotes",
       foreignKey: "user_id"
     });
     User.belongsToMany(models.document, {
@@ -234,7 +247,8 @@ module.exports = (db, DataTypes) => {
           "last_name",
           "organization",
           "anonymity",
-          "onboard"
+          "onboard",
+          "delegate"
         ],
         include: [commentQueryObj]
       };
@@ -300,7 +314,8 @@ module.exports = (db, DataTypes) => {
         "github_url",
         "user_handle",
         "avatar_url",
-        "createdAt"
+        "createdAt",
+        "delegate"
       ];
       if (userId) query = { id: userId };
       if (googleId) query = { googleId };
@@ -366,7 +381,8 @@ module.exports = (db, DataTypes) => {
                   "last_name",
                   "organization",
                   "user_handle",
-                  "avatar_url"
+                  "avatar_url",
+                  "delegate"
                 ]
               }
             ]

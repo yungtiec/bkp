@@ -25,7 +25,6 @@ const {
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
-const crypto = require("crypto");
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -68,9 +67,6 @@ const getFeatureDocuments = async (req, res, next) => {
       ],
       order: [["feature_order", "ASC"]]
     });
-
-    console.log(documents);
-
     res.send(documents);
   } catch (err) {
     next(err);

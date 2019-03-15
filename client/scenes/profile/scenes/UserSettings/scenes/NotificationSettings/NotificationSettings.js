@@ -1,3 +1,4 @@
+import './NotificationSettings.scss'
 import React, { Fragment } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import { keys } from "lodash";
@@ -25,35 +26,16 @@ class NotificationSettings extends React.Component {
 
 
   render() {
-    const { profile, updateProfile, screenWidth } = this.props;
+    const { screenWidth } = this.props;
 
     return (
       <div className="user-settings__edit-account w-100 mt-3">
         <div className=" d-flex w-100 justify-content-center">
-          <div className={`${screenWidth > 992 ? "w-50" : "w-100"}`}>
-            <h6 className="upload-accordion__scorecard-checkbox">
-              <input
-                name="new_articles"
-                type="checkbox"
-                checked={this.state.new_articles}
-                onChange={() => this.setState({
-                  new_articles: !this.state.new_articles
-                })}
-              />
-              New Articles
-            </h6>
-            <h6 className="upload-accordion__scorecard-checkbox">
-              <input
-                name="upvotes_and_downvotes"
-                type="checkbox"
-                checked={this.state.upvotes_and_downvotes}
-                onChange={() => this.setState({
-                  upvotes_and_downvotes: !this.state.upvotes_and_downvotes
-                })}
-              />
-             Upvotes And Downvotes
-            </h6>
-            <h6 className="upload-accordion__scorecard-checkbox">
+          <div className={`notification-panel ${screenWidth > 992 ? "w-50" : "w-100"}`}>
+            <div className="notification__fieldset-header">
+              <h6 className="font-weight-bold mb-0">Notification Settings</h6>
+            </div>
+            <h6 className="notification-checkbox">
               <input
                 name="comments_and_replies"
                 type="checkbox"
@@ -64,7 +46,29 @@ class NotificationSettings extends React.Component {
               />
               Comments And Replies
             </h6>
-            <h6 className="upload-accordion__scorecard-checkbox">
+            <h6 className="notification-checkbox">
+              <input
+                name="upvotes_and_downvotes"
+                type="checkbox"
+                checked={this.state.upvotes_and_downvotes}
+                onChange={() => this.setState({
+                  upvotes_and_downvotes: !this.state.upvotes_and_downvotes
+                })}
+              />
+              Upvotes And Downvotes
+            </h6>
+            <h6 className="notification-checkbox">
+              <input
+                name="new_articles"
+                type="checkbox"
+                checked={this.state.new_articles}
+                onChange={() => this.setState({
+                  new_articles: !this.state.new_articles
+                })}
+              />
+              New Articles
+            </h6>
+            <h6 className="notification-checkbox">
               <input
                 name="monthly_update"
                 type="checkbox"
@@ -75,11 +79,11 @@ class NotificationSettings extends React.Component {
               />
               Monthly Update
             </h6>
-          </div>
-          <div className="px-1">
-            <button type="submit" className="btn btn-outline-primary" onClick={this.updateNotificationConfigs}>
-              Submit
-            </button>
+            <div className="notification-checkbox">
+              <button type="submit" className="btn btn-outline-primary" onClick={this.updateNotificationConfigs}>
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </div>
