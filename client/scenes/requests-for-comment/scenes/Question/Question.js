@@ -41,7 +41,7 @@ const Question = ({
         downvotesFrom={question.downvotesFrom}
         myId={me.id}
         isAdmin={isAdmin}
-        isQuestionOwner={me.id === question.owner.id}
+        isQuestionOwner={!me.delegate && me.id === question.owner.id}
         hasUpvoted={hasUpvoted}
         hasDownvoted={hasDownvoted}
         upvoteQuestion={() =>
@@ -52,20 +52,22 @@ const Question = ({
         }
         slug={match && match.params.slug}
       />
-      <div className="mb-5" style={{ lineHeight: 1.5 }}>
-        Tags:{" "}
-        {question.tags && question.tags.length
-          ? question.tags.map((tag, index) => (
-              <TagChip
-                key={`tag__${tag.name}`}
-                containerClassname="tag-field__tag dark-bg"
-                tagValue={tag.name}
-              />
-            ))
-          : ""}
-      </div>
+      {question.tags && question.tags.length ? (
+        <div className="mb-2" style={{ lineHeight: 1.5 }}>
+          Tags:{" "}
+          {question.tags.map((tag, index) => (
+            <TagChip
+              key={`tag__${tag.name}`}
+              containerClassname="tag-field__tag dark-bg"
+              tagValue={tag.name}
+            />
+          ))}
+        </div>
+      ) : (
+        ""
+      )}
       {question.description ? (
-        <p>{ReactHtmlParser(question.description)}</p>
+        <div className="mt-5">{ReactHtmlParser(question.description)}</div>
       ) : null}
       <Conversation question={question} addNewComment={addNewComment} me={me} />
       <QueryComments />
