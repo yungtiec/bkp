@@ -112,18 +112,20 @@ class DocumentContainer extends Component {
           displayEditor={displayEditor}
           userId={userId}
         />
-        <div className="mb-3" style={{ lineHeight: 1.5 }}>
-          Tags:{" "}
-          {documentMetadata.tags && documentMetadata.tags.length
-            ? documentMetadata.tags.map((tag, index) => (
-                <TagChip
-                  key={`tag__${tag.name}`}
-                  containerClassname="tag-field__tag dark-bg"
-                  tagValue={tag.name}
-                />
-              ))
-            : ""}
-        </div>
+        {documentMetadata.tags && documentMetadata.tags.length ? (
+          <div className="mb-3" style={{ lineHeight: 1.5 }}>
+            Tags:{" "}
+            {documentMetadata.tags.map((tag, index) => (
+              <TagChip
+                key={`tag__${tag.name}`}
+                containerClassname="tag-field__tag dark-bg"
+                tagValue={tag.name}
+              />
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
         <Switch>
           <Route
             path={`${match.path}`}

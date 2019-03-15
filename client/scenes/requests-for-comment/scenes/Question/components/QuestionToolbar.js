@@ -46,7 +46,7 @@ export default ({
       >
         Back to browse
       </button>
-      {isQuestionOwner ? (
+      {isQuestionOwner || isAdmin ? (
         <button
           type="button"
           className="btn btn-outline-primary"
