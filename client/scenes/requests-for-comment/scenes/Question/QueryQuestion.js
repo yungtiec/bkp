@@ -5,7 +5,8 @@ import {
   fetchQuestionBySlug,
   downvoteQuestion,
   upvoteQuestion,
-  addNewComment
+  addNewComment,
+  editQuestion
 } from "./data/actions";
 import { getQuestion } from "./data/reducer";
 import Question from "./Question";
@@ -37,7 +38,8 @@ const action = {
   fetchQuestionBySlug,
   downvoteQuestion,
   upvoteQuestion,
-  addNewComment
+  addNewComment,
+  editQuestion
 };
 
 export default withRouter(

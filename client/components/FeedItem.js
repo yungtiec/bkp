@@ -41,8 +41,21 @@ export default ({
       ) : null}
       <div className="feed-item__content">
         {category ? <h6>{category}</h6> : null}
-        <h5>{title}</h5>
-        <p>{description}</p>
+        <h5 className="mb-1">{title}</h5>
+        {tags && tags.length ? (
+          <div className="mb-2">
+            <span style={{ fontSize: "12px" }}>Tags: </span>
+            {tags.map(tag => (
+              <span key={`tag-${tag.name}`} className="badge badge-light">
+                {tag.name}
+                {"  "}
+              </span>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+        <div>{description}</div>
         <div className="feed-item__content-bottom d-flex justify-content-between align-items-center">
           <span>
             {date} - {creatorName}
