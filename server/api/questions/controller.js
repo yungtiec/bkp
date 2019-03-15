@@ -87,29 +87,39 @@ const getQuestions = async (req, res, next) => {
 
 const postQuestion = async (req, res, next) => {
   try {
-    const slug = await createSlug(
-      "",
-      req.body.title + req.body.description || ""
-    );
-    var question = await Question.create(
-      _.assignIn({ slug, owner_id: req.body.owner.value }, req.body)
-    );
-    const selectedTagPromises = await Promise.map(
-      req.body.selectedTags,
-      async selectedTag => {
-        const [tag, created] = await Tag.findOrCreate({
-          where: { name: selectedTag.value, display_name: selectedTag.label },
-          default: { name: selectedTag.value, display_name: selectedTag.label }
-        });
-        return question.addTag(tag.id);
-      }
-    );
-    question = await Question.scope([
-      {
-        method: ["main", {}]
-      }
-    ]).findOne({ where: { id: question.id } });
-    res.send(question);
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
+    if (!isAdmin) res.sendStatus(401);
+    else {
+      const slug = await createSlug(
+        "",
+        req.body.title + req.body.description || ""
+      );
+      var question = await Question.create(
+        _.assignIn({ slug, owner_id: req.body.owner.value }, req.body)
+      );
+      const selectedTagPromises = await Promise.map(
+        req.body.selectedTags,
+        async selectedTag => {
+          const [tag, created] = await Tag.findOrCreate({
+            where: { name: selectedTag.value, display_name: selectedTag.label },
+            default: {
+              name: selectedTag.value,
+              display_name: selectedTag.label
+            }
+          });
+          return question.addTag(tag.id);
+        }
+      );
+      question = await Question.scope([
+        {
+          method: ["main", {}]
+        }
+      ]).findOne({ where: { id: question.id } });
+      res.send(question);
+    }
   } catch (err) {
     next(err);
   }
@@ -241,7 +251,7 @@ const getComments = async (req, res, next) => {
     // construct limit, offset and order options
     var limit = Number(req.query.limit);
     var offset = Number(req.query.offset);
-    var order = JSON.parse(req.query.order);
+    var order = req.query.order && JSON.parse(req.query.order);
     if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
     } else if (order && order.value === "most-upvoted") {
@@ -270,7 +280,10 @@ const getComments = async (req, res, next) => {
 const postReply = async (req, res, next) => {
   try {
     var ancestry;
-    const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
     const parent = await Comment.findById(Number(req.params.parentId));
     const child = _.assignIn(
       _.omit(parent.toJSON(), [
