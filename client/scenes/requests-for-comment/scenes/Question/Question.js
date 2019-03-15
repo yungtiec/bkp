@@ -1,7 +1,7 @@
 import React from "react";
 import ReactHtmlParser from "react-html-parser";
 import { find } from "lodash";
-import { HeroHeader } from "../../../../components";
+import { HeroHeader, TagChip } from "../../../../components";
 import { Conversation, QueryComments } from "./components";
 import history from "../../../../history";
 
@@ -30,7 +30,7 @@ export default ({
         subtitle={`by ${question.owner.name}
       ${question.owner.delegate ? " (Reposted By BKP Admin)" : ""} `}
       />
-      <div className="btn-group mb-5" role="group" aria-label="Basic example">
+      <div className="btn-group mb-2" role="group" aria-label="Basic example">
         <button
           type="button"
           className={`btn ${
@@ -64,6 +64,18 @@ export default ({
         >
           Back to browse
         </button>
+      </div>
+      <div className="mb-5" style={{ lineHeight: 1.5 }}>
+        Tags:{" "}
+        {question.tags && question.tags.length
+          ? question.tags.map((tag, index) => (
+              <TagChip
+                key={`tag__${tag.name}`}
+                containerClassname="tag-field__tag dark-bg"
+                tagValue={tag.name}
+              />
+            ))
+          : ""}
       </div>
       {question.description ? (
         <p>{ReactHtmlParser(question.description)}</p>
