@@ -23,7 +23,7 @@ export default ({
               )[0]
             : ""
         }
-        tags
+        tags={questionsBySlug[slug].tags}
         date={moment(questionsBySlug[slug].createdAt).format("LL")}
         creatorName={`${questionsBySlug[slug].owner.displayName}${
           questionsBySlug[slug].owner.delegate ? " (Reposted by BKP Admin)" : ""
