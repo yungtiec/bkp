@@ -183,10 +183,6 @@ const postComment = async (req, res, next) => {
       question_id: Number(req.params.questionId),
       comment: req.body.newComment
     });
-    comment = await Comment.scope([{ method: ["flatThreadByRootId"] }]).findOne(
-      { where: { id: comment.id } }
-    );
-    res.send(comment);
     const question = await Question.scope([
       {
         method: ["main", {}]
@@ -197,12 +193,16 @@ const postComment = async (req, res, next) => {
     ]).findOne({
       where: { id: req.params.questionId }
     });
-    const tags = await Promise.map(req.body.tags || [], tag =>
+    const tags = await Promise.map(req.body.selectedTags || [], tag =>
       Tag.findOrCreate({
         where: { name: tag.value },
         default: { name: tag.value.toLowerCase(), display_name: tag.value }
       }).spread((tag, created) => comment.addTag(tag))
     );
+    comment = await Comment.scope([{ method: ["flatThreadByRootId"] }]).findOne(
+      { where: { id: comment.id } }
+    );
+    res.send(comment);
     const isRepostedByBKPEmail = question.owner.email.includes("tbp.admin");
     await sendEmail({
       recipientEmail: isRepostedByBKPEmail
@@ -222,7 +222,7 @@ const postComment = async (req, res, next) => {
       )
     });
     // Send this to info@thebkp.com
-    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+    if (question.owner.id !== 12 && !isRepostedByBKPEmail) {
       await sendEmail({
         recipientEmail: "info@thebkp.com",
         subject: `New Comment Activity From ${comment.owner.first_name} ${

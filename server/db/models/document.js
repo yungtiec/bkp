@@ -290,6 +290,9 @@ module.exports = (db, DataTypes) => {
           model: models["project"]
         },
         {
+          model: models["tag"]
+        },
+        {
           model: models["comment"],
           required: false,
           attributes: ["id", "reviewed", "hierarchyLevel"],
