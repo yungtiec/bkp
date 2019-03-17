@@ -542,10 +542,15 @@ module.exports = (db, DataTypes) => {
     user.user_handle = user_handle;
   };
 
-  const hookChain = async user => {
+  const beforeCreateHookChain = async user => {
     setSaltAndPassword(user);
     setName(user);
     await setUserHandle(user);
+  };
+
+  const beforeUpdateHookChain = async user => {
+    setSaltAndPassword(user);
+    setName(user);
   };
 
   /**
@@ -662,8 +667,8 @@ module.exports = (db, DataTypes) => {
     return commentQueryObj;
   }
 
-  User.beforeCreate(hookChain);
-  User.beforeUpdate(hookChain);
+  User.beforeCreate(beforeCreateHookChain);
+  User.beforeUpdate(beforeUpdateHookChain);
 
   return User;
 };
