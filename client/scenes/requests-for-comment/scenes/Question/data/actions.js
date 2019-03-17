@@ -8,7 +8,8 @@ import {
   getCommentsByQuestionId,
   postUpvoteToComment,
   postReplyToComment,
-  putComment
+  putComment,
+  putQuestionBySlug
 } from "./service";
 import { notify } from "reapop";
 import history from "../../../../../history";
@@ -21,6 +22,33 @@ export function fetchQuestionBySlug(slug) {
         type: types.QUESTION_FETCHED,
         question
       });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+export function editQuestion({
+  question,
+  title,
+  description,
+  owner,
+  selectedTags
+}) {
+  return async (dispatch, getState) => {
+    try {
+      const updatedQuestion = await putQuestionBySlug({
+        question,
+        title,
+        description,
+        owner,
+        selectedTags
+      });
+      dispatch({
+        type: types.QUESTION_UPDATED,
+        updatedQuestion
+      });
+      history.push(`/requests-for-comment/${question.slug}`);
     } catch (err) {
       console.log(err);
     }

@@ -67,6 +67,13 @@ class Navbar extends Component {
               ""
             )}
             {width > 1060 ? (
+              <Link to="/requests-for-comment" className="navbar__nav-item">
+                requests for comment
+              </Link>
+            ) : (
+              ""
+            )}
+            {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
@@ -116,8 +123,11 @@ class Navbar extends Component {
                 updateStatus={updateStatus}
                 isLoggedIn={isLoggedIn}
               />
-            ) : null }
-            <AuthWidget inNavbar={true} lastPath={this.props.location.pathname}/>
+            ) : null}
+            <AuthWidget
+              inNavbar={true}
+              lastPath={this.props.location.pathname}
+            />
           </div>
         </nav>
       </div>

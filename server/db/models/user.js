@@ -2,6 +2,7 @@
 const crypto = require("crypto");
 const Sequelize = require("sequelize");
 const { assignIn, cloneDeep, omit } = require("lodash");
+const { generateUserHandle } = require("../../auth/utils");
 
 module.exports = (db, DataTypes) => {
   const User = db.define(
@@ -538,9 +539,24 @@ module.exports = (db, DataTypes) => {
     user.name = !user.name ? user.first_name + " " + user.last_name : user.name;
   };
 
-  const hookChain = user => {
+  const setUserHandle = async user => {
+    let user_handle = generateUserHandle(user);
+    const existingUser = await User.findOne({
+        where : {user_handle : user_handle}
+    });
+
+    if (existingUser) {
+      const count = await User.count();
+      user_handle = user_handle + count;
+    }
+
+    user.user_handle = user_handle;
+  };
+
+  const hookChain = async user => {
     setSaltAndPassword(user);
     setName(user);
+    await setUserHandle(user);
   };
 
   /**

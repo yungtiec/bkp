@@ -69,6 +69,23 @@ export function postUpvoteToComment({ questionId, commentId, hasUpvoted }) {
     .then(res => res.data);
 }
 
+export function putQuestionBySlug({
+  question,
+  title,
+  description,
+  owner,
+  selectedTags
+}) {
+  return axios
+    .put(`/api/questions/${question.id}`, {
+      title,
+      description,
+      owner,
+      selectedTags
+    })
+    .then(res => res.data);
+}
+
 export function putComment({
   questionId,
   commentId,

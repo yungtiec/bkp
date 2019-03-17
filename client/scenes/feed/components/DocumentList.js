@@ -26,7 +26,7 @@ export default ({
                 elem => elem.type === "p"
               )[0]
         }
-        tags
+        tags={documentsById[id].tags}
         date={moment(documentsById[id].createdAt).format("LL")}
         creatorName={`${documentsById[id].creator.displayName}${
           documentsById[id].creator.delegate ? " (Reposted by BKP Admin)" : ""
