@@ -67,7 +67,7 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", (req, res, next) => {
   User.create(req.body)
     .then(async user => {
-      user = await user.update({ user_handle: generateUserHandle(user) });
+      //user = await user.update({ user_handle: generateUserHandle(user) });
       user = await User.getContributions({
         includePrivateInfo: true,
         userId: user.id
