@@ -186,7 +186,6 @@ async function dispatchFetchFilteredComments({
     question,
     commentfilters
   } = state.scenes.requestsForComment.scenes.question.data;
-  questionSlug = questionSlug || question.slug;
   if (!loadMore) {
     commentOffset = 0;
     dispatch({
