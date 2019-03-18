@@ -32,6 +32,7 @@ const Question = ({
   return (
     <div className="app-container">
       <HeroHeader
+        style={{"margin-bottom": "30px"}}
         title={question.title}
         subtitle={`Posted by ${question.owner.name}
       ${question.owner.delegate ? " (Reposted By BKP Admin)" : ""} `}
@@ -53,8 +54,7 @@ const Question = ({
         slug={match && match.params.slug}
       />
       {question.tags && question.tags.length ? (
-        <div className="mb-2" style={{ lineHeight: 1.5 }}>
-          Tags:{" "}
+        <div className="mt-4 mb-2" style={{ lineHeight: 1.5 }}>
           {question.tags.map((tag, index) => (
             <TagChip
               key={`tag__${tag.name}`}
@@ -67,7 +67,7 @@ const Question = ({
         ""
       )}
       {question.description ? (
-        <div className="mt-5 markdown-body">{ReactHtmlParser(question.description)}</div>
+        <div className="mt-4 markdown-body">{ReactHtmlParser(question.description)}</div>
       ) : null}
       <Conversation question={question} addNewComment={addNewComment} me={me} />
       <QueryComments slug={match.params.slug} />
