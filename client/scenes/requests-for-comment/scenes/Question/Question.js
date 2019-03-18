@@ -70,7 +70,7 @@ const Question = ({
         <div className="mt-5">{ReactHtmlParser(question.description)}</div>
       ) : null}
       <Conversation question={question} addNewComment={addNewComment} me={me} />
-      <QueryComments />
+      <QueryComments slug={match.params.slug} />
     </div>
   );
 };
