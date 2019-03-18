@@ -33,7 +33,7 @@ const Question = ({
     <div className="app-container">
       <HeroHeader
         title={question.title}
-        subtitle={`by ${question.owner.name}
+        subtitle={`Posted by ${question.owner.name}
       ${question.owner.delegate ? " (Reposted By BKP Admin)" : ""} `}
       />
       <QuestionToolbar
@@ -67,7 +67,7 @@ const Question = ({
         ""
       )}
       {question.description ? (
-        <div className="mt-5">{ReactHtmlParser(question.description)}</div>
+        <div className="mt-5 markdown-body">{ReactHtmlParser(question.description)}</div>
       ) : null}
       <Conversation question={question} addNewComment={addNewComment} me={me} />
       <QueryComments />
