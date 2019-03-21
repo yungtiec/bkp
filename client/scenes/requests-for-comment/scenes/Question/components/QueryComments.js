@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import {
   fetchCommentsById,
   updateCommentFilter,
-  clearCommentFilter,
+  clearComments,
   replyToComment,
   upvoteComment,
   editComment
@@ -29,11 +29,11 @@ class QueryComments extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCommentsById(this.props.match.params.slug);
+    this.props.fetchCommentsById(this.props.slug);
   }
 
   componentWillUnmount() {
-    this.props.clearCommentFilter();
+    this.props.clearComments();
   }
 
   render() {
@@ -81,11 +81,10 @@ const mapState = (state, ownProps) => {
 const action = {
   fetchCommentsById,
   updateCommentFilter,
-  clearCommentFilter,
+  clearComments,
   replyToComment,
   upvoteComment,
   editComment,
-  clearCommentFilter,
   loadModal,
   hideModal,
   notify

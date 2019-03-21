@@ -31,6 +31,7 @@ export default ({
         numUpvotes={Number(questionsBySlug[slug].num_upvotes)}
         numDownvotes={Number(questionsBySlug[slug].num_downvotes)}
         numComments={Number(questionsBySlug[slug].num_comments)}
+        isRequestForComment={true}
       />
     ))}
     <div className="text-center mb-5">

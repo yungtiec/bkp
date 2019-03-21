@@ -14,7 +14,8 @@ export default ({
   creatorName,
   numUpvotes,
   numDownvotes,
-  numComments
+  numComments,
+  isRequestForComment
 }) => {
   imgUrl =
     imgUrl && imgUrl.includes("unsplash")
@@ -42,7 +43,11 @@ export default ({
       <div className="feed-item__content">
         {category ? <h6>{category}</h6> : null}
         <h5>{title}</h5>
-        <span className="feed-item__author-name d-flex mb-2">By {creatorName}</span>
+        {
+          isRequestForComment ?
+            <span className="feed-item__author-name d-flex mb-2">Posted by {creatorName}</span> :
+            <span className="feed-item__author-name d-flex mb-2">By {creatorName}</span>
+        }
         {/*{tags && tags.length ? (*/}
           {/*<div className="mb-2">*/}
             {/*<span style={{ fontSize: "12px" }}>Tags: </span>*/}
