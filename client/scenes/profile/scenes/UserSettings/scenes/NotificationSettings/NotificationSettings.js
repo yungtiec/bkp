@@ -8,12 +8,13 @@ class NotificationSettings extends React.Component {
   constructor(props) {
     super(props);
     const notificationConfig = this.props.profile.notification_config || {};
+    console.log(this.props);
     this.state = {
       new_articles: notificationConfig.new_articles || false,
       upvotes_and_downvotes: notificationConfig.upvotes_and_downvotes|| false,
       comments_and_replies: notificationConfig.comments_and_replies|| false,
       monthly_update: notificationConfig.monthly_update|| false,
-    }
+    };
 
     autoBind(this);
   }

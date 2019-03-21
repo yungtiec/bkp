@@ -3,8 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
    return Promise.all([ queryInterface.changeColumn("users", "user_handle", {
-      type: Sequelize.TEXT,
-      unique: true
+      type: Sequelize.TEXT
     })
    ]);
   },

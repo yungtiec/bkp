@@ -120,16 +120,30 @@ const createSlug = async (docTitle, contentHtml) => {
   }
 };
 
-const sendEmail = ({ recipientEmail, subject, message }) => {
+const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: recipientEmail,
+  const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
+  console.log({shouldSendEmail});
+  if (shouldSendEmail) {
+    const userMsg = {
+      to: user.email,
+      from: "info@thebkp.com",
+      subject: subject,
+      text: message,
+      html: message
+    };
+    await sgMail.send(userMsg);
+  }
+
+  const AdminMsg = {
+    to: 'johnquiwacode@gmail.com',
     from: "info@thebkp.com",
-    subject: subject,
+    subject: subject + ' - Admin Notification',
     text: message,
     html: message
   };
-  return sgMail.send(msg);
+
+  return await sgMail.send(AdminMsg);
 };
 
 const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
