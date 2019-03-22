@@ -171,6 +171,11 @@ const hasNotificationPermission = async (userId, commentType) => {
       where: { id: userId }
     });
     const notificationConfig = requester.notification_config;
+
+    if (!notificationConfig || (notificationConfig && notificationConfig.disable_all)) {
+      return false;
+    }
+
     switch (commentType) {
       case 'COMMENT':
         return notificationConfig[COMMENT];

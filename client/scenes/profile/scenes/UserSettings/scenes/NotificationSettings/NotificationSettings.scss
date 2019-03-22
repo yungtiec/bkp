@@ -3,8 +3,17 @@
   padding: 12px 20px;
 }
 
+.notification-description {
+  font-size: 13px;
+  padding: 0px 20px;
+  margin-bottom: 10px;
+  color: #838383;
+}
+
 .notification-checkbox {
   padding: 6px 20px;
+  font-size: 13px;
+  font-weight: 300;
 
   input {
     margin-right: 10px;
