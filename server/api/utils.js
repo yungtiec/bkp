@@ -123,7 +123,6 @@ const createSlug = async (docTitle, contentHtml) => {
 const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
-  console.log({shouldSendEmail});
   if (shouldSendEmail) {
     const userMsg = {
       to: user.email,
