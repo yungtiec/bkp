@@ -135,7 +135,7 @@ const sendEmail = async ({ user, emailType, subject, message }) => {
   }
 
   const AdminMsg = {
-    to: 'johnquiwacode@gmail.com',
+    to: 'info@thebkp.com',
     from: "info@thebkp.com",
     subject: subject + ' - Admin Notification',
     text: message,
