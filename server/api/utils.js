@@ -120,16 +120,29 @@ const createSlug = async (docTitle, contentHtml) => {
   }
 };
 
-const sendEmail = ({ recipientEmail, subject, message }) => {
+const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: recipientEmail,
+  const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
+  if (shouldSendEmail) {
+    const userMsg = {
+      to: user.email,
+      from: "info@thebkp.com",
+      subject: subject,
+      text: message,
+      html: message
+    };
+    await sgMail.send(userMsg);
+  }
+
+  const AdminMsg = {
+    to: 'info@thebkp.com',
     from: "info@thebkp.com",
-    subject: subject,
+    subject: subject + ' - Admin Notification',
     text: message,
     html: message
   };
-  return sgMail.send(msg);
+
+  return await sgMail.send(AdminMsg);
 };
 
 const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
@@ -148,6 +161,34 @@ const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
   };
 };
 
+const hasNotificationPermission = async (userId, commentType) => {
+  const COMMENT = 'comments_and_replies';
+  const VOTE = 'upvotes_and_downvotes';
+
+  try {
+    const requester = await User.findOne({
+      where: { id: userId }
+    });
+    const notificationConfig = requester.notification_config;
+
+    if (!notificationConfig || (notificationConfig && notificationConfig.disable_all)) {
+      return false;
+    }
+
+    switch (commentType) {
+      case 'COMMENT':
+        return notificationConfig[COMMENT];
+      case 'VOTE':
+        return notificationConfig[VOTE];
+      default:
+        return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
+
 module.exports = {
   isAdmin,
   ensureAuthentication,
@@ -158,5 +199,6 @@ module.exports = {
   getEngagedUsers,
   createSlug,
   sendEmail,
-  getAddedAndRemovedTags
+  getAddedAndRemovedTags,
+  hasNotificationPermission
 };

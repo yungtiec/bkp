@@ -38,6 +38,11 @@ export default function(state = initialState, action) {
         ...state,
         question: action.question
       };
+    case types.QUESTION_UPDATED:
+      return {
+        ...state,
+        question: action.updatedQuestion
+      };
     case types.QUESTION_VOTED:
       return addVotesToQuestion(action, state);
     case types.COMMENTS_REQUESTED:

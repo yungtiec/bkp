@@ -115,7 +115,8 @@ module.exports = (db, DataTypes) => {
               "name",
               "email",
               "id",
-              "anonymity"
+              "anonymity",
+              "avatar_url"
             ]
           },
           {
@@ -183,7 +184,7 @@ function generateScopeForAncestry(models, ancestry) {
         {
           model: models.user,
           as: "upvotesFrom",
-          attributes: ["first_name", "last_name", "name", "email", "id"]
+          attributes: ["first_name", "last_name", "name", "email", "id", "avatar_url"]
         },
         {
           model: models.user,
@@ -195,7 +196,8 @@ function generateScopeForAncestry(models, ancestry) {
             "name",
             "email",
             "anonymity",
-            "user_handle"
+            "user_handle",
+            "avatar_url"
           ],
           include: [
             {
@@ -224,7 +226,8 @@ function generateScopeForAncestry(models, ancestry) {
                 "name",
                 "email",
                 "anonymity",
-                "user_handle"
+                "user_handle",
+                "avatar_url"
               ]
             }
           ]
@@ -242,7 +245,8 @@ function generateScopeForAncestry(models, ancestry) {
                 "name",
                 "email",
                 "anonymity",
-                "user_handle"
+                "user_handle",
+                "avatar_url"
               ]
             }
           ]
@@ -270,7 +274,7 @@ function generateScopeForAncestry(models, ancestry) {
             {
               model: models.user,
               as: "upvotesFrom",
-              attributes: ["first_name", "last_name", "name", "email", "id"]
+              attributes: ["first_name", "last_name", "name", "email", "id", "avatar_url"]
             },
             {
               model: models.user,
@@ -281,7 +285,8 @@ function generateScopeForAncestry(models, ancestry) {
                 "last_name",
                 "name",
                 "email",
-                "anonymity"
+                "anonymity",
+                "avatar_url"
               ],
               include: [
                 {
@@ -303,7 +308,8 @@ function generateScopeForAncestry(models, ancestry) {
                     "last_name",
                     "name",
                     "email",
-                    "anonymity"
+                    "anonymity",
+                    "avatar_url"
                   ],
                   include: [
                     {

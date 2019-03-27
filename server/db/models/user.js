@@ -2,6 +2,7 @@
 const crypto = require("crypto");
 const Sequelize = require("sequelize");
 const { assignIn, cloneDeep, omit } = require("lodash");
+const { generateUserHandle } = require("../../auth/utils");
 
 module.exports = (db, DataTypes) => {
   const User = db.define(
@@ -36,7 +37,8 @@ module.exports = (db, DataTypes) => {
         type: Sequelize.BOOLEAN
       },
       user_handle: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        unique: true
       },
       githubId: {
         type: DataTypes.STRING
@@ -125,6 +127,15 @@ module.exports = (db, DataTypes) => {
       },
       reset_password_expiration: {
         type: DataTypes.INTEGER
+      },
+      notification_config: {
+        type: DataTypes.JSON,
+        defaultValue: {
+          new_articles: false,
+          upvotes_and_downvotes: false,
+          comments_and_replies: false,
+          monthly_update: false
+        }
       }
     },
     {
@@ -322,7 +333,8 @@ module.exports = (db, DataTypes) => {
           "googleConnected",
           "uportConnected",
           "githubConnected",
-          "email_verified"
+          "email_verified",
+          "notification_config"
         ]);
       return {
         where: query,
@@ -527,7 +539,27 @@ module.exports = (db, DataTypes) => {
     user.name = !user.name ? user.first_name + " " + user.last_name : user.name;
   };
 
-  const hookChain = user => {
+  const setUserHandle = async user => {
+    let user_handle = generateUserHandle(user);
+    const existingUser = await User.findOne({
+        where : {user_handle : user_handle}
+    });
+
+    if (existingUser) {
+      const count = await User.count();
+      user_handle = user_handle + count;
+    }
+
+    user.user_handle = user_handle;
+  };
+
+  const beforeCreateHookChain = async user => {
+    setSaltAndPassword(user);
+    setName(user);
+    await setUserHandle(user);
+  };
+
+  const beforeUpdateHookChain = async user => {
     setSaltAndPassword(user);
     setName(user);
   };
@@ -646,8 +678,8 @@ module.exports = (db, DataTypes) => {
     return commentQueryObj;
   }
 
-  User.beforeCreate(hookChain);
-  User.beforeUpdate(hookChain);
+  User.beforeCreate(beforeCreateHookChain);
+  User.beforeUpdate(beforeUpdateHookChain);
 
   return User;
 };

@@ -21,7 +21,12 @@ router.get("/", questionController.getQuestions);
  * @body {Object} question object
  *
  */
-router.post("/", questionController.postQuestion);
+router.post(
+  "/",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.postQuestion
+);
 
 /**
  * Getting question by id
@@ -32,6 +37,26 @@ router.post("/", questionController.postQuestion);
  *
  */
 router.get("/:slug", questionController.getQuestionBySlug);
+
+/**
+ * Puting question
+ *
+ * @name Put question
+ * @route {PUT} /api/questions
+ * @body {number} questionId number
+ * @body {Object} question object
+ * @body {String} title string
+ * @body {String} description string
+ * @body {Array} selectedTags array
+ * @body {Object} owner object
+ *
+ */
+router.put(
+  "/:questionId",
+  ensureAuthentication,
+  ensureResourceAccess,
+  questionController.putQuestion
+);
 
 /**
  * Upvote question

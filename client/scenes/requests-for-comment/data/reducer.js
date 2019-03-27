@@ -78,7 +78,8 @@ export default function(state = initialState, action) {
         questionsBySlug: assignIn(
           { [action.question.slug]: action.question },
           state.questionsBySlug
-        )
+        ),
+        questionSlugs: [action.question.slug].concat(state.questionSlugs || [])
       };
     default:
       return state;

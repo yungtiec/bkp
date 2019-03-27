@@ -1,0 +1,30 @@
+.notification-panel {
+  background: white;
+  padding: 12px 20px;
+}
+
+.notification-description {
+  font-size: 13px;
+  padding: 0px 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  color: #838383;
+}
+
+.notification-checkbox {
+  padding: 6px 20px;
+  font-size: 13px;
+  font-weight: 300;
+
+  input {
+    margin-right: 10px;
+  }
+}
+
+.notification__fieldset-header {
+  min-height: 20px;
+  padding: 12px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #f3f3f3;
+  border-radius: 0;
+}

@@ -87,29 +87,39 @@ const getQuestions = async (req, res, next) => {
 
 const postQuestion = async (req, res, next) => {
   try {
-    const slug = await createSlug(
-      "",
-      req.body.title + req.body.description || ""
-    );
-    var question = await Question.create(
-      _.assignIn({ slug, owner_id: req.body.owner.value }, req.body)
-    );
-    const selectedTagPromises = await Promise.map(
-      req.body.selectedTags,
-      async selectedTag => {
-        const [tag, created] = await Tag.findOrCreate({
-          where: { name: selectedTag.value, display_name: selectedTag.label },
-          default: { name: selectedTag.value, display_name: selectedTag.label }
-        });
-        return question.addTag(tag.id);
-      }
-    );
-    question = await Question.scope([
-      {
-        method: ["main", {}]
-      }
-    ]).findOne({ where: { id: question.id } });
-    res.send(question);
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
+    if (!isAdmin) res.sendStatus(401);
+    else {
+      const slug = await createSlug(
+        "",
+        req.body.title + req.body.description || ""
+      );
+      var question = await Question.create(
+        _.assignIn({ slug, owner_id: req.body.owner.value }, req.body)
+      );
+      const selectedTagPromises = await Promise.map(
+        req.body.selectedTags,
+        async selectedTag => {
+          const [tag, created] = await Tag.findOrCreate({
+            where: { name: selectedTag.value, display_name: selectedTag.label },
+            default: {
+              name: selectedTag.value,
+              display_name: selectedTag.label
+            }
+          });
+          return question.addTag(tag.id);
+        }
+      );
+      question = await Question.scope([
+        {
+          method: ["main", {}]
+        }
+      ]).findOne({ where: { id: question.id } });
+      res.send(question);
+    }
   } catch (err) {
     next(err);
   }
@@ -124,6 +134,50 @@ const getQuestionBySlug = async (req, res, next) => {
     ]).findOne({
       where: { slug: req.params.slug }
     });
+    res.send(question);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const putQuestion = async (req, res, next) => {
+  try {
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
+    var question = await Question.scope([
+      {
+        method: ["main", {}]
+      }
+    ]).findById(req.params.questionId);
+    if (!isAdmin && question.owner.id !== req.user.id) res.sendStatus(401);
+    var { addedTags, removedTags } = getAddedAndRemovedTags({
+      prevTags: question.tags,
+      curTags: req.body.selectedTags
+    });
+    var removedTagPromises, addedTagPromises;
+    question = await question.update({
+      title: req.body.title,
+      description: req.body.description,
+      owner_id: req.body.owner.value
+    });
+    removedTagPromises = Promise.map(removedTags, tag =>
+      question.removeTag(tag.id)
+    );
+    addedTagPromises = Promise.map(addedTags, async addedTag => {
+      const [tag, created] = await Tag.findOrCreate({
+        where: { name: addedTag.value, display_name: addedTag.label },
+        default: { name: addedTag.value, display_name: addedTag.label }
+      });
+      return question.addTag(tag.id);
+    });
+    await Promise.all([removedTagPromises, addedTagPromises]);
+    question = await Question.scope([
+      {
+        method: ["main", {}]
+      }
+    ]).findById(req.params.questionId);
     res.send(question);
   } catch (err) {
     next(err);
@@ -173,10 +227,6 @@ const postComment = async (req, res, next) => {
       question_id: Number(req.params.questionId),
       comment: req.body.newComment
     });
-    comment = await Comment.scope([{ method: ["flatThreadByRootId"] }]).findOne(
-      { where: { id: comment.id } }
-    );
-    res.send(comment);
     const question = await Question.scope([
       {
         method: ["main", {}]
@@ -187,12 +237,16 @@ const postComment = async (req, res, next) => {
     ]).findOne({
       where: { id: req.params.questionId }
     });
-    const tags = await Promise.map(req.body.tags || [], tag =>
+    const tags = await Promise.map(req.body.selectedTags || [], tag =>
       Tag.findOrCreate({
         where: { name: tag.value },
         default: { name: tag.value.toLowerCase(), display_name: tag.value }
       }).spread((tag, created) => comment.addTag(tag))
     );
+    comment = await Comment.scope([{ method: ["flatThreadByRootId"] }]).findOne(
+      { where: { id: comment.id } }
+    );
+    res.send(comment);
     const isRepostedByBKPEmail = question.owner.email.includes("tbp.admin");
     await sendEmail({
       recipientEmail: isRepostedByBKPEmail
@@ -212,7 +266,7 @@ const postComment = async (req, res, next) => {
       )
     });
     // Send this to info@thebkp.com
-    if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
+    if (question.owner.id !== 12 && !isRepostedByBKPEmail) {
       await sendEmail({
         recipientEmail: "info@thebkp.com",
         subject: `New Comment Activity From ${comment.owner.first_name} ${
@@ -241,7 +295,7 @@ const getComments = async (req, res, next) => {
     // construct limit, offset and order options
     var limit = Number(req.query.limit);
     var offset = Number(req.query.offset);
-    var order = JSON.parse(req.query.order);
+    var order = req.query.order && JSON.parse(req.query.order);
     if (order && order.value === "date") {
       order = [["createdAt", "DESC"]];
     } else if (order && order.value === "most-upvoted") {
@@ -270,7 +324,10 @@ const getComments = async (req, res, next) => {
 const postReply = async (req, res, next) => {
   try {
     var ancestry;
-    const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
+    const isAdmin =
+      req.user.roles &&
+      req.user.roles.length &&
+      req.user.roles.filter(r => r.name === "admin").length;
     const parent = await Comment.findById(Number(req.params.parentId));
     const child = _.assignIn(
       _.omit(parent.toJSON(), [
@@ -442,6 +499,7 @@ module.exports = {
   getQuestions,
   postQuestion,
   getQuestionBySlug,
+  putQuestion,
   postUpvote,
   postDownvote,
   postComment,

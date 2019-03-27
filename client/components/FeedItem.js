@@ -14,11 +14,13 @@ export default ({
   creatorName,
   numUpvotes,
   numDownvotes,
-  numComments
+  numComments,
+  isRequestForComment
 }) => {
-  imgUrl = imgUrl.includes("unsplash")
-    ? imgUrl.concat("&auto=format&fit=crop&w=800&q=80")
-    : imgUrl;
+  imgUrl =
+    imgUrl && imgUrl.includes("unsplash")
+      ? imgUrl.concat("&auto=format&fit=crop&w=800&q=80")
+      : imgUrl;
   const backgroundImage = `url(${imgUrl ||
     "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"}`;
 
@@ -41,10 +43,28 @@ export default ({
       <div className="feed-item__content">
         {category ? <h6>{category}</h6> : null}
         <h5>{title}</h5>
-        <p>{description}</p>
+        {
+          isRequestForComment ?
+            <span className="feed-item__author-name d-flex mb-2">Posted by {creatorName}</span> :
+            <span className="feed-item__author-name d-flex mb-2">By {creatorName}</span>
+        }
+        {/*{tags && tags.length ? (*/}
+          {/*<div className="mb-2">*/}
+            {/*<span style={{ fontSize: "12px" }}>Tags: </span>*/}
+            {/*{tags.map(tag => (*/}
+              {/*<span key={`tag-${tag.name}`} className="badge badge-light">*/}
+                {/*{tag.name}*/}
+                {/*{"  "}*/}
+              {/*</span>*/}
+            {/*))}*/}
+          {/*</div>*/}
+        {/*) : (*/}
+          {/*""*/}
+        {/*)}*/}
+        <div>{description}</div>
         <div className="feed-item__content-bottom d-flex justify-content-between align-items-center">
           <span>
-            {date} - {creatorName}
+            {date}
           </span>
           <div>
             <a className="contribution__action-btn">

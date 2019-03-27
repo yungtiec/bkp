@@ -18,8 +18,9 @@ import autoBind from "react-autobind";
 import { DocumentHeader, DocumentToolbar } from "./components";
 import { VersionIssues, VersionProgress } from "./scenes/Document/components";
 import history from "../../history";
-import {hideEditor, showEditor} from './data/ckEditor/actions';
-import {Helmet} from 'react-helmet';
+import { TagChip } from "../../components";
+import { hideEditor, showEditor } from "./data/ckEditor/actions";
+import { Helmet } from "react-helmet";
 
 class DocumentContainer extends Component {
   constructor(props) {
@@ -34,9 +35,7 @@ class DocumentContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.match.url !== this.props.match.url
-    ) {
+    if (prevProps.match.url !== this.props.match.url) {
       scroll.scrollToTop();
     }
   }
@@ -61,24 +60,44 @@ class DocumentContainer extends Component {
       sidebarOpen
     } = this.props;
 
-    var wrapper= document.createElement('div');
+    var wrapper = document.createElement("div");
     wrapper.innerHTML = documentMetadata.description;
 
     return (
       <div className={`main-container document-container ${sidebarOpen ? "sidebar-open" :  "sidebar-closed"}`}>
         <Helmet>
           <title>{documentMetadata.title}</title>
-          <meta name="description" itemProp="description" content={wrapper.textContent} />
+          <meta
+            name="description"
+            itemProp="description"
+            content={wrapper.textContent}
+          />
           <meta property="fb:app_id" content="312700812765621" />
           <meta property="og:type" content="article" />
           <meta property="og:title" content={documentMetadata.title} />
-          <meta property="og:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
-          <meta property="og:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
+          <meta
+            property="og:url"
+            content={`https://thebkp.com/s/${documentMetadata.slug}`}
+          />
+          <meta
+            property="og:image"
+            content={`${
+              documentMetadata.header_img_url
+            }&fit=crop&w=800&q=80.jpg`}
+          />
           <meta property="og:description" content={wrapper.textContent} />
-          <meta name="twitter:url" content={`https://thebkp.com/s/${documentMetadata.slug}`} />
+          <meta
+            name="twitter:url"
+            content={`https://thebkp.com/s/${documentMetadata.slug}`}
+          />
           <meta name="twitter:title" content={documentMetadata.title} />
           <meta name="twitter:description" content={wrapper.textContent} />
-          <meta name="twitter:image" content={`${documentMetadata.header_img_url}&fit=crop&w=800&q=80.jpg`} />
+          <meta
+            name="twitter:image"
+            content={`${
+              documentMetadata.header_img_url
+            }&fit=crop&w=800&q=80.jpg`}
+          />
           <meta name="twitter:card" content="summary" />
         </Helmet>
         <DocumentHeader
@@ -91,15 +110,30 @@ class DocumentContainer extends Component {
           displayEditor={displayEditor}
           userId={userId}
         />
+        {documentMetadata.tags && documentMetadata.tags.length ? (
+          <div className="mb-3" style={{ lineHeight: 1.5 }}>
+            Tags:{" "}
+            {documentMetadata.tags.map((tag, index) => (
+              <TagChip
+                key={`tag__${tag.name}`}
+                containerClassname="tag-field__tag dark-bg"
+                tagValue={tag.name}
+              />
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
         <Switch>
           <Route
             path={`${match.path}`}
-            render={props =>
+            render={props => (
               <QueryDocumentBySlug
                 displayEditor={displayEditor}
                 documentMetadata={documentMetadata}
                 hideEditor={hideEditor}
-              />}
+              />
+            )}
           />
         </Switch>
       </div>

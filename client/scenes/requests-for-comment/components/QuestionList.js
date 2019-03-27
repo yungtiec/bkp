@@ -23,7 +23,7 @@ export default ({
               )[0]
             : ""
         }
-        tags
+        tags={questionsBySlug[slug].tags}
         date={moment(questionsBySlug[slug].createdAt).format("LL")}
         creatorName={`${questionsBySlug[slug].owner.displayName}${
           questionsBySlug[slug].owner.delegate ? " (Reposted by BKP Admin)" : ""
@@ -31,6 +31,7 @@ export default ({
         numUpvotes={Number(questionsBySlug[slug].num_upvotes)}
         numDownvotes={Number(questionsBySlug[slug].num_downvotes)}
         numComments={Number(questionsBySlug[slug].num_comments)}
+        isRequestForComment={true}
       />
     ))}
     <div className="text-center mb-5">

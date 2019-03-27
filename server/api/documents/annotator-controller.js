@@ -94,7 +94,7 @@ const postAnnotatedComment = async (req, res, next) => {
       comment_id: newComment.id
     });
     const ownerPromise = newComment.setOwner(req.user.id);
-    const tagPromises = Promise.map(tags, tag =>
+    const tagPromises = req.body.tags && Promise.map(tags, tag =>
       Tag.findOrCreate({
         where: { name: tag },
         default: {
@@ -109,33 +109,21 @@ const postAnnotatedComment = async (req, res, next) => {
     }).findOne();
     // sendNotificationToSlack(newComment);
     const isRepostedByBKPEmail = document.creator.email.includes('tbp.admin');
-    //await sendEmail({
-    //  recipientEmail: isRepostedByBKPEmail ? 'info@thebkp.com' : document.creator.email,
-    //  subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
-    //  message: generateCommentHtml(
-    //    process.env.NODE_ENV === 'production',
-    //    document.slug,
-    //    newComment.owner.first_name,
-    //    newComment.owner.last_name,
-    //    newComment,
-    //    false
-    //  )
-    //});
-    // Send this to info@thebkp.com
-    //if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
-      await sendEmail({
-        recipientEmail: 'info@thebkp.com',
-        subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
-        message: generateCommentHtml(
-          process.env.NODE_ENV === 'production',
-          document.slug,
-          newComment.owner.first_name,
-          newComment.owner.last_name,
-          newComment,
-          false
-        )
-      });
-    //}
+    await sendEmail({
+      user: document.creator,
+      emailType: 'COMMENT',
+      subject: `New Comment Activity From ${newComment.owner.first_name} ${newComment.owner.last_name}`,
+      message: generateCommentHtml(
+        process.env.NODE_ENV === 'production',
+        document.slug,
+        newComment.owner.first_name,
+        newComment.owner.last_name,
+        newComment.owner.id,
+        newComment.owner.user_handle,
+        newComment.comment,
+        false
+      )
+    });
     res.send(newComment);
   } catch (err) {
     next(err);

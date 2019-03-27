@@ -1,4 +1,4 @@
-module.exports = (inProduction, slug, firstName, lastName, commentId, user_handle, commentText, isReply) => `<!DOCTYPE html>
+module.exports = (inProduction, slug, firstName, lastName, commentId, user_handle, commentText) => `<!DOCTYPE html>
 
 
 <html>
@@ -412,10 +412,10 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, user_handl
 
                           <td>
 
-                            <h4 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">New ${isReply ? 'Reply' : 'Comment'}
+                            <h4 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">New Upvote
                             </h4>
 
-                            <p style="margin-bottom: 30px;">From ${firstName} ${lastName}
+                            <p style="margin-bottom: 30px;">From ${firstName} ${lastName} on comment:
                             </p>
                             
                             <div>
@@ -448,7 +448,7 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, user_handl
     ? "https://thebkp.com"
     : "http://localhost:8000"
   }/s/${slug}/comment/${commentId}"
-                                              target="_blank">See New ${isReply ? 'Reply' : 'Comment'}
+                                              target="_blank">See Comment
                                             </a>
                                           </td>
                                         </tr>

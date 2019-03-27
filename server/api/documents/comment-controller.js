@@ -16,7 +16,8 @@ const {
 const _ = require("lodash");
 Promise = require("bluebird");
 const generateCommentHtml = require("../generateCommentHtml");
-const { sendEmail, getAddedAndRemovedTags } = require("../utils");
+const generateUpvoteHtml = require("../generateUpvoteHtml");
+const { sendEmail, getAddedAndRemovedTags, hasNotificationPermission } = require("../utils");
 
 const getComments = async (req, res, next) => {
   try {
@@ -73,7 +74,7 @@ const postComment = async (req, res, next) => {
       });
     const autoVerifyPromise =
       autoVerify && comment.update({ reviewed: "verified" });
-    const tagPromises = Promise.map(req.body.selectedTags, tag =>
+    const tagPromises = req.body.tags && Promise.map(req.body.tags, tag =>
       Tag.findOrCreate({
         where: { name: tag.value },
         default: { name: tag.value.toLowerCase(), display_name: tag.value }
@@ -83,41 +84,23 @@ const postComment = async (req, res, next) => {
     comment = await Comment.scope({
       method: ["flatThreadByRootId", { where: { id: comment.id } }]
     }).findOne();
-    const isRepostedByBKPEmail = document.creator.email.includes("tbp.admin");
-    //await sendEmail({
-    //  recipientEmail: isRepostedByBKPEmail
-    //    ? "info@thebkp.com"
-    //    : document.creator.email,
-    //  subject: `New Comment Activity From ${comment.owner.first_name} ${
-    //    comment.owner.last_name
-    //  }`,
-    //  message: generateCommentHtml(
-    //    process.env.NODE_ENV === "production",
-    //    document.slug,
-    //    comment.owner.first_name,
-    //    comment.owner.last_name,
-    //    comment,
-    //    false
-    //  )
-    //});
-    // Send this to info@thebkp.com
-    //if (document.creator.id !== 12 && !isRepostedByBKPEmail) {
     await sendEmail({
-      recipientEmail: "info@thebkp.com",
+      user: document.creator,
+      emailType: 'COMMENT',
       subject: `New Comment Activity From ${comment.owner.first_name} ${
         comment.owner.last_name
       }`,
       message: generateCommentHtml(
         process.env.NODE_ENV === "production",
-        "s",
         document.slug,
         comment.owner.first_name,
         comment.owner.last_name,
-        comment,
+        comment.id,
+        comment.owner.user_handle,
+        comment.comment,
         false
       )
     });
-    //}
 
     res.send(comment);
   } catch (err) {
@@ -181,31 +164,36 @@ const postReply = async (req, res, next) => {
       parent,
       messageFragment: "replied to your post"
     });
-    //await sendEmail({
-    //  recipientEmail: ancestry.owner.email,
-    //  subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
-    //  message: generateCommentHtml(
-    //    process.env.NODE_ENV === "production",
-    //    ancestry.document.slug,
-    //    user.first_name,
-    //    user.last_name,
-    //    ancestry.id,
-    //    true
-    //  )
-    //});
     await sendEmail({
-      recipientEmail: "info@thebkp.com",
+      user: ancestry.owner,
+      emailType: 'VOTE',
       subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
       message: generateCommentHtml(
         process.env.NODE_ENV === "production",
-        "s",
         ancestry.document.slug,
         user.first_name,
         user.last_name,
         ancestry.id,
-        false
+        ancestry.owner.user_handle,
+        reply.comment,
+        true
       )
     });
+    //await sendEmail({
+    //  user,
+    //  emailType: 'COMMENT',
+    //  subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
+    //  message: generateCommentHtml(
+    //    process.env.NODE_ENV === 'production',
+    //    ancestry.document.slug,
+    //    user.first_name,
+    //    user.last_name,
+    //    ancestry.id,
+    //    'testhandle',
+    //    reply.comment,
+    //    true
+    //  )
+    //});
     res.send(ancestry);
   } catch (err) {
     next(err);
@@ -213,20 +201,35 @@ const postReply = async (req, res, next) => {
 };
 
 const postUpvote = async (req, res, next) => {
+  const { user } = req;
   try {
     if (!req.body.hasUpvoted) {
-      await req.user.addUpvotedComment(req.params.commentId);
+      await user.addUpvotedComment(req.params.commentId);
     } else {
-      await req.user.removeUpvotedComment(req.params.commentId);
+      await user.removeUpvotedComment(req.params.commentId);
     }
     const comment = await Comment.scope({
       method: ["upvotes", req.params.commentId]
     }).findOne();
     if (!req.body.hasUpvoted) {
       await Notification.notify({
-        sender: req.user,
+        sender: user,
         comment,
         messageFragment: "liked your post"
+      });
+      await sendEmail({
+        user,
+        emailType: 'VOTE',
+        subject: `New Upvote From ${user.first_name} ${req.user.last_name}`,
+        message: generateUpvoteHtml(
+          process.env.NODE_ENV === 'production',
+          comment.document.slug,
+          user.first_name,
+          user.last_name,
+          comment.id,
+          user.user_handle,
+          comment.comment
+        )
       });
     }
     res.send({
@@ -263,7 +266,7 @@ const putEditedComment = async (req, res, next) => {
     else {
       var { addedTags, removedTags } = getAddedAndRemovedTags({
         prevTags: comment.tags,
-        curTags: req.body.selectedTags
+        curTags: req.body.tags
       });
       var removedTagPromises, addedTagPromises, issuePromise;
       await comment.update({ comment: req.body.newComment });

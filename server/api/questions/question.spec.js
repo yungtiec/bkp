@@ -42,7 +42,7 @@ describe("Question routes", () => {
       );
     });
 
-    it("POST /api/questions", () => {
+    xit("POST /api/questions", () => {
       return request(app)
         .post("/api/questions")
         .send({
