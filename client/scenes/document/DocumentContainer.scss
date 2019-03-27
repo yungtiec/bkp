@@ -27,6 +27,9 @@
 .project-document {
   width: 100%;
   padding: 27px 0px 6rem;
+  @media (max-width: 767px) {
+    padding: 0 25px 0 15px;
+  }
 }
 
 .project-document__back-btn {
@@ -65,7 +68,7 @@
 
 .project-document__header-text {
   @media (max-width: 767px) {
-    padding: 0 15px 0 5px;
+    padding: 0 25px 0 15px;
   }
 }
 
@@ -87,7 +90,7 @@
 
 .project-document__footer {
   @include breakpoint(xs) {
-    padding: 0 15px 0 5px;
+    padding: 0 25px 0 15px;
     flex-direction: column;
   }
 }
