@@ -15,6 +15,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-wrap: nowrap !important;
 }
 
 .logo-header {

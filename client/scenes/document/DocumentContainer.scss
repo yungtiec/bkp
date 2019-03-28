@@ -2,27 +2,51 @@
 
 .document-container {
   margin-top: 50px;
-  width: 740px;
+  width: 750px;
+  margin-left: auto;
+  margin-right: auto;
   @include breakpoint(xs) {
     margin-top: 25px;
-    display: initial;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
   }
-  @media (max-width: 900px) {
-    align-items: start;
+  @include breakpoint(sm) {
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 520px;
+  }
+  @include breakpoint(md) {
+    width: 550px;
   }
 }
 
-.sidebar-open {
+.document-container--sidebar-open {
   transition: all 0.2s ease-in-out;
-  margin-top: 50px;
-  margin-right: 750px;
+  @include breakpoint(xs) {
+    width: 100%;
+  }
+  @include breakpoint(sm) {
+    margin-left: 15px;
+    width: 450px;
+  }
+  @include breakpoint(md) {
+    margin-left: 65px;
+    width: 520px;
+  }
+  @include breakpoint(lg) {
+    margin-left: 65px;
+  }
+  @include breakpoint(xl) {
+    margin-left: 145px;
+  }
 }
 
-.sidebar-closed {
-  transition: all 0.2s ease-in-out;
-  margin: 50px auto 0px auto;
-}
-
+// .document-container.sidebar-closed {
+//   transition: all 0.2s ease-in-out;
+//   margin: 50px auto 0px auto;
+// }
 
 .project-document {
   width: 100%;
