@@ -1,5 +1,11 @@
 {
-  presets: ['@babel/react', '@babel/env', '@babel/stage-2'],
+  "presets": ['@babel/react', '@babel/env', '@babel/stage-2',
+    [ "@babel/preset-env", {
+      "targets": {
+        "browsers": [ "last 1 version", "ie >= 11" ]
+      }
+    }]
+  ],
   "plugins": [
   "react-loadable/babel",
   "syntax-dynamic-import"

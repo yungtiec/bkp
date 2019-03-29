@@ -40,7 +40,7 @@ export default class HeroHeadline extends React.Component {
           <a
             className="feed__feature-img"
             style={{
-              backgroundImage: `url(${imgUrl || backupImgUrl}`
+              backgroundImage: `url(${imgUrl || backupImgUrl})`
             }}
           />
         </div>

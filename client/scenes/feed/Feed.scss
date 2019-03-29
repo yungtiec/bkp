@@ -110,6 +110,7 @@
   font-weight: 800;
   margin: 20px 0;
   text-transform: capitalize;
+  width: 100%; // necessary for IE 11 support
 }
 
 .feed__feature-article-content {
@@ -117,6 +118,11 @@
   margin-bottom: 20px;
   max-height: 200px;
   overflow: scroll;
+  width: 100%; // necessary for IE 11 support
+}
+
+.feed__feature-actions {
+  width: 100%; // necessary for IE 11 support
 }
 
 .feed__feature-action-read-more {
