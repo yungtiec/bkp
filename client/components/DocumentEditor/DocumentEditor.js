@@ -271,7 +271,7 @@ class DocumentEditor extends Component {
         ) : (
           <div className="mb-4">
             {summary ? (
-              <div className="document-summary ">
+              <div className="document-summary mb-3">
                 <div className="markdown-body">{ReactHtmlParser(summary)}</div>
               </div>
             ) : null}

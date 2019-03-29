@@ -115,7 +115,7 @@ class DocumentContainer extends Component {
           userId={userId}
         />
         {documentMetadata.tags && documentMetadata.tags.length ? (
-          <div className="mb-3" style={{ lineHeight: 1.5 }}>
+          <div className="mt-3" style={{ lineHeight: 1.5 }}>
             Tags:{" "}
             {documentMetadata.tags.map((tag, index) => (
               <TagChip

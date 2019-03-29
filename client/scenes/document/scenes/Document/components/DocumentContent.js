@@ -23,7 +23,7 @@ const DocumentContent = ({
   displayEditor,
   hideEditor
 }) => (
-  <div className="project-document" id="project-document">
+  <div className="project-document mt-3" id="project-document">
     <DocumentEditor
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}
