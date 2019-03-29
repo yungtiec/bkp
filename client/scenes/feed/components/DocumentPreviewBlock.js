@@ -10,7 +10,7 @@ export default ({ document }) => {
     document.header_img_url.concat('&auto=format&fit=crop&w=800&q=80') :
     document.header_img_url;
   const backgroundImage = `url(${imgUrl ||
-  "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"}`;
+  "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"})`;
 
   return (
     <Link
