@@ -5,6 +5,7 @@ import { MyDocumentsNavbar } from "./components";
 
 export default ({ match }) => {
   const activeTab = window.location.pathname.split("/")[3];
+  console.log(activeTab);
   return (
     <div className="main-container">
       <div className="d-flex justify-content-between my-3">
