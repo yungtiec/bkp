@@ -73,7 +73,7 @@ export default class DocumentHeader extends Component {
           />
         </div>
         <div className="project-document__header-image" style={{
-          backgroundImage: `url(${documentMetadata.header_img_url}`
+          backgroundImage: `url(${documentMetadata.header_img_url})`
         }}/>
       </div>
     );

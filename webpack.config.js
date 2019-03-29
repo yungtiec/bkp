@@ -9,6 +9,8 @@ require("image-webpack-loader");
 module.exports = {
   entry: [
     "@babel/polyfill", // enables async-await
+    'react', // Include this to enforce order
+    'react-dom',
     "./client/index.js"
   ],
   output: {
@@ -23,14 +25,27 @@ module.exports = {
         test: /\.jsx?$/,
         include: [
           path.resolve(__dirname, "client"),
+          path.resolve(__dirname, "node_modules/annotator"),
+          path.resolve(__dirname, "node_modules/get-urls"),
+          path.resolve(__dirname, "node_modules/jsontokens"),
+          path.resolve(__dirname, "node_modules/uport"),
+          path.resolve(__dirname, "node_modules/base64url"),
           path.resolve(__dirname, "node_modules/@react-schema-form")
         ],
         use: {
           loader: "babel-loader",
           options: {
             babelrc: false,
-            presets: ["@babel/react", "@babel/env", "@babel/stage-2"],
-            plugins: ["react-loadable/babel", "syntax-dynamic-import"]
+            presets: ["@babel/preset-react", [
+              "@babel/preset-env",
+              {
+                "targets": {
+                  "ie": "9"
+                },
+                "useBuiltIns": "usage"
+              }
+            ]],
+            plugins: ["react-loadable/babel", "syntax-dynamic-import", "@babel/plugin-proposal-class-properties"]
           }
         }
       },
@@ -87,10 +102,10 @@ module.exports = {
           }
         }),
         new HardSourceWebpackPlugin(),
-        new webpack.DllReferencePlugin({
-          context: __dirname,
-          manifest: require("./public/build/library/library.json")
-        })
+        //new webpack.DllReferencePlugin({
+        //  context: __dirname,
+        //  manifest: require("./public/build/library/library.json")
+        //})
       ]
     : [
         new webpack.ProvidePlugin({
