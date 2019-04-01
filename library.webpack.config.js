@@ -49,6 +49,29 @@ module.exports = {
     path: path.resolve(__dirname, "./public/build/library"),
     library: "library"
   },
+  module: {
+    rules : [
+      {
+        test : /\.jsx?$/,
+        use : {
+          loader : "babel-loader",
+          options : {
+            babelrc : false,
+            presets : ["@babel/preset-react", [
+              "@babel/preset-env",
+              {
+                "targets" : {
+                  "ie" : "9"
+                },
+                "useBuiltIns" : "usage"
+              }
+            ]],
+            plugins : ["react-loadable/babel", "syntax-dynamic-import", "@babel/plugin-proposal-class-properties"]
+          }
+        }
+      },
+    ]
+  },
   plugins: [
     new webpack.DllPlugin({
       name: "library",

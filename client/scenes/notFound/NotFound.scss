@@ -1,0 +1,491 @@
+.landing {
+  .navbar {
+    height: initial;
+  }
+
+  .header-title {
+    line-height: 1.25;
+    letter-spacing: 2px;
+    font-size: 35px;
+  }
+
+  #mainNav {
+    border-color: rgba(34, 34, 34, 0.05);
+    background-color: white;
+    -webkit-transition: all 0.35s;
+    -moz-transition: all 0.35s;
+    transition: all 0.35s;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 1px;
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  #mainNav .navbar-brand {
+    color: #2744cb;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 1px;
+    width: 160px;
+    height: 45px;
+    margin: 20px 0px;
+    background: url("/assets/consensys-logo-white-transparent.png");
+    background-size: contain;
+  }
+
+  #mainNav .navbar-brand:hover,
+  #mainNav .navbar-brand:focus {
+    color: #1f36a0;
+  }
+
+  #mainNav .navbar-toggler {
+    font-size: 12px;
+    padding: 8px 10px;
+    color: #222222;
+  }
+
+  #mainNav .navbar-nav > li {
+    padding: 0 1em;
+  }
+
+  #mainNav .navbar-nav > li > a {
+    font-size: 11px;
+    font-family: "Roboto", sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  #mainNav .navbar-nav > li > a.active {
+    color: #2744cb !important;
+    background-color: transparent;
+  }
+
+  #mainNav .navbar-nav > li > a.active:hover {
+    background-color: transparent;
+  }
+
+  #mainNav .navbar-nav > li > a,
+  #mainNav .navbar-nav > li > a:focus {
+    color: #222222;
+  }
+
+  #mainNav .navbar-nav > li > a:hover,
+  #mainNav .navbar-nav > li > a:focus:hover {
+    color: #2744cb;
+  }
+
+  #mainNav .navbar-brand {
+    color: fade(white, 70%);
+  }
+
+  #mainNav .navbar-brand:hover,
+  #mainNav .navbar-brand:focus {
+    color: white;
+  }
+
+  #mainNav .navbar-nav > li > a,
+  #mainNav .navbar-nav > li > a:focus {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  #mainNav .navbar-nav > li > a:hover,
+  #mainNav .navbar-nav > li > a:focus:hover {
+    color: white;
+  }
+
+  #mainNav.navbar-shrink {
+    border-color: rgba(34, 34, 34, 0.1);
+    background-color: transparent;
+  }
+
+  #mainNav.navbar-shrink .navbar-brand {
+    color: #222222;
+    width: 110px;
+    height: 110px;
+    background: url("/assets/the-brooklyn-project-logo.png");
+    background-size: contain;
+  }
+
+  #mainNav.navbar-shrink .navbar-brand:hover,
+  #mainNav.navbar-shrink .navbar-brand:focus {
+    color: #2744cb;
+  }
+
+  #mainNav.navbar-shrink .navbar-nav > li > a,
+  #mainNav.navbar-shrink .navbar-nav > li > a:focus {
+    color: #222222;
+  }
+
+  #mainNav.navbar-shrink .navbar-nav > li > a:hover,
+  #mainNav.navbar-shrink .navbar-nav > li > a:focus:hover {
+    color: #2744cb;
+  }
+
+  header.masthead {
+    position: relative;
+    width: 100%;
+    color: white;
+    background: url("/assets/tbp-bg-02.jpg"), #3c93f8;
+    background: url("/assets/tbp-bg-02.jpg"),
+    -webkit-linear-gradient(to left, #3c93f8, #3c93f8);
+    background: url("/assets/tbp-bg-02.jpg"),
+    linear-gradient(to left, #3c93f8, #3c93f8);
+    background-size: contain;
+
+    padding-bottom: 70px;
+  }
+
+  header.masthead .h-fill {
+    height: calc(100% - 166px);
+  }
+
+  header.masthead .header-content {
+    width: 100%;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  header.masthead .header-content h1 {
+    max-width: 750px;
+    font-size: 30px;
+    line-height: 1.5;
+  }
+
+  header.masthead .device-container {
+    max-width: 325px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  header.masthead .device-container .screen img {
+    border-radius: 3px;
+  }
+
+  header.masthead .text-baseline {
+    position: absolute;
+    top: 12px;
+    width: 90%;
+    height: 4px;
+    background: white;
+  }
+
+  header.masthead .header-text {
+    margin-bottom: 1.5rem;
+  }
+
+  header.masthead .header-text a {
+    font-weight: 700;
+  }
+
+  header.masthead .header-text p {
+    color: #fff;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 992px) {
+    header.masthead {
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-top: 0px;
+      padding-bottom: 100px;
+    }
+    header.masthead .header-content {
+      margin-bottom: 0;
+      text-align: left;
+    }
+    header.masthead .header-content h1 {
+      font-size: 50px;
+      line-height: 1.25;
+      letter-spacing: 2px;
+    }
+    header.masthead .device-container {
+      max-width: 325px;
+    }
+    header.masthead .header-content {
+      width: 100%;
+      margin-top: 70px;
+    }
+  }
+
+  .header-content__hero-img {
+    width: 33.33%;
+  }
+
+  footer {
+    padding: 50px 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    background-color: #2744cb;
+  }
+
+  footer img {
+    width: 200px;
+    height: auto;
+  }
+
+  .bg-landing {
+    background: #2744cb;
+    background: -webkit-linear-gradient(#2744cb, #233db6);
+    background: linear-gradient(#2744cb, #233db6);
+  }
+
+  .btn-landing {
+    border-color: #2744cb;
+    background: #2744cb;
+  }
+
+  .btn-landing:hover,
+  .btn-landing:focus,
+  .btn-landing:active,
+  .btn-landing.active {
+    color: white;
+    border-color: #1b2f8b;
+    background-color: #1b2f8b;
+  }
+
+  .text-landing {
+    color: #2744cb;
+  }
+
+  .no-gutter > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .btn-outline {
+    color: #2744cb;
+    border: 1px solid;
+    border-color: #2744cb;
+  }
+
+  .btn-outline:hover,
+  .btn-outline:focus,
+  .btn-outline:active,
+  .btn-outline.active {
+    color: white;
+    border-color: #2744cb;
+    background-color: #2744cb;
+  }
+
+  .btn-xl {
+    padding: 15px;
+    width: 14rem;
+  }
+
+  @media (max-width: 767px) {
+    .btn-xl {
+      padding: 15px 5px;
+      width: 10rem;
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 374px) and (max-width: 500px) {
+    .btn-xl {
+      padding: 15px 5px;
+      width: 10rem;
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 373px) {
+    .btn-xl {
+      padding: 15px 5px;
+      width: 8rem;
+      font-size: 10px;
+    }
+  }
+
+  section {
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 50px 140px;
+  }
+
+  @media screen and (max-width: 960px) {
+    section {
+      padding-top: 50px;
+      padding-bottom: 120px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    section {
+      padding-left: 36px;
+      padding-right: 36px;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    section {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    section {
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+
+  .open-letter h1 {
+    letter-spacing: 0em;
+    line-height: 1em;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 52px;
+    letter-spacing: 0.02em;
+    line-height: 1.4em;
+    text-transform: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .open-letter h1 {
+      font-size: 34px;
+      letter-spacing: 0em;
+      line-height: 1.4em;
+      font-weight: 200;
+      font-style: normal;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+  }
+
+  .open-letter blockquote {
+    padding-bottom: 0.5em;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0em;
+    line-height: 1.6em;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 21px;
+    letter-spacing: 0.03em;
+    line-height: 1.4em;
+    text-transform: none;
+  }
+
+  .open-letter .source {
+    padding-top: 0.5em;
+    font-size: 14px;
+    letter-spacing: 0em;
+    line-height: 1.6em;
+    text-transform: none;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.11em;
+    line-height: 4.5em;
+    text-transform: uppercase;
+  }
+
+  .open-letter p {
+    font-weight: 300;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 0.035em;
+    line-height: 1.6em;
+    text-transform: none;
+  }
+
+  .open-letter p a {
+    color: #0d35d3;
+    padding-bottom: 0.05em;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(13, 53, 211, 0.3);
+  }
+
+  .get-involved {
+    background-color: transparent;
+    background-image: url("/assets/landing__get-involved-background.png");
+    background-position: 50% 50% !important;
+    background-position: center !important;
+    background-origin: border-box !important;
+    background-size: cover !important;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .get-involved h3 {
+    text-transform: none;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    line-height: 1.2em;
+    text-transform: uppercase;
+    color: rgba(6, 20, 101, 0.7);
+    white-space: pre-wrap;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+  }
+
+  .get-involved h2 {
+    font-weight: 600;
+    font-style: normal;
+    font-size: 52px;
+    letter-spacing: 0em;
+    line-height: 1.3em;
+    text-transform: none;
+    color: #07177e;
+    white-space: pre-wrap;
+    display: block;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+  }
+
+  @media screen and (max-width: 768px) {
+    .get-involved h2 {
+      font-size: 34px;
+    }
+  }
+
+  .get-involved p {
+    font-weight: 300;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 0.035em;
+    line-height: 1.6em;
+    text-transform: none;
+  }
+
+  .get-involved p a {
+    color: #0d35d3;
+    padding-bottom: 0.05em;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(13, 53, 211, 0.3);
+  }
+
+  .get-involved ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+  }
+
+  .get-involved li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type: disc;
+    word-wrap: break-word;
+  }
+}
