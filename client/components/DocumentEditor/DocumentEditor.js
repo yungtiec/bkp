@@ -28,6 +28,7 @@ class DocumentEditor extends Component {
     this.contentHtml = this.props.documentMetadata.content_html;
     this.state = {
       title: this.props.documentMetadata.title,
+      indexDescription: this.props.documentMetadata.index_description || "",
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
@@ -126,6 +127,14 @@ class DocumentEditor extends Component {
     });
   }
 
+  onChangeIndexDescription(evt) {
+    // const newSummary = this.ckeditorSummary.editorInstance.getData()
+    var newIndexDescription = evt.editor.getData();
+    this.setState({
+      indexDescription: newIndexDescription
+    });
+  }
+
   onChangeSummary(evt) {
     // const newSummary = this.ckeditorSummary.editorInstance.getData()
     var newSummary = evt.editor.getData();
@@ -144,11 +153,12 @@ class DocumentEditor extends Component {
 
   async onButtonPress() {
     const { documentMetadata, updateContentHTMLBySlug } = this.props;
-    const { summary, content, status, category, headerImageUrl } = this.state;
+    const { summary, content, status, category, headerImageUrl, indexDescription } = this.state;
     const hasNewTitle = this.props.documentMetadata.title !== this.state.title;
     const newTitle = hasNewTitle ? this.state.title : null;
 
     const propertiesToUpdate = {
+      indexDescription,
       summary,
       content,
       status,
@@ -191,7 +201,7 @@ class DocumentEditor extends Component {
 
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
-    const { summary, content, headerImageUrl } = this.state;
+    const { indexDescription, summary, content, headerImageUrl } = this.state;
     const { documentMetadata, displayEditor } = this.props;
 
     return (
@@ -240,6 +250,19 @@ class DocumentEditor extends Component {
                   headerImageUrl={headerImageUrl}
                 />
               </div>
+            </div>
+            <div className="mb-4">
+              <span className="mb-2">Index Description:</span>
+              <CKEditor
+                name="document-summary"
+                activeClass="p10"
+                content={indexDescription}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeIndexDescription
+                }}
+                config={{ id: "cke-document-index-description" }}
+              />
             </div>
             <div className="mb-4">
               <span className="mb-2">Summary:</span>

@@ -15,6 +15,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       commentPeriodUnit,
       selectedProject,
       scorecard,
+      indexDescription,
       summary,
       category,
       tags
@@ -28,6 +29,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       commentPeriodUnit,
       selectedProjectSymbol: selectedProject.symbol || "GEN",
       scorecard,
+      indexDescription,
       description: summary,
       category,
       tags
@@ -74,6 +76,11 @@ export const updateContentHtml = contentHtml => ({
 export const updateSummary = summary => ({
   type: types.SUMMARY_UPDATED,
   summary
+});
+
+export const updateIndexDescription = indexDescription => ({
+  type: types.INDEX_DESCRIPTION_UPDATED,
+  indexDescription
 });
 
 export const updateTitle = title => ({

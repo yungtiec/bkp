@@ -3,6 +3,7 @@ import axios from "axios";
 export function postHtml({
   title,
   headerImageUrl,
+  indexDescription,
   contentHtml,
   collaboratorEmails,
   commentPeriodValue,
@@ -19,6 +20,7 @@ export function postHtml({
     .post(`/api/documents`, {
       title,
       headerImageUrl,
+      indexDescription,
       contentHtml,
       collaboratorEmails,
       commentPeriodValue,

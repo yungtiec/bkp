@@ -16,6 +16,9 @@ module.exports = (db, DataTypes) => {
     document_type: {
       type: DataTypes.STRING
     },
+    index_description: {
+      type: DataTypes.TEXT
+    },
     description: {
       type: DataTypes.TEXT
     },
@@ -214,6 +217,7 @@ module.exports = (db, DataTypes) => {
         "id",
         "title",
         "document_type",
+        "index_description",
         "description",
         "project_id",
         "submitted",
