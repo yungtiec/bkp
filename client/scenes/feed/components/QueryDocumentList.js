@@ -37,6 +37,8 @@ class QueryDocumentList extends React.Component {
 
 const mapState = (state, ownProps) => {
   const { documentIds, documentsById } = getFilteredDocuments(state);
+  console.log(documentsById);
+  console.log(documentsById);
   const { endOfResult } = getFilteredDocumentsOffsetAndLimit(state);
   const {
     additionalDocumentsLoading,

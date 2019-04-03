@@ -314,6 +314,7 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     });
     await Promise.all([removedTagPromises, addedTagPromises]);
 
+    documentToUpdate.index_description = req.body.indexDescription;
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
     documentToUpdate.reviewed = req.body.status;
@@ -544,6 +545,7 @@ const createDocumentFromHtml = async (req, res, next) => {
       comment_until_unix: commentUntilInUnix,
       content_html: req.body.contentHtml,
       submitted: true,
+      index_description: req.body.indexDescription,
       description: req.body.description,
       category: req.body.category ? req.body.category.value : null,
       slug

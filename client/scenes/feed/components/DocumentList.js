@@ -18,8 +18,8 @@ export default ({
         category={documentsById[id].category.replace(/-/g, " ")}
         title={documentsById[id].title}
         description={
-          documentsById[id].description
-            ? ReactHtmlParser(documentsById[id].description).filter(
+          documentsById[id].index_description
+            ? ReactHtmlParser(documentsById[id].index_description).filter(
                 elem => elem.type === "p"
               )[0]
             : ReactHtmlParser(documentsById[id].content_html).filter(
