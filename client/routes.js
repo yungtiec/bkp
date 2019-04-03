@@ -147,6 +147,10 @@ class Routes extends Component {
             path="/dex-overview"
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
+          <Route
+            path="/open-roundtable-discussions"
+            render={() => <Redirect to="/" />}
+          />
           {/* Displays our feed component as a fallback */}
           <RouteWithLayout
             layout={LayoutWithNav}
