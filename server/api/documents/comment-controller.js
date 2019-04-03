@@ -166,7 +166,7 @@ const postReply = async (req, res, next) => {
     });
     await sendEmail({
       user: ancestry.owner,
-      emailType: 'VOTE',
+      emailType: 'COMMENT',
       subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
       message: generateCommentHtml(
         process.env.NODE_ENV === "production",
@@ -179,21 +179,6 @@ const postReply = async (req, res, next) => {
         true
       )
     });
-    //await sendEmail({
-    //  user,
-    //  emailType: 'COMMENT',
-    //  subject: `New Reply Activity From ${user.first_name} ${user.last_name}`,
-    //  message: generateCommentHtml(
-    //    process.env.NODE_ENV === 'production',
-    //    ancestry.document.slug,
-    //    user.first_name,
-    //    user.last_name,
-    //    ancestry.id,
-    //    'testhandle',
-    //    reply.comment,
-    //    true
-    //  )
-    //});
     res.send(ancestry);
   } catch (err) {
     next(err);

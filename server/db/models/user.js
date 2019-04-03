@@ -134,7 +134,8 @@ module.exports = (db, DataTypes) => {
           new_articles: false,
           upvotes_and_downvotes: false,
           comments_and_replies: false,
-          monthly_update: false
+          monthly_update: false,
+          disable_all: false
         }
       }
     },
