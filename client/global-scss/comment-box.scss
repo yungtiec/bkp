@@ -1,7 +1,7 @@
 .comment-box {
   display: flex;
   flex-direction: column;
-  margin: 10px 0px 0 5px;
+  margin: 10px 0px 0 0px;
 }
 
 .comment-box__actions {
@@ -15,6 +15,7 @@
   margin-bottom: -7px;
   border-radius: 5px;
   border-color: #d4d4d4;
+  padding: 10px;
 }
 
 .comment-box__actions {
@@ -40,4 +41,9 @@
 
 .comment-item.page-comment--highlight {
   border: 3px solid white;
+}
+
+.comment-box .btn-right-align {
+  width: 130px;
+  align-self: flex-end;
 }

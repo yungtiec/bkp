@@ -50,7 +50,7 @@ class DocumentToolbar extends Component {
 
 
     return (
-      <div>
+      <div className="mb-2">
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
           <button
             type="button"

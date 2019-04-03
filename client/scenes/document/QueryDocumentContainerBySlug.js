@@ -42,11 +42,13 @@ class QueryDocumentContainerBySlug extends Component {
 
 const mapState = state => {
   return {
+    width: state.data.environment.width,
     documentMetadata: getDocumentMetadata(state),
     isClosedForComment: isClosedForComment(state),
     displayEditor: state.scenes.document.data.ckEditor.displayEditor,
     isLoggedIn: !!state.data.user.id,
-    userId: state.data.user.id
+    userId: state.data.user.id,
+    sidebarOpen: state.scenes.document.sidebarOpen
   };
 };
 

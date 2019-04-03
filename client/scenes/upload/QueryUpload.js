@@ -17,8 +17,10 @@ import {
   updateContentHtml,
   updateTitle,
   updateCategory,
+  updateTags,
   updateHeaderImageUrl,
-  updateSummary
+  updateSummary,
+  updateIndexDescription
 } from "./data/upload/actions";
 import {
   fetchAllProjects,
@@ -72,9 +74,11 @@ const mapState = state => {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     summary,
     scorecard,
+    indexDescription,
     scorecardCompleted
   } = getUploadMetadata(state);
   return {
@@ -96,8 +100,10 @@ const mapState = state => {
     contentHtml,
     title,
     category,
+    tags,
     headerImageUrl,
-    summary
+    summary,
+    indexDescription
   };
 };
 
@@ -118,8 +124,15 @@ const actions = {
   updateContentHtml,
   updateTitle,
   updateCategory,
+  updateTags,
   updateHeaderImageUrl,
-  updateSummary
+  updateSummary,
+  updateIndexDescription
 };
 
-export default withRouter(connect(mapState, actions)(MyComponent));
+export default withRouter(
+  connect(
+    mapState,
+    actions
+  )(MyComponent)
+);

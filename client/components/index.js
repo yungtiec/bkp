@@ -1,10 +1,4 @@
-/**
- * `components/index.js` exists simply as a 'central export' for our components.
- * This way, we can import all of our components from the same place, rather than
- * having to figure out which file they belong to!
- */
 export { default as Navbar } from "./Navbar";
-export { default as SearchBar } from "./SearchBar";
 export { default as NotificationFlyout } from "./NotificationFlyout";
 export { Login, Signup, RequestPasswordReset, ResetPassword } from "./AuthForm";
 export { default as ListView } from "./ListView";
@@ -14,8 +8,6 @@ export { default as ModalContainer } from "./ModalContainer";
 export { default as Layout } from "./Layout";
 export { default as LayoutWithNav } from "./LayoutWithNav";
 export { default as RouteWithLayout } from "./RouteWithLayout";
-export { default as ProjectAuthorName } from "./ProjectAuthorName";
-export { default as ProjectSymbolBlueBox } from "./ProjectSymbolBlueBox";
 export { default as CommentMain } from "./CommentMain";
 export { default as CommentReply } from "./CommentReply";
 export { default as CustomScrollbar } from "./CustomScrollbar";
@@ -39,6 +31,7 @@ export { default as FormsyScoreInput } from "./FormsyInputs/FormsyScoreInput";
 export { default as FormsyTextArea } from "./FormsyInputs/FormsyTextArea";
 export { default as FormsyAsyncSelect } from "./FormsyInputs/FormsyAsyncSelect";
 export { default as FormsyImageUpload } from "./FormsyInputs/FormsyImageUpload";
+export { default as InlineInputGrid } from "./FormsyInputs/InlineInputGrid";
 export { default as ProjectScorecardInputs } from "./ProjectScorecardInputs";
 export { default as FeedbackModal } from "./FeedbackModal";
 export {
@@ -56,3 +49,16 @@ export {
 } from "./ContributionCards/DocumentVoteCard";
 export { default as DocumentCategorySelect } from "./DocumentCategorySelect";
 export { default as CKEditor } from "./DocumentEditor/CKEditor";
+export { default as TagField } from "./TagField";
+export { default as FilterItem } from "./FilterBar/FilterItem";
+export { default as FilterBar } from "./FilterBar/FilterBar";
+export { default as FilterSearch } from "./FilterBar/FilterSearch";
+export { default as HeroHeader } from "./HeroHeader";
+export { default as FeedItem } from "./FeedItem";
+export { default as CommentBox } from "./CommentBox/CommentBox";
+export {
+  default as CommentBoxWithTagField
+} from "./CommentBox/CommentBoxWithTagField";
+export {
+  default as CommentContainer
+} from "./CommentContainer/CommentContainer";

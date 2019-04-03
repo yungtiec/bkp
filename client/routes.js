@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
+  NotFound,
   Projects,
   Collaborations,
   Project,
@@ -17,7 +18,8 @@ import {
   DocumentBySlug,
   Wizard,
   MyDocuments,
-  Feed
+  Feed,
+  RequestsForComment
 } from "./scenes";
 import {
   Login,
@@ -47,6 +49,11 @@ class Routes extends Component {
             exact
             path="/"
             component={Feed}
+          />
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            path="/requests-for-comment"
+            component={RequestsForComment}
           />
           <RouteWithLayout layout={Layout} path="/login" component={Login} />
           <RouteWithLayout layout={Layout} path="/signup" component={Signup} />
@@ -141,7 +148,10 @@ class Routes extends Component {
             render={() => <Redirect to="/project/TL/document/9/version/10/" />}
           />
           {/* Displays our feed component as a fallback */}
-          <Redirect to='/'/>
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            component={NotFound}
+          />
         </Switch>
       </div>
     );

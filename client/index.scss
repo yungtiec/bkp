@@ -38,8 +38,12 @@ ul li {
     padding-right: 145px;
   }
   @include breakpoint(xs) {
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  @include breakpoint(sm) {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 

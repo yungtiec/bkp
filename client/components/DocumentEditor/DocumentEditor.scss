@@ -84,11 +84,12 @@
 
 .document-summary {
   margin-bottom: 27px;
-  color: #9198a0;
+  background-color: #ecece8;
+  padding: 10px;
 }
 
 .document-summary div {
-  color: #9198a0;
+  color: #1b4164;
 }
 
 .document-summary hr {
@@ -98,6 +99,12 @@
   margin: 24px 0;
   background-color: #e1e4e8;
   border: 0;
+}
+
+.document-content {
+  @media (max-width: 767px) {
+    padding: 0 15px 0 5px;
+  }
 }
 
 input[name="title"] {

@@ -3,7 +3,7 @@ import { uniq, isEmpty, values } from "lodash";
 
 const initialState = {
   markdown: null,
-  versionNumber: '',
+  versionNumber: "",
   collaboratorEmails: [],
   commentPeriodValue: 3,
   commentPeriodUnit: "days",
@@ -12,10 +12,12 @@ const initialState = {
   projectsBySymbol: {},
   collaboratorOptions: [],
   scorecard: {},
-  title: '',
-  headerImageUrl: '',
+  title: "",
+  headerImageUrl: "",
   category: null,
-  summary: ''
+  tags: [],
+  summary: "",
+  indexDescription: ""
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -74,7 +76,12 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         category: action.category
-      }
+      };
+    case types.TAGS_UPDATED:
+      return {
+        ...state,
+        tags: action.tags
+      };
     case types.HEADER_IMAGE_URL_UPDATED:
       return {
         ...state,
@@ -85,11 +92,16 @@ export default function reduce(state = initialState, action = {}) {
         ...state,
         contentHtml: action.contentHtml
       };
+    case types.INDEX_DESCRIPTION_UPDATED:
+      return {
+        ...state,
+        indexDescription: action.indexDescription
+      };
     case types.SUMMARY_UPDATED:
       return {
         ...state,
         summary: action.summary
-      }
+      };
     default:
       return state;
   }
@@ -105,9 +117,11 @@ export function getUploadMetadata(state) {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     scorecard,
-    summary
+    summary,
+    indexDescription,
   } = state.scenes.upload.data.upload;
   return {
     contentHtml,
@@ -118,9 +132,11 @@ export function getUploadMetadata(state) {
     commentPeriodValue,
     title,
     category,
+    tags,
     headerImageUrl,
     scorecard,
     summary,
+    indexDescription,
     scorecardCompleted:
       !isEmpty(scorecard) &&
       values(scorecard).reduce((bool, score) => !!score && bool, true)

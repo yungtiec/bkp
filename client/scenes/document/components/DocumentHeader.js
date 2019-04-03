@@ -1,7 +1,23 @@
+import "./DocumentHeader.scss";
 import React, { Component } from "react";
 import autoBind from "react-autobind";
 import history from "../../../history";
-import { ProjectAuthorName } from "../../../components";
+import { DocumentToolbar } from './index';
+import { Link } from "react-router-dom";
+import moment from "moment";
+
+const DocumentAuthorName = ({ name, userHandle, delegate, createdAt }) => (
+  <p className="document-author__header">
+    By{" "}
+    <Link to={`/profile/@${userHandle}`}>
+      {name}
+      {delegate ? " (Reposted By BKP Admin)" : ""} |
+    </Link>
+    <span className="document-published-date__header">
+      Published {moment(createdAt).format("MM.DD.YYYY")}
+    </span>
+  </p>
+);
 
 export default class DocumentHeader extends Component {
   constructor(props) {
@@ -15,8 +31,14 @@ export default class DocumentHeader extends Component {
 
   render() {
     const {
-      documentMetadata,
+      upvoteDocument,
+      downvoteDocument,
+      showEditor,
+      isLoggedIn,
+      displayEditor,
+      userId,
     } = this.props;
+    const { documentMetadata } = this.props;
     const { creator, createdAt } = documentMetadata;
     const collaborators = documentMetadata.collaborators
       .map((c, i) => {
@@ -32,15 +54,28 @@ export default class DocumentHeader extends Component {
 
     return (
       <div className="project-document__header">
-        <p className="document__title">{`${documentMetadata.title}`}</p>
-        <ProjectAuthorName name={creator.displayName} createdAt={createdAt} />
+        <div className="project-document__header-text">
+          <p className="document__title">{`${documentMetadata.title}`}</p>
+          <DocumentAuthorName
+            name={creator.displayName}
+            userHandle={creator.user_handle}
+            delegate={creator.delegate}
+            createdAt={createdAt}
+          />
+          <DocumentToolbar
+            documentMetadata={documentMetadata}
+            upvoteDocument={upvoteDocument}
+            downvoteDocument={downvoteDocument}
+            showEditor={showEditor}
+            isLoggedIn={isLoggedIn}
+            displayEditor={displayEditor}
+            userId={userId}
+          />
+        </div>
+        <div className="project-document__header-image" style={{
+          backgroundImage: `url(${documentMetadata.header_img_url})`
+        }}/>
       </div>
     );
   }
 }
-
-// <p className="document__subtitle  mb-4">
-//   {`version ${
-//     versionMetadata.version_number
-//   } created by ${creator} ${collaborators}`}
-// </p>

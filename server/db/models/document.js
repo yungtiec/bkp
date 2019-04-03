@@ -16,6 +16,9 @@ module.exports = (db, DataTypes) => {
     document_type: {
       type: DataTypes.STRING
     },
+    index_description: {
+      type: DataTypes.TEXT
+    },
     description: {
       type: DataTypes.TEXT
     },
@@ -63,7 +66,7 @@ module.exports = (db, DataTypes) => {
     }
   });
   Document.associate = function(models) {
-    Document.hasMany(models.version, {
+    Document.hasMany(models.question, {
       foreignKey: "document_id"
     });
     Document.belongsTo(models.project, {
@@ -163,7 +166,30 @@ module.exports = (db, DataTypes) => {
           },
           {
             model: models["user"],
-            as: "creator"
+            as: "creator",
+            attributes: [
+              "id",
+              "email",
+              "name",
+              "first_name",
+              "last_name",
+              "organization",
+              "restricted_access",
+              "short_profile_url",
+              "self_introduction",
+              "linkedin_url",
+              "twitter_url",
+              "stackoverflow_url",
+              "website_url",
+              "github_url",
+              "user_handle",
+              "avatar_url",
+              "createdAt",
+              "delegate"
+            ]
+          },
+          {
+            model: models["tag"]
           },
           {
             model: models["user"],
@@ -179,7 +205,8 @@ module.exports = (db, DataTypes) => {
       };
     });
     Document.addScope("includeAllEngagements", function(
-      extendedWhereOptions = {}
+      extendedWhereOptions = {},
+      extendedIncludeOptions
     ) {
       var defaultWhereOptions = {
         submitted: true,
@@ -190,6 +217,7 @@ module.exports = (db, DataTypes) => {
         "id",
         "title",
         "document_type",
+        "index_description",
         "description",
         "project_id",
         "submitted",
@@ -222,71 +250,7 @@ module.exports = (db, DataTypes) => {
           "num_downvotes"
         ]
       ];
-      return {
-        where,
-        attributes,
-        include: [
-          {
-            model: models["user"],
-            as: "upvotesFrom",
-            attributes: ["name", "first_name", "last_name", "email", "id"]
-          },
-          {
-            model: models["user"],
-            as: "downvotesFrom",
-            attributes: ["name", "first_name", "last_name", "email", "id"]
-          },
-          {
-            model: models["user"],
-            as: "creator",
-            include: [
-              {
-                model: models.role
-              }
-            ]
-          },
-          {
-            model: models["project"]
-          },
-          {
-            model: models["comment"],
-            required: false,
-            attributes: ["id", "reviewed", "hierarchyLevel"],
-            where: {
-              reviewed: {
-                [Sequelize.Op.or]: [
-                  { [Sequelize.Op.eq]: "pending" },
-                  { [Sequelize.Op.eq]: "verified" }
-                ]
-              },
-              hierarchyLevel: 1
-            },
-            include: [
-              {
-                model: models["issue"],
-                required: false
-              },
-              {
-                model: models["user"],
-                as: "upvotesFrom",
-                attributes: ["id"],
-                required: false
-              },
-              { model: models["comment"], as: "descendents" }
-            ],
-            order: [
-              [
-                { model: models["comment"], as: "descendents" },
-                "hierarchyLevel"
-              ]
-            ]
-          }
-        ]
-      };
-    });
-    Document.addScope("includeVersionsWithAllEngagements", {
-      where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
-      include: [
+      var include = [
         {
           model: models["user"],
           as: "upvotesFrom",
@@ -298,47 +262,28 @@ module.exports = (db, DataTypes) => {
           attributes: ["name", "first_name", "last_name", "email", "id"]
         },
         {
-          model: models["version"],
-          where: { [Sequelize.Op.and]: { submitted: true, reviewed: true } },
-          include: [
-            {
-              model: models["comment"],
-              required: false,
-              attributes: ["id", "reviewed", "hierarchyLevel"],
-              where: {
-                reviewed: {
-                  [Sequelize.Op.or]: [
-                    { [Sequelize.Op.eq]: "pending" },
-                    { [Sequelize.Op.eq]: "verified" }
-                  ]
-                },
-                hierarchyLevel: 1
-              },
-              include: [
-                {
-                  model: models["issue"],
-                  required: false
-                },
-                {
-                  model: models["user"],
-                  as: "upvotesFrom",
-                  attributes: ["id"],
-                  required: false
-                },
-                { model: models["comment"], as: "descendents" }
-              ],
-              order: [
-                [
-                  { model: models["comment"], as: "descendents" },
-                  "hierarchyLevel"
-                ]
-              ]
-            }
-          ]
-        },
-        {
           model: models["user"],
           as: "creator",
+          attributes: [
+            "id",
+            "email",
+            "name",
+            "first_name",
+            "last_name",
+            "organization",
+            "restricted_access",
+            "short_profile_url",
+            "self_introduction",
+            "linkedin_url",
+            "twitter_url",
+            "stackoverflow_url",
+            "website_url",
+            "github_url",
+            "user_handle",
+            "avatar_url",
+            "createdAt",
+            "delegate"
+          ],
           include: [
             {
               model: models.role
@@ -346,22 +291,49 @@ module.exports = (db, DataTypes) => {
           ]
         },
         {
-          model: models["user"],
-          as: "collaborators",
-          through: {
-            model: models["document_collaborator"],
-            where: { revoked_access: false }
-          },
-          required: false
+          model: models["project"]
         },
         {
-          model: models["project"]
+          model: models["tag"]
+        },
+        {
+          model: models["comment"],
+          required: false,
+          attributes: ["id", "reviewed", "hierarchyLevel"],
+          where: {
+            reviewed: {
+              [Sequelize.Op.or]: [
+                { [Sequelize.Op.eq]: "pending" },
+                { [Sequelize.Op.eq]: "verified" }
+              ]
+            },
+            hierarchyLevel: 1
+          },
+          include: [
+            {
+              model: models["issue"],
+              required: false
+            },
+            {
+              model: models["user"],
+              as: "upvotesFrom",
+              attributes: ["id"],
+              required: false
+            },
+            { model: models["comment"], as: "descendents" }
+          ],
+          order: [
+            [{ model: models["comment"], as: "descendents" }, "hierarchyLevel"]
+          ]
         }
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        [{ model: models["version"] }, "hierarchyLevel", "DESC"]
-      ]
+      ];
+      if (extendedIncludeOptions)
+        include = include.concat(extendedIncludeOptions);
+      return {
+        where,
+        attributes,
+        include
+      };
     });
     Document.addScope("includeVersions", function({
       documentId,

@@ -1,4 +1,5 @@
 const { Tag } = require("../../db/models");
+const _ = require("lodash");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -13,12 +14,18 @@ const getTags = async (req, res, next) => {
 
 const getAutocompleteTags = async (req, res, next) => {
   try {
-    const tags = await Tag.findAll({
-      where: { name: { [Op.iLike]: `%${req.query.term}%` } }
-    });
-    res.send(
-      tags.map(tag => ({ id: tag.id, label: tag.name, value: tag.name }))
-    );
+    if (!req.query.term || (req.query.term && req.query.term.length < 3))
+      res.send([]);
+    else {
+      const tags = await Tag.findAll({
+        where: { name: { [Op.iLike]: `%${req.query.term}%` } }
+      });
+      res.send(
+        tags.map(tag =>
+          _.assignIn({ label: tag.name, value: tag.name }, tag.toJSON())
+        )
+      );
+    }
   } catch (err) {
     next(err);
   }

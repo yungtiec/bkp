@@ -1,7 +1,7 @@
 const { User, Role, Comment } = require("../db/models");
 const _ = require("lodash");
 const crypto = require("crypto");
-const sgMail = require('@sendgrid/mail');
+const sgMail = require("@sendgrid/mail");
 
 const isAdmin = user => {
   return user.roles.filter(r => r.name === "admin").length;
@@ -87,11 +87,9 @@ const getEngagedUsers = async ({ version, creator, collaboratorEmails }) => {
       }
     ]
   });
-  var commentators = _
-    .uniqBy(comments.map(c => c.owner.toJSON()), "id")
-    .filter(
-      c => collaboratorEmails.indexOf(c.email) === -1 && c.id !== creator.id
-    );
+  var commentators = _.uniqBy(comments.map(c => c.owner.toJSON()), "id").filter(
+    c => collaboratorEmails.indexOf(c.email) === -1 && c.id !== creator.id
+  );
   // we might want to tailor the notification based on their action
   return commentators;
 };
@@ -122,16 +120,72 @@ const createSlug = async (docTitle, contentHtml) => {
   }
 };
 
-const sendEmail = ({recipientEmail, subject, message}) => {
+const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: recipientEmail,
-    from: 'info@thebkp.com',
-    subject: subject,
+  const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
+  if (shouldSendEmail) {
+    const userMsg = {
+      to: user.email,
+      from: "info@thebkp.com",
+      subject: subject,
+      text: message,
+      html: message
+    };
+    await sgMail.send(userMsg);
+  }
+
+  const AdminMsg = {
+    to: 'info@thebkp.com',
+    from: "info@thebkp.com",
+    subject: subject + ' - Admin Notification',
     text: message,
-    html: message,
+    html: message
   };
-  return sgMail.send(msg);
+
+  return await sgMail.send(AdminMsg);
+};
+
+const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
+  prevTags = prevTags || [];
+  var removedTags = prevTags.filter(function(prevTag) {
+    return curTags.map(tag => tag.value).indexOf(prevTag.name) === -1;
+  });
+  var addedTags = curTags
+    ? curTags.filter(tag => {
+        return prevTags.map(prevTag => prevTag.name).indexOf(tag.value) === -1;
+      })
+    : [];
+  return {
+    addedTags,
+    removedTags
+  };
+};
+
+const hasNotificationPermission = async (userId, commentType) => {
+  const COMMENT = 'comments_and_replies';
+  const VOTE = 'upvotes_and_downvotes';
+
+  try {
+    const requester = await User.findOne({
+      where: { id: userId }
+    });
+    const notificationConfig = requester.notification_config;
+
+    if (!notificationConfig || (notificationConfig && notificationConfig.disable_all)) {
+      return false;
+    }
+
+    switch (commentType) {
+      case 'COMMENT':
+        return notificationConfig[COMMENT];
+      case 'VOTE':
+        return notificationConfig[VOTE];
+      default:
+        return false;
+    }
+  } catch (err) {
+    return false;
+  }
 };
 
 
@@ -144,5 +198,7 @@ module.exports = {
   ensureResourceAccess,
   getEngagedUsers,
   createSlug,
-  sendEmail
+  sendEmail,
+  getAddedAndRemovedTags,
+  hasNotificationPermission
 };

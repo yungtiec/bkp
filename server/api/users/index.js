@@ -23,6 +23,19 @@ const ensureCorrectRole = (req, res, next) => {
 router.get("/", ensureAuthentication, userController.getUsers);
 
 /**
+ * Getting a list of delegated users
+ *
+ * @name Get users
+ * @route {GET} /api/users/delegated
+ *
+ */
+router.get(
+  "/delegated",
+  ensureAuthentication,
+  userController.getDelegatedUsers
+);
+
+/**
  * Getting user by handle
  *
  * @name Get user

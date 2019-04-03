@@ -8,7 +8,8 @@ import {
   requiresAuthorization,
   ProjectScorecardInputs,
   DocumentCategorySelect,
-  CKEditor
+  CKEditor,
+  TagField
 } from "../../components";
 import UploadInterface from "./components/UploadInterface";
 import {
@@ -35,6 +36,7 @@ class Upload extends Component {
       headerImageUrlError: false,
       contentHtmlError: false,
       summaryError: false,
+      indexDescriptionError: false,
       isScorecard: false,
       uploadClicked: false,
       headerImageUrl: ""
@@ -93,6 +95,11 @@ class Upload extends Component {
     this.props.updateSummary(newContent);
   }
 
+  handleIndexDescriptionCkEditorChange(evt) {
+    var newContent = evt.editor.getData();
+    this.props.updateIndexDescription(newContent);
+  }
+
   handleImageSelection(headerImageUrl) {
     this.props.updateHeaderImageUrl(headerImageUrl);
     this.props.hideModal();
@@ -110,6 +117,19 @@ class Upload extends Component {
     this.setState({
       categoryError: false
     });
+  }
+
+  handleTagSelect(selected) {
+    selected = selected[0].name
+      ? selected[0]
+      : { ...selected[0], name: selected[0].value };
+    if (this.props.tags.map(tag => tag.name).indexOf(selected.value) === -1) {
+      this.props.updateTags([...this.props.tags, selected]);
+    }
+  }
+
+  handleRemoveTag(index) {
+    this.props.updateTags(this.props.tags.filter((tag, i) => i !== index));
   }
 
   handleAccordionChange(key) {
@@ -130,17 +150,22 @@ class Upload extends Component {
         ...prevState,
         categoryError: !this.props.category
       }));
-    if (key > 5)
+    if (key > 6)
       this.setState(prevState => ({
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
-    if (key > 6)
+    if (key > 7)
+      this.setState(prevState => ({
+        ...prevState,
+        indexDescriptionError: !this.props.indexDescription
+      }));
+    if (key > 8)
       this.setState(prevState => ({
         ...prevState,
         summaryError: !this.props.summary
       }));
-    if (key > 7)
+    if (key > 9)
       this.setState(prevState => ({
         ...prevState,
         contentHtmlError: !this.props.contentHtml
@@ -176,6 +201,11 @@ class Upload extends Component {
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
+    else if (currentField === "indexDescription" && !this.props.indexDescription)
+      this.setState(prevState => ({
+        ...prevState,
+        indexDescriptionError: !this.props.indexDescription
+      }));
     else if (currentField === "contentHtml" && !this.props.contentHtml)
       this.setState(prevState => ({
         ...prevState,
@@ -189,15 +219,7 @@ class Upload extends Component {
     else
       this.setState(prevState => ({
         ...prevState,
-        activeAccordionItemId: (prevState.activeAccordionItemId + 1),
-        scorecardError:
-          this.state.isScorecard && !this.props.scorecardCompleted,
-        categoryError: !this.props.category,
-        projectError: this.state.isScorecard && !this.props.selectedProject,
-        headerImageUrlError: !this.props.headerImageUrl,
-        titleError: !this.props.title,
-        contentHtmlError: !this.props.contentHtml,
-        summaryError: !this.props.summary
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
   }
 
@@ -211,6 +233,7 @@ class Upload extends Component {
         !this.state.titleError &&
         !this.state.headerImageUrlError &&
         !this.state.contentHtmlError &&
+        !this.state.indexDescriptionError &&
         !this.state.summaryError)
     ) {
       this.props.uploadHtmlToServer();
@@ -243,7 +266,8 @@ class Upload extends Component {
       contentHtml,
       headerImageUrl,
       category,
-      summary
+      summary,
+      indexDescription
     } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
@@ -423,6 +447,27 @@ class Upload extends Component {
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
               <AccordionItemTitle>
+                <p className="upload-accordion__item-header">Tags</p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <div className="d-flex flex-column">
+                  <p>select tag(s) for your document</p>
+                  <TagField
+                    handleOnSelect={this.handleTagSelect}
+                    handleRemoveTag={this.handleRemoveTag}
+                    selectedTags={this.props.tags}
+                  />
+                  <button
+                    onClick={this.next}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
+              <AccordionItemTitle>
                 <p className="upload-accordion__item-header">header image</p>
               </AccordionItemTitle>
               <AccordionItemBody>
@@ -440,7 +485,37 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
+              <AccordionItemTitle>
+                <p className="upload-accordion__item-header">
+                  Index Description
+                </p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <p style={{ marginBottom: "0px" }}>This description will appear on the index feed</p>
+                </div>
+                <CKEditor
+                  name="document-summary"
+                  activeClass="p10"
+                  content={this.props.indexDescription}
+                  scriptUrl={scriptUrl}
+                  events={{
+                    change: this.handleIndexDescriptionCkEditorChange
+                  }}
+                  config={{ id: "cke-document-summary" }}
+                />
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={() => this.next("indexDescription")}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Summary
@@ -470,7 +545,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 9}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Content
@@ -563,12 +638,27 @@ class Upload extends Component {
                   }
                 />
                 <Step
+                  title="tags"
+                  description="select tag(s) for your document"
+                />
+                <Step
                   title="header image"
                   description="set document header image"
                   status={
                     this.state.headerImageUrlError
                       ? "error"
-                      : this.state.activeAccordionItemId > 5
+                      : this.state.activeAccordionItemId > 6
+                      ? "finish"
+                      : "wait"
+                  }
+                />
+                <Step
+                  title="index description"
+                  description="create document index description"
+                  status={
+                    this.state.indexDescriptionError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 7
                       ? "finish"
                       : "wait"
                   }
@@ -579,7 +669,7 @@ class Upload extends Component {
                   status={
                     this.state.summaryError
                       ? "error"
-                      : this.state.activeAccordionItemId > 6
+                      : this.state.activeAccordionItemId > 8
                       ? "finish"
                       : "wait"
                   }
@@ -590,7 +680,7 @@ class Upload extends Component {
                   status={
                     this.state.contentHtmlError
                       ? "error"
-                      : this.state.activeAccordionItemId === 7 &&
+                      : this.state.activeAccordionItemId === 9 &&
                         this.props.contentHtml
                       ? "finish"
                       : "wait"

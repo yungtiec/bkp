@@ -122,5 +122,10 @@ function getContextUri(comment) {
     comment.ancestors && comment.ancestors.length
       ? comment.ancestors[0]
       : comment;
-  return `/s/${comment.document.slug}/comment/${rootItem.id}`;
+  return (
+    (comment.document &&
+      `/s/${comment.document.slug}/comment/${rootItem.id}`) ||
+    (comment.question &&
+      `/requests-for-comment/${comment.question.slug}/comment/${rootItem.id}`)
+  );
 }

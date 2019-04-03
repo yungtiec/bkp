@@ -12,12 +12,6 @@ module.exports = (db, DataTypes) => {
     uri: {
       type: DataTypes.STRING
     },
-    version_question_id: {
-      type: DataTypes.INTEGER
-    },
-    version_answer_id: {
-      type: DataTypes.INTEGER
-    },
     quote: {
       type: DataTypes.TEXT
     },
@@ -55,6 +49,9 @@ module.exports = (db, DataTypes) => {
     });
     Comment.belongsTo(models.document, {
       foreignKey: "doc_id"
+    });
+    Comment.belongsTo(models.question, {
+      foreignKey: "question_id"
     });
   };
   Comment.loadScopes = function(models) {
@@ -118,7 +115,8 @@ module.exports = (db, DataTypes) => {
               "name",
               "email",
               "id",
-              "anonymity"
+              "anonymity",
+              "avatar_url"
             ]
           },
           {
@@ -186,7 +184,7 @@ function generateScopeForAncestry(models, ancestry) {
         {
           model: models.user,
           as: "upvotesFrom",
-          attributes: ["first_name", "last_name", "name", "email", "id"]
+          attributes: ["first_name", "last_name", "name", "email", "id", "avatar_url"]
         },
         {
           model: models.user,
@@ -198,7 +196,8 @@ function generateScopeForAncestry(models, ancestry) {
             "name",
             "email",
             "anonymity",
-            "user_handle"
+            "user_handle",
+            "avatar_url"
           ],
           include: [
             {
@@ -227,7 +226,27 @@ function generateScopeForAncestry(models, ancestry) {
                 "name",
                 "email",
                 "anonymity",
-                "user_handle"
+                "user_handle",
+                "avatar_url"
+              ]
+            }
+          ]
+        },
+        {
+          model: models.question,
+          include: [
+            {
+              model: models.user,
+              as: "owner",
+              attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "name",
+                "email",
+                "anonymity",
+                "user_handle",
+                "avatar_url"
               ]
             }
           ]
@@ -237,17 +256,12 @@ function generateScopeForAncestry(models, ancestry) {
           attributes: ["open", "id"],
           include: [
             {
-              model: models.version,
-              as: "resolvingVersion",
+              model: models.document,
+              as: "resolvingDocument",
               include: [
                 {
-                  model: models.document,
-                  include: [
-                    {
-                      model: models.project,
-                      attributes: ["symbol"]
-                    }
-                  ]
+                  model: models.project,
+                  attributes: ["symbol"]
                 }
               ]
             }
@@ -260,7 +274,7 @@ function generateScopeForAncestry(models, ancestry) {
             {
               model: models.user,
               as: "upvotesFrom",
-              attributes: ["first_name", "last_name", "name", "email", "id"]
+              attributes: ["first_name", "last_name", "name", "email", "id", "avatar_url"]
             },
             {
               model: models.user,
@@ -271,7 +285,8 @@ function generateScopeForAncestry(models, ancestry) {
                 "last_name",
                 "name",
                 "email",
-                "anonymity"
+                "anonymity",
+                "avatar_url"
               ],
               include: [
                 {
@@ -293,7 +308,8 @@ function generateScopeForAncestry(models, ancestry) {
                     "last_name",
                     "name",
                     "email",
-                    "anonymity"
+                    "anonymity",
+                    "avatar_url"
                   ],
                   include: [
                     {

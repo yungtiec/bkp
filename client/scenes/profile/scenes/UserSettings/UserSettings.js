@@ -2,7 +2,7 @@ import "./UserSettings.scss";
 import React, { Component } from "react";
 import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Account, EditProfile } from "./scenes";
+import { Account, EditProfile, NotificationSettings } from "./scenes";
 
 const UserSettings = ({ match, profile, screenWidth }) => {
   return (
@@ -16,6 +16,12 @@ const UserSettings = ({ match, profile, screenWidth }) => {
           path={`${match.url}/edit`}
           render={() => (
             <EditProfile profile={profile} screenWidth={screenWidth} />
+          )}
+        />
+        <Route
+          path={`${match.url}/notification-settings`}
+          render={() => (
+            <NotificationSettings profile={profile} screenWidth={screenWidth} />
           )}
         />
         <Redirect from={match.url} exact to={`${match.url}/account`} />

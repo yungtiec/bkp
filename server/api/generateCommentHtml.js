@@ -1,4 +1,4 @@
-module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) => `<!DOCTYPE html>
+module.exports = (inProduction, slug, firstName, lastName, commentId, user_handle, commentText, isReply) => `<!DOCTYPE html>
 
 
 <html>
@@ -97,6 +97,8 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
     }
 
     .footer {
+      color: gray;
+      font-size: 12px;
       clear: both;
       margin-top: 10px;
       text-align: center;
@@ -254,6 +256,27 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
       border-bottom: 1px solid #f6f6f6;
       margin: 20px 0;
     }
+    
+    blockquote {
+      background: #f9f9f9;
+      border-left: 10px solid #ccc;
+      margin: 1.5em 10px;
+      padding: 0.5em 10px;
+      quotes: "\\201C""\\201D""\\2018""\\2019";
+    }
+    
+    blockquote:before {
+      color: #ccc;
+      content: open-quote;
+      font-size: 14px;
+      line-height: 0.1em;
+      margin-right: 0.25em;
+      vertical-align: -0.4em;
+    }
+    
+    blockquote p {
+      display: inline;
+    }
 
     /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
@@ -394,7 +417,10 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
 
                             <p style="margin-bottom: 30px;">From ${firstName} ${lastName}
                             </p>
-
+                            
+                            <div>
+                                <blockquote>${commentText}</blockquote>
+                            </div>
                             <table border="0"
                               cellpadding="0"
                               cellspacing="0"
@@ -444,7 +470,11 @@ module.exports = (inProduction, slug, firstName, lastName, commentId, isReply) =
             <!-- START FOOTER -->
 
             <div class="footer">
-
+              This message was intended for @${user_handle}. If you do not wish to receive this type of email from The Brooklyn Project in the future, please click <a href="${
+  inProduction
+    ? "https://thebkp.com"
+    : "http://localhost:8000"
+  }/profile/@${user_handle}/settings/notification-settings">here</a> to unsubscribe.
               <table border="0"
                 cellpadding="0"
                 cellspacing="0"

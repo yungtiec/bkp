@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
-import { debounce } from "lodash";
+import axios from "axios";
+import { debounce, assignIn } from "lodash";
 import CKEditor from "./CKEditor";
 import "./DocumentEditor.scss";
 import ReactHtmlParser, {
@@ -19,7 +20,7 @@ import CategorySelect from "../../scenes/document/scenes/Document/components/Cat
 import HeaderImageSelector from "../../scenes/document/scenes/Document/components/HeaderImageSelector";
 import $ from "jquery";
 import { loadModal, hideModal } from "../../data/reducer";
-import { ScorecardTable } from "../index";
+import { ScorecardTable, TagField } from "../index";
 
 class DocumentEditor extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class DocumentEditor extends Component {
     this.contentHtml = this.props.documentMetadata.content_html;
     this.state = {
       title: this.props.documentMetadata.title,
+      indexDescription: this.props.documentMetadata.index_description || "",
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
       status: this.props.documentMetadata.reviewed,
@@ -36,6 +38,11 @@ class DocumentEditor extends Component {
             value: this.props.documentMetadata.category.replace(" ", "-")
           }
         : null,
+      selectedTags: this.props.documentMetadata.tags
+        ? this.props.documentMetadata.tags.map(t =>
+            assignIn({ label: t.display_name, value: t.name }, t)
+          )
+        : [],
       headerImageUrl: this.props.documentMetadata.header_img_url,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
@@ -85,7 +92,6 @@ class DocumentEditor extends Component {
   }
 
   handleTitleChange(evt) {
-    console.log(evt.target.value);
     this.setState({
       title: evt.target.value
     });
@@ -121,6 +127,14 @@ class DocumentEditor extends Component {
     });
   }
 
+  onChangeIndexDescription(evt) {
+    // const newSummary = this.ckeditorSummary.editorInstance.getData()
+    var newIndexDescription = evt.editor.getData();
+    this.setState({
+      indexDescription: newIndexDescription
+    });
+  }
+
   onChangeSummary(evt) {
     // const newSummary = this.ckeditorSummary.editorInstance.getData()
     var newSummary = evt.editor.getData();
@@ -139,17 +153,19 @@ class DocumentEditor extends Component {
 
   async onButtonPress() {
     const { documentMetadata, updateContentHTMLBySlug } = this.props;
-    const { summary, content, status, category, headerImageUrl } = this.state;
+    const { summary, content, status, category, headerImageUrl, indexDescription } = this.state;
     const hasNewTitle = this.props.documentMetadata.title !== this.state.title;
     const newTitle = hasNewTitle ? this.state.title : null;
 
     const propertiesToUpdate = {
+      indexDescription,
       summary,
       content,
       status,
       category,
       headerImageUrl,
-      newTitle
+      newTitle,
+      tags: this.state.selectedTags || []
     };
 
     await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
@@ -163,9 +179,29 @@ class DocumentEditor extends Component {
     );
   }
 
+  onTagSelect(selected) {
+    selected = selected[0].name
+      ? selected[0]
+      : { ...selected[0], name: selected[0].value };
+    if (
+      this.state.selectedTags.map(tag => tag.name).indexOf(selected.value) ===
+      -1
+    ) {
+      this.setState(prevState => ({
+        selectedTags: [...prevState.selectedTags, selected]
+      }));
+    }
+  }
+
+  onRemoveTag(index) {
+    this.setState({
+      selectedTags: this.state.selectedTags.filter((tag, i) => i !== index)
+    });
+  }
+
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
-    const { summary, content, headerImageUrl } = this.state;
+    const { indexDescription, summary, content, headerImageUrl } = this.state;
     const { documentMetadata, displayEditor } = this.props;
 
     return (
@@ -198,6 +234,15 @@ class DocumentEditor extends Component {
                   category={this.state.category}
                 />
               </div>
+              <div className="mb-4">
+                Tags:
+                <TagField
+                  handleOnSelect={this.onTagSelect}
+                  handleRemoveTag={this.onRemoveTag}
+                  selectedTags={this.state.selectedTags}
+                  width="300px"
+                />
+              </div>
               <div className="mt-2 mb-4">
                 Header Image To Display On Feed:
                 <HeaderImageSelector
@@ -205,6 +250,19 @@ class DocumentEditor extends Component {
                   headerImageUrl={headerImageUrl}
                 />
               </div>
+            </div>
+            <div className="mb-4">
+              <span className="mb-2">Index Description:</span>
+              <CKEditor
+                name="document-summary"
+                activeClass="p10"
+                content={indexDescription}
+                scriptUrl={scriptUrl}
+                events={{
+                  change: this.onChangeIndexDescription
+                }}
+                config={{ id: "cke-document-index-description" }}
+              />
             </div>
             <div className="mb-4">
               <span className="mb-2">Summary:</span>
@@ -236,12 +294,11 @@ class DocumentEditor extends Component {
         ) : (
           <div className="mb-4">
             {summary ? (
-              <div className="document-summary ">
+              <div className="document-summary mb-3">
                 <div className="markdown-body">{ReactHtmlParser(summary)}</div>
-                <hr />
               </div>
             ) : null}
-            <div ref={el => (this[`content`] = el)}>
+            <div className="document-content" ref={el => (this[`content`] = el)}>
               <div
                 className="markdown-body"
                 onClick={this.handleAnnotationInContentOnClick}
@@ -328,12 +385,13 @@ async function loadAnnotation(self) {
     });
     self.annotator = app;
     $(".annotator__tag-container").tagsInput({
+      minChars: 3,
       autocomplete_url: "/api/tags/autocomplete",
       defaultText: "add tag(s)",
       height: "70px",
       width: "100%",
       interactive: true,
-      delimiter: [" "]
+      delimiter: [";"]
     });
     $(".annotator-cancel").click(evt => {
       if (!isEmpty(self.state.temporaryHighlight))

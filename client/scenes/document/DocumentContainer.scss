@@ -1,8 +1,59 @@
 @import "../../breakpoint";
 
+.document-container {
+  margin-top: 50px;
+  width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+  @include breakpoint(xs) {
+    margin-top: 25px;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+  @include breakpoint(sm) {
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 520px;
+  }
+  @include breakpoint(md) {
+    width: 550px;
+  }
+}
+
+.document-container--sidebar-open {
+  transition: all 0.2s ease-in-out;
+  @include breakpoint(xs) {
+    width: 100%;
+  }
+  @include breakpoint(sm) {
+    margin-left: 15px;
+    width: 450px;
+  }
+  @include breakpoint(md) {
+    margin-left: 65px;
+    width: 520px;
+  }
+  @include breakpoint(lg) {
+    margin-left: 65px;
+  }
+  @include breakpoint(xl) {
+    margin-left: 145px;
+  }
+}
+
+// .document-container.sidebar-closed {
+//   transition: all 0.2s ease-in-out;
+//   margin: 50px auto 0px auto;
+// }
+
 .project-document {
-  max-width: 740px;
-  padding: 20px 0px 6rem;
+  width: 100%;
+  padding: 0px 0px 6rem;
+  @media (max-width: 767px) {
+    padding: 0px 25px 0 15px;
+  }
 }
 
 .project-document__back-btn {
@@ -11,17 +62,17 @@
 }
 
 .project-document__header .document__title {
+  width: 100%;
   font-weight: 700;
-  font-size: 40px;
+  font-size: 32px;
   line-height: 1.58;
   text-transform: capitalize;
-  width: 70%;
   margin-bottom: 1rem;
-  max-width: 740px;
+  font-family: "Merriweather", Helvetica, sans-serif;
   @include breakpoint(xs) {
     width: 100%;
-    font-size: 36px;
-    line-height: 40px;
+    font-size: 32px;
+    line-height: 1.58;
   }
   @include breakpoint(sm) {
     width: 100%;
@@ -34,6 +85,28 @@
   font-family: "Roboto Condensed", sans-serif;
 }
 
+.project-document__header {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-document__header-text {
+  @media (max-width: 767px) {
+    padding: 0 25px 0 15px;
+  }
+}
+
+.project-document__header-image {
+  background-position: center !important;
+  background-origin: border-box !important;
+  background-size: cover !important;
+  display: block;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
 .document__request-btn {
   text-decoration: underline;
   color: #4a9ff6 !important;
@@ -41,6 +114,7 @@
 
 .project-document__footer {
   @include breakpoint(xs) {
+    padding: 0 25px 0 15px;
     flex-direction: column;
   }
 }

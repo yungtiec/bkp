@@ -17,7 +17,7 @@ export default ({ match }) => {
       <Switch>
         <Route path={`${match.url}/drafts`} component={Drafts} />
         <Route path={`${match.url}/published`} component={PublishedDocuments} />
-        <Redirect from={match.url} exact to={`${match.url}/drafts`} />
+        <Redirect from={match.url} to={`${match.url}/drafts`} />
       </Switch>
     </div>
   );
