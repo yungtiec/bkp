@@ -66,13 +66,13 @@ class Navbar extends Component {
             ) : (
               ""
             )}
-            {width > 1060 ? (
-              <Link to="/requests-for-comment" className="navbar__nav-item">
-                requests for comment
-              </Link>
-            ) : (
-              ""
-            )}
+            {/*{width > 1060 ? (*/}
+              {/*<Link to="/requests-for-comment" className="navbar__nav-item">*/}
+                {/*requests for comment*/}
+              {/*</Link>*/}
+            {/*) : (*/}
+              {/*""*/}
+            {/*)}*/}
             {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
