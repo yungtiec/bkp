@@ -74,7 +74,7 @@ const postComment = async (req, res, next) => {
       });
     const autoVerifyPromise =
       autoVerify && comment.update({ reviewed: "verified" });
-    const tagPromises = req.body.tags && Promise.map(req.body.tags, tag =>
+    const tagPromises = req.body.selectedTags && Promise.map(req.body.selectedTags, tag =>
       Tag.findOrCreate({
         where: { name: tag.value },
         default: { name: tag.value.toLowerCase(), display_name: tag.value }

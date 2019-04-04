@@ -94,6 +94,7 @@ const postAnnotatedComment = async (req, res, next) => {
       comment_id: newComment.id
     });
     const ownerPromise = newComment.setOwner(req.user.id);
+    //console.log(req.body);
     //const tagPromises = req.body.tags && Promise.map(tags, tag =>
     //  Tag.findOrCreate({
     //    where: { name: tag },
