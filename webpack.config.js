@@ -51,7 +51,6 @@ module.exports = {
             plugins: [
               "react-loadable/babel",
               "@babel/plugin-proposal-class-properties",
-              // "@babel/plugin-transform-object-assign",
               "@babel/plugin-syntax-dynamic-import"
             ]
           }
@@ -87,9 +86,6 @@ module.exports = {
   // files. It's like `nodemon` for the front end!
   plugins: isDev
     ? [
-        new webpack.DefinePlugin({
-          "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
-        }),
         new webpack.ProvidePlugin({
           $: "jquery",
           jQuery: "jquery",
