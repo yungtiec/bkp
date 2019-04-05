@@ -70,7 +70,7 @@ module.exports = {
               ]
             ],
             plugins: [
-              "react-loadable/babel",
+              // "react-loadable/babel",
               "@babel/plugin-proposal-class-properties",
               [
                 "@babel/plugin-syntax-dynamic-import",
