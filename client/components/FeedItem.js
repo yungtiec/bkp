@@ -19,10 +19,10 @@ export default ({
 }) => {
   imgUrl =
     imgUrl && imgUrl.includes("unsplash")
-      ? imgUrl.concat("&auto=format&fit=crop&w=800&q=80")
+      ? imgUrl.concat("&auto=format&fit=crop&w=800&q=10")
       : imgUrl;
   const backgroundImage = `url(${imgUrl ||
-    "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"})`;
+    "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=10"})`;
 
   return (
     <Link
@@ -35,7 +35,7 @@ export default ({
             style={{
               backgroundColor: "#bde0f9",
               backgroundImage: `url(${imgUrl ||
-                "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"})`
+                "https://images.unsplash.com/photo-1547559418-8d7437f53b5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=10"})`
             }}
           />
         </div>

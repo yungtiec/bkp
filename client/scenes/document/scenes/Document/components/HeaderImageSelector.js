@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 class HeaderImageSelector extends React.Component {
   render() {
     const imgUrl = this.props.headerImageUrl && this.props.headerImageUrl.includes("unsplash") ?
-      this.props.headerImageUrl.concat('&auto=format&fit=crop&w=800&q=80') :
+      this.props.headerImageUrl.concat('&auto=format&fit=crop&w=800&q=10') :
       this.props.headerImageUrl;
 
     return this.props.headerImageUrl ? (
