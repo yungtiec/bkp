@@ -56,28 +56,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            babelrc: false,
-            presets: [
-              "@babel/preset-react",
-              [
-                "@babel/preset-env",
-                {
-                  targets: {
-                    ie: "9"
-                  },
-                  useBuiltIns: "entry"
-                }
-              ]
-            ],
-            plugins: [
-              // "react-loadable/babel",
-              "@babel/plugin-proposal-class-properties",
-              [
-                "@babel/plugin-syntax-dynamic-import",
-                {},
-                "plugin-syntax-dynamic-import-2"
-              ]
-            ]
+            babelrc: true
           }
         }
       }
