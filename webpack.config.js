@@ -51,7 +51,11 @@ module.exports = {
             plugins: [
               "react-loadable/babel",
               "@babel/plugin-proposal-class-properties",
-              "@babel/plugin-syntax-dynamic-import"
+              [
+                "@babel/plugin-syntax-dynamic-import",
+                {},
+                "plugin-syntax-dynamic-import-1"
+              ]
             ]
           }
         }
