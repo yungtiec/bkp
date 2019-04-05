@@ -70,10 +70,9 @@ module.exports = {
               ]
             ],
             plugins: [
-              "react-loadable/babel",
-              "@babel/plugin-proposal-class-properties",
-              // "@babel/plugin-transform-object-assign",
-              "@babel/plugin-syntax-dynamic-import"
+              ["react-loadable/babel", {}],
+              ["@babel/plugin-proposal-class-properties", {}],
+              ["@babel/plugin-syntax-dynamic-import", {}]
             ]
           }
         }
