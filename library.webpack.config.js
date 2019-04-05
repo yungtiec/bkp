@@ -50,26 +50,35 @@ module.exports = {
     library: "library"
   },
   module: {
-    rules : [
+    rules: [
       {
-        test : /\.jsx?$/,
-        use : {
-          loader : "babel-loader",
-          options : {
-            babelrc : false,
-            presets : ["@babel/preset-react", [
-              "@babel/preset-env",
-              {
-                "targets" : {
-                  "ie" : "9"
-                },
-                "useBuiltIns" : "usage"
-              }
-            ]],
-            plugins : ["react-loadable/babel", "syntax-dynamic-import", "@babel/plugin-proposal-class-properties"]
+        test: /\.jsx?$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            babelrc: false,
+            presets: [
+              "@babel/preset-react",
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    ie: "9"
+                  },
+                  useBuiltIns: "entry"
+                }
+              ]
+            ],
+            plugins: [
+              "react-loadable/babel",
+              "syntax-dynamic-import",
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-transform-object-assign",
+              "@babel/plugin-syntax-dynamic-import"
+            ]
           }
         }
-      },
+      }
     ]
   },
   plugins: [

@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import $ from "jquery";
 import "jquery-ui/ui/widgets/autocomplete.js";
 import "jquery-ui/themes/base/all.css";
