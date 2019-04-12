@@ -51,7 +51,10 @@ export default class DocumentHeader extends Component {
         else return `, ${c.displayName}`;
       })
       .join("");
-
+    const imgUrl = documentMetadata.header_img_url;
+    const formattedUrl = imgUrl && imgUrl.includes("unsplash")
+        ? imgUrl.concat("&auto=format&fit=crop&w=800&q=10")
+        : imgUrl;
     return (
       <div className="project-document__header">
         <div className="project-document__header-text">
@@ -73,7 +76,7 @@ export default class DocumentHeader extends Component {
           />
         </div>
         <div className="project-document__header-image" style={{
-          backgroundImage: `url(${documentMetadata.header_img_url})`
+          backgroundImage: `url(${formattedUrl})`
         }}/>
       </div>
     );
