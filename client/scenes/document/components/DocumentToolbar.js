@@ -31,7 +31,8 @@ class DocumentToolbar extends Component {
       hideEditor,
       showEditor,
       userId,
-      isUserAdmin
+      isUserAdmin,
+      toggleSidebar
     } = this.props;
 
     const document = documentMetadata;
@@ -99,6 +100,9 @@ class DocumentToolbar extends Component {
           <button
             type="button"
             className="btn text-consensys btn-outline-primary"
+            onClick={() =>
+              toggleSidebar()
+            }
           >
             <i className="fas fa-comment mr-2" />
             {documentMetadata.comments

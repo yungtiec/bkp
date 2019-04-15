@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { withRouter } from "react-router-dom";
 import { batchActions } from "redux-batched-actions";
+import { toggleSidebar } from './reducer'
 import {
   getDocumentMetadata,
   getDocumentLatestVersion,
@@ -58,7 +59,8 @@ const actions = {
   upvoteDocument,
   downvoteDocument,
   showEditor,
-  hideEditor
+  hideEditor,
+  toggleSidebar
 };
 
 export default withRouter(

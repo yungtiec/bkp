@@ -37,6 +37,7 @@ export default class DocumentHeader extends Component {
       isLoggedIn,
       displayEditor,
       userId,
+      toggleSidebar
     } = this.props;
     const { documentMetadata } = this.props;
     const { creator, createdAt } = documentMetadata;
@@ -73,6 +74,7 @@ export default class DocumentHeader extends Component {
             isLoggedIn={isLoggedIn}
             displayEditor={displayEditor}
             userId={userId}
+            toggleSidebar={toggleSidebar}
           />
         </div>
         <div className="project-document__header-image" style={{
