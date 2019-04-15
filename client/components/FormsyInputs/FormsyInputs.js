@@ -17,11 +17,19 @@ function createInputWithType(type) {
       // for Formsy to work.
       this.props.setValue(event.currentTarget.value, false);
       if (this.props.onChangeCallback)
-        this.props.onChangeCallback(event.currentTarget.value);
+        this.props.onChangeCallback(
+          this.props.toLowercase
+            ? event.currentTarget.value.toLowerCase()
+            : event.currentTarget.value
+        );
     }
 
     validateValue(event) {
-      this.props.setValue(event.currentTarget.value);
+      this.props.setValue(
+        this.props.toLowercase
+          ? event.currentTarget.value.toLowerCase()
+          : event.currentTarget.value
+      );
     }
 
     render() {
@@ -43,7 +51,11 @@ function createInputWithType(type) {
             type={type}
             className={`form-control ${showRequiredMessage &&
               "form-control--invalid"} ${this.props.inputClassname}`}
-            value={this.props.getValue() || ""}
+            value={
+              (this.props.toLowercase
+                ? this.props.getValue().toLowerCase()
+                : this.props.getValue()) || ""
+            }
           />
           {!isEmpty(this.props.message) && (
             <div
