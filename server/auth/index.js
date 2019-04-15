@@ -204,7 +204,7 @@ router.put("/accounts/update-account", async (req, res, next) => {
       putQuery.email_verified = false;
     }
     if (user.user_handle !== req.body.user_handle)
-      putQuery.user_handle = req.body.user_handle;
+      putQuery.user_handle = req.body.user_handle.toLowerCase();
     user = await user.update(putQuery);
     res.send(user);
   } catch (err) {
