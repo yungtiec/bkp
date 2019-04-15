@@ -12,8 +12,9 @@ export const SIDEBAR_COMMENT_CONTEXT_UPDATED =
 export const SIDEBAR_CONTEXT_UPDATED = "document.SIDEBAR_CONTEXT_UPDATED";
 export const ISSUE_FILTER_UPDATED = "document.ISSUE_FILTER_UPDATED";
 
-export const toggleSidebar = () => ({
-  type: SIDEBAR_OPEN_TOGGLE
+export const toggleSidebar = (sidebarContext = "comments") => ({
+  type: SIDEBAR_OPEN_TOGGLE,
+  sidebarContext
 });
 
 export const toggleAnnotationHighlight = () => ({
@@ -66,7 +67,10 @@ export default function reduce(state = initialState, action) {
     case VERIFICATION_STATUS_IN_VIEW:
       return { ...state, verificationStatus: action.verificationStatus };
     case SIDEBAR_OPEN_TOGGLE:
-      return { ...state, sidebarOpen: !state.sidebarOpen };
+      return { ...state,
+        sidebarOpen: !state.sidebarOpen,
+        sidebarContext: action.sidebarContext
+      };
     case ANNOTATION_HIGHLIGHT_TOGGLE:
       return { ...state, annotationHighlight: !state.annotationHighlight };
     case SIDEBAR_CONTEXT_UPDATED:

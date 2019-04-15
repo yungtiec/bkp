@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { withRouter } from "react-router-dom";
 import { batchActions } from "redux-batched-actions";
-import { toggleSidebar } from './reducer'
+import { toggleSidebar, toggleSidebarContext } from './reducer'
 import {
   getDocumentMetadata,
   getDocumentLatestVersion,
@@ -49,7 +49,8 @@ const mapState = state => {
     displayEditor: state.scenes.document.data.ckEditor.displayEditor,
     isLoggedIn: !!state.data.user.id,
     userId: state.data.user.id,
-    sidebarOpen: state.scenes.document.sidebarOpen
+    sidebarOpen: state.scenes.document.sidebarOpen,
+    sidebarContext: state.scenes.document.sidebarContext
   };
 };
 
@@ -60,7 +61,8 @@ const actions = {
   downvoteDocument,
   showEditor,
   hideEditor,
-  toggleSidebar
+  toggleSidebar,
+  toggleSidebarContext
 };
 
 export default withRouter(

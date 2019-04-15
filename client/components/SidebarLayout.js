@@ -53,7 +53,7 @@ class Sidebar extends Component {
             data-tip
             data-for="hide-sidebar"
             className="social-toolbar__size-btn"
-            onClick={toggleSidebar}
+            onClick={() => toggleSidebar('comments')}
           >
             <i className={`fas fa-angle-${sizeBtnAngle}`} />
           </button>

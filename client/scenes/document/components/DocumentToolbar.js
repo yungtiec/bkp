@@ -32,7 +32,10 @@ class DocumentToolbar extends Component {
       showEditor,
       userId,
       isUserAdmin,
-      toggleSidebar
+      toggleSidebar,
+      sidebarOpen,
+      toggleSidebarContext,
+      sidebarContext
     } = this.props;
 
     const document = documentMetadata;
@@ -49,6 +52,17 @@ class DocumentToolbar extends Component {
 
     const isOwnDocument = userId === documentMetadata.creator_id || isUserAdmin;
 
+    const toggleSidebarWithContext = (context) => {
+      if (!sidebarOpen) {
+        toggleSidebar(context)
+      }
+      if (sidebarOpen && (sidebarContext !== context)) {
+        toggleSidebarContext()
+      }
+      if (sidebarOpen && (sidebarContext === context)) {
+        toggleSidebar(context)
+      }
+    };
 
     return (
       <div className="mb-2">
@@ -100,9 +114,14 @@ class DocumentToolbar extends Component {
           <button
             type="button"
             className="btn text-consensys btn-outline-primary"
-            onClick={() =>
-              toggleSidebar()
-            }
+            onClick={() => toggleSidebarWithContext('tableOfContents')}
+          >
+            <i className="fas fa-list mr-2" />
+          </button>
+          <button
+            type="button"
+            className="btn text-consensys btn-outline-primary"
+            onClick={() => toggleSidebarWithContext('comments')}
           >
             <i className="fas fa-comment mr-2" />
             {documentMetadata.comments
