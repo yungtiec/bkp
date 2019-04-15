@@ -69,7 +69,7 @@ class DocumentToolbar extends Component {
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
           <button
             type="button"
-            className={`btn ${
+            className={`btn document-toolbar__btn ${
               hasUpvoted
                 ? "bg-consensys text-light"
                 : "text-consensys btn-outline-primary"
@@ -91,7 +91,7 @@ class DocumentToolbar extends Component {
           </button>
           <button
             type="button"
-            className={`btn ${
+            className={`btn document-toolbar__btn ${
               hasDownvoted
                 ? "bg-consensys text-light"
                 : "text-consensys btn-outline-primary"
@@ -113,14 +113,14 @@ class DocumentToolbar extends Component {
           </button>
           <button
             type="button"
-            className="btn text-consensys btn-outline-primary"
+            className="btn document-toolbar__btn text-consensys btn-outline-primary"
             onClick={() => toggleSidebarWithContext('tableOfContents')}
           >
-            <i className="fas fa-list mr-2" />
+            <i className="fas fa-list" />
           </button>
           <button
             type="button"
-            className="btn text-consensys btn-outline-primary"
+            className="btn document-toolbar__btn text-consensys btn-outline-primary"
             onClick={() => toggleSidebarWithContext('comments')}
           >
             <i className="fas fa-comment mr-2" />
@@ -129,7 +129,7 @@ class DocumentToolbar extends Component {
               : 0}
           </button>
           {document.pdf_link ? (
-            <button type="button" className="btn btn-outline-primary">
+            <button type="button" className="btn document-toolbar__btn btn-outline-primary">
               <a
                 href={
                   document.pdf_link
