@@ -81,6 +81,7 @@ class Account extends React.Component {
                       });
                   }}
                   message={this.state.userHandleRequestMessage}
+                  toLowercase={true}
                   required
                 />
                 <div className="px-1">

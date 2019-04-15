@@ -125,7 +125,7 @@ class AuthForm extends Component {
             href={`/auth/github?state=${encodeURI(
               this.props.location.state
                 ? this.props.location.state.lastPath
-                : "/landing"
+                : "/"
             )}`}
             href={`/auth/github?state=${encodeURI("/")}`}
           >
@@ -226,18 +226,17 @@ class AuthForm extends Component {
             {authMethodLabel}
           </button>
         </div>
-        {error &&
-          error.response && (
-            <div
-              style={{
-                display: "block",
-                marginRight: "-15px",
-                marginLeft: "-15px"
-              }}
-            >
-              {error.response.data}
-            </div>
-          )}
+        {error && error.response && (
+          <div
+            style={{
+              display: "block",
+              marginRight: "-15px",
+              marginLeft: "-15px"
+            }}
+          >
+            {error.response.data}
+          </div>
+        )}
       </Formsy>
     );
   }
@@ -325,7 +324,7 @@ class AuthForm extends Component {
     return (
       <div className="auth-page">
         <div className="auth-page__header">
-          <Link className="logo-tbp my-0 mx-0" to="/landing">
+          <Link className="logo-tbp my-0 mx-0" to="/">
             <img
               width="120px"
               height="auto"
@@ -339,8 +338,8 @@ class AuthForm extends Component {
             {authMethod === "requestPasswordReset"
               ? this.renderRequestPasswordResetForm()
               : authMethod === "resetPassword"
-                ? this.renderResetPasswordForm()
-                : this.renderAuthenticationForm()}
+              ? this.renderResetPasswordForm()
+              : this.renderAuthenticationForm()}
           </div>
           <div className="auth-form__form-footer">
             <div className="auth-form__form-footer__left">
@@ -382,7 +381,7 @@ class AuthForm extends Component {
                     state: {
                       lastPath: this.props.location.state
                         ? this.props.location.state.lastPath
-                        : "/landing"
+                        : "/"
                     }
                   }}
                 >
