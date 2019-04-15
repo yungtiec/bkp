@@ -57,7 +57,10 @@ class DocumentContainer extends Component {
       isLoggedIn,
       displayEditor,
       userId,
-      sidebarOpen
+      sidebarOpen,
+      toggleSidebar,
+      sidebarContext,
+      toggleSidebarContext
     } = this.props;
 
     var wrapper = document.createElement("div");
@@ -113,6 +116,10 @@ class DocumentContainer extends Component {
           isLoggedIn={isLoggedIn}
           displayEditor={displayEditor}
           userId={userId}
+          toggleSidebar={toggleSidebar}
+          sidebarOpen={sidebarOpen}
+          toggleSidebarContext={toggleSidebarContext}
+          sidebarContext={sidebarContext}
         />
         {documentMetadata.tags && documentMetadata.tags.length ? (
           <div className="mt-3" style={{ lineHeight: 1.5 }}>
