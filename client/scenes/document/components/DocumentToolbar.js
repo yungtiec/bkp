@@ -96,6 +96,15 @@ class DocumentToolbar extends Component {
               ? documentMetadata.downvotesFrom.length
               : 0}
           </button>
+          <button
+            type="button"
+            className="btn text-consensys btn-outline-primary"
+          >
+            <i className="fas fa-comment mr-2" />
+            {documentMetadata.comments
+              ? documentMetadata.comments.length
+              : 0}
+          </button>
           {document.pdf_link ? (
             <button type="button" className="btn btn-outline-primary">
               <a
