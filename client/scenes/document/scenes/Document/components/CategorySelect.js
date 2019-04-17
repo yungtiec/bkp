@@ -7,7 +7,7 @@ import {SquareLoader} from "halogenium";
 import moment from "moment";
 
 const categories = [
-  {label : 'Proposed Laws And Regulations', value : 'proposed-laws-regulations'},
+  {label : 'Proposed Laws And Regulations', value : 'proposed-laws-and-regulations'},
   {label : 'General', value : 'general'},
   {label : 'Regulatory', value : 'regulatory'},
   {label : 'Regulatory For Comment', value : 'regulatory-for-comment'},
