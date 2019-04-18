@@ -294,6 +294,17 @@ class Document extends Component {
             showEditor={showEditor}
             hideEditor={hideEditor}
           />
+          <Conversation me={me} addNewComment={addNewComment} id={documentMetadata.id}/>
+          <Comments
+            commentIds={commentIds}
+            commentsById={commentsById}
+            me={me}
+            replyToComment={replyToComment}
+            upvoteComment={upvoteComment}
+            editComment={editComment}
+            slug={match.params.slug}
+            notify={notify}
+          />
           <div className="d-flex project-document__footer">
             <a
               href="https://tinyurl.com/y94wspyg"
@@ -315,17 +326,6 @@ class Document extends Component {
               </span>
             </a>
           </div>
-          <Conversation me={me} addNewComment={addNewComment} id={documentMetadata.id}/>
-          <Comments
-            commentIds={commentIds}
-            commentsById={commentsById}
-            me={me}
-            replyToComment={replyToComment}
-            upvoteComment={upvoteComment}
-            editComment={editComment}
-            slug={match.params.slug}
-            notify={notify}
-          />
         </div>
       );
   }

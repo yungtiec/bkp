@@ -13,20 +13,23 @@ const getTags = async (input, callback) => {
   return { options: tags };
 };
 
-export default ({ handleOnSelect, handleRemoveTag, selectedTags, width }) => (
-  <div className="tag-field">
-    <AsyncCreatable
-      multi={true}
-      placeholder="add or create tag(s)"
-      loadOptions={getTags}
-      onChange={handleOnSelect}
-      value={[]}
-      style={width ? { width } : null}
-      menuContainerStyle={width ? { width } : null}
-    />
-    <div className="tag-field__tags mt-2 mb-2">
-      {selectedTags && selectedTags.length
-        ? selectedTags.map((tag, index) => (
+export default ({ handleOnSelect, handleRemoveTag, selectedTags, width, disabled }) => {
+  console.log({isDisabled});
+  return (
+    <div className="tag-field">
+      <AsyncCreatable
+        multi={true}
+        placeholder="add or create tag(s)"
+        loadOptions={getTags}
+        onChange={handleOnSelect}
+        value={[]}
+        style={width ? { width } : null}
+        disabled={disabled}
+        menuContainerStyle={width ? { width } : null}
+      />
+      <div className="tag-field__tags mt-2 mb-2">
+        {selectedTags && selectedTags.length
+          ? selectedTags.map((tag, index) => (
             <TagChip
               key={`tag__${tag.name}`}
               containerClassname="tag-field__tag dark-bg"
@@ -34,7 +37,8 @@ export default ({ handleOnSelect, handleRemoveTag, selectedTags, width }) => (
               closeIconOnClick={() => handleRemoveTag(index)}
             />
           ))
-        : ""}
+          : ""}
+      </div>
     </div>
-  </div>
-);
+  );
+}
