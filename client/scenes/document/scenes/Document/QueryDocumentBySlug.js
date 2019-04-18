@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { SquareLoader } from "halogenium";
 import moment from "moment";
+import { notify } from "reapop";
 import { batchActions } from "redux-batched-actions";
 
 // global
-import { updateOnboardStatus, loadModal } from "../../../../data/reducer";
+import { updateOnboardStatus, loadModal, hideModal } from "../../../../data/reducer";
 
 // document UI context
 import {
@@ -21,6 +22,12 @@ import {
   getSidebarCommentContext,
   updateSidebarCommentContext
 } from "../../reducer";
+
+import {
+  replyToComment,
+  upvoteComment,
+  editComment,
+} from "./../../data/comments/actions";
 
 import {
   upvoteDocument,
@@ -48,7 +55,7 @@ import {
 import { updateTagFilter } from "../../data/tags/actions";
 
 const LoadableVersion = Loadable({
-  loader: () => import("./Document"),
+  loader: () => import("./DocumentV2"),
   loading: () => (
     <SquareLoader
       key="LoadableVersion"
@@ -109,6 +116,7 @@ const mapState = state => {
 
   return {
     // global
+    me: state.data.user,
     width: state.data.environment.width,
     isLoggedIn: !!state.data.user.id,
     anonymity: !!state.data.user.id && state.data.user.anonymity,
@@ -144,6 +152,7 @@ const actions = {
   // global
   updateOnboardStatus,
   loadModal,
+  hideModal,
   // metadata
   upvoteDocument,
   downvoteDocument,
@@ -160,7 +169,11 @@ const actions = {
   toggleSidebar,
   toggleSidebarContext,
   toggleAnnotationHighlight,
-  updateVerificationStatusInView
+  updateVerificationStatusInView,
+  replyToComment,
+  upvoteComment,
+  editComment,
+  notify
 };
 
 export default withRouter(
