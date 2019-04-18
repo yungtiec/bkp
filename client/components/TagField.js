@@ -14,7 +14,6 @@ const getTags = async (input, callback) => {
 };
 
 export default ({ handleOnSelect, handleRemoveTag, selectedTags, width, disabled }) => {
-  console.log({isDisabled});
   return (
     <div className="tag-field">
       <AsyncCreatable
