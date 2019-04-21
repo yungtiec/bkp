@@ -11,6 +11,7 @@ import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import { loadModal } from "../../../data/reducer";
 import policies from "../../../policies.js";
 import ReactTooltip from "react-tooltip";
+import { animateScroll as scroll } from "react-scroll";
 import { currentUserIsAdmin } from '../../../data/user/reducer';
 
 class DocumentToolbar extends Component {
@@ -111,17 +112,25 @@ class DocumentToolbar extends Component {
               ? documentMetadata.downvotesFrom.length
               : 0}
           </button>
+          {
+            this.props.documentMetadata.has_annotator ?
+            <button
+              type="button"
+              className="btn document-toolbar__btn text-consensys btn-outline-primary"
+              onClick={() => toggleSidebarWithContext('tableOfContents')}
+            >
+              <i className="fas fa-list" />
+            </button>
+            : null
+          }
           <button
             type="button"
             className="btn document-toolbar__btn text-consensys btn-outline-primary"
-            onClick={() => toggleSidebarWithContext('tableOfContents')}
-          >
-            <i className="fas fa-list" />
-          </button>
-          <button
-            type="button"
-            className="btn document-toolbar__btn text-consensys btn-outline-primary"
-            onClick={() => toggleSidebarWithContext('comments')}
+            onClick={() => {
+              this.props.documentMetadata.has_annotator ?
+                toggleSidebarWithContext('comments') :
+                scroll.scrollToBottom();
+            }}
           >
             <i className="fas fa-comment mr-2" />
             {documentMetadata.comments
