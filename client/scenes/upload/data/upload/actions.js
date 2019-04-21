@@ -18,6 +18,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       indexDescription,
       summary,
       category,
+      hasAnnotator,
       tags
     } = state.scenes.upload.data.upload;
     const document = await postHtml({
@@ -32,6 +33,7 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       indexDescription,
       description: summary,
       category,
+      hasAnnotator,
       tags
     });
     history.push(`/s/${document.slug}`);
@@ -101,4 +103,9 @@ export const updateTags = tags => ({
 export const updateHeaderImageUrl = headerImageUrl => ({
   type: types.HEADER_IMAGE_URL_UPDATED,
   headerImageUrl
+});
+
+export const updateHasAnnotator = hasAnnotator => ({
+  type: types.HAS_ANNOTATOR_UPDATED,
+  hasAnnotator
 });

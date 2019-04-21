@@ -80,6 +80,10 @@ class Upload extends Component {
     });
   }
 
+  handleHasAnnotator(evt) {
+    this.props.updateHasAnnotator(evt.target.checked)
+  }
+
   handleTitleChange(evt) {
     const title = evt.target.value;
     this.props.updateTitle(title);
@@ -267,7 +271,8 @@ class Upload extends Component {
       headerImageUrl,
       category,
       summary,
-      indexDescription
+      indexDescription,
+      hasAnnotator,
     } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
@@ -427,6 +432,32 @@ class Upload extends Component {
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
+                <p className="upload-accordion__item-header">
+                  Project score (optional)
+                </p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <h6 className="upload-accordion__scorecard-checkbox">
+                  <input
+                    name="hasAnnotator"
+                    type="checkbox"
+                    checked={hasAnnotator}
+                    onChange={this.handleHasAnnotator}
+                  />
+                  Does this document require the annotator feature?
+                </h6>
+                <div className="d-flex flex-column">
+                  <button
+                    onClick={() => this.next("annotator")}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+              <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Category</p>
               </AccordionItemTitle>
               <AccordionItemBody>
@@ -445,7 +476,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Tags</p>
               </AccordionItemTitle>
@@ -466,7 +497,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">header image</p>
               </AccordionItemTitle>
@@ -485,7 +516,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Index Description
@@ -515,7 +546,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 9}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Summary
@@ -545,7 +576,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 9}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 10}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Content
@@ -627,12 +658,23 @@ class Upload extends Component {
                   }
                 />
                 <Step
+                  title="has annotator"
+                  description="does this document require the annotator feature?"
+                  status={
+                    this.state.scorecardError || this.state.projectError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 4
+                      ? "finish"
+                      : "wait"
+                  }
+                />
+                <Step
                   title="category"
                   description="pick a category for your document"
                   status={
                     this.state.categoryError
                       ? "error"
-                      : this.state.activeAccordionItemId > 4
+                      : this.state.activeAccordionItemId > 5
                       ? "finish"
                       : "wait"
                   }

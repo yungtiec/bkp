@@ -17,7 +17,8 @@ const initialState = {
   category: null,
   tags: [],
   summary: "",
-  indexDescription: ""
+  indexDescription: "",
+  hasAnnotator : false
 };
 
 export default function reduce(state = initialState, action = {}) {
@@ -101,6 +102,11 @@ export default function reduce(state = initialState, action = {}) {
       return {
         ...state,
         summary: action.summary
+      };
+    case types.HAS_ANNOTATOR_UPDATED:
+      return {
+        ...state,
+        hasAnnotator: action.hasAnnotator
       };
     default:
       return state;
