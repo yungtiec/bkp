@@ -159,7 +159,7 @@ class DocumentEditor extends Component {
   }
 
   async onButtonPress() {
-    const { documentMetadata, updateContentHTMLBySlug } = this.props;
+    const { documentMetadata, updateContentHTMLBySlug, hideEditor, closeSidebar } = this.props;
     const { summary, content, status, category, headerImageUrl, indexDescription, hasAnnotator } = this.state;
     const hasNewTitle = this.props.documentMetadata.title !== this.state.title;
     const newTitle = hasNewTitle ? this.state.title : null;
@@ -175,8 +175,8 @@ class DocumentEditor extends Component {
       hasAnnotator,
       tags: this.state.selectedTags || []
     };
-
-    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate, this.props.hideEditor);
+    closeSidebar();
+    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate, hideEditor);
     this.setState(
       {
         renderHtml: !this.state.renderHtml
