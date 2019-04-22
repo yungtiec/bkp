@@ -176,13 +176,10 @@ class DocumentEditor extends Component {
       tags: this.state.selectedTags || []
     };
 
-    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
+    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate, this.props.hideEditor);
     this.setState(
       {
         renderHtml: !this.state.renderHtml
-      },
-      () => {
-        this.props.hideEditor();
       }
     );
   }
