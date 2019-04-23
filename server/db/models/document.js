@@ -204,6 +204,70 @@ module.exports = (db, DataTypes) => {
         ]
       };
     });
+    Document.addScope("includeCreator", function(
+      extendedWhereOptions = {},
+      extendedIncludeOptions
+    ) {
+      var defaultWhereOptions = {};
+      var where = _.assignIn(defaultWhereOptions, extendedWhereOptions);
+      var attributes = [
+        "id",
+        "title",
+        "document_type",
+        "index_description",
+        "description",
+        "project_id",
+        "submitted",
+        "reviewed",
+        "comment_until_unix",
+        "slug",
+        "content_html",
+        "scorecard",
+        "category",
+        "header_img_url",
+        "creator_id",
+        "createdAt",
+        "updatedAt"
+      ];
+      var include = [
+        {
+          model: models["user"],
+          as: "creator",
+          attributes: [
+            "id",
+            "email",
+            "name",
+            "first_name",
+            "last_name",
+            "organization",
+            "restricted_access",
+            "short_profile_url",
+            "self_introduction",
+            "linkedin_url",
+            "twitter_url",
+            "stackoverflow_url",
+            "website_url",
+            "github_url",
+            "user_handle",
+            "avatar_url",
+            "createdAt",
+            "delegate"
+          ],
+          include: [
+            {
+              model: models.role
+            }
+          ]
+        },
+      ];
+      if (extendedIncludeOptions)
+        include = include.concat(extendedIncludeOptions);
+      return {
+        where,
+        attributes,
+        include
+      };
+    });
     Document.addScope("includeAllEngagements", function(
       extendedWhereOptions = {},
       extendedIncludeOptions

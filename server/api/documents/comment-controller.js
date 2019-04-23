@@ -55,7 +55,7 @@ const postComment = async (req, res, next) => {
         })
       ])
     );
-    const document = await Document.scope("includeAllEngagements").findOne({
+    const document = await Document.scope("includeCreator").findOne({
       where: { id: req.params.doc_id }
     });
     const autoVerify = permission(

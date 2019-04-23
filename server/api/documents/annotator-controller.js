@@ -74,7 +74,7 @@ const postAnnotatedComment = async (req, res, next) => {
     } = req.body;
     const { doc_id } = req.params;
     const isAdmin = req.user.roles.filter(r => r.name === "admin").length;
-    const document = await Document.scope("includeAllEngagements").findOne({ where: { id: doc_id}});
+    const document = await Document.scope("includeCreator").findOne({ where: { id: doc_id}});
     const isClosedForComment =
       Number(document.comment_until_unix) - Number(moment().format("x")) <= 0;
     if (isClosedForComment) {
