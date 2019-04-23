@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { CommentBoxWithTagField } from "../../../../../components";
 
 export default ({ question, addNewComment, me, id }) => {
-  console.log(question);
   return (
     <div className="my-5">
       <p className="conversation-title">Join the conversation</p>

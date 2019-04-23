@@ -4,15 +4,15 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { notify } from "reapop";
 import { connect } from "react-redux";
 import download from "downloadjs";
-import { Link } from "react-router-dom";
 import history from "../../../history";
 import { orderBy, find, isEmpty, maxBy } from "lodash";
 import { PunditContainer, PunditTypeSet, VisibleIf } from "react-pundit";
 import { loadModal } from "../../../data/reducer";
 import policies from "../../../policies.js";
 import ReactTooltip from "react-tooltip";
-import { animateScroll as scroll } from "react-scroll";
+import { animateScroll as scroll} from "react-scroll";
 import { currentUserIsAdmin } from '../../../data/user/reducer';
+import animateScrollTo from 'animated-scroll-to';
 
 class DocumentToolbar extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class DocumentToolbar extends Component {
       sidebarContext
     } = this.props;
 
-    const document = documentMetadata;
+    const doc = documentMetadata;
 
     const hasUpvoted = !!find(
       documentMetadata.upvotesFrom,
@@ -79,7 +79,7 @@ class DocumentToolbar extends Component {
               upvoteDocument({
                 projectSymbol: documentMetadata.project.symbol,
                 documentId: documentMetadata.id,
-                versionId: document.id,
+                versionId: doc.id,
                 hasUpvoted,
                 hasDownvoted
               })
@@ -101,7 +101,7 @@ class DocumentToolbar extends Component {
               downvoteDocument({
                 projectSymbol: documentMetadata.project.symbol,
                 documentId: documentMetadata.id,
-                versionId: document.id,
+                versionId: doc.id,
                 hasUpvoted,
                 hasDownvoted
               })
@@ -129,7 +129,7 @@ class DocumentToolbar extends Component {
             onClick={() => {
               this.props.documentMetadata.has_annotator ?
                 toggleSidebarWithContext('comments') :
-                scroll.scrollToBottom();
+                animateScrollTo(document.querySelector('.conversation-title'))
             }}
           >
             <i className="fas fa-comment mr-2" />
@@ -137,11 +137,11 @@ class DocumentToolbar extends Component {
               ? documentMetadata.comments.length
               : 0}
           </button>
-          {document.pdf_link ? (
+          {doc.pdf_link ? (
             <button type="button" className="btn document-toolbar__btn btn-outline-primary">
               <a
                 href={
-                  document.pdf_link
+                  doc.pdf_link
                 }
                 target="_blank"
                 rel="noopener noreferrer"
