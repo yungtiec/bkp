@@ -16,6 +16,7 @@ import { SidebarLayout, CustomScrollbar } from "../../../../components";
 import Joyride from "react-joyride";
 import { Conversation } from '../../../requests-for-comment/scenes/Question/components';
 import { Comments } from '../../../requests-for-comment/scenes/Question/components';
+import {sortCommentBy} from '../../reducer';
 
 class Document extends Component {
   constructor(props) {
@@ -83,6 +84,7 @@ class Document extends Component {
 
   componentDidMount(nextProps) {
     this.focusOnContext();
+    this.props.sortCommentBy('timestamp');
   }
 
   componentDidUpdate(prevProps) {
