@@ -5,3 +5,7 @@
 .requests-for-comment__comment:last-of-type {
   border-bottom: 1px solid #828282;
 }
+
+.requests-for-comment__comment .comment-item {
+  width: calc(100% - 46px - 1rem);
+}
