@@ -16,6 +16,7 @@ import { SidebarLayout, CustomScrollbar } from "../../../../components";
 import Joyride from "react-joyride";
 import { Conversation } from '../../../requests-for-comment/scenes/Question/components';
 import { Comments } from '../../../requests-for-comment/scenes/Question/components';
+import { loadModal, hideModal} from '../../../../data/modal/actions';
 import {sortCommentBy} from '../../reducer';
 
 class Document extends Component {
@@ -245,6 +246,7 @@ class Document extends Component {
             upvoteDocument,
             downvoteDocument,
             loadModal,
+            hideModal,
             displayEditor,
             showEditor,
             hideEditor,
@@ -306,6 +308,8 @@ class Document extends Component {
             editComment={editComment}
             slug={match.params.slug}
             notify={notify}
+            loadModal={loadModal}
+            hideModal={hideModal}
           />
           <div className="d-flex project-document__footer">
             <a

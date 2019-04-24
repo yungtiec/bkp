@@ -1,5 +1,10 @@
+@import "../../../../../breakpoint";
+
 .requests-for-comment__comment {
   border-top: 1px solid #828282;
+  @include breakpoint(xs) {
+    padding: 0 20px;
+  }
 }
 
 .requests-for-comment__comment:last-of-type {

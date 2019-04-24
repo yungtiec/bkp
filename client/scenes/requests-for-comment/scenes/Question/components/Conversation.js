@@ -7,7 +7,7 @@ import { CommentBoxWithTagField } from "../../../../../components";
 
 export default ({ question, addNewComment, me, id }) => {
   return (
-    <div className="my-5">
+    <div className="conversation-container my-5">
       <p className="conversation-title">Join the conversation</p>
       <div className="d-flex">
         <Avatar

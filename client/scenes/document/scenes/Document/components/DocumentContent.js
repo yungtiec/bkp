@@ -25,7 +25,7 @@ const DocumentContent = ({
   hideEditor,
   closeSidebar
 }) => (
-  <div className="project-document mt-3" id="project-document">
+  <div className={documentMetadata.has_annotator ? `project-document mt-3` : `project-document__no-annotator mt-3`} id="project-document">
     <DocumentEditor
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}

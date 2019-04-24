@@ -56,6 +56,13 @@
   }
 }
 
+.project-document__no-annotator {
+  width: 100%;
+  @media (max-width: 767px) {
+    padding: 0px 25px 0 15px;
+  }
+}
+
 .project-document__back-btn {
   cursor: pointer;
   width: 150px;
@@ -113,6 +120,7 @@
 }
 
 .project-document__footer {
+  padding-top: 1.25rem;
   @include breakpoint(xs) {
     padding: 0 25px 0 15px;
     flex-direction: column;
