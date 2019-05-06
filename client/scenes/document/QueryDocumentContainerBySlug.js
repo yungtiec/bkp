@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import autoBind from "react-autobind";
 import { withRouter } from "react-router-dom";
 import { batchActions } from "redux-batched-actions";
-import { toggleSidebar, toggleSidebarContext } from './reducer'
+import { toggleSidebar, toggleSidebarContext, resetSidebar } from './reducer'
 import {
   getDocumentMetadata,
   getDocumentLatestVersion,
@@ -27,7 +27,8 @@ class QueryDocumentContainerBySlug extends Component {
 
   componentDidMount() {
     batchActions([
-      this.props.fetchMetadataBySlug(this.props.match.params.slug)
+      this.props.fetchMetadataBySlug(this.props.match.params.slug),
+      this.props.resetSidebar()
     ]);
   }
 
@@ -62,7 +63,8 @@ const actions = {
   showEditor,
   hideEditor,
   toggleSidebar,
-  toggleSidebarContext
+  toggleSidebarContext,
+  resetSidebar
 };
 
 export default withRouter(

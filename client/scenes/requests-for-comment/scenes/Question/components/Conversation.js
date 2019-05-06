@@ -18,7 +18,7 @@ export default ({ question, addNewComment, me }) => {
           color={"#459DF9"}
           fgColor={"#ffffff"}
         />
-        <div className="w-100">
+        <div style={{ width: "calc(100% - 46px - 1rem)" }}>
           <CommentBoxWithTagField
             className="conversation-form"
             selectedTags={[]}

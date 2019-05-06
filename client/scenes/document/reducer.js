@@ -2,6 +2,7 @@ import { omit } from "lodash";
 import { reducer as dataReducer } from "./data/reducer";
 
 export const SIDEBAR_OPEN_TOGGLE = "document.SIDEBAR_OPEN_TOGGLE";
+export const SIDEBAR_RESET = "document.SIDEBAR_RESET";
 export const ANNOTATION_HIGHLIGHT_TOGGLE =
   "document.ANNOTATION_HIGHLIGHT_TOGGLE";
 export const VERIFICATION_STATUS_IN_VIEW =
@@ -16,6 +17,10 @@ export const toggleSidebar = (sidebarContext = "comments") => ({
   type: SIDEBAR_OPEN_TOGGLE,
   sidebarContext
 });
+
+export const resetSidebar = () => ({
+  type: SIDEBAR_RESET
+})
 
 export const toggleAnnotationHighlight = () => ({
   type: ANNOTATION_HIGHLIGHT_TOGGLE
@@ -66,6 +71,8 @@ export default function reduce(state = initialState, action) {
       else return { ...state };
     case VERIFICATION_STATUS_IN_VIEW:
       return { ...state, verificationStatus: action.verificationStatus };
+    case SIDEBAR_RESET:
+      return { ...state, sidebarOpen: false};
     case SIDEBAR_OPEN_TOGGLE:
       return { ...state,
         sidebarOpen: !state.sidebarOpen,

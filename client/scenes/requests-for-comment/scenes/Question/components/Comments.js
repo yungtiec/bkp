@@ -17,13 +17,13 @@ export default ({
   <div className="mb-5">
     {commentIds &&
       commentIds.map(id => {
-        console.log(commentsById[id]);
         return (
           <div className="requests-for-comment__comment d-flex">
             <Avatar
               className="mt-3 mr-3"
               name={
-                commentsById[id].owner.name && commentsById[id].owner.name.trim()
+                commentsById[id].owner.name &&
+                commentsById[id].owner.name.trim()
                   ? commentsById[id].owner.name
                   : "?"
               }
@@ -49,7 +49,7 @@ export default ({
               lightMode={true}
             />
           </div>
-        )
+        );
       })}
   </div>
 );
