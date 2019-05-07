@@ -5,9 +5,9 @@ import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
 import { CommentBoxWithTagField } from "../../../../../components";
 
-export default ({ question, addNewComment, me }) => {
+export default ({ question, addNewComment, me, id }) => {
   return (
-    <div className="my-5">
+    <div className="conversation-container my-5">
       <p className="conversation-title">Join the conversation</p>
       <div className="d-flex">
         <Avatar
@@ -26,6 +26,7 @@ export default ({ question, addNewComment, me }) => {
             initialValue=""
             question={question}
             onSubmit={addNewComment}
+            documentId={id}
             notLoggedin={!me || isEmpty(me)}
             blockSubmitBtn={false}
           />
@@ -45,3 +46,4 @@ export default ({ question, addNewComment, me }) => {
     </div>
   );
 };
+

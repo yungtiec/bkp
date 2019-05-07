@@ -322,6 +322,7 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       ? req.body.category.value
       : null;
     documentToUpdate.header_img_url = req.body.headerImageUrl;
+    documentToUpdate.has_annotator = req.body.hasAnnotator;
 
     await documentToUpdate.save();
     const document = await Document.findOne({
@@ -548,6 +549,7 @@ const createDocumentFromHtml = async (req, res, next) => {
       index_description: req.body.indexDescription,
       description: req.body.description,
       category: req.body.category ? req.body.category.value : null,
+      has_annotator: req.body.hasAnnotator,
       slug
     });
 

@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { SquareLoader } from "halogenium";
 import moment from "moment";
+import { notify } from "reapop";
 import { batchActions } from "redux-batched-actions";
 
 // global
-import { updateOnboardStatus, loadModal } from "../../../../data/reducer";
+import { updateOnboardStatus, loadModal, hideModal } from "../../../../data/reducer";
 
 // document UI context
 import {
@@ -21,6 +22,12 @@ import {
   getSidebarCommentContext,
   updateSidebarCommentContext
 } from "../../reducer";
+
+import {
+  replyToComment,
+  upvoteComment,
+  editComment,
+} from "./../../data/comments/actions";
 
 import {
   upvoteDocument,
@@ -47,8 +54,26 @@ import {
 } from "../../data/tags/reducer";
 import { updateTagFilter } from "../../data/tags/actions";
 
-const LoadableVersion = Loadable({
+const LoadableAnnotatorDocument = Loadable({
   loader: () => import("./Document"),
+  loading: () => (
+    <SquareLoader
+      key="LoadableVersion"
+      className="route__loader"
+      color="#2d4dd1"
+      size="16px"
+      margin="4px"
+    />
+  ),
+  render(loaded, props) {
+    let Version = loaded.default;
+    return <Version {...props} />;
+  },
+  delay: 400
+});
+
+const LoadableConversationDocument = Loadable({
+  loader: () => import("./DocumentV2"),
   loading: () => (
     <SquareLoader
       key="LoadableVersion"
@@ -85,7 +110,11 @@ class MyComponent extends React.Component {
   }
 
   render() {
-    return <LoadableVersion {...this.props} />;
+    const { has_annotator } = this.props.documentMetadata;
+
+    return has_annotator ?
+      <LoadableAnnotatorDocument {...this.props} /> :
+      <LoadableConversationDocument {...this.props} /> ;
   }
 }
 
@@ -109,6 +138,7 @@ const mapState = state => {
 
   return {
     // global
+    me: state.data.user,
     width: state.data.environment.width,
     isLoggedIn: !!state.data.user.id,
     anonymity: !!state.data.user.id && state.data.user.anonymity,
@@ -144,6 +174,7 @@ const actions = {
   // global
   updateOnboardStatus,
   loadModal,
+  hideModal,
   // metadata
   upvoteDocument,
   downvoteDocument,
@@ -160,7 +191,11 @@ const actions = {
   toggleSidebar,
   toggleSidebarContext,
   toggleAnnotationHighlight,
-  updateVerificationStatusInView
+  updateVerificationStatusInView,
+  replyToComment,
+  upvoteComment,
+  editComment,
+  notify
 };
 
 export default withRouter(

@@ -44,7 +44,7 @@ export function fetchMetadataBySlug(slug, versionId) {
   };
 }
 
-export function updateContentHTMLBySlug(slug, propertiesToUpdate) {
+export function updateContentHTMLBySlug(slug, propertiesToUpdate, hideEditor) {
   return async (dispatch, getState) => {
     try {
       var documentMetadata = await putContentHTMLBySlug(
@@ -55,6 +55,7 @@ export function updateContentHTMLBySlug(slug, propertiesToUpdate) {
         type: types.DOCUMENT_CONTENT_HTML_UPDATE_SUCCESS,
         documentMetadata
       });
+      hideEditor();
       if (slug !== documentMetadata.slug) {
         history.push(`/s/${documentMetadata.slug}`)
       }

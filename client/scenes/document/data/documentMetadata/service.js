@@ -12,7 +12,7 @@ export function getMetadataBySlug(slug) {
 
 export function putContentHTMLBySlug(
   slug,
-  { indexDescription, summary, content, status, category, headerImageUrl, newTitle, tags }
+  { indexDescription, summary, content, status, category, headerImageUrl, newTitle, hasAnnotator, tags }
 ) {
   return axios
     .put(`/api/documents/slug/${slug}`, {
@@ -23,6 +23,7 @@ export function putContentHTMLBySlug(
       category,
       headerImageUrl,
       newTitle,
+      hasAnnotator,
       tags
     })
     .then(res => {

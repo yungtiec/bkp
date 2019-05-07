@@ -9,7 +9,7 @@ import moment from "moment";
 const categories = [
   {
     label: "Proposed Laws And Regulations",
-    value: "proposed-laws-regulations"
+    value: "proposed-laws-and-regulations"
   },
   { label: "General", value: "general" },
   { label: "Regulatory", value: "regulatory" },

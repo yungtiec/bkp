@@ -13,6 +13,7 @@ export function postHtml({
   category,
   description,
   tags,
+  hasAnnotator,
   // todo: add input for document type: regulatory...etc
   documentType
 }) {
@@ -31,6 +32,7 @@ export function postHtml({
       category,
       tags,
       description,
+      hasAnnotator,
       documentType
     })
     .then(res => res.data);
