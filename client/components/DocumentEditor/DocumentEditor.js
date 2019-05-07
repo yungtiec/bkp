@@ -44,6 +44,7 @@ class DocumentEditor extends Component {
           )
         : [],
       headerImageUrl: this.props.documentMetadata.header_img_url,
+      hasAnnotator: this.props.documentMetadata.has_annotator,
       renderHtml: this.contentHtml && this.contentHtml.length !== 0,
       temporaryHighlight: {}
     };
@@ -109,6 +110,12 @@ class DocumentEditor extends Component {
     });
   }
 
+  handleHasAnnotatorChange(evt) {
+    this.setState({
+      hasAnnotator: evt.target.checked
+    });
+  }
+
   handleImageSelection(image) {
     this.setState(
       {
@@ -152,8 +159,8 @@ class DocumentEditor extends Component {
   }
 
   async onButtonPress() {
-    const { documentMetadata, updateContentHTMLBySlug } = this.props;
-    const { summary, content, status, category, headerImageUrl, indexDescription } = this.state;
+    const { documentMetadata, updateContentHTMLBySlug, hideEditor, closeSidebar } = this.props;
+    const { summary, content, status, category, headerImageUrl, indexDescription, hasAnnotator } = this.state;
     const hasNewTitle = this.props.documentMetadata.title !== this.state.title;
     const newTitle = hasNewTitle ? this.state.title : null;
 
@@ -165,16 +172,14 @@ class DocumentEditor extends Component {
       category,
       headerImageUrl,
       newTitle,
+      hasAnnotator,
       tags: this.state.selectedTags || []
     };
-
-    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate);
+    closeSidebar();
+    await updateContentHTMLBySlug(documentMetadata.slug, propertiesToUpdate, hideEditor);
     this.setState(
       {
         renderHtml: !this.state.renderHtml
-      },
-      () => {
-        this.props.hideEditor();
       }
     );
   }
@@ -242,6 +247,17 @@ class DocumentEditor extends Component {
                   selectedTags={this.state.selectedTags}
                   width="300px"
                 />
+              </div>
+              <div className="mb-4">
+                Annotator:
+                <div>
+                  <input
+                    name="hasAnnotator"
+                    type="checkbox"
+                    checked={this.state.hasAnnotator}
+                    onChange={this.handleHasAnnotatorChange}
+                  />
+                </div>
               </div>
               <div className="mt-2 mb-4">
                 Header Image To Display On Feed:

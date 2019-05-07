@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { updateContentHTMLBySlug } from "./../../../data/documentMetadata/actions.js";
 import { updateSidebarCommentContext } from "../../../reducer";
 import DocumentEditor from "../../../../../../client/components/DocumentEditor/DocumentEditor.js";
+import { closeSidebar } from '../../../reducer';
 import ActiveToggle from "./ActiveToggle";
 
 const DocumentContent = ({
@@ -21,9 +22,10 @@ const DocumentContent = ({
   tagFilter,
   addNewCommentSentFromServer,
   displayEditor,
-  hideEditor
+  hideEditor,
+  closeSidebar
 }) => (
-  <div className="project-document mt-3" id="project-document">
+  <div className={documentMetadata.has_annotator ? `project-document mt-3` : `project-document__no-annotator mt-3`} id="project-document">
     <DocumentEditor
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}
@@ -33,6 +35,7 @@ const DocumentContent = ({
       addNewCommentSentFromServer={addNewCommentSentFromServer}
       displayEditor={displayEditor}
       hideEditor={hideEditor}
+      closeSidebar={closeSidebar}
     />
   </div>
 );
@@ -44,7 +47,8 @@ const mapState = (state, ownProps) => ({
 
 const actions = {
   updateContentHTMLBySlug,
-  updateSidebarCommentContext
+  updateSidebarCommentContext,
+  closeSidebar
 };
 
 export default connect(

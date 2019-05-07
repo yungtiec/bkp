@@ -70,7 +70,7 @@ export default ({
       containerClassName="comment-item__main"
       containerStyle={
         comment.descendents && comment.descendents.length
-          ? { borderBottom: "1px solid" }
+          ? { borderBottom: "1px solid #d4d4d4" }
           : {}
       }
       comment={comment}

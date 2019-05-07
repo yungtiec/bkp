@@ -20,7 +20,8 @@ import {
   updateTags,
   updateHeaderImageUrl,
   updateSummary,
-  updateIndexDescription
+  updateIndexDescription,
+  updateHasAnnotator
 } from "./data/upload/actions";
 import {
   fetchAllProjects,
@@ -79,7 +80,8 @@ const mapState = state => {
     summary,
     scorecard,
     indexDescription,
-    scorecardCompleted
+    scorecardCompleted,
+    hasAnnotator
   } = getUploadMetadata(state);
   return {
     // global metadata
@@ -103,7 +105,8 @@ const mapState = state => {
     tags,
     headerImageUrl,
     summary,
-    indexDescription
+    indexDescription,
+    hasAnnotator
   };
 };
 
@@ -127,7 +130,8 @@ const actions = {
   updateTags,
   updateHeaderImageUrl,
   updateSummary,
-  updateIndexDescription
+  updateIndexDescription,
+  updateHasAnnotator
 };
 
 export default withRouter(

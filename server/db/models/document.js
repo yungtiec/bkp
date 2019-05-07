@@ -63,6 +63,9 @@ module.exports = (db, DataTypes) => {
     },
     header_img_url: {
       type: DataTypes.TEXT
+    },
+    has_annotator: {
+      type: DataTypes.BOOLEAN
     }
   });
   Document.associate = function(models) {

@@ -81,6 +81,7 @@ export default class CommentBoxWithTagField extends Component {
       showIssueCheckbox,
       ...otherProps
     } = this.props;
+
     return (
       <div className={className}>
         {showTags && (
@@ -88,6 +89,7 @@ export default class CommentBoxWithTagField extends Component {
             handleOnSelect={this.handleTagOnChange}
             handleRemoveTag={this.handleRemoveTag}
             selectedTags={this.state.selectedTags}
+            disabled={this.props.notLoggedin}
           />
         )}
         <CommentBox

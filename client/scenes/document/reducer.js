@@ -3,6 +3,7 @@ import { reducer as dataReducer } from "./data/reducer";
 
 export const SIDEBAR_OPEN_TOGGLE = "document.SIDEBAR_OPEN_TOGGLE";
 export const SIDEBAR_RESET = "document.SIDEBAR_RESET";
+export const SIDEBAR_CLOSE = "document.SIDEBAR_CLOSE";
 export const ANNOTATION_HIGHLIGHT_TOGGLE =
   "document.ANNOTATION_HIGHLIGHT_TOGGLE";
 export const VERIFICATION_STATUS_IN_VIEW =
@@ -12,6 +13,10 @@ export const SIDEBAR_COMMENT_CONTEXT_UPDATED =
   "document.SIDEBAR_COMMENT_CONTEXT_UPDATED";
 export const SIDEBAR_CONTEXT_UPDATED = "document.SIDEBAR_CONTEXT_UPDATED";
 export const ISSUE_FILTER_UPDATED = "document.ISSUE_FILTER_UPDATED";
+
+export const closeSidebar = () => ({
+  type: SIDEBAR_CLOSE
+});
 
 export const toggleSidebar = (sidebarContext = "comments") => ({
   type: SIDEBAR_OPEN_TOGGLE,
@@ -73,6 +78,11 @@ export default function reduce(state = initialState, action) {
       return { ...state, verificationStatus: action.verificationStatus };
     case SIDEBAR_RESET:
       return { ...state, sidebarOpen: false};
+    case SIDEBAR_CLOSE:
+      return {
+        ... state,
+        sidebarOpen: false
+      };
     case SIDEBAR_OPEN_TOGGLE:
       return { ...state,
         sidebarOpen: !state.sidebarOpen,
