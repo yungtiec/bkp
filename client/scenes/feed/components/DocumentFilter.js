@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getFilterOptionMenus, getFilters } from "../data/reducer";
 import { updateFilter, clearFilter } from "../data/actions";
 import { Async } from "react-select";
-import { FilterItem, FilterBar, FilterSearch } from "../../../components";
+import { FilterItem, FilterBar, FilterSearch, FilterByTags } from "../../../components";
 
 const DocumentFilter = ({
   optionMenus,
@@ -24,17 +24,13 @@ const DocumentFilter = ({
       options={optionMenus.order}
       updateFilter={updateFilter}
     />
-    <FilterItem
+    <FilterByTags
       screenWidth={screenWidth}
-      icon="filter"
-      filterLabel="filter by"
-      filterKey="category"
-      multi={true}
-      selected={filters.category}
-      options={optionMenus.category}
+      searchByTags={filters.searchByTags}
       updateFilter={updateFilter}
     />
     <FilterSearch
+      screenWidth={screenWidth}
       clearFilter={clearFilter}
       updateFilter={updateFilter}
       searchByTags={filters.searchByTags}

@@ -53,6 +53,7 @@ export { default as TagField } from "./TagField";
 export { default as FilterItem } from "./FilterBar/FilterItem";
 export { default as FilterBar } from "./FilterBar/FilterBar";
 export { default as FilterSearch } from "./FilterBar/FilterSearch";
+export { default as FilterByTags } from "./FilterBar/FilterByTags";
 export { default as HeroHeader } from "./HeroHeader";
 export { default as FeedItem } from "./FeedItem";
 export { default as CommentBox } from "./CommentBox/CommentBox";
