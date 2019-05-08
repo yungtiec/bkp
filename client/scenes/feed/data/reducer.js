@@ -65,17 +65,12 @@ const initialState = {
       {
         value: "proposed-laws-and-regulations",
         label: "proposed laws and regulations"
-      },
-      {
-        value: "tags",
-        label: "tags"
       }
     ]
   }
 };
 
 export default function(state = initialState, action) {
-  var filters;
   switch (action.type) {
     case types.FEATURE_DOCUMENTS_FETCH_SUCESSS:
       return {
@@ -106,7 +101,12 @@ export default function(state = initialState, action) {
         documentsLoading: false
       };
     case types.FILTER_UPDATED:
-      filters = cloneDeep(state.filters);
+      const filters = cloneDeep(state.filters);
+
+      if (action.key === 'searchByTags' && action.value === false) {
+          filters.tags = null;
+      }
+
       filters[action.key] = action.value;
       return {
         ...state,
