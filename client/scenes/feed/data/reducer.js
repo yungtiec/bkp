@@ -11,6 +11,7 @@ const initialState = {
   additionalDocumentsLoading: false,
   documentsLoading: true,
   filters: {
+    searchByTags: false,
     category: null,
     tags: null,
     order: { value: "date", label: "most recent" },
@@ -42,6 +43,32 @@ const initialState = {
       {
         value: "proposed-laws-and-regulations",
         label: "proposed laws and regulations"
+      }
+    ],
+    type: [
+      {
+        value: "thought-leadership",
+        label: "thought leadership"
+      },
+      {
+        value: "transparency-scorecard",
+        label: "transparency scorecard"
+      },
+      {
+        value: "regulatory-notices",
+        label: "regulatory notices"
+      },
+      {
+        value: "regulatory-requests-for-comment",
+        label: "regulatory requests for comment"
+      },
+      {
+        value: "proposed-laws-and-regulations",
+        label: "proposed laws and regulations"
+      },
+      {
+        value: "tags",
+        label: "tags"
       }
     ]
   }

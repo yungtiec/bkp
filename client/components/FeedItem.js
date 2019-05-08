@@ -41,26 +41,19 @@ export default ({
         </div>
       ) : null}
       <div className="feed-item__content">
-        {category ? <h6>{category}</h6> : null}
+
+        {
+          tags && tags.length ?
+            tags.map(tag => <h6 key={`tag-${tag.name}`}>{tag.name}</h6>) :
+            null
+        }
+        {/*{category ? <h6>{category}</h6> : null}*/}
         <h5>{title}</h5>
         {
           isRequestForComment ?
             <span className="feed-item__author-name d-flex mb-2">Posted by {creatorName}</span> :
             <span className="feed-item__author-name d-flex mb-2">By {creatorName}</span>
         }
-        {/*{tags && tags.length ? (*/}
-          {/*<div className="mb-2">*/}
-            {/*<span style={{ fontSize: "12px" }}>Tags: </span>*/}
-            {/*{tags.map(tag => (*/}
-              {/*<span key={`tag-${tag.name}`} className="badge badge-light">*/}
-                {/*{tag.name}*/}
-                {/*{"  "}*/}
-              {/*</span>*/}
-            {/*))}*/}
-          {/*</div>*/}
-        {/*) : (*/}
-          {/*""*/}
-        {/*)}*/}
         <div>{description}</div>
         <div className="feed-item__content-bottom d-flex justify-content-between align-items-center">
           <span>

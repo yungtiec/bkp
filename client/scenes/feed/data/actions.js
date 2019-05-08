@@ -70,6 +70,11 @@ async function dispatchFetchFilteredDocumentsWithStats({
   const state = getState();
   var { offset, limit, filters } = state.scenes.feed.data;
 
+  if(filters.searchByTags) {
+    filters.tags = filters.search.split(' ');
+    filters.search = null;
+  }
+
   if (!loadMore) {
     offset = 0;
     dispatch({

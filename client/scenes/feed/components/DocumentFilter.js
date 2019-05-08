@@ -37,7 +37,8 @@ const DocumentFilter = ({
     <FilterSearch
       clearFilter={clearFilter}
       updateFilter={updateFilter}
-      value={filters.search}
+      searchByTags={filters.searchByTags}
+      value={filters.search || filters.tags}
     />
   </FilterBar>
 );

@@ -119,14 +119,14 @@ const getDocumentsWithFilters = async (req, res, next) => {
         ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
         : { title: { $iLike: formattedSearchTerms } };
     // construct include clause
+    console.log(req.query.tags);
     if (req.query.tags && req.query.tags.length) {
       includeTag = {
         model: Tag,
-        require: true,
         where: {
           name: {
-            [Sequelize.Op.or]: req.query.tags.map(c => ({
-              [Sequelize.Op.eq]: c.value.toLowerCase()
+            [Sequelize.Op.or]: req.query.tags.map(tag => ({
+              [Sequelize.Op.eq]: tag.toLowerCase()
             }))
           }
         }
