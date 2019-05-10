@@ -1,4 +1,4 @@
-import { values, keyBy } from "lodash";
+import { values, keyBy, uniq } from "lodash";
 import * as types from "./actionTypes";
 import { getFeatureDocuments, getFilteredDocumentsWithStats } from "./service";
 
@@ -85,7 +85,7 @@ async function dispatchFetchFilteredDocumentsWithStats({
     limit,
     ...filters
   });
-  const documentIds = documents.map(fd => fd.id);
+  const documentIds = uniq(documents.map(fd => fd.id));
   const documentsById = keyBy(documents, "id");
   dispatch({
     type: types.DOCUMENTS_FETCH_SUCESSS,

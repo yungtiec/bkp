@@ -89,9 +89,20 @@ const getDocuments = async (req, res, next) => {
 
 const rawSqlGetDocumentsWithFilters = async (req, res, next) => {
   if (!req.query.search) {
+    var noSearchOrder = req.query.order;
+    if (noSearchOrder && noSearchOrder.value === "date") {
+      noSearchOrder = [["createdAt", "DESC"]];
+    } else if (noSearchOrder && noSearchOrder.value === "most-upvoted") {
+      noSearchOrder = [[Sequelize.literal("num_upvotes"), "DESC"]];
+    } else if (noSearchOrder && noSearchOrder.value === "most-discussed") {
+      noSearchOrder = [[Sequelize.literal("num_comments"), "DESC"]];
+    } else {
+      noSearchOrder = [["createdAt", "DESC"]];
+    }
+    console.log({noSearchOrder});
     var documentQueryResult = await Document.scope({
       method: ["includeAllEngagements", {}]
-    }).findAndCountAll({limit: req.query.limit, offset: req.query.offset});
+    }).findAndCountAll({order: noSearchOrder, limit: req.query.limit, offset: req.query.offset});
     res.send(documentQueryResult.rows);
   }
 
@@ -203,7 +214,7 @@ const rawSqlGetDocumentsWithFilters = async (req, res, next) => {
     doc.tags = tags[0];
     return doc
   });
-  return Promise.all(documentsWithTags)
+  return Promise.all(_.uniq(documentsWithTags))
     .then((docs) => {
       console.log({docs});
       res.send(docs);
