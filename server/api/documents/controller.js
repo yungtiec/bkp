@@ -196,8 +196,7 @@ const rawSqlGetDocumentsWithFilters = async (req, res, next) => {
               ON users.id=documents.creator_id
           LEFT JOIN document_upvotes
               ON document_upvotes.document_id = documents.id
-      WHERE reviewed = true AND "title" ILIKE '${formattedSearchTerms}' 
-        OR reviewed = true AND "content_html" ILIKE '${formattedSearchTerms}'
+      WHERE reviewed = true AND "title" ILIKE '${formattedSearchTerms}'
         OR reviewed = true AND users.name ILIKE '${formattedSearchTerms}'
       GROUP BY documents.id, users.id
       
