@@ -28,7 +28,7 @@ export default ({
         }
         tags={documentsById[id].tags}
         date={moment(documentsById[id].createdAt).format("LL")}
-        creatorName={`${documentsById[id].creator.displayName}${
+        creatorName={documentsById[id].creator_name ? `${documentsById[id].creator_name}` : `${documentsById[id].creator.displayName}${
           documentsById[id].creator.delegate ? " (Reposted by BKP Admin)" : ""
         }`}
         numUpvotes={Number(documentsById[id].num_upvotes)}

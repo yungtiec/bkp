@@ -51,6 +51,8 @@ router.get(
   documentController.getComments
 );
 
+router.get("/sqldocs", documentController.rawSqlGetDocumentsWithFilters);
+
 /**
  * Getting a list of documents
  *

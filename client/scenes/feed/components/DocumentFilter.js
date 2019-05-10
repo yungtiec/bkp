@@ -24,16 +24,6 @@ const DocumentFilter = ({
       options={optionMenus.order}
       updateFilter={updateFilter}
     />
-    <FilterItem
-      screenWidth={screenWidth}
-      icon="filter"
-      filterLabel="filter by"
-      filterKey="category"
-      multi={true}
-      selected={filters.category}
-      options={optionMenus.category}
-      updateFilter={updateFilter}
-    />
     <FilterSearch
       clearFilter={clearFilter}
       updateFilter={updateFilter}
