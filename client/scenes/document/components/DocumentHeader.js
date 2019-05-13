@@ -57,7 +57,7 @@ export default class DocumentHeader extends Component {
       .join("");
     const imgUrl = documentMetadata.header_img_url;
     const formattedUrl = imgUrl && imgUrl.includes("unsplash")
-        ? imgUrl.concat("&auto=format&fit=crop&w=800&q=10")
+        ? imgUrl.concat("&auto=format&fit=crop&w=800&q=60")
         : imgUrl;
     return (
       <div className="project-document__header">
