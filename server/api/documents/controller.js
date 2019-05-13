@@ -289,6 +289,8 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       include: [{ model: Tag }]
     });
 
+    console.log(req.body);
+
     if (req.body.newTitle) {
       const slug = await createSlug(
         req.body.newTitle.toLowerCase(),
