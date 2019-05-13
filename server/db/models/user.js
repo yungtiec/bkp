@@ -541,7 +541,7 @@ module.exports = (db, DataTypes) => {
   };
 
   const setUserHandle = async user => {
-    let user_handle = generateUserHandle(user);
+    let user_handle = generateUserHandle(user.name);
     const existingUser = await User.findOne({
         where : {user_handle : user_handle}
     });
