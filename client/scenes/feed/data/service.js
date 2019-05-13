@@ -10,7 +10,7 @@ export const getFilteredDocumentsWithStats = ({
   ...queries
 }) => {
   return axios
-    .get("/api/documents/sqldocs", {
+    .get("/api/documents", {
       params: {
         offset,
         limit,

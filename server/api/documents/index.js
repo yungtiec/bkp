@@ -51,8 +51,6 @@ router.get(
   documentController.getComments
 );
 
-router.get("/sqldocs", documentController.rawSqlGetDocumentsWithFilters);
-
 /**
  * Getting a list of documents
  *
@@ -62,7 +60,7 @@ router.get("/sqldocs", documentController.rawSqlGetDocumentsWithFilters);
  * @queryparam {Number} offset
  *
  */
-router.get("/", documentController.getDocumentsWithFilters);
+router.get("/", documentController.rawSqlGetDocumentsWithFilters);
 
 /**
  * Getting a list of feature documents

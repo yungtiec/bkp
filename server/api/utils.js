@@ -2,6 +2,7 @@ const { User, Role, Comment } = require("../db/models");
 const _ = require("lodash");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
+const Sequelize = require("sequelize");
 
 const isAdmin = user => {
   return user.roles.filter(r => r.name === "admin").length;
@@ -188,6 +189,141 @@ const hasNotificationPermission = async (userId, commentType) => {
   }
 };
 
+const generateNoSearchOrder = (order) => {
+  const parsedOrder = JSON.parse(order);
+  if  (!parsedOrder) {
+    return [["createdAt", "DESC"]];
+  } else if (parsedOrder && parsedOrder.value) {
+    switch (parsedOrder.value) {
+      case "date" :
+        return [["createdAt", "DESC"]];
+      case "most-upvoted":
+        return [[Sequelize.literal("num_upvotes"), "DESC"]];
+      case "most-discussed":
+        return [[Sequelize.literal("num_comments"), "DESC"]];
+      default:
+        return [["createdAt", "DESC"]];
+    }
+  }
+};
+
+const generateOrder = (order) => {
+  if(!order){
+    return `"createdAt" DESC`;
+  }
+
+  const parsedOrder = JSON.parse(order);
+  switch (parsedOrder.value) {
+    case "date" :
+      return `"createdAt" DESC`;
+    case "most-upvoted":
+      return `"num_upvotes" DESC`;
+    case "most-discussed":
+      return `"num_comments" DESC`;
+    default:
+      return `"createdAt" DESC`;
+  }
+};
+
+const formatSearchTerms = (searchTerms) => {
+  if (!searchTerms) return null;
+  else {
+    var queryArray = searchTerms.trim().split(" ");
+    return queryArray
+      .map(function(phrase) {
+        return "%" + phrase + "%";
+      })
+      .join("");
+  }
+};
+
+const formatTagNames = (searchTerms) => {
+  if (!searchTerms) return null;
+  else {
+    var tagsArray = searchTerms.trim().split(" ");
+    return tagsArray
+      .map(function(phrase) {
+        return `name = '${phrase}'`;
+      })
+      .join(' OR ');
+  }
+};
+
+const generateTagsQuery = (tagsQuery) => {
+  return `
+      SELECT id
+      From tag_links
+          LEFT JOIN tags
+              ON "tagId" = tags.id
+      WHERE ${tagsQuery};
+     `
+};
+
+const generateDocsByTagsQuery = (tags) => {
+  if (tags[0].length) {
+    const tagIdsQuery = tags[0]
+      .map((tag) => {
+        return `"tagId" = '${tag.id}'`
+      })
+      .join(' OR ');
+
+    return `
+      SELECT 
+          documents.*,
+          users.name as creator_name, 
+          (SELECT COUNT(*) FROM comments WHERE comments.doc_id = documents.id) AS num_comments, 
+          (SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = documents.id) AS num_upvotes,
+          (SELECT COUNT(*) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) AS num_downvotes
+      FROM documents 
+          LEFT JOIN tag_links 
+              ON tag_links.foreign_key=documents.id
+          LEFT JOIN users
+              ON users.id=documents.creator_id
+      WHERE ${tagIdsQuery}
+      GROUP BY documents.id, users.id
+      
+      UNION All
+    `
+  } else {
+    return'';
+  }
+};
+
+const generateDocsByTitleOrAuthorQuery = (
+  formattedSearchTerms,
+  order,
+  limit,
+  offset
+) => {
+  return  ` 
+      SELECT 
+          documents.*,
+          users.name as creator_name,
+          (SELECT COUNT(*) FROM comments WHERE comments.doc_id = documents.id) AS num_comments, 
+          (SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = documents.id) AS num_upvotes,
+          (SELECT COUNT(*) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) AS num_downvotes
+      FROM documents
+          LEFT JOIN users
+              ON users.id=documents.creator_id
+          LEFT JOIN document_upvotes
+              ON document_upvotes.document_id = documents.id
+      WHERE reviewed = true AND "title" ILIKE '${formattedSearchTerms}'
+        OR reviewed = true AND users.name ILIKE '${formattedSearchTerms}'
+      GROUP BY documents.id, users.id
+      
+      Order BY ${order}
+      ${limit} ${offset};
+    `
+};
+
+const generateDocTagsQuery = (doc) => {
+  return `
+    SELECT name FROM tags 
+    LEFT JOIN tag_links
+        ON "tagId" = tags.id
+    WHERE foreign_key = ${doc.id}
+  `
+};
 
 module.exports = {
   isAdmin,
@@ -200,5 +336,13 @@ module.exports = {
   createSlug,
   sendEmail,
   getAddedAndRemovedTags,
-  hasNotificationPermission
+  hasNotificationPermission,
+  generateNoSearchOrder,
+  generateOrder,
+  formatSearchTerms,
+  formatTagNames,
+  generateTagsQuery,
+  generateDocsByTagsQuery,
+  generateDocsByTitleOrAuthorQuery,
+  generateDocTagsQuery
 };

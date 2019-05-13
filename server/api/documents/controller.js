@@ -21,7 +21,15 @@ const {
 const {
   getEngagedUsers,
   createSlug,
-  getAddedAndRemovedTags
+  getAddedAndRemovedTags,
+  generateNoSearchOrder,
+  generateOrder,
+  formatSearchTerms,
+  formatTagNames,
+  generateTagsQuery,
+  generateDocsByTagsQuery,
+  generateDocsByTitleOrAuthorQuery,
+  generateDocTagsQuery
 } = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
@@ -88,138 +96,50 @@ const getDocuments = async (req, res, next) => {
 };
 
 const rawSqlGetDocumentsWithFilters = async (req, res, next) => {
+  let documents;
+
+  // Use Sequelize for simple query to get all documents for feed
   if (!req.query.search) {
-    var noSearchOrder = req.query.order;
-    if (noSearchOrder && noSearchOrder.value === "date") {
-      noSearchOrder = [["createdAt", "DESC"]];
-    } else if (noSearchOrder && noSearchOrder.value === "most-upvoted") {
-      noSearchOrder = [[Sequelize.literal("num_upvotes"), "DESC"]];
-    } else if (noSearchOrder && noSearchOrder.value === "most-discussed") {
-      noSearchOrder = [[Sequelize.literal("num_comments"), "DESC"]];
-    } else {
-      noSearchOrder = [["createdAt", "DESC"]];
-    }
-    console.log({noSearchOrder});
-    var documentQueryResult = await Document.scope({
+    const noSearchOrder = generateNoSearchOrder(req.query.order);
+    const documentQueryResult = await Document.scope({
       method: ["includeAllEngagements", {}]
-    }).findAndCountAll({order: noSearchOrder, limit: req.query.limit, offset: req.query.offset});
-    res.send(documentQueryResult.rows);
-  }
-
-
-  let order;
-  if (req.query.order) order = JSON.parse(req.query.order);
-  if (order && order.value === "date") {
-    order = `"createdAt" DESC`;
-  } else if (order && order.value === "most-upvoted") {
-    order = `"num_upvotes" DESC`;
-  } else if (order && order.value === "most-discussed") {
-    order = `"num_comments" DESC`;
+    }).findAndCountAll({
+      order: noSearchOrder,
+      limit: req.query.limit,
+      offset: req.query.offset
+    });
+    documents = documentQueryResult.rows;
   } else {
-    order = `"createdAt" DESC`;
-  }
-  // format search terms
-  var formattedSearchTerms;
-  if (!req.query.search) formattedSearchTerms = null;
-  else {
-    var queryArray = req.query.search.trim().split(" ");
-    formattedSearchTerms = queryArray
-      .map(function(phrase) {
-        return "%" + phrase + "%";
-      })
-      .join("");
-  }
+    // Compile raw sql query if there are search terms
+    // This will combine a queries for documents by tag and by title
+    const order = generateOrder(req.query.order);
+    const limit = `LIMIT ${Number(req.query.limit)}`;
+    const offset = `OFFSET ${Number(req.query.offset)}`;
 
-  // format tag names
-  var tagsQuery;
-  if (!req.query.search) tagsQuery = null;
-  else {
-    var tagsArray = req.query.search.trim().split(" ");
-    tagsQuery = tagsArray
-      .map(function(phrase) {
-        return `name = '${phrase}'`;
-      })
-      .join(' OR ');
-  }
-  const tags = await db.sequelize.query(
-    `
-      SELECT id
-      From tag_links
-          LEFT JOIN tags
-              ON "tagId" = tags.id
-      WHERE ${tagsQuery};
-     `
-  );
-  let tagIdsQuery;
-  let docByTagsQuery
-  if (tags[0].length) {
-    tagIdsQuery = tags[0]
-      .map((tag) => {
-        return `"tagId" = '${tag.id}'`
-      })
-      .join(' OR ');
+    const formattedSearchTerms = formatSearchTerms(req.query.search);
+    const formattedTags = formatTagNames(req.query.search);
+    const tags = await db.sequelize.query(generateTagsQuery(formattedTags));
 
-    docByTagsQuery = `
-      SELECT 
-          documents.*,
-          users.name as creator_name, 
-          (SELECT COUNT(*) FROM comments WHERE comments.doc_id = documents.id) AS num_comments, 
-          (SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = documents.id) AS num_upvotes,
-          (SELECT COUNT(*) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) AS num_downvotes
-      FROM documents 
-          LEFT JOIN tag_links 
-              ON tag_links.foreign_key=documents.id
-          LEFT JOIN users
-              ON users.id=documents.creator_id
-      WHERE ${tagIdsQuery}
-      GROUP BY documents.id, users.id
-      
-      UNION All
-    `
-  } else {
-    docByTagsQuery = '';
-  }
-
-  const limit = `LIMIT ${Number(req.query.limit)}`;
-  const offset = `OFFSET ${Number(req.query.offset)}`;
-  const documents = await db.sequelize.query(
-    ` 
-      ${docByTagsQuery} 
-      SELECT 
-          documents.*,
-          users.name as creator_name,
-          (SELECT COUNT(*) FROM comments WHERE comments.doc_id = documents.id) AS num_comments, 
-          (SELECT COUNT(*) FROM document_upvotes WHERE document_upvotes.document_id = documents.id) AS num_upvotes,
-          (SELECT COUNT(*) FROM document_downvotes WHERE document_downvotes.document_id = documents.id) AS num_downvotes
-      FROM documents
-          LEFT JOIN users
-              ON users.id=documents.creator_id
-          LEFT JOIN document_upvotes
-              ON document_upvotes.document_id = documents.id
-      WHERE reviewed = true AND "title" ILIKE '${formattedSearchTerms}'
-        OR reviewed = true AND users.name ILIKE '${formattedSearchTerms}'
-      GROUP BY documents.id, users.id
-      
-      Order BY ${order}
-      ${limit} ${offset};
-    `);
-  const documentsWithTags = documents[0].map(async (doc) => {
-    const tags = await db.sequelize.query(
-      `
-        SELECT name FROM tags 
-        LEFT JOIN tag_links
-            ON "tagId" = tags.id
-        WHERE foreign_key = ${doc.id}
-      `
+    // Formats a query for docs by tags that ends with a UNION ALL
+    const docsByTagsQuery = generateDocsByTagsQuery(tags);
+    // Format query for docs by title and/or author name
+    const docsByTitleOrAuthorQuery = generateDocsByTitleOrAuthorQuery(
+      formattedSearchTerms,
+      order,
+      limit,
+      offset
     );
-    doc.tags = tags[0];
-    return doc
-  });
-  return Promise.all(_.uniq(documentsWithTags))
-    .then((docs) => {
-      console.log({docs});
-      res.send(docs);
-    })
+    const combinedQueries = docsByTagsQuery.concat(docsByTitleOrAuthorQuery);
+
+    const documentsWithoutTags = await db.sequelize.query(combinedQueries);
+    const documentsWithTags = documentsWithoutTags[0].map(async (doc) => {
+      const tags = await db.sequelize.query(generateDocTagsQuery(doc));
+      doc.tags = tags[0];
+      return doc
+    });
+    documents = await Promise.all(_.uniq(documentsWithTags))
+  }
+  res.send(documents);
 };
 
 const getDocumentsWithFilters = async (req, res, next) => {
