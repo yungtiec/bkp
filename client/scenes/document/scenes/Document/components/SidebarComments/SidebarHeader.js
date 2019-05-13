@@ -96,21 +96,19 @@ class SidebarHeader extends Component {
           this.renderCommentSortBy({
             commentSortBy
           })}
-        {selectedComments && !selectedComments.length ? (
+        {isLoggedIn && selectedComments && !selectedComments.length ? (
           <div
             className={`comment-item page-comment`}
           >
-            { isLoggedIn ? (
-              <CommentBoxWithTagField
-                showTags={true}
-                showIssueCheckbox={true}
-                selectedTags={[]}
-                initialValue=""
-                documentId={documentMetadata.id}
-                onSubmit={addNewComment}
-                onCancel={null}
-              />
-            ) : null}
+            <CommentBoxWithTagField
+              showTags={true}
+              showIssueCheckbox={true}
+              selectedTags={[]}
+              initialValue=""
+              documentId={documentMetadata.id}
+              onSubmit={addNewComment}
+              onCancel={null}
+            />
           </div>
         ) : null}
         {!isLoggedIn && (
