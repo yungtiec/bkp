@@ -106,7 +106,7 @@ class DocumentEditor extends Component {
 
   handleCategoryChange(category) {
     this.setState({
-      category: category.value
+      category: category
     });
   }
 

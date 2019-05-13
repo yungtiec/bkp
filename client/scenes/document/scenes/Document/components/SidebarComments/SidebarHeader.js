@@ -98,14 +98,9 @@ class SidebarHeader extends Component {
           })}
         {selectedComments && !selectedComments.length ? (
           <div
-            className={`comment-item ${
-              isClosedForComment ? "page-comment--highlight" : "page-comment"
-            }`}
+            className={`comment-item page-comment`}
           >
-            <Countdown
-              timeInUnix={Number(documentMetadata.comment_until_unix)}
-            />
-            {!isClosedForComment && isLoggedIn ? (
+            { isLoggedIn ? (
               <CommentBoxWithTagField
                 showTags={true}
                 showIssueCheckbox={true}
@@ -122,75 +117,50 @@ class SidebarHeader extends Component {
           <div className="comment-item mt-4">
             <div className="comment-item__main">
               <div className="comment-item__header">
-                {isClosedForComment ? (
-                  <p className="mb-0">
-                    <Link
-                      to={{
-                        pathname: "/login",
-                        state: { lastPath: this.props.location.pathname }
-                      }}
-                      className="text-primary font-weight-bold"
-                    >
-                      Log in
-                    </Link>{" "}
-                    or{" "}
-                    <Link
-                      to={{
-                        pathname: "/signup",
-                        state: { lastPath: this.props.location.pathname }
-                      }}
-                      className="text-primary font-weight-bold"
-                    >
-                      Sign up here
-                    </Link>{" "}
-                    for notifications
-                  </p>
-                ) : (
-                  <p className="mb-0">
-                    <div className="sidebar__login-container-flex">
-                      <div className="sidebar__login-container d-flex">
-                        <span className="sidebar__signin-text mb-2">
-                          {" "}
-                          To join the conversation:{" "}
+                <p className="mb-0">
+                  <div className="sidebar__login-container-flex">
+                    <div className="sidebar__login-container d-flex">
+                      <span className="sidebar__signin-text mb-2">
+                        {" "}
+                        To join the conversation:{" "}
+                      </span>
+                      <a
+                        href={`/auth/google?state=${encodeURI(
+                          this.props.location.pathname
+                        )}`}
+                      >
+                        <img src="/assets/btn_google_signin_dark_normal_web.png" />
+                      </a>
+                      <a onClick={signinWithUport}>
+                        <img src="/assets/btn_uport_signin_dark_normal_web.png" />
+                      </a>
+                      <a
+                        href={`/auth/github?state=${encodeURI(
+                          this.props.location.pathname
+                        )}`}
+                      >
+                        <img
+                          className="btn-github"
+                          src="/assets/btn-github-dark.png"
+                        />
+                      </a>
+                      <div class="d-flex mt-2">
+                        <span className="sidebar__signin-text">
+                          or sign in with
                         </span>
-                        <a
-                          href={`/auth/google?state=${encodeURI(
-                            this.props.location.pathname
-                          )}`}
+                        <Link
+                          to={{
+                            pathname: "/login",
+                            state: { lastPath: this.props.location.pathname }
+                          }}
+                          className="text-primary font-weight-bold sidebar__signin-text"
                         >
-                          <img src="/assets/btn_google_signin_dark_normal_web.png" />
-                        </a>
-                        <a onClick={signinWithUport}>
-                          <img src="/assets/btn_uport_signin_dark_normal_web.png" />
-                        </a>
-                        <a
-                          href={`/auth/github?state=${encodeURI(
-                            this.props.location.pathname
-                          )}`}
-                        >
-                          <img
-                            className="btn-github"
-                            src="/assets/btn-github-dark.png"
-                          />
-                        </a>
-                        <div class="d-flex mt-2">
-                          <span className="sidebar__signin-text">
-                            or sign in with
-                          </span>
-                          <Link
-                            to={{
-                              pathname: "/login",
-                              state: { lastPath: this.props.location.pathname }
-                            }}
-                            className="text-primary font-weight-bold sidebar__signin-text"
-                          >
-                            email
-                          </Link>
-                        </div>
+                          email
+                        </Link>
                       </div>
                     </div>
-                  </p>
-                )}
+                  </div>
+                </p>
               </div>
             </div>
           </div>
