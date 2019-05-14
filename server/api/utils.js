@@ -243,7 +243,7 @@ const formatTagNames = (searchTerms) => {
     var tagsArray = searchTerms.trim().split(" ");
     return tagsArray
       .map(function(phrase) {
-        return `name = '${phrase}'`;
+        return `name ILIKE '${phrase}'`;
       })
       .join(' OR ');
   }
