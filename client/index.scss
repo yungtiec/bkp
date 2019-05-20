@@ -115,3 +115,9 @@ a:hover {
 .bg-consensys {
   background: #2a48d4;
 }
+
+@media (max-width: 767px) {
+  .cc-revoke {
+    display: none !important;
+  }
+}
