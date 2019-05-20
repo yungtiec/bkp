@@ -208,7 +208,7 @@ class DocumentEditor extends Component {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { indexDescription, summary, content, headerImageUrl } = this.state;
     const { documentMetadata, displayEditor } = this.props;
-
+    console.log('tags', this.state.tags);
     return (
       <div>
         {displayEditor ? (
@@ -240,11 +240,12 @@ class DocumentEditor extends Component {
                 />
               </div>
               <div className="mb-4">
-                Tags:
+                Tags: <span style={{color: 'gray'}}>(max 3)</span>
                 <TagField
                   handleOnSelect={this.onTagSelect}
                   handleRemoveTag={this.onRemoveTag}
                   selectedTags={this.state.selectedTags}
+                  disabled={this.state.selectedTags.length === 3}
                   width="300px"
                 />
               </div>
