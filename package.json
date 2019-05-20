@@ -136,8 +136,9 @@
     "styled-components": "^3.4.9",
     "tether": "^1.4.4",
     "text-diff": "^1.0.1",
-    "uport-connect": "^0.7.3",
+    "uport-connect": "^0.7.8",
     "vivid-icons": "^1.0.9",
+    "web3": "^1.0.0-beta.55",
     "xpath-range": "0.0.5"
   },
   "devDependencies": {
