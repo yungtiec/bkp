@@ -126,3 +126,9 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 767px) {
+  .document_tags-container {
+    padding: 0px 25px 0 15px;
+  }
+}

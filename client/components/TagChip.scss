@@ -1,19 +1,20 @@
 .tag-field__tag {
-  background-color: #ebf5ff;
-  background-color: rgba(0, 126, 255, 0.08);
   border-radius: 2px;
-  border: 1px solid #c2e0ff;
-  border: 1px solid rgba(0, 126, 255, 0.24);
-  color: #007eff;
+  color: #3f9bfc;
   display: inline-block;
   font-size: 0.9em;
   line-height: 1.4;
   margin-right: 5px;
   vertical-align: top;
+  font-weight: 700;
+}
+
+.tag-field__tag.light-bg {
+  background: rgb(235, 244, 253);
 }
 
 .tag-field__tag.dark-bg {
-  background: rgb(235, 244, 253);
+  background-color: #f2f2f2;
 }
 
 .tag-field__tag .close-icon {

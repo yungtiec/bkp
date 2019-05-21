@@ -122,8 +122,7 @@ class DocumentContainer extends Component {
           sidebarContext={sidebarContext}
         />
         {documentMetadata.tags && documentMetadata.tags.length ? (
-          <div className="mt-3" style={{ lineHeight: 1.5 }}>
-            Tags:{" "}
+          <div className="mt-3 document_tags-container" style={{ lineHeight: 1.5 }}>
             {documentMetadata.tags.map((tag, index) => (
               <TagChip
                 key={`tag__${tag.name}`}
