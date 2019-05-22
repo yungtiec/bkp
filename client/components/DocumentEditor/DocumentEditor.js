@@ -54,14 +54,16 @@ class DocumentEditor extends Component {
   }
 
   async componentDidMount() {
+    const { isLoggedIn, documentMetadata } = this.props;
     loadAnnotation(this);
-    !this.props.isLoggedIn || this.props.isClosedForComment
+    !isLoggedIn || !documentMetadata.has_annotator
       ? hideAnnotatorUI()
       : showAnnotatorUI();
   }
 
   async componentDidUpdate() {
-    !this.props.isLoggedIn || this.props.isClosedForComment
+    const { isLoggedIn, documentMetadata } = this.props;
+    !isLoggedIn || !documentMetadata.has_annotator
       ? hideAnnotatorUI()
       : showAnnotatorUI();
     await reloadAnnotations({
