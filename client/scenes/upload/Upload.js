@@ -762,7 +762,4 @@ class Upload extends Component {
   }
 }
 
-export default requiresAuthorization({
-  Component: Upload,
-  roleRequired: ["project_editor", "project_admin", "admin"]
-});
+export default Upload;

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter, Switch, Route, Redirect, Link } from "react-router-dom";
-import { Drafts, PublishedDocuments } from "./scenes";
+import { Drafts, PublishedDocuments, FeaturedDocuments } from "./scenes";
 import { MyDocumentsNavbar } from "./components";
 
 export default ({ match }) => {
@@ -17,6 +17,7 @@ export default ({ match }) => {
       <Switch>
         <Route path={`${match.url}/drafts`} component={Drafts} />
         <Route path={`${match.url}/published`} component={PublishedDocuments} />
+        <Route path={`${match.url}/featured`} component={FeaturedDocuments} />
         <Redirect from={match.url} to={`${match.url}/drafts`} />
       </Switch>
     </div>

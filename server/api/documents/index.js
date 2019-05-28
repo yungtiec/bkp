@@ -63,6 +63,11 @@ router.get(
 router.get("/", documentController.rawSqlGetDocumentsWithFilters);
 
 /**
+ *
+ */
+router.get("/all", documentController.getDocumentsWithFilters);
+
+/**
  * Getting a list of feature documents
  *
  * @name Get feature documents
@@ -72,6 +77,17 @@ router.get("/", documentController.rawSqlGetDocumentsWithFilters);
  *
  */
 router.get("/feature", documentController.getFeatureDocuments);
+
+/**
+ * Getting a list of feature documents
+ *
+ * @name Get feature documents
+ * @route {GET} /api/documents/feature
+ * @queryparam {Number} limit
+ * @queryparam {Number} offset
+ *
+ */
+router.get("/featured", documentController.getFeaturedDocuments);
 
 /**
  * Getting a list of user's drafts
@@ -272,6 +288,13 @@ router.put(
   ensureAuthentication,
   ensureResourceAccess,
   documentController.putDocumentContentHTMLBySlug
+);
+
+router.put(
+  "/slug/:slug/status",
+  ensureAuthentication,
+  ensureResourceAccess,
+  documentController.updateDocumentStatus
 );
 
 /**

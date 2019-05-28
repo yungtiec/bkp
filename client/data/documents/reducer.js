@@ -16,10 +16,8 @@ const generateUniqueDocs = (originalDocs, newDocs) => {
 export default function reduce(state = initialState, action = {}) {
   switch (action.type) {
     case types.DOCUMENT_LISTING_FETCH_SUCCESS:
-      const docs = uniqBy((state.documents || []).concat(action.documents), (doc) => {
-        if(doc) return doc.id
-        return doc;
-      });
+      const docs = action.documents;
+      console.log({docs});
       return {
         ...state,
         documents: docs,

@@ -45,6 +45,10 @@ const AdminUserList = ({
   ];
   const data = userIds.map(id => usersById[id]);
 
+  const callFunc = (msg) => {
+    console.log('okay')
+  };
+
   return (
     <div className="user-list__container  main-container">
       <StackableTable

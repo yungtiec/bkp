@@ -5,6 +5,7 @@ import Loadable from "react-loadable";
 import { SquareLoader } from "halogenium";
 import { fetchLastestDocumentsWithStats } from "../../../../../../data/reducer";
 import { getDocumentListing } from "../../../../../../data/reducer";
+import { putStatusBySlug } from "../../../../../document/data/documentMetadata/service"
 
 const LoadableAdminVersionList = Loadable({
   loader: () => import("./AdminDocumentList"),
@@ -40,6 +41,7 @@ class MyComponent extends Component {
 }
 
 const mapState = state => {
+  console.log('mapping state', state);
   const { documents } = getDocumentListing(state);
   return {
     documents
@@ -48,9 +50,10 @@ const mapState = state => {
 
 const actions = dispatch => {
   return {
-    loadInitialData() {
+    async loadInitialData() {
       dispatch(fetchLastestDocumentsWithStats());
-    }
+    },
+    putStatusBySlug
   };
 };
 

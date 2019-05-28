@@ -31,7 +31,10 @@ class DocumentEditor extends Component {
       indexDescription: this.props.documentMetadata.index_description || "",
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
-      status: this.props.documentMetadata.reviewed,
+      status: {
+        submitted: this.props.documentMetadata.submitted,
+        reviewed: this.props.documentMetadata.reviewed
+      },
       category: this.props.documentMetadata.category
         ? {
             label: this.props.documentMetadata.category,
@@ -101,8 +104,19 @@ class DocumentEditor extends Component {
   }
 
   handleStatusChange(status) {
+    let docStatus;
+    if (status.value === 'draft') {
+      docStatus = { submitted: false, reviewed: false};
+    } else if (status.value === 'published') {
+      docStatus = { submitted: true, reviewed: false};
+    } else if (status.value === 'featured') {
+      docStatus = { submitted: true, reviewed: true};
+    }
+
+    console.log({docStatus});
+
     this.setState({
-      status: status.value
+      status: docStatus
     });
   }
 
