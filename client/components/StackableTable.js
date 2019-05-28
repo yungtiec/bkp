@@ -10,6 +10,7 @@ export default props => (
     data={props.data}
     columns={props.columns}
     defaultPageSize={props.defaultPageSize}
+    defaultSorted={props.defaultSorted}
     getTrProps={props.getTrProps}
   />
 );

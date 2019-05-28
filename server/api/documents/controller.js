@@ -157,7 +157,12 @@ const getDocumentsWithFilters = async (req, res, next) => {
       order = [[Sequelize.literal("num_upvotes"), "DESC"]];
     } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
+    } else {
+      order = [["createdAt", "DESC"]];
     }
+
+    console.log(order);
+
     var options = {
       offset,
       order
@@ -167,7 +172,6 @@ const getDocumentsWithFilters = async (req, res, next) => {
     var documentQueryResult = await Document.scope({
       method: ["includeTags", {}]
     }).findAndCountAll({options});
-    console.log({documentQueryResult});
     res.send(documentQueryResult);
   } catch (err) {
     next(err);

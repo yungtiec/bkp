@@ -35,8 +35,8 @@ const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData }) => {
   ];
 
   const columns = [
-    { Header: "updatedAt", accessor: "updatedAt", minWidth: 50, Cell: rowInfo => { return <span>{moment(rowInfo.original.updatedAt).format('L')}</span>} },
     { Header: "createdAt", accessor: "createdAt", minWidth: 50, Cell: rowInfo => { return <span>{moment(rowInfo.original.createdAt).format('L')}</span>} },
+    { Header: "updatedAt", accessor: "updatedAt", minWidth: 50, Cell: rowInfo => { return <span>{moment(rowInfo.original.updatedAt).format('L')}</span>} },
     { Header: "title", accessor: "title", minWidth: 150 },
     { Header: "creator", accessor: "creator.displayName", minWidth: 75 },
     {
@@ -66,6 +66,12 @@ const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData }) => {
         columns={columns}
         data={documents}
         defaultPageSize={10}
+        defaultSorted={[
+          {
+            id: "createdAt",
+            desc: true
+          }
+        ]}
         getTrProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, t) => {
