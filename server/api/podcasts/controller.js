@@ -24,6 +24,7 @@ var feed = new RSS({
   'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'
       },
   custom_elements: [
+    {'itunes:explicit': 'no'},
     {'itunes:subtitle': 'Join the collaboration on blockchain law, regulation, and policy.'},
     {'itunes:author': 'The Brooklyn Project'},
     {'itunes:summary': 'Join the collaboration on blockchain law, regulation, and policy.'},
