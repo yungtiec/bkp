@@ -53,23 +53,29 @@ var feed = new RSS({
 // cache the xml to send to clients
 var xml = feed.xml();
 
+const cached = [];
+
 const getXML = async (req, res, next) => {
   const podcasts = await Podcast.findAll();
   podcasts.forEach(podcast => {
-    console.log(podcast.categories);
-    feed.item({
-      guid: podcast.id,
-      title:  podcast.title,
-      description: podcast.description,
-      url: podcast.url, // link to the item
-      categories: [...podcast.categories], // optional - array of item categories
-      author: podcast.author, // optional - defaults to feed author property
-      date: podcast.createdAt, // any format that js Date can parse.
-      enclosure: {
-        url  : podcast.url,
-        type : 'audio/mpeg',
-      }
-    });
+
+    if (cached.indexOf(podcast.id) === -1) {
+      cached.push(podcast.id);
+      feed.item({
+        guid: podcast.id,
+        title:  podcast.title,
+        description: podcast.description,
+        url: podcast.url, // link to the item
+        categories: [...podcast.categories], // optional - array of item categories
+        author: podcast.author, // optional - defaults to feed author property
+        date: podcast.createdAt, // any format that js Date can parse.
+        enclosure: {
+          url  : podcast.url,
+          type : 'audio/mpeg',
+        }
+      });
+    }
+    
   });
   var xml = feed.xml({indent: true});
   res.type('application/xml');
