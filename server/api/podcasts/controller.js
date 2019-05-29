@@ -24,6 +24,7 @@ var feed = new RSS({
   'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'
       },
   custom_elements: [
+    {'itunes:keywords': 'Blockchain, Infrastructure Investing, Ethereum, Finance'},
     {'itunes:explicit': 'no'},
     {'itunes:subtitle': 'Join the collaboration on blockchain law, regulation, and policy.'},
     {'itunes:author': 'The Brooklyn Project'},
@@ -73,7 +74,13 @@ const getXML = async (req, res, next) => {
         enclosure: {
           url  : podcast.url,
           type : 'audio/mpeg',
-        }
+        },
+        custom_elements: [
+          {'itunes:keywords': 'Blockchain, Infrastructure Investing, Ethereum, Finance'},
+          {'itunes:author': podcast.author},
+          {'itunes:summary': podcast.description},
+          {'itunes:duration': podcast.duration}
+        ]
       });
     }
     
