@@ -16,6 +16,7 @@ router.use("/notifications", require("./notifications"));
 router.use("/feedback", require("./feedback"));
 router.use("/wizard-schemas", require("./wizard-schemas"));
 router.use("/unsplash", require("./unsplash"));
+router.use("/podcasts", require("./podcasts"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");

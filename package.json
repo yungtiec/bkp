@@ -126,6 +126,7 @@
     "redux-logger": "^2.8.1",
     "redux-thunk": "^2.2.0",
     "request-promise": "^4.2.2",
+    "rss": "^1.2.2",
     "sanitize-html": "^1.19.1",
     "sequelize": "^4.3.1",
     "sequelize-cli": "^4.1.1",
