@@ -60,7 +60,6 @@ const cached = [];
 const getXML = async (req, res, next) => {
   const podcasts = await Podcast.findAll();
   podcasts.forEach(podcast => {
-    console.log('here', podcast);
     if (cached.indexOf(podcast.id) === -1) {
       cached.push(podcast.id);
       feed.item({
