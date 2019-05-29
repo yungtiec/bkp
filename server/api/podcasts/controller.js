@@ -60,7 +60,7 @@ const cached = [];
 const getXML = async (req, res, next) => {
   const podcasts = await Podcast.findAll();
   podcasts.forEach(podcast => {
-
+    console.log('here', podcast);
     if (cached.indexOf(podcast.id) === -1) {
       cached.push(podcast.id);
       feed.item({
@@ -78,7 +78,7 @@ const getXML = async (req, res, next) => {
         custom_elements: [
           {'itunes:keywords': 'Blockchain, Infrastructure Investing, Ethereum, Finance'},
           {'itunes:author': podcast.author},
-          {'itunes:summary': podcast.description},
+          {'itunes:subtitle': podcast.description},
           {'itunes:duration': podcast.duration}
         ]
       });

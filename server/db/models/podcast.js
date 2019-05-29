@@ -27,7 +27,10 @@ module.exports = (db, DataTypes) => {
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE
-    }
+    },
+    duration: {
+      type: DataTypes.STRING
+    },
   });
 
   return Podcast;
