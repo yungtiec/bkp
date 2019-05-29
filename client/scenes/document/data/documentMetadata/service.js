@@ -10,6 +10,19 @@ export function getMetadataBySlug(slug) {
   });
 }
 
+export function putStatusBySlug(
+  slug,
+  { status }
+) {
+  return axios
+    .put(`/api/documents/slug/${slug}/status`, {
+      status,
+    })
+    .then(res => {
+      return res.data;
+    });
+}
+
 export function putContentHTMLBySlug(
   slug,
   { indexDescription, summary, content, status, category, headerImageUrl, newTitle, hasAnnotator, tags }

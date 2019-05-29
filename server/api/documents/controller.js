@@ -147,48 +147,7 @@ const getDocumentsWithFilters = async (req, res, next) => {
     var where, include, includeTag;
     // parse query
     if (req.query.order) req.query.order = JSON.parse(req.query.order);
-    if (req.query.category)
-      req.query.category = req.query.category.map(JSON.parse);
-    // format search terms
-    var formattedSearchTerms;
-    if (!req.query.search) formattedSearchTerms = null;
-    else {
-      var queryArray = req.query.search.trim().split(" ");
-      formattedSearchTerms = queryArray
-        .map(function(phrase) {
-          return "%" + phrase + "%";
-        })
-        .join("");
-    }
-    // construct where clause
-    var category =
-      req.query.category && req.query.category.length
-        ? {
-            [Sequelize.Op.or]: req.query.category.map(c => ({
-              [Sequelize.Op.eq]: c.value
-            }))
-          }
-        : null;
-    if (category) where = { category };
-    if (formattedSearchTerms)
-      where = where
-        ? _.assign(where, { title: { $iLike: formattedSearchTerms } })
-        : { title: { $iLike: formattedSearchTerms } };
-    // construct include clause
-    if (req.query.tags && req.query.tags.length) {
-      includeTag = {
-        model: Tag,
-        require: true,
-        where: {
-          name: {
-            [Sequelize.Op.or]: req.query.tags.map(c => ({
-              [Sequelize.Op.eq]: c.value.toLowerCase()
-            }))
-          }
-        }
-      };
-    }
-    // construct limit, offset and order options
+
     var limit = Number(req.query.limit);
     var offset = Number(req.query.offset);
     var order = req.query.order;
@@ -198,7 +157,12 @@ const getDocumentsWithFilters = async (req, res, next) => {
       order = [[Sequelize.literal("num_upvotes"), "DESC"]];
     } else if (order && order.value === "most-discussed") {
       order = [[Sequelize.literal("num_comments"), "DESC"]];
+    } else {
+      order = [["createdAt", "DESC"]];
     }
+
+    console.log(order);
+
     var options = {
       offset,
       order
@@ -206,15 +170,28 @@ const getDocumentsWithFilters = async (req, res, next) => {
     if (req.query.limit) options.limit = limit;
     // query
     var documentQueryResult = await Document.scope({
-      method: ["includeAllEngagements", where, includeTag]
-    }).findAndCountAll(options);
-    res.send(documentQueryResult.rows);
+      method: ["includeTags", {}]
+    }).findAndCountAll({options});
+    res.send(documentQueryResult);
   } catch (err) {
     next(err);
   }
 };
 
 const getDrafts = async (req, res, next) => {
+  try {
+    const { count, rows } = await Document.findAndCountAll({
+      where: { creator_id: req.user.id, submitted: false, reviewed: false },
+      limit: Number(req.query.limit),
+      order: [["createdAt", "DESC"]]
+    });
+    res.send({ count, rows });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getPublishedDocuments = async (req, res, next) => {
   try {
     const { count, rows } = await Document.findAndCountAll({
       where: { creator_id: req.user.id, submitted: true, reviewed: false },
@@ -227,7 +204,7 @@ const getDrafts = async (req, res, next) => {
   }
 };
 
-const getPublishedDocuments = async (req, res, next) => {
+const getFeaturedDocuments = async (req, res, next) => {
   try {
     const { count, rows } = await Document.findAndCountAll({
       where: { creator_id: req.user.id, submitted: true, reviewed: true },
@@ -338,14 +315,40 @@ const addHistory = versionQuestionOrAnswer => {
   return versionQuestionOrAnswer;
 };
 
-const putDocumentContentHTMLBySlug = async (req, res, next) => {
+const updateDocumentStatus = async (req, res, next) => {
+  console.log(req.body.status.submitted);
+  console.log(req.body.status.reviewed);
   try {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
 
-    console.log(req.body);
+    documentToUpdate.submitted = req.body.status.submitted;
+    documentToUpdate.reviewed = req.body.status.reviewed;
+
+    await documentToUpdate.save();
+    const document = await Document.findOne({
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
+    });
+    res.send(document);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const putDocumentContentHTMLBySlug = async (req, res, next) => {
+  console.log(req.body.status.submitted);
+  console.log(req.body.status.reviewed);
+  try {
+    const documentToUpdate = await Document.findOne({
+      where: { slug: req.params.slug },
+      include: [{ model: Tag }]
+    });
+
+    console.log({documentToUpdate});
+    console.log('req.body', req.body);
 
     if (req.body.newTitle) {
       const slug = await createSlug(
@@ -375,7 +378,8 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
     documentToUpdate.index_description = req.body.indexDescription;
     documentToUpdate.description = req.body.description;
     documentToUpdate.content_html = req.body.contentHTML;
-    documentToUpdate.reviewed = req.body.status;
+    documentToUpdate.submitted = req.body.status.submitted;
+    documentToUpdate.reviewed = req.body.status.reviewed;
     documentToUpdate.category = req.body.category
       ? req.body.category.value
       : null;
@@ -603,7 +607,8 @@ const createDocumentFromHtml = async (req, res, next) => {
       project_id: project ? project.id : null,
       comment_until_unix: commentUntilInUnix,
       content_html: req.body.contentHtml,
-      submitted: true,
+      submitted: false,
+      reviewed: false,
       index_description: req.body.indexDescription,
       description: req.body.description,
       category: req.body.category ? req.body.category.value : null,
@@ -887,6 +892,7 @@ module.exports = {
   getDocuments,
   getDrafts,
   getPublishedDocuments,
+  getFeaturedDocuments,
   getDocument,
   getDraftBySlug,
   getDocumentBySlug,
@@ -898,5 +904,6 @@ module.exports = {
   postNewVersion,
   putDocument,
   putDocumentContentHTMLBySlug,
+  updateDocumentStatus,
   rawSqlGetDocumentsWithFilters
 };

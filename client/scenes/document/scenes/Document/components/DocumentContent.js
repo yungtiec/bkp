@@ -36,6 +36,7 @@ const DocumentContent = ({
       displayEditor={displayEditor}
       hideEditor={hideEditor}
       closeSidebar={closeSidebar}
+      user={user}
     />
   </div>
 );

@@ -31,7 +31,10 @@ class DocumentEditor extends Component {
       indexDescription: this.props.documentMetadata.index_description || "",
       summary: this.props.documentMetadata.description || "",
       content: this.props.documentMetadata.content_html || "",
-      status: this.props.documentMetadata.reviewed,
+      status: {
+        submitted: this.props.documentMetadata.submitted,
+        reviewed: this.props.documentMetadata.reviewed
+      },
       category: this.props.documentMetadata.category
         ? {
             label: this.props.documentMetadata.category,
@@ -101,8 +104,19 @@ class DocumentEditor extends Component {
   }
 
   handleStatusChange(status) {
+    let docStatus;
+    if (status.value === 'draft') {
+      docStatus = { submitted: false, reviewed: false};
+    } else if (status.value === 'published') {
+      docStatus = { submitted: true, reviewed: false};
+    } else if (status.value === 'featured') {
+      docStatus = { submitted: true, reviewed: true};
+    }
+
+    console.log({docStatus});
+
     this.setState({
-      status: status.value
+      status: docStatus
     });
   }
 
@@ -209,7 +223,7 @@ class DocumentEditor extends Component {
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { indexDescription, summary, content, headerImageUrl } = this.state;
-    const { documentMetadata, displayEditor } = this.props;
+    const { documentMetadata, displayEditor, user } = this.props;
     console.log('tags', this.state.tags);
     return (
       <div>
@@ -232,6 +246,7 @@ class DocumentEditor extends Component {
                 <ActiveToggle
                   handleStatusChange={this.handleStatusChange}
                   status={this.state.status}
+                  user={user}
                 />
               </div>
               <div className="mb-4">

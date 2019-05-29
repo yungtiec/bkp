@@ -6,3 +6,7 @@
 .project-document-list__container .ReactTable .rt-tr {
   cursor: pointer;
 }
+
+[data-colid="submitted"] {
+  overflow: visible !important;
+}
