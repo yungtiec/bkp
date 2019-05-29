@@ -223,7 +223,7 @@ class DocumentEditor extends Component {
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { indexDescription, summary, content, headerImageUrl } = this.state;
-    const { documentMetadata, displayEditor } = this.props;
+    const { documentMetadata, displayEditor, user } = this.props;
     console.log('tags', this.state.tags);
     return (
       <div>
@@ -246,6 +246,7 @@ class DocumentEditor extends Component {
                 <ActiveToggle
                   handleStatusChange={this.handleStatusChange}
                   status={this.state.status}
+                  user={user}
                 />
               </div>
               <div className="mb-4">

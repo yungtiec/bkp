@@ -19,6 +19,17 @@ class ActiveToggle extends React.Component {
     }
 
     console.log({docStatus});
+    console.log('this.props.user', this.props.user);
+    const userRoles = this.props.user.roles;
+
+    const options = [
+      { label: "Draft", value: 'draft' },
+      { label: "Published", value: 'published' }
+    ];
+
+    if (userRoles[0] && userRoles[0].name === 'admin') {
+      options.push({ label: "Featured", value: 'featured' });
+    }
     return (
       <Select
         name="upload__project-select"
@@ -26,11 +37,7 @@ class ActiveToggle extends React.Component {
         onChange={this.props.handleStatusChange}
         style={{ width: "300px" }}
         menuContainerStyle={{ width: "300px" }}
-        options={[
-          { label: "Draft", value: 'draft' },
-          { label: "Published", value: 'published' },
-          { label: "Featured", value: 'featured' }
-        ]}
+        options={options}
         placeholder="select..."
       />
     );
