@@ -90,7 +90,7 @@ class DocumentContainer extends Component {
             property="og:image"
             content={`${
               documentMetadata.header_img_url
-            }&fit=crop&w=800&q=10.jpg`}
+            }`}
           />
           <meta property="og:description" content={wrapper.textContent} />
           <meta
@@ -103,7 +103,7 @@ class DocumentContainer extends Component {
             name="twitter:image"
             content={`${
               documentMetadata.header_img_url
-            }&fit=crop&w=800&q=10.jpg`}
+            }`}
           />
           <meta name="twitter:card" content="summary" />
         </Helmet>
