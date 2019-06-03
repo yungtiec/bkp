@@ -9,9 +9,9 @@ export default ({ match }) => {
     <div className="main-container">
       <div className="d-flex justify-content-between my-3">
         <h4>Your documents</h4>
-        <button className="btn btn-outline-primary">
-          <Link to="/wizard">Create a scorecard</Link>
-        </button>
+        {/*<button className="btn btn-outline-primary">*/}
+          {/*<Link to="/wizard">Create a scorecard</Link>*/}
+        {/*</button>*/}
       </div>
       <MyDocumentsNavbar activeTab={activeTab} url={match.url} />
       <Switch>

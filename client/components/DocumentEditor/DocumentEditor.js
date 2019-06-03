@@ -249,13 +249,13 @@ class DocumentEditor extends Component {
                   user={user}
                 />
               </div>
-              <div className="mb-4">
-                Category:
-                <DocumentCategorySelect
-                  handleCategoryChange={this.handleCategoryChange}
-                  category={this.state.category}
-                />
-              </div>
+              {/*<div className="mb-4">*/}
+                {/*Category:*/}
+                {/*<DocumentCategorySelect*/}
+                  {/*handleCategoryChange={this.handleCategoryChange}*/}
+                  {/*category={this.state.category}*/}
+                {/*/>*/}
+              {/*</div>*/}
               <div className="mb-4">
                 Tags: <span style={{color: 'gray'}}>(max 3)</span>
                 <TagField
