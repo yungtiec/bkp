@@ -90,7 +90,7 @@ class DocumentContainer extends Component {
             property="og:image"
             content={`${
               documentMetadata.header_img_url
-            }&fit=crop&w=800&q=10.jpg`}
+            }`}
           />
           <meta property="og:description" content={wrapper.textContent} />
           <meta
