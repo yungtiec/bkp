@@ -10,3 +10,12 @@
 [data-colid="submitted"] {
   overflow: visible !important;
 }
+
+.project-document-update-success {
+  display: flex;
+  justify-content: flex-end;
+
+  span {
+    color: #00ff00;
+  }
+}

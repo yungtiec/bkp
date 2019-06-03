@@ -10,7 +10,7 @@ import { maxBy } from "lodash";
 import Select from 'react-select';
 import moment from 'moment';
 
-const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData }) => {
+const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData, documentUpdatedSuccessfully, documentUpdated }) => {
   const callFunc = async (rowInfo, status) => {
     console.log({rowInfo});
     let docStatus;
@@ -21,11 +21,13 @@ const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData }) => {
     } else if (status.value === 'featured') {
       docStatus = { submitted: true, reviewed: true};
     }
-    console.log({docStatus});
-    await putStatusBySlug(rowInfo.original.slug, {
-      status : docStatus,
-    });
-    await loadInitialData();
+    try {
+      await putStatusBySlug(rowInfo.original.slug, {
+        status : docStatus,
+      });
+      await loadInitialData();
+      documentUpdatedSuccessfully();
+    }
   };
 
   const options = [
@@ -62,6 +64,11 @@ const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData }) => {
 
   return (
     <div className="project-document-list__container  main-container">
+      { documentUpdated ?
+        <div className="project-document-update-success">
+          <span>document updated successfully</span>
+        </div> : null
+      }
       <StackableTable
         columns={columns}
         data={documents}

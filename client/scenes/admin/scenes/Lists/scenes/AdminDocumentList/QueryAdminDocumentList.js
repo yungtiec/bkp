@@ -28,15 +28,33 @@ class MyComponent extends Component {
   constructor(props) {
     super(props);
     autoBind(this);
+    this.state = {
+      documentUpdated: false
+    }
   }
 
   async componentDidMount() {
    await this.props.loadInitialData();
   }
 
+  documentUpdatedSuccessfully() {
+    this.setState({
+      documentUpdated: true
+    }, () => {
+      setInterval(() => {
+        this.setState({
+          documentUpdated: false
+        })
+      }, 6000);
+    })
+  }
+
   render() {
     if (!this.props.documents) return null;
-    else return <LoadableAdminVersionList {...this.props} />;
+    else return <LoadableAdminVersionList
+      documentUpdatedSuccessfully={this.documentUpdatedSuccessfully}
+      documentUpdated={this.state.documentUpdated} {...this.props}
+    />;
   }
 }
 
