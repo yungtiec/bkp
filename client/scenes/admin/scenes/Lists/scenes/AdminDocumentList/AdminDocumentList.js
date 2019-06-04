@@ -27,6 +27,8 @@ const AdminDocumentList = ({ documents, putStatusBySlug, loadInitialData, docume
       });
       await loadInitialData();
       documentUpdatedSuccessfully();
+    } catch (e) {
+      console.log(e);
     }
   };
 
