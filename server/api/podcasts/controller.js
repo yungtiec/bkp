@@ -82,7 +82,7 @@ const getXML = async (req, res, next) => {
         ]
       });
     }
-    
+
   });
   var xml = feed.xml({indent: true});
   res.type('application/xml');
