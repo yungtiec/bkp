@@ -64,7 +64,7 @@ class DocumentContainer extends Component {
     } = this.props;
 
     var wrapper = document.createElement("div");
-    wrapper.innerHTML = documentMetadata.description;
+    wrapper.innerHTML = documentMetadata.index_description || documentMetadata.description;
 
     return (
       <div
