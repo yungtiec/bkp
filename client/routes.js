@@ -156,6 +156,11 @@ class Routes extends Component {
             layout={LayoutWithNav}
             component={NotFound}
           />
+          <RouteWithLayout
+            path="/not-found"
+            layout={LayoutWithNav}
+            component={NotFound}
+          />
         </Switch>
       </div>
     );
