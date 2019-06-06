@@ -21,6 +21,7 @@ import {
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
+import {withRouter} from 'react-router-dom';
 
 class Upload extends Component {
   constructor(props) {
@@ -715,4 +716,9 @@ class Upload extends Component {
   }
 }
 
-export default Upload;
+export default withRouter(
+  requiresAuthorization({
+    Component: Upload,
+    roleRequired: ["admin", "author"]
+  })
+);

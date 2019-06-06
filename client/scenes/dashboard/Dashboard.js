@@ -5,6 +5,8 @@ import {
   QueryDashboardDocumentList,
   QueryDashboardComments
 } from "./components";
+import {withRouter} from 'react-router-dom';
+import {requiresAuthorization} from '../../components';
 
 const Dashboard = ({ screenWidth }) => {
   return (
@@ -29,7 +31,14 @@ const mapState = (state, ownProps) => ({
 
 const actions = {};
 
+const authorizedDashboard = withRouter(
+  requiresAuthorization({
+    Component: Dashboard,
+    roleRequired: ["admin"]
+  })
+);
+
 export default connect(
   mapState,
   actions
-)(Dashboard);
+)(authorizedDashboard);

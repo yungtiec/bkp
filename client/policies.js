@@ -7,7 +7,7 @@ module.exports = {
       !user || !user.roles || !user.roles.length
         ? "contributer"
         : user.roles[0].name;
-
+    const isAuthor = userRole === "author";
     const isAdmin = userRole === "admin";
     const isProjectAdmin =
       model.project && userRole === "project_admin" &&
@@ -46,6 +46,7 @@ module.exports = {
       !user || !user.roles || !user.roles.length
         ? "contributer"
         : user.roles[0].name;
+    const isAuthor = userRole === "author";
     const isAdmin = userRole === "admin";
     const isProjectAdmin = model.project
       ? userRole === "project_admin" &&
@@ -64,7 +65,7 @@ module.exports = {
 
     switch (action) {
       case "Create":
-        return isAdmin || isProjectAdmin || isProjectEditor || user;
+        return isAdmin || isProjectAdmin || isProjectEditor || isAuthor;
       case "Version":
         return (
           isAdmin ||

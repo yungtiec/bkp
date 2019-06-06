@@ -14,15 +14,17 @@ export default function requiresAuthorization({ Component, roleRequired }) {
     }
 
     checkAndRedirect() {
+      console.log(this.props.user);
+      console.log(roleRequired.indexOf(this.props.user.roles[0].name));
       if (
         isEmpty(this.props.user) ||
         (roleRequired &&
           !isEmpty(this.props.user) &&
           (!this.props.user.roles[0] ||
             (this.props.user.roles[0] &&
-              !roleRequired.indexOf(this.props.user.roles[0].name) === -1)))
+              roleRequired.indexOf(this.props.user.roles[0].name) === -1)))
       ) {
-        history.push("/unauthorized");
+        history.push("/not-found");
       }
     }
 
