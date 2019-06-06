@@ -151,13 +151,13 @@ class Routes extends Component {
             path="/open-roundtable-discussions"
             render={() => <Redirect to="/" />}
           />
-          {/* Displays our feed component as a fallback */}
           <RouteWithLayout
+            path="/not-found"
             layout={LayoutWithNav}
             component={NotFound}
           />
+          {/* Displays our feed component as a fallback */}
           <RouteWithLayout
-            path="/not-found"
             layout={LayoutWithNav}
             component={NotFound}
           />

@@ -17,7 +17,8 @@ const AdminUserList = ({
   restoreAccess
 }) => {
   const columns = [
-    { Header: "user", accessor: "email", fixed: true, width: 270 },
+    { Header: "user handle", accessor: "user_handle"},
+    { Header: "email", accessor: "email"},
     { Header: "spam", accessor: "num_spam" },
     {
       id: "comments",
@@ -49,6 +50,8 @@ const AdminUserList = ({
     console.log('okay')
   };
 
+  console.log(data);
+
   return (
     <div className="user-list__container  main-container">
       <StackableTable
@@ -56,10 +59,11 @@ const AdminUserList = ({
         data={data}
         defaultPageSize={10}
         getTrProps={(state, rowInfo, column, instance) => {
+          console.log(rowInfo);
           return {
             onClick: (e, handleOriginal) => {
               if (e.target.className.indexOf("btn") === -1)
-                history.push(`/user/${rowInfo.row.id}/about`);
+                history.push(`/profile/@${rowInfo.original.user_handle}`);
               else {
                 if (rowInfo.row.restricted_access) {
                   restoreAccess(rowInfo.row.id);
