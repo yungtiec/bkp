@@ -15,7 +15,6 @@ export default ({
       <FeedItem
         linkUrl={`/s/${documentsById[id].slug}`}
         imgUrl={documentsById[id].header_img_url}
-        category={documentsById[id].category.replace(/-/g, " ")}
         title={documentsById[id].title}
         description={
           documentsById[id].index_description

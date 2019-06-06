@@ -21,6 +21,7 @@ import {
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
+import {withRouter} from 'react-router-dom';
 
 class Upload extends Component {
   constructor(props) {
@@ -137,6 +138,7 @@ class Upload extends Component {
   }
 
   handleAccordionChange(key) {
+    console.log('props', this.props);
     if (key > 0)
       this.setState(prevState => ({
         ...prevState,
@@ -149,27 +151,22 @@ class Upload extends Component {
           this.state.isScorecard && !this.props.scorecardCompleted,
         projectError: this.state.isScorecard && !this.props.selectedProject
       }));
-    if (key > 4)
-      this.setState(prevState => ({
-        ...prevState,
-        categoryError: !this.props.category
-      }));
-    if (key > 6)
+    if (key > 5)
       this.setState(prevState => ({
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
-    if (key > 7)
+    if (key > 6)
       this.setState(prevState => ({
         ...prevState,
         indexDescriptionError: !this.props.indexDescription
       }));
-    if (key > 8)
+    if (key > 7)
       this.setState(prevState => ({
         ...prevState,
         summaryError: !this.props.summary
       }));
-    if (key > 9)
+    if (key > 8)
       this.setState(prevState => ({
         ...prevState,
         contentHtmlError: !this.props.contentHtml
@@ -180,15 +177,16 @@ class Upload extends Component {
   }
 
   next(currentField) {
-    if (currentField === "category" && !this.props.category)
-      this.setState(prevState => ({
-        ...prevState,
-        categoryError: !this.props.category
-      }));
-    else if (currentField === "title" && !this.props.title)
+    if (currentField === "title" && !this.props.title)
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title
+      }));
+    else if (currentField === "title" && this.props.title && this.state.titleError)
+      this.setState(prevState => ({
+        ...prevState,
+        titleError: !this.props.title,
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
     else if (
       currentField === "scorecard" &&
@@ -205,20 +203,44 @@ class Upload extends Component {
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
+    else if (currentField === "headerImageUrl" && this.props.headerImageUrl && this.state.headerImageUrlError)
+      this.setState(prevState => ({
+        ...prevState,
+        headerImageUrlError: !this.props.headerImageUrl,
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
+      }));
     else if (currentField === "indexDescription" && !this.props.indexDescription)
       this.setState(prevState => ({
         ...prevState,
-        indexDescriptionError: !this.props.indexDescription
+        indexDescriptionError: !this.props.indexDescription,
+      }));
+    else if (currentField === "indexDescription" && this.props.indexDescription && this.state.indexDescriptionError)
+      this.setState(prevState => ({
+        ...prevState,
+        indexDescriptionError: !this.props.indexDescription,
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
     else if (currentField === "contentHtml" && !this.props.contentHtml)
       this.setState(prevState => ({
         ...prevState,
         contentHtmlError: !this.props.contentHtml
       }));
+    else if (currentField === "contentHtml" && this.props.contentHtml && this.state.contentHtmlError)
+      this.setState(prevState => ({
+        ...prevState,
+        contentHtmlError: !this.props.contentHtml,
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
+      }));
     else if (currentField === "summary" && !this.props.summary)
       this.setState(prevState => ({
         ...prevState,
         summaryError: !this.props.summary
+      }));
+    else if (currentField === "summary" && this.props.summary && this.state.summaryError)
+      this.setState(prevState => ({
+        ...prevState,
+        summaryError: !this.props.summary,
+        activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
     else
       this.setState(prevState => ({
@@ -233,7 +255,6 @@ class Upload extends Component {
         !!this.props.selectedProject &&
         this.props.scorecardCompleted) ||
       (!this.state.isScorecard &&
-        !this.state.categoryError &&
         !this.state.titleError &&
         !this.state.headerImageUrlError &&
         !this.state.contentHtmlError &&
@@ -296,6 +317,7 @@ class Upload extends Component {
                 <input
                   type="text"
                   name="name"
+                  style={{ "min-width": "100%"}}
                   onChange={this.handleTitleChange}
                 />
                 <div className="d-flex flex-column">
@@ -338,40 +360,6 @@ class Upload extends Component {
               </AccordionItemBody>
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
-              <AccordionItemTitle>
-                <p className="upload-accordion__item-header">Comment period</p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <div className="d-flex flex-column upload-accordion__comment-period-control">
-                  <p>set comment period for audiences</p>
-                  <div className="d-flex">
-                    <input
-                      name="comment-period-value"
-                      type="number"
-                      value={commentPeriodValue}
-                      onChange={this.handleCommentPeriodValueChange}
-                    />
-                    <Select
-                      name="comment-period-value"
-                      value={commentPeriodUnit}
-                      onChange={this.handleCommentPeriodUnitChange}
-                      options={[
-                        { value: "weeks", label: "week(s)" },
-                        { value: "days", label: "day(s)" },
-                        { value: "hours", label: "hour(s)" }
-                      ]}
-                    />
-                  </div>
-                  <button
-                    onClick={this.next}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Project score (optional)
@@ -430,10 +418,10 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
-                  Project score (optional)
+                  Annotator (optional)
                 </p>
               </AccordionItemTitle>
               <AccordionItemBody>
@@ -456,37 +444,18 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
-              <AccordionItemTitle>
-                <p className="upload-accordion__item-header">Category</p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <div className="d-flex flex-column">
-                  <p>pick a category for your document</p>
-                  <DocumentCategorySelect
-                    handleCategoryChange={this.handleCategoryChange}
-                    category={category}
-                  />
-                  <button
-                    onClick={() => this.next("category")}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Tags</p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex flex-column">
-                  <p>select tag(s) for your document</p>
+                  <p>select tag(s) for your document (max 3)</p>
                   <TagField
                     handleOnSelect={this.handleTagSelect}
                     handleRemoveTag={this.handleRemoveTag}
                     selectedTags={this.props.tags}
+                    disabled={this.props.tags.length >= 3}
                   />
                   <button
                     onClick={this.next}
@@ -497,7 +466,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">header image</p>
               </AccordionItemTitle>
@@ -516,7 +485,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Index Description
@@ -524,7 +493,7 @@ class Upload extends Component {
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>This description will appear on the index feed</p>
+                  <p style={{ marginBottom: "0px" }}>This description will appear on the index feed if article is featured</p>
                 </div>
                 <CKEditor
                   name="document-summary"
@@ -546,7 +515,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 9}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Summary
@@ -554,7 +523,7 @@ class Upload extends Component {
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>Summarize your document</p>
+                  <p style={{ marginBottom: "0px" }}>Summarize your document. This will appear before your article.</p>
                 </div>
                 <CKEditor
                   name="document-summary"
@@ -576,7 +545,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 10}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Content
@@ -584,7 +553,7 @@ class Upload extends Component {
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>create document content</p>
+                  <p style={{ marginBottom: "0px" }}>Provide document content:</p>
                 </div>
                 <CKEditor
                   name="document-content"
@@ -643,38 +612,23 @@ class Upload extends Component {
                   description="select collaborator(s) to work on your disclosure"
                 />
                 <Step
-                  title="comment period"
-                  description="set comment period for audiences"
-                />
-                <Step
                   title="project score"
                   description="fill in project scorecard"
                   status={
                     this.state.scorecardError || this.state.projectError
                       ? "error"
-                      : this.state.activeAccordionItemId > 3
+                      : this.state.activeAccordionItemId > 2
                       ? "finish"
                       : "wait"
                   }
                 />
                 <Step
-                  title="has annotator"
+                  title="annotator"
                   description="does this document require the annotator feature?"
                   status={
                     this.state.scorecardError || this.state.projectError
                       ? "error"
-                      : this.state.activeAccordionItemId > 4
-                      ? "finish"
-                      : "wait"
-                  }
-                />
-                <Step
-                  title="category"
-                  description="pick a category for your document"
-                  status={
-                    this.state.categoryError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 5
+                      : this.state.activeAccordionItemId > 3
                       ? "finish"
                       : "wait"
                   }
@@ -689,7 +643,7 @@ class Upload extends Component {
                   status={
                     this.state.headerImageUrlError
                       ? "error"
-                      : this.state.activeAccordionItemId > 6
+                      : this.state.activeAccordionItemId > 5
                       ? "finish"
                       : "wait"
                   }
@@ -700,7 +654,7 @@ class Upload extends Component {
                   status={
                     this.state.indexDescriptionError
                       ? "error"
-                      : this.state.activeAccordionItemId > 7
+                      : this.state.activeAccordionItemId > 6
                       ? "finish"
                       : "wait"
                   }
@@ -711,7 +665,7 @@ class Upload extends Component {
                   status={
                     this.state.summaryError
                       ? "error"
-                      : this.state.activeAccordionItemId > 8
+                      : this.state.activeAccordionItemId > 7
                       ? "finish"
                       : "wait"
                   }
@@ -722,7 +676,7 @@ class Upload extends Component {
                   status={
                     this.state.contentHtmlError
                       ? "error"
-                      : this.state.activeAccordionItemId === 9 &&
+                      : this.state.activeAccordionItemId === 8 &&
                         this.props.contentHtml
                       ? "finish"
                       : "wait"
@@ -735,7 +689,7 @@ class Upload extends Component {
                   class="btn btn-primary btn-lg btn-block "
                   onClick={this.submit}
                 >
-                  Upload
+                  Create Draft
                 </button>
                 {this.state.uploadClicked &&
                 !(
@@ -762,7 +716,9 @@ class Upload extends Component {
   }
 }
 
-export default requiresAuthorization({
-  Component: Upload,
-  roleRequired: ["project_editor", "project_admin", "admin"]
-});
+export default withRouter(
+  requiresAuthorization({
+    Component: Upload,
+    roleRequired: ["admin", "author"]
+  })
+);

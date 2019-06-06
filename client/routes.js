@@ -39,7 +39,6 @@ class Routes extends Component {
 
   render() {
     const { isLoggedIn } = this.props;
-
     return (
       <div>
         <Switch>
@@ -150,6 +149,11 @@ class Routes extends Component {
           <Route
             path="/open-roundtable-discussions"
             render={() => <Redirect to="/" />}
+          />
+          <RouteWithLayout
+            path="/not-found"
+            layout={LayoutWithNav}
+            component={NotFound}
           />
           {/* Displays our feed component as a fallback */}
           <RouteWithLayout

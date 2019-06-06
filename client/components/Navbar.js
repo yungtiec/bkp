@@ -89,7 +89,7 @@ class Navbar extends Component {
             {width > 1060 ? (
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
-                  <VisibleIf action="Create" model={{}}>
+                  <VisibleIf action="Version" model={{}}>
                     <Link to="/recent-comments" className="navbar__nav-item">
                       recent comments
                     </Link>

@@ -190,6 +190,9 @@ const hasNotificationPermission = async (userId, commentType) => {
 };
 
 const generateNoSearchOrder = (order) => {
+  if (!order) {
+    return [["createdAt", "DESC"]];
+  }
   const parsedOrder = JSON.parse(order);
   if  (!parsedOrder) {
     return [["createdAt", "DESC"]];

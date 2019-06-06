@@ -23,6 +23,15 @@ export default ({ url, activeTab }) => (
           Published
         </li>
       </Link>
+      <Link to={`${url}/featured`}>
+        <li
+          className={`my-documents-navbar__item ${
+            activeTab === "featured" ? "active" : ""
+            }`}
+        >
+          Featured
+        </li>
+      </Link>
     </ul>
   </div>
 );

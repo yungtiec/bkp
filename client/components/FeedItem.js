@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 export default ({
   linkUrl,
   imgUrl,
-  category,
   title,
   description,
   tags,

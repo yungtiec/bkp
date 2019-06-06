@@ -55,7 +55,7 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchManagedProjects();
+    console.log('mounted');
   }
 
   render() {

@@ -7,14 +7,15 @@ export function fetchLastestDocumentsWithStats(hasLimit) {
     try {
       const state = getState();
       const { offset, limit } = state.data.documents;
-      const { count, documents } = await getLastestDocumentsWithStats({
+      const { count, rows } = await getLastestDocumentsWithStats({
         offset,
         limit,
         hasLimit: hasLimit || false
       });
+      console.log({rows});
       dispatch({
         type: types.DOCUMENT_LISTING_FETCH_SUCCESS,
-        documents: documents.rows,
+        documents: rows,
         count,
         offset: offset + limit
       });

@@ -39,6 +39,7 @@ export function fetchMetadataBySlug(slug, versionId) {
         documentMetadata
       });
     } catch (error) {
+      history.push(`/not-found`);
       console.error(error);
     }
   };
