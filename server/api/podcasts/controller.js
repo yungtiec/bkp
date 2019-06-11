@@ -31,7 +31,7 @@ var feed = new RSS({
     {'itunes:summary': 'Join the collaboration on blockchain law, regulation, and policy.'},
     {'itunes:owner': [
       {'itunes:name': 'The Brooklyn Project Podcast'},
-      {'itunes:email': 'info@thebkp.com'} ]
+      {'itunes:email': 'joyce.lai@consensys.net'} ]
     },
   {'itunes:image': {
     _attr: {
