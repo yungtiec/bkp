@@ -76,9 +76,11 @@ class MyComponent extends React.Component {
   }
 
   render() {
-    return this.props.currentUser.roles[0].name === 'admin' ?
-      <LoadableDocumentUpload {...this.props} /> :
-      <LoadableDocumentUploadNonAdmin {...this.props} />;
+    return this.props.currentUser.roles &&
+    this.props.currentUser.roles.length &&
+      this.props.currentUser.roles[0].name === 'admin' ?
+        <LoadableDocumentUpload {...this.props} /> :
+        <LoadableDocumentUploadNonAdmin {...this.props} />;
   }
 }
 
