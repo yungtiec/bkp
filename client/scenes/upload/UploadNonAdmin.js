@@ -161,8 +161,6 @@ class Upload extends Component {
   }
 
   handleAccordionChange(key) {
-    console.log('props', this.props);
-    console.log('key', key);
     if (key > 0)
       this.setState(prevState => ({
         ...prevState,
@@ -189,18 +187,13 @@ class Upload extends Component {
   }
 
   next(currentField) {
-    console.log({currentField});
-    console.log(this.props);
-    console.log(this.state);
     if (currentField === "title" && !this.props.title){
-      console.log('hitting 1',this.props);
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title
       }));
     }
     else if (currentField === "title" && this.props.title && this.state.titleError) {
-      console.log('hitting 2', this.props, this.state);
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title,
@@ -262,8 +255,6 @@ class Upload extends Component {
         activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
     else {
-      console.log('here');
-      console.log('in the else', this.state);
       this.setState(prevState => ({
         ...prevState,
         activeAccordionItemId: prevState.activeAccordionItemId + 1
