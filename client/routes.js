@@ -111,7 +111,7 @@ class Routes extends Component {
           {isLoggedIn && (
             <RouteWithLayout
               layout={LayoutWithNav}
-              path="/upload"
+              path="/submit"
               component={Upload}
             />
           )}

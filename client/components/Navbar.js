@@ -77,7 +77,7 @@ class Navbar extends Component {
               <PunditContainer policies={policies} user={user}>
                 <PunditTypeSet type="Disclosure">
                   <VisibleIf action="Create" model={{}}>
-                    <Link to="/upload" className="navbar__nav-item">
+                    <Link to="/submit" className="navbar__nav-item">
                       submit
                     </Link>
                   </VisibleIf>
