@@ -34,7 +34,9 @@ class MyComponent extends React.Component {
 }
 
 const mapState = (state, ownProps) => {
-  return {};
+  return {
+    isAdmin: !!state.data.user.roles && state.data.user.roles.filter(r => r.name === "admin").length
+  };
 };
 
 const mapDispatch = (dispatch, ownProps) => {

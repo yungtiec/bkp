@@ -3,7 +3,7 @@ import { withRouter, Switch, Route, Redirect, Link } from "react-router-dom";
 import { Drafts, PublishedDocuments, FeaturedDocuments } from "./scenes";
 import { MyDocumentsNavbar } from "./components";
 
-export default ({ match }) => {
+export default ({ isAdmin, match }) => {
   const activeTab = window.location.pathname.split("/")[3];
   return (
     <div className="main-container">
@@ -13,9 +13,12 @@ export default ({ match }) => {
           {/*<Link to="/wizard">Create a scorecard</Link>*/}
         {/*</button>*/}
       </div>
-      <MyDocumentsNavbar activeTab={activeTab} url={match.url} />
+      <MyDocumentsNavbar isAdmin={isAdmin} activeTab={activeTab} url={match.url} />
       <Switch>
         <Route path={`${match.url}/drafts`} component={Drafts} />
+        {
+          isAdmin ? <Route path={`${match.url}/published`} component={PublishedDocuments} /> : null
+        }
         <Route path={`${match.url}/published`} component={PublishedDocuments} />
         <Route path={`${match.url}/featured`} component={FeaturedDocuments} />
         <Redirect from={match.url} to={`${match.url}/drafts`} />
