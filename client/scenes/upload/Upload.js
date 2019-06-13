@@ -42,6 +42,9 @@ class Upload extends Component {
       headerImageUrl: ""
     };
   }
+  componentDidMount() {
+    this.props.resetSubmitForm();
+  }
 
   handleCommentPeriodUnitChange(selected) {
     this.props.updateCommentPeriodUnit(selected.value);
@@ -688,7 +691,7 @@ class Upload extends Component {
                   class="btn btn-primary btn-lg btn-block "
                   onClick={this.submit}
                 >
-                  Submit
+                  Create Draft
                 </button>
                 {this.state.uploadClicked &&
                 !(

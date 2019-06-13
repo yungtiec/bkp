@@ -6,6 +6,7 @@ export default ({ hideModal, title, message, submit, cancel, errors }) => (
     isOpen={true}
     onRequestClose={hideModal}
     contentLabel="ConfirmationModal"
+    className="confirmation-modal"
   >
     <h5>{title}</h5>
     <p>{message}</p>
@@ -26,7 +27,7 @@ export default ({ hideModal, title, message, submit, cancel, errors }) => (
             submit.handler();
             hideModal();
           }}
-          className="btn btn-danger ml-2"
+          className="btn btn-outline-primary ml-2"
         >
           {submit.label}
         </button>

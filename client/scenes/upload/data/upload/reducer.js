@@ -23,6 +23,10 @@ const initialState = {
 
 export default function reduce(state = initialState, action = {}) {
   switch (action.type) {
+    case types.RESET_SUBMIT_FORM:
+      return {
+        ...initialState
+      };
     case types.MARKDOWN_IMPORTED:
       return {
         ...state,

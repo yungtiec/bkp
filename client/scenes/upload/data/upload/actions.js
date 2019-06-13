@@ -2,6 +2,7 @@ import * as types from "./actionTypes";
 import { postHtml, getManagedProjects } from "./services";
 import history from "../../../../history";
 import { orderBy, keyBy } from "lodash";
+import { loadModal, hideModal } from "../../../../data/reducer";
 
 export const uploadHtmlToServer = () => async (dispatch, getState) => {
   try {
@@ -36,10 +37,12 @@ export const uploadHtmlToServer = () => async (dispatch, getState) => {
       hasAnnotator,
       tags
     });
-    history.push(`/s/${document.slug}`);
+
+    //history.push(`/s/${document.slug}`);
     dispatch({
       type: types.MARKDOWN_UPLOADED
     });
+    return document;
   } catch (err) {
     console.log(err);
   }
@@ -109,3 +112,9 @@ export const updateHasAnnotator = hasAnnotator => ({
   type: types.HAS_ANNOTATOR_UPDATED,
   hasAnnotator
 });
+
+export const resetSubmitForm = hasAnnotator => ({
+  type: types.RESET_SUBMIT_FORM,
+  hasAnnotator
+});
+

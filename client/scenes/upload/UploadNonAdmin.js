@@ -1,3 +1,4 @@
+import "./Upload.scss";
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
@@ -21,6 +22,7 @@ import {
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
+import history from "./../../history";
 
 class Upload extends Component {
   constructor(props) {
@@ -41,6 +43,25 @@ class Upload extends Component {
       uploadClicked: false,
       headerImageUrl: ""
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      activeAccordionItemId: 0,
+      versionNumberError: false,
+      projectError: false,
+      categoryError: false,
+      scorecardError: false,
+      titleError: false,
+      headerImageUrlError: false,
+      contentHtmlError: false,
+      summaryError: false,
+      indexDescriptionError: false,
+      isScorecard: false,
+      uploadClicked: false,
+      headerImageUrl: ""
+    });
+    this.props.resetSubmitForm();
   }
 
   handleCommentPeriodUnitChange(selected) {
@@ -139,34 +160,23 @@ class Upload extends Component {
 
   handleAccordionChange(key) {
     console.log('props', this.props);
+    console.log('key', key);
     if (key > 0)
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title
       }));
-    if (key > 3)
-      this.setState(prevState => ({
-        ...prevState,
-        scorecardError:
-          this.state.isScorecard && !this.props.scorecardCompleted,
-        projectError: this.state.isScorecard && !this.props.selectedProject
-      }));
-    if (key > 5)
+    if (key > 2)
       this.setState(prevState => ({
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
-    if (key > 6)
+    if (key > 3)
       this.setState(prevState => ({
         ...prevState,
         indexDescriptionError: !this.props.indexDescription
       }));
-    if (key > 7)
-      this.setState(prevState => ({
-        ...prevState,
-        summaryError: !this.props.summary
-      }));
-    if (key > 8)
+    if (key > 4)
       this.setState(prevState => ({
         ...prevState,
         contentHtmlError: !this.props.contentHtml
@@ -177,17 +187,24 @@ class Upload extends Component {
   }
 
   next(currentField) {
-    if (currentField === "title" && !this.props.title)
+    console.log({currentField});
+    console.log(this.props);
+    console.log(this.state);
+    if (currentField === "title" && !this.props.title){
+      console.log('hitting 1',this.props);
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title
       }));
-    else if (currentField === "title" && this.props.title && this.state.titleError)
+    }
+    else if (currentField === "title" && this.props.title && this.state.titleError) {
+      console.log('hitting 2', this.props, this.state);
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title,
         activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
+    }
     else if (
       currentField === "scorecard" &&
       this.state.isScorecard &&
@@ -242,14 +259,17 @@ class Upload extends Component {
         summaryError: !this.props.summary,
         activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
-    else
+    else {
+      console.log('here');
+      console.log('in the else', this.state);
       this.setState(prevState => ({
         ...prevState,
         activeAccordionItemId: prevState.activeAccordionItemId + 1
       }));
+    }
   }
 
-  submit() {
+  async submit() {
     if (
       (this.state.isScorecard &&
         !!this.props.selectedProject &&
@@ -261,7 +281,17 @@ class Upload extends Component {
         !this.state.indexDescriptionError &&
         !this.state.summaryError)
     ) {
-      this.props.uploadHtmlToServer();
+      const document = await this.props.uploadHtmlToServer();
+      this.props.loadModal("CONFIRMATION_MODAL", {
+        title: "Thank You For Your Submission",
+        message:
+          "You have successfully submitted your article for review!",
+        hideModal: this.props.hideModal,
+        submit: {
+          label: "Go To Article",
+          handler: () => { history.push(`/s/${document.slug}`) }
+        }
+      });
     } else {
       this.setState({ uploadClicked: true });
     }
@@ -423,11 +453,27 @@ class Upload extends Component {
                 />
                 <div className="d-flex flex-column">
                   <button
-                    onClick={() => this.next("contentHtml")}
+                    onClick={() => this.submit()}
                     className="btn btn-primary mt-4 align-self-end"
                   >
-                    done
+                    submit
                   </button>
+                  {this.state.uploadClicked &&
+                  !(
+                    (this.state.isScorecard &&
+                      !!this.props.selectedProject &&
+                      this.props.scorecardCompleted) ||
+                    (!this.state.isScorecard &&
+                      !this.state.categoryError &&
+                      !this.state.titleError &&
+                      !this.state.headerImageUrlError &&
+                      !this.state.contentHtmlError &&
+                      !this.state.summaryError)
+                  ) ? (
+                    <p className="text-danger">
+                      Please go through all the mandatory fields
+                    </p>
+                  ) : null}
                 </div>
               </AccordionItemBody>
             </AccordionItem>
@@ -502,31 +548,31 @@ class Upload extends Component {
                   }
                 />
               </Steps>
-              <div className="mb-5 mt-2">
-                <button
-                  type="button"
-                  class="btn btn-primary btn-lg btn-block "
-                  onClick={this.submit}
-                >
-                  Submit
-                </button>
-                {this.state.uploadClicked &&
-                !(
-                  (this.state.isScorecard &&
-                    !!this.props.selectedProject &&
-                    this.props.scorecardCompleted) ||
-                  (!this.state.isScorecard &&
-                    !this.state.categoryError &&
-                    !this.state.titleError &&
-                    !this.state.headerImageUrlError &&
-                    !this.state.contentHtmlError &&
-                    !this.state.summaryError)
-                ) ? (
-                  <p className="text-danger">
-                    Please go through all the mandatory fields
-                  </p>
-                ) : null}
-              </div>
+              {/*<div className="mb-5 mt-2">*/}
+                {/*<button*/}
+                  {/*type="button"*/}
+                  {/*class="btn btn-primary btn-lg btn-block "*/}
+                  {/*onClick={this.submit}*/}
+                {/*>*/}
+                  {/*Submit*/}
+                {/*</button>*/}
+                {/*{this.state.uploadClicked &&*/}
+                {/*!(*/}
+                  {/*(this.state.isScorecard &&*/}
+                    {/*!!this.props.selectedProject &&*/}
+                    {/*this.props.scorecardCompleted) ||*/}
+                  {/*(!this.state.isScorecard &&*/}
+                    {/*!this.state.categoryError &&*/}
+                    {/*!this.state.titleError &&*/}
+                    {/*!this.state.headerImageUrlError &&*/}
+                    {/*!this.state.contentHtmlError &&*/}
+                    {/*!this.state.summaryError)*/}
+                {/*) ? (*/}
+                  {/*<p className="text-danger">*/}
+                    {/*Please go through all the mandatory fields*/}
+                  {/*</p>*/}
+                {/*) : null}*/}
+              {/*</div>*/}
             </div>
           </CustomScrollbar>
         </SidebarLayout>
