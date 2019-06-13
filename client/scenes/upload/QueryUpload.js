@@ -49,6 +49,23 @@ const LoadableDocumentUpload = Loadable({
   delay: 400
 });
 
+const LoadableDocumentUploadNonAdmin = Loadable({
+  loader: () => import("./UploadNonAdmin"),
+  loading: () => (
+    <SquareLoader
+      className="route__loader"
+      color="#2d4dd1"
+      size="16px"
+      margin="4px"
+    />
+  ),
+  render(loaded, props) {
+    let UploadNonAdmin = loaded.default;
+    return <UploadNonAdmin {...props} />;
+  },
+  delay: 400
+});
+
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +76,9 @@ class MyComponent extends React.Component {
   }
 
   render() {
-    return <LoadableDocumentUpload {...this.props} />;
+    return this.props.currentUser.roles[0].name === 'admin' ?
+      <LoadableDocumentUpload {...this.props} /> :
+      <LoadableDocumentUploadNonAdmin {...this.props} />;
   }
 }
 

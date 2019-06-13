@@ -223,7 +223,7 @@ class DocumentEditor extends Component {
   render() {
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
     const { indexDescription, summary, content, headerImageUrl } = this.state;
-    const { documentMetadata, displayEditor, user } = this.props;
+    const { documentMetadata, displayEditor, user, isAdmin } = this.props;
     console.log('tags', this.state.tags);
     return (
       <div>
@@ -241,21 +241,17 @@ class DocumentEditor extends Component {
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                Status:
-                <ActiveToggle
-                  handleStatusChange={this.handleStatusChange}
-                  status={this.state.status}
-                  user={user}
-                />
-              </div>
-              {/*<div className="mb-4">*/}
-                {/*Category:*/}
-                {/*<DocumentCategorySelect*/}
-                  {/*handleCategoryChange={this.handleCategoryChange}*/}
-                  {/*category={this.state.category}*/}
-                {/*/>*/}
-              {/*</div>*/}
+              {
+                isAdmin ?
+                  <div className="mb-4">
+                  Status:
+                  <ActiveToggle
+                    handleStatusChange={this.handleStatusChange}
+                    status={this.state.status}
+                    user={user}
+                  />
+                </div> : null
+              }
               <div className="mb-4">
                 Tags: <span style={{color: 'gray'}}>(max 3)</span>
                 <TagField
@@ -266,17 +262,20 @@ class DocumentEditor extends Component {
                   width="300px"
                 />
               </div>
-              <div className="mb-4">
-                Annotator:
-                <div>
-                  <input
-                    name="hasAnnotator"
-                    type="checkbox"
-                    checked={this.state.hasAnnotator}
-                    onChange={this.handleHasAnnotatorChange}
-                  />
-                </div>
-              </div>
+              {
+                isAdmin ?
+                  <div className="mb-4">
+                  Annotator:
+                  <div>
+                    <input
+                      name="hasAnnotator"
+                      type="checkbox"
+                      checked={this.state.hasAnnotator}
+                      onChange={this.handleHasAnnotatorChange}
+                    />
+                  </div>
+                </div> : null
+              }
               <div className="mt-2 mb-4">
                 Header Image To Display On Feed:
                 <HeaderImageSelector
@@ -298,19 +297,22 @@ class DocumentEditor extends Component {
                 config={{ id: "cke-document-index-description" }}
               />
             </div>
-            <div className="mb-4">
-              <span className="mb-2">Summary:</span>
-              <CKEditor
-                name="document-summary"
-                activeClass="p10"
-                content={summary}
-                scriptUrl={scriptUrl}
-                events={{
-                  change: this.onChangeSummary
-                }}
-                config={{ id: "cke-document-summary" }}
-              />
-            </div>
+            {
+              isAdmin ?
+                <div className="mb-4">
+                  <span className="mb-2">Summary:</span>
+                  <CKEditor
+                    name="document-summary"
+                    activeClass="p10"
+                    content={summary}
+                    scriptUrl={scriptUrl}
+                    events={{
+                      change: this.onChangeSummary
+                    }}
+                    config={{ id: "cke-document-summary" }}
+                  />
+                </div> : null
+            }
             <div className="mb-4">
               <span className="mb-2">Content:</span>
               <CKEditor

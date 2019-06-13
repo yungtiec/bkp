@@ -6,7 +6,7 @@ import { DocumentToolbar } from './index';
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const DocumentAuthorName = ({ name, userHandle, delegate, createdAt }) => (
+const DocumentAuthorName = ({ reviewed, submitted, name, userHandle, delegate, createdAt }) => (
   <p className="document-author__header">
     By{" "}
     <Link to={`/profile/@${userHandle}`}>
@@ -14,7 +14,11 @@ const DocumentAuthorName = ({ name, userHandle, delegate, createdAt }) => (
       {delegate ? " (Reposted By BKP Admin)" : ""} |
     </Link>
     <span className="document-published-date__header">
-      Published {moment(createdAt).format("MM.DD.YYYY")}
+      {
+        reviewed && submitted ?
+          `Published ${moment(createdAt).format("MM.DD.YYYY")}` :
+          `Pending Approval`
+      }
     </span>
   </p>
 );
@@ -65,6 +69,8 @@ export default class DocumentHeader extends Component {
           <p className="document__title">{`${documentMetadata.title}`}</p>
           <DocumentAuthorName
             name={creator.displayName}
+            reviewed={documentMetadata.reviewed}
+            submitted={documentMetadata.submitted}
             userHandle={creator.user_handle}
             delegate={creator.delegate}
             createdAt={createdAt}

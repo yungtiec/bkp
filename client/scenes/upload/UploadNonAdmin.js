@@ -102,6 +102,7 @@ class Upload extends Component {
   handleIndexDescriptionCkEditorChange(evt) {
     var newContent = evt.editor.getData();
     this.props.updateIndexDescription(newContent);
+    this.props.updateSummary(newContent);
   }
 
   handleImageSelection(headerImageUrl) {
@@ -268,36 +269,37 @@ class Upload extends Component {
 
   render() {
     const {
-      isLoggedIn,
-      currentUser,
-      width,
-      notify,
-      projectsBySymbol,
-      projectSymbolArr,
-      importedMarkdown,
-      versionNumber,
-      collaboratorOptions,
-      updateCollaborators,
-      collaboratorEmails,
-      updateCommentPeriodUnit,
-      commentPeriodValue,
-      commentPeriodUnit,
-      selectedProject,
-      updateProjectScorecard,
-      sidebarOpen,
-      toggleSidebar,
-      scorecardCompleted,
-      contentHtml,
-      headerImageUrl,
-      category,
-      summary,
-      indexDescription,
-      hasAnnotator,
-    } = this.props;
+            isLoggedIn,
+            currentUser,
+            width,
+            notify,
+            projectsBySymbol,
+            projectSymbolArr,
+            importedMarkdown,
+            versionNumber,
+            collaboratorOptions,
+            updateCollaborators,
+            collaboratorEmails,
+            updateCommentPeriodUnit,
+            commentPeriodValue,
+            commentPeriodUnit,
+            selectedProject,
+            updateProjectScorecard,
+            sidebarOpen,
+            toggleSidebar,
+            scorecardCompleted,
+            contentHtml,
+            headerImageUrl,
+            category,
+            summary,
+            indexDescription,
+            hasAnnotator,
+          } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
     return (
       <div className="main-container">
+        not admin
         <div
           style={{
             maxWidth: "740px",
@@ -331,120 +333,6 @@ class Upload extends Component {
             </AccordionItem>
             <AccordionItem expanded={this.state.activeAccordionItemId === 1}>
               <AccordionItemTitle>
-                <p className="upload-accordion__item-header">
-                  Collaborators (optional)
-                </p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <div className="d-flex flex-column">
-                  <p>select collaborator(s) to work on your document</p>
-                  <Select
-                    name="upload__collaborator-select"
-                    value={collaboratorEmails}
-                    multi={true}
-                    onChange={this.handleCollaboratorChange}
-                    options={collaboratorOptions.map(c => ({
-                      label: c.email,
-                      value: c.email
-                    }))}
-                    placeholder="work with..."
-                  />
-                  <button
-                    onClick={this.next}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
-              <AccordionItemTitle>
-                <p className="upload-accordion__item-header">
-                  Project score (optional)
-                </p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <h6 className="upload-accordion__scorecard-checkbox">
-                  <input
-                    name="isScorecard"
-                    type="checkbox"
-                    checked={this.state.isScorecard}
-                    onChange={this.handleIsScorecardChange}
-                  />
-                  Is this document a transparency scorecard?
-                </h6>
-
-                {this.state.isScorecard ? (
-                  <Fragment>
-                    <p className="mt-5">pick from projects you manage</p>
-                    <Select
-                      name="upload__project-select"
-                      value={selectedProject.symbol}
-                      onChange={this.handleProjectSelectChange}
-                      options={
-                        projectSymbolArr
-                          ? projectSymbolArr.map(symbol => ({
-                              label: projectsBySymbol[
-                                symbol
-                              ].name.toUpperCase(),
-                              value: symbol
-                            }))
-                          : []
-                      }
-                      placeholder="select..."
-                    />
-                    {this.state.projectError ? (
-                      <p className="text-danger mt-2">project required</p>
-                    ) : null}
-                    <div className="d-flex flex-column">
-                      <h6 className="mb-3 mt-5">
-                        Fill in score 1 to 10 (10-best, 1-worst)
-                      </h6>
-                      <ProjectScorecardInputs
-                        updateProjectScorecard={updateProjectScorecard}
-                      />
-                    </div>
-                  </Fragment>
-                ) : null}
-                <div className="d-flex flex-column">
-                  <button
-                    onClick={() => this.next("scorecard")}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
-              <AccordionItemTitle>
-                <p className="upload-accordion__item-header">
-                  Annotator (optional)
-                </p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <h6 className="upload-accordion__scorecard-checkbox">
-                  <input
-                    name="hasAnnotator"
-                    type="checkbox"
-                    checked={hasAnnotator}
-                    onChange={this.handleHasAnnotator}
-                  />
-                  Does this document require the annotator feature?
-                </h6>
-                <div className="d-flex flex-column">
-                  <button
-                    onClick={() => this.next("annotator")}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
-              <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Tags</p>
               </AccordionItemTitle>
               <AccordionItemBody>
@@ -465,7 +353,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">header image</p>
               </AccordionItemTitle>
@@ -484,7 +372,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 6}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Index Description
@@ -514,37 +402,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 7}>
-              <AccordionItemTitle>
-                <p className="upload-accordion__item-header">
-                  Document Summary
-                </p>
-              </AccordionItemTitle>
-              <AccordionItemBody>
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>Summarize your document. This will appear before your article.</p>
-                </div>
-                <CKEditor
-                  name="document-summary"
-                  activeClass="p10"
-                  content={this.props.summary}
-                  scriptUrl={scriptUrl}
-                  events={{
-                    change: this.handleSummaryCkEditorChange
-                  }}
-                  config={{ id: "cke-document-summary" }}
-                />
-                <div className="d-flex flex-column">
-                  <button
-                    onClick={() => this.next("summary")}
-                    className="btn btn-primary mt-4 align-self-end"
-                  >
-                    next
-                  </button>
-                </div>
-              </AccordionItemBody>
-            </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 8}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Document Content
@@ -607,32 +465,6 @@ class Upload extends Component {
                   }
                 />
                 <Step
-                  title="collaborators"
-                  description="select collaborator(s) to work on your disclosure"
-                />
-                <Step
-                  title="project score"
-                  description="fill in project scorecard"
-                  status={
-                    this.state.scorecardError || this.state.projectError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 2
-                      ? "finish"
-                      : "wait"
-                  }
-                />
-                <Step
-                  title="annotator"
-                  description="does this document require the annotator feature?"
-                  status={
-                    this.state.scorecardError || this.state.projectError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 3
-                      ? "finish"
-                      : "wait"
-                  }
-                />
-                <Step
                   title="tags"
                   description="select tag(s) for your document"
                 />
@@ -642,7 +474,7 @@ class Upload extends Component {
                   status={
                     this.state.headerImageUrlError
                       ? "error"
-                      : this.state.activeAccordionItemId > 5
+                      : this.state.activeAccordionItemId > 2
                       ? "finish"
                       : "wait"
                   }
@@ -653,18 +485,7 @@ class Upload extends Component {
                   status={
                     this.state.indexDescriptionError
                       ? "error"
-                      : this.state.activeAccordionItemId > 6
-                      ? "finish"
-                      : "wait"
-                  }
-                />
-                <Step
-                  title="summary"
-                  description="create document summary"
-                  status={
-                    this.state.summaryError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 7
+                      : this.state.activeAccordionItemId > 3
                       ? "finish"
                       : "wait"
                   }
@@ -675,8 +496,8 @@ class Upload extends Component {
                   status={
                     this.state.contentHtmlError
                       ? "error"
-                      : this.state.activeAccordionItemId === 8 &&
-                        this.props.contentHtml
+                      : this.state.activeAccordionItemId === 4 &&
+                      this.props.contentHtml
                       ? "finish"
                       : "wait"
                   }
@@ -688,7 +509,7 @@ class Upload extends Component {
                   class="btn btn-primary btn-lg btn-block "
                   onClick={this.submit}
                 >
-                  Submit
+                  Create Draft
                 </button>
                 {this.state.uploadClicked &&
                 !(

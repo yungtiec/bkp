@@ -223,6 +223,7 @@ class Document extends Component {
             nonSpamCommentIds,
             unfilteredCommentIds,
             isLoggedIn,
+            isAdmin,
             anonymity,
             isClosedForComment,
             match,
@@ -286,6 +287,7 @@ class Document extends Component {
           />
           <DocumentContent
             parent={this}
+            isAdmin={isAdmin}
             location={location}
             isLoggedIn={isLoggedIn}
             isClosedForComment={isClosedForComment}

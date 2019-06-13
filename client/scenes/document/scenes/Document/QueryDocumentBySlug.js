@@ -141,6 +141,7 @@ const mapState = state => {
     me: state.data.user,
     width: state.data.environment.width,
     isLoggedIn: !!state.data.user.id,
+    isAdmin: state.data.user.roles && state.data.user.roles[0].name === 'admin',
     anonymity: !!state.data.user.id && state.data.user.anonymity,
     onboard: state.data.user.onboard,
     // metadata

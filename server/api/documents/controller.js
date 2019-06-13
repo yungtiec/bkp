@@ -29,11 +29,13 @@ const {
   generateTagsQuery,
   generateDocsByTagsQuery,
   generateDocsByTitleOrAuthorQuery,
-  generateDocTagsQuery
+  generateDocTagsQuery,
+  sendAdminEmail
 } = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
+const generatedNewDocumentHtml = require('./../generateNewDocumentHtml');
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -651,6 +653,28 @@ const createDocumentFromHtml = async (req, res, next) => {
             }).spread((tag, created) => document.addTag(tag))
         )
       : null;
+
+    const user = req.user;
+    let urlPrefix;
+
+    if (process.env.NODE_ENV === 'production') {
+      urlPrefix = "https://thebkp.com"
+    } else if (process.env.NODE_ENV === 'staging') {
+      urlPrefix = "https://bkp-staging.herokuapp.com"
+    } else {
+      urlPrefix = "http://localhost:8000"
+    }
+    await sendAdminEmail({
+      user: req.user,
+      subject: `New Document Submitted by ${user.first_name} ${user.last_name}`,
+      message: generatedNewDocumentHtml(
+        urlPrefix,
+        document.slug,
+        user.first_name,
+        user.last_name
+      )
+    });
+
     res.send(_.assignIn({ tags: req.body.tags }, document.toJSON()));
   } catch (err) {
     next(err);

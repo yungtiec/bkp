@@ -65,7 +65,7 @@ module.exports = {
 
     switch (action) {
       case "Create":
-        return isAdmin || isProjectAdmin || isProjectEditor || isAuthor;
+        return isAdmin || isProjectAdmin || isProjectEditor || user;
       case "Version":
         return (
           isAdmin ||

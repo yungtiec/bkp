@@ -135,8 +135,14 @@ const sendEmail = async ({ user, emailType, subject, message }) => {
     await sgMail.send(userMsg);
   }
 
+  return await sgMail.send({ user, emailType, subject, message });
+};
+
+const sendAdminEmail = async ({ user, subject, message }) => {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const AdminMsg = {
-    to: 'info@thebkp.com',
+    to: adminEmail,
     from: "info@thebkp.com",
     subject: subject + ' - Admin Notification',
     text: message,
@@ -338,6 +344,7 @@ module.exports = {
   getEngagedUsers,
   createSlug,
   sendEmail,
+  sendAdminEmail,
   getAddedAndRemovedTags,
   hasNotificationPermission,
   generateNoSearchOrder,

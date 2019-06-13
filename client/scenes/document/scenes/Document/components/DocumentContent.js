@@ -14,6 +14,7 @@ const DocumentContent = ({
   location,
   user,
   isLoggedIn,
+  isAdmin,
   isClosedForComment,
   documentMetadata,
   commentOnClick,
@@ -27,6 +28,7 @@ const DocumentContent = ({
 }) => (
   <div className={documentMetadata.has_annotator ? `project-document mt-3` : `project-document__no-annotator mt-3`} id="project-document">
     <DocumentEditor
+      isAdmin={isAdmin}
       isLoggedIn={isLoggedIn}
       isClosedForComment={isClosedForComment}
       documentMetadata={documentMetadata}
