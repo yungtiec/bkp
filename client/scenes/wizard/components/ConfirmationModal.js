@@ -27,7 +27,7 @@ export default ({ hideModal, title, message, submit, cancel, errors }) => (
             submit.handler();
             hideModal();
           }}
-          className="btn btn-outline-primary ml-2"
+          className="btn btn-primary ml-2"
         >
           {submit.label}
         </button>

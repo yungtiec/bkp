@@ -1,3 +1,4 @@
+import "./Upload.scss";
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import autoBind from "react-autobind";
@@ -16,11 +17,13 @@ import {
   Accordion,
   AccordionItem,
   AccordionItemTitle,
-  AccordionItemBody
+  AccordionItemBody,
+  resetNextUuid
 } from "react-accessible-accordion";
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
+import history from '../../history';
 
 class Upload extends Component {
   constructor(props) {
@@ -43,7 +46,23 @@ class Upload extends Component {
     };
   }
   componentDidMount() {
+    this.setState({
+      activeAccordionItemId: 0,
+      versionNumberError: false,
+      projectError: false,
+      categoryError: false,
+      scorecardError: false,
+      titleError: false,
+      headerImageUrlError: false,
+      contentHtmlError: false,
+      summaryError: false,
+      indexDescriptionError: false,
+      isScorecard: false,
+      uploadClicked: false,
+      headerImageUrl: ""
+    });
     this.props.resetSubmitForm();
+    resetNextUuid();
   }
 
   handleCommentPeriodUnitChange(selected) {
@@ -251,7 +270,7 @@ class Upload extends Component {
       }));
   }
 
-  submit() {
+  async submit() {
     if (
       (this.state.isScorecard &&
         !!this.props.selectedProject &&
@@ -263,7 +282,17 @@ class Upload extends Component {
         !this.state.indexDescriptionError &&
         !this.state.summaryError)
     ) {
-      this.props.uploadHtmlToServer();
+      const document = await this.props.uploadHtmlToServer();
+      this.props.loadModal("CONFIRMATION_MODAL", {
+        title: "Thank You For Your Submission",
+        message:
+          "You have successfully submitted your article for review!",
+        hideModal: this.props.hideModal,
+        submit: {
+          label: "Go To Article",
+          handler: () => { history.push(`/s/${document.slug}`) }
+        }
+      });
     } else {
       this.setState({ uploadClicked: true });
     }
@@ -569,11 +598,27 @@ class Upload extends Component {
                 />
                 <div className="d-flex flex-column">
                   <button
-                    onClick={() => this.next("contentHtml")}
+                    onClick={() => this.submit()}
                     className="btn btn-primary mt-4 align-self-end"
                   >
-                    done
+                    submit
                   </button>
+                  {this.state.uploadClicked &&
+                  !(
+                    (this.state.isScorecard &&
+                      !!this.props.selectedProject &&
+                      this.props.scorecardCompleted) ||
+                    (!this.state.isScorecard &&
+                      !this.state.categoryError &&
+                      !this.state.titleError &&
+                      !this.state.headerImageUrlError &&
+                      !this.state.contentHtmlError &&
+                      !this.state.summaryError)
+                  ) ? (
+                    <p className="text-danger">
+                      Please go through all the mandatory fields
+                    </p>
+                  ) : null}
                 </div>
               </AccordionItemBody>
             </AccordionItem>
@@ -685,31 +730,6 @@ class Upload extends Component {
                   }
                 />
               </Steps>
-              <div className="mb-5 mt-2">
-                <button
-                  type="button"
-                  class="btn btn-primary btn-lg btn-block "
-                  onClick={this.submit}
-                >
-                  Create Draft
-                </button>
-                {this.state.uploadClicked &&
-                !(
-                  (this.state.isScorecard &&
-                    !!this.props.selectedProject &&
-                    this.props.scorecardCompleted) ||
-                  (!this.state.isScorecard &&
-                    !this.state.categoryError &&
-                    !this.state.titleError &&
-                    !this.state.headerImageUrlError &&
-                    !this.state.contentHtmlError &&
-                    !this.state.summaryError)
-                ) ? (
-                  <p className="text-danger">
-                    Please go through all the mandatory fields
-                  </p>
-                ) : null}
-              </div>
             </div>
           </CustomScrollbar>
         </SidebarLayout>

@@ -17,7 +17,8 @@ import {
   Accordion,
   AccordionItem,
   AccordionItemTitle,
-  AccordionItemBody
+  AccordionItemBody,
+  resetNextUuid
 } from "react-accessible-accordion";
 import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
@@ -62,6 +63,7 @@ class Upload extends Component {
       headerImageUrl: ""
     });
     this.props.resetSubmitForm();
+    resetNextUuid();
   }
 
   handleCommentPeriodUnitChange(selected) {
@@ -299,31 +301,10 @@ class Upload extends Component {
 
   render() {
     const {
-            isLoggedIn,
-            currentUser,
             width,
-            notify,
-            projectsBySymbol,
-            projectSymbolArr,
-            importedMarkdown,
-            versionNumber,
-            collaboratorOptions,
-            updateCollaborators,
-            collaboratorEmails,
-            updateCommentPeriodUnit,
-            commentPeriodValue,
-            commentPeriodUnit,
-            selectedProject,
-            updateProjectScorecard,
             sidebarOpen,
             toggleSidebar,
-            scorecardCompleted,
-            contentHtml,
             headerImageUrl,
-            category,
-            summary,
-            indexDescription,
-            hasAnnotator,
           } = this.props;
     const scriptUrl = `${window.location.origin.toString()}/assets/ckeditor/ckeditor.js`;
 
