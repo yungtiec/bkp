@@ -299,7 +299,6 @@ class Upload extends Component {
 
     return (
       <div className="main-container">
-        not admin
         <div
           style={{
             maxWidth: "740px",
@@ -509,7 +508,7 @@ class Upload extends Component {
                   class="btn btn-primary btn-lg btn-block "
                   onClick={this.submit}
                 >
-                  Create Draft
+                  Submit
                 </button>
                 {this.state.uploadClicked &&
                 !(
