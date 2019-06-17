@@ -95,7 +95,7 @@ class DocumentContainer extends Component {
           <meta
             property="og:image"
             content={`${
-              documentMetadata.header_img_url
+              imgUrl
             }`}
           />
           <meta property="og:description" content={wrapper.textContent} />
@@ -108,7 +108,7 @@ class DocumentContainer extends Component {
           <meta
             name="twitter:image"
             content={`${
-              documentMetadata.header_img_url
+              imgUrl
             }`}
           />
           <meta name="twitter:card" content="summary" />
