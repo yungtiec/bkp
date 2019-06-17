@@ -65,6 +65,12 @@ class DocumentContainer extends Component {
 
     var wrapper = document.createElement("div");
     wrapper.innerHTML = documentMetadata.index_description || documentMetadata.description;
+    const currentImage = documentMetadata.header_img_url;
+    const imgUrl = currentImage.includes("unsplash") ?
+      currentImage.concat('&auto=format&fit=crop&w=600&q=60') :
+      currentImage;
+
+    console.log({imgUrl});
 
     return (
       <div
