@@ -24,6 +24,8 @@ import Steps, { Step } from "rc-steps";
 import Formsy from "formsy-react";
 import HeaderImageSelector from "../document/scenes/Document/components/HeaderImageSelector";
 import history from "./../../history";
+import {hideModal, loadModal} from '../../data/reducer';
+import * as types from './data/upload/actionTypes';
 
 class Upload extends Component {
   constructor(props) {
@@ -274,17 +276,43 @@ class Upload extends Component {
         !this.state.indexDescriptionError &&
         !this.state.summaryError)
     ) {
-      const document = await this.props.uploadHtmlToServer();
       this.props.loadModal("CONFIRMATION_MODAL", {
-        title: "Thank You For Your Submission",
+        title: "Submit Article",
         message:
-          "You have successfully submitted your article for review!",
+          "Once an article is submitted, an editor will review it before publishing. Would you like to submit?",
+        errors: this.incompleteForm,
         hideModal: this.props.hideModal,
         submit: {
-          label: "Go To Article",
-          handler: () => { history.push(`/s/${document.slug}`) }
+          label: "Submit",
+          handler: async () => {
+            const document = await this.props.uploadHtmlToServer();
+
+            this.props.loadModal("CONFIRMATION_MODAL", {
+              title: "Thank You For Your Submission",
+              message:
+                "You have successfully submitted your article for review!",
+              hideModal: hideModal,
+              submit: {
+                label: "Go To Article",
+                handler: () => {
+                  this.props.hideModal();
+                  history.push(`/s/${document.slug}`);
+                  dispatch({
+                    type: types.MARKDOWN_UPLOADED
+                  });
+                  return document;
+                }
+              }
+            });
+
+          }
+        },
+        cancel: {
+          label: "No",
+          handler: this.props.hideModal
         }
       });
+
     } else {
       this.setState({ uploadClicked: true });
     }

@@ -4,6 +4,16 @@ const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 const Sequelize = require("sequelize");
 
+const getUrlPrefix = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return "https://thebkp.com"
+  } else if (process.env.NODE_ENV === 'staging') {
+    return "https://bkp-staging.herokuapp.com"
+  } else {
+    return "http://localhost:8000"
+  }
+};
+
 const isAdmin = user => {
   return user.roles.filter(r => r.name === "admin").length;
 };
@@ -121,9 +131,24 @@ const createSlug = async (docTitle, contentHtml) => {
   }
 };
 
+const sendApprovedEmail = async ({ user, emailType, subject, message }) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const userMsg = {
+    to: user.email,
+    from: "info@thebkp.com",
+    subject: subject,
+    text: message,
+    html: message
+  };
+
+  return await sgMail.send(userMsg);
+};
+
 const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
+
   if (shouldSendEmail) {
     const userMsg = {
       to: user.email,
@@ -135,7 +160,7 @@ const sendEmail = async ({ user, emailType, subject, message }) => {
     await sgMail.send(userMsg);
   }
 
-  return await sgMail.send({ user, emailType, subject, message });
+  return await sendAdminEmail({ user, subject, message });
 };
 
 const sendAdminEmail = async ({ user, subject, message }) => {
@@ -344,6 +369,7 @@ module.exports = {
   getEngagedUsers,
   createSlug,
   sendEmail,
+  sendApprovedEmail,
   sendAdminEmail,
   getAddedAndRemovedTags,
   hasNotificationPermission,
@@ -354,5 +380,6 @@ module.exports = {
   generateTagsQuery,
   generateDocsByTagsQuery,
   generateDocsByTitleOrAuthorQuery,
-  generateDocTagsQuery
+  generateDocTagsQuery,
+  getUrlPrefix
 };

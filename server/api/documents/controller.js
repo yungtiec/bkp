@@ -19,6 +19,7 @@ const {
   Tag
 } = require("../../db/models");
 const {
+  getUrlPrefix,
   getEngagedUsers,
   createSlug,
   getAddedAndRemovedTags,
@@ -30,12 +31,14 @@ const {
   generateDocsByTagsQuery,
   generateDocsByTitleOrAuthorQuery,
   generateDocTagsQuery,
-  sendAdminEmail
+  sendAdminEmail,
+  sendApprovedEmail
 } = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
 const generatedNewDocumentHtml = require('./../generateNewDocumentHtml');
+const generatedDocumentPublishedHtml = require('./../generateDocumentPublishedHtml');
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -318,18 +321,39 @@ const addHistory = versionQuestionOrAnswer => {
 };
 
 const updateDocumentStatus = async (req, res, next) => {
-  console.log(req.body.status.submitted);
-  console.log(req.body.status.reviewed);
   try {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug },
-      include: [{ model: Tag }]
+      include: [{ model: Tag }, {model: User, as: 'creator'}]
     });
+
+    const shouldSendEmailUpdate =
+      !documentToUpdate.submitted &&
+      !documentToUpdate.reviewed  &&
+      req.body.status.submitted &&
+      req.body.status.reviewed;
 
     documentToUpdate.submitted = req.body.status.submitted;
     documentToUpdate.reviewed = req.body.status.reviewed;
 
     await documentToUpdate.save();
+
+    const urlPrefix = getUrlPrefix();
+
+    if (shouldSendEmailUpdate) {
+      console.log('sending email', documentToUpdate.creator);
+      await sendApprovedEmail({
+        user: documentToUpdate.creator,
+        subject: `${documentToUpdate.title} has been published!`,
+        message: generatedDocumentPublishedHtml(
+          urlPrefix,
+          documentToUpdate.slug,
+          documentToUpdate.creator.first_name,
+          documentToUpdate.creator.last_name
+        )
+      });
+    }
+
     const document = await Document.findOne({
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
@@ -348,9 +372,6 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
-
-    console.log({documentToUpdate});
-    console.log('req.body', req.body);
 
     if (req.body.newTitle) {
       const slug = await createSlug(
@@ -655,15 +676,7 @@ const createDocumentFromHtml = async (req, res, next) => {
       : null;
 
     const user = req.user;
-    let urlPrefix;
-
-    if (process.env.NODE_ENV === 'production') {
-      urlPrefix = "https://thebkp.com"
-    } else if (process.env.NODE_ENV === 'staging') {
-      urlPrefix = "https://bkp-staging.herokuapp.com"
-    } else {
-      urlPrefix = "http://localhost:8000"
-    }
+    const urlPrefix = getUrlPrefix();
     await sendAdminEmail({
       user: req.user,
       subject: `New Document Submitted by ${user.first_name} ${user.last_name}`,
