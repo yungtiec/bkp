@@ -65,6 +65,12 @@ class DocumentContainer extends Component {
 
     var wrapper = document.createElement("div");
     wrapper.innerHTML = documentMetadata.index_description || documentMetadata.description;
+    const currentImage = documentMetadata.header_img_url;
+    const imgUrl = currentImage.includes("unsplash") ?
+      currentImage.concat('&auto=format&fit=crop&w=600&q=60') :
+      currentImage;
+
+    console.log({imgUrl});
 
     return (
       <div
@@ -89,7 +95,7 @@ class DocumentContainer extends Component {
           <meta
             property="og:image"
             content={`${
-              documentMetadata.header_img_url
+              imgUrl
             }`}
           />
           <meta property="og:description" content={wrapper.textContent} />
@@ -102,7 +108,7 @@ class DocumentContainer extends Component {
           <meta
             name="twitter:image"
             content={`${
-              documentMetadata.header_img_url
+              imgUrl
             }`}
           />
           <meta name="twitter:card" content="summary" />

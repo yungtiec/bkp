@@ -8,7 +8,7 @@ var RSS = require('rss');
 
 /* lets create an rss feed */
 var feed = new RSS({
-  title: 'The Brooklyn Project Podcast Series',
+  title: 'The Brooklyn Project Podcast',
   description: 'Conversations about blockchain technology and its applications to society, policy and more.',
   feed_url: 'https://thebkp.com/api/podcasts',
   site_url: 'https://thebkp.com',
@@ -31,7 +31,7 @@ var feed = new RSS({
     {'itunes:summary': 'Join the collaboration on blockchain law, regulation, and policy.'},
     {'itunes:owner': [
       {'itunes:name': 'The Brooklyn Project Podcast'},
-      {'itunes:email': 'info@thebkp.com'} ]
+      {'itunes:email': 'joyce.lai@consensys.net'} ]
     },
   {'itunes:image': {
     _attr: {
