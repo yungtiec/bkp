@@ -10,6 +10,7 @@ class NotificationSettings extends React.Component {
     const notificationConfig = this.props.profile.notification_config || {};
     console.log(this.props);
     this.state = {
+      article_published: notificationConfig.article_published || false,
       new_articles: notificationConfig.new_articles || false,
       upvotes_and_downvotes: notificationConfig.upvotes_and_downvotes || false,
       comments_and_replies: notificationConfig.comments_and_replies || false,
@@ -41,6 +42,18 @@ class NotificationSettings extends React.Component {
             <div className="notification-description">
               <span>I would like to receive email notifications for:</span>
             </div>
+            <h6 className="notification-checkbox">
+              <input
+                name="article_published"
+                type="checkbox"
+                checked={this.state.article_published}
+                onChange={() => this.setState({
+                  article_published: !this.state.article_published
+                })}
+                disabled={this.state.disable_all}
+              />
+              Article Published
+            </h6>
             <h6 className="notification-checkbox">
               <input
                 name="comments_and_replies"

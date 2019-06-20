@@ -148,7 +148,6 @@ const sendApprovedEmail = async ({ user, emailType, subject, message }) => {
 const sendEmail = async ({ user, emailType, subject, message }) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const shouldSendEmail = await hasNotificationPermission(user.id, emailType);
-
   if (shouldSendEmail) {
     const userMsg = {
       to: user.email,
@@ -196,6 +195,7 @@ const getAddedAndRemovedTags = ({ prevTags, curTags }) => {
 const hasNotificationPermission = async (userId, commentType) => {
   const COMMENT = 'comments_and_replies';
   const VOTE = 'upvotes_and_downvotes';
+  const PUBLISHED = 'article_published';
 
   try {
     const requester = await User.findOne({
@@ -212,6 +212,8 @@ const hasNotificationPermission = async (userId, commentType) => {
         return notificationConfig[COMMENT];
       case 'VOTE':
         return notificationConfig[VOTE];
+      case 'PUBLISHED':
+        return notificationConfig[PUBLISHED];
       default:
         return false;
     }

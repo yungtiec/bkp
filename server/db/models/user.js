@@ -131,6 +131,7 @@ module.exports = (db, DataTypes) => {
       notification_config: {
         type: DataTypes.JSON,
         defaultValue: {
+          article_published: true,
           new_articles: false,
           upvotes_and_downvotes: false,
           comments_and_replies: false,

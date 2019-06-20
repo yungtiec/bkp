@@ -32,7 +32,7 @@ const {
   generateDocsByTitleOrAuthorQuery,
   generateDocTagsQuery,
   sendAdminEmail,
-  sendApprovedEmail
+  sendEmail
 } = require("../utils");
 const moment = require("moment");
 const _ = require("lodash");
@@ -341,8 +341,8 @@ const updateDocumentStatus = async (req, res, next) => {
     const urlPrefix = getUrlPrefix();
 
     if (shouldSendEmailUpdate) {
-      console.log('sending email', documentToUpdate.creator);
-      await sendApprovedEmail({
+      await sendEmail({
+        emailType: 'PUBLISHED',
         user: documentToUpdate.creator,
         subject: `${documentToUpdate.title} has been published!`,
         message: generatedDocumentPublishedHtml(
@@ -365,8 +365,6 @@ const updateDocumentStatus = async (req, res, next) => {
 };
 
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
-  console.log(req.body.status.submitted);
-  console.log(req.body.status.reviewed);
   try {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug },
