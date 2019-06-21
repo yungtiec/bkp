@@ -158,7 +158,7 @@ const Landing = ({ user, logout }) => (
               </li>
               <li>
                 <p>
-                  <a href="https://thebkp.com/token-taxonomy">
+                  <a href="https://thebkp.com/s/Digital-Asset-Taxonomy-f74764ac9192">
                     Digital Asset Taxonomy
                   </a>
                 </p>
