@@ -163,22 +163,22 @@ class Upload extends Component {
   }
 
   handleAccordionChange(key) {
-    if (key > 0)
+    if (key > 1)
       this.setState(prevState => ({
         ...prevState,
         titleError: !this.props.title
       }));
-    if (key > 2)
+    if (key > 3)
       this.setState(prevState => ({
         ...prevState,
         headerImageUrlError: !this.props.headerImageUrl
       }));
-    if (key > 3)
+    if (key > 4)
       this.setState(prevState => ({
         ...prevState,
         indexDescriptionError: !this.props.indexDescription
       }));
-    if (key > 4)
+    if (key > 5)
       this.setState(prevState => ({
         ...prevState,
         contentHtmlError: !this.props.contentHtml
@@ -338,11 +338,41 @@ class Upload extends Component {
           <Accordion onChange={this.handleAccordionChange}>
             <AccordionItem expanded={this.state.activeAccordionItemId === 0}>
               <AccordionItemTitle>
+                <p className="upload-accordion__item-header">Submission Guidelines</p>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+                <div className="d-flex flex-column">
+                  <h5>Submitting an article to The Brooklyn Project</h5>
+                  <div>
+                    <p>Thank you for your interest in submitting an article to the Brooklyn Project. We aspire to be the home for open collaboration on blockchain law, regulation, and policy.</p>
+                    <p>The submission process for articles is simple:
+                      <ol>
+                        <li>Follow the next steps in the upload interface. When you’re ready, click submit.</li>
+                        <li>Someone at The Brooklyn Project will review your submission and get back to you with a response (accepted, accepted subject to edits, declined).</li>
+                      </ol>
+                    </p>
+                    <p>Accepted articles will appear on the landing page of theBKP.com.</p>
+                    <p>While we  aspire to make this as open an initiative as possible, we have created a set of guidelines to ensure the content on our site is relevant to our community. We reserve the right to decline the publication of any article for whatever reason.</p>
+                    <p>On-topic: anything that is related to blockchain law, regulation and policy. That includes more topics than just the law.</p>
+                    <p>Off-topic: descriptions of events (with the exception of events relevant to our community), ad-hominem attacks, an investment pitch for your startup, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it’s probably also blocked on theBKP.com.</p>
+                    <p>If you have any questions, send us an email at info@thebkp.com.</p>
+                  </div>
+                  <button
+                    onClick={this.next}
+                    className="btn btn-primary mt-4 align-self-end"
+                  >
+                    next
+                  </button>
+                </div>
+              </AccordionItemBody>
+            </AccordionItem>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 1}>
+              <AccordionItemTitle>
                 <p className="upload-accordion__item-header">title</p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>document title</p>
+                  <p style={{ marginBottom: "0px" }}>article title</p>
                 </div>
                 <input
                   type="text"
@@ -360,13 +390,13 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 1}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">Tags</p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex flex-column">
-                  <p>select tag(s) for your document (max 3)</p>
+                  <p>select tag(s) for your article (max 3)</p>
                   <TagField
                     handleOnSelect={this.handleTagSelect}
                     handleRemoveTag={this.handleRemoveTag}
@@ -382,7 +412,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 2}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">header image</p>
               </AccordionItemTitle>
@@ -401,7 +431,7 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 3}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
                   Index Description
@@ -431,15 +461,15 @@ class Upload extends Component {
                 </div>
               </AccordionItemBody>
             </AccordionItem>
-            <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
+            <AccordionItem expanded={this.state.activeAccordionItemId === 5}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
-                  Document Content
+                  Article Content
                 </p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>Provide document content:</p>
+                  <p style={{ marginBottom: "0px" }}>Provide article content:</p>
                 </div>
                 <CKEditor
                   name="document-content"
@@ -499,36 +529,29 @@ class Upload extends Component {
                 direction="vertical"
               >
                 <Step
+                  title="submission guidelines"
+                  description="read our submission guidelines"
+                />
+                <Step
                   title="title"
-                  description="set document title"
+                  description="set article title"
                   status={
                     this.state.titleError
                       ? "error"
-                      : this.state.activeAccordionItemId > 0
+                      : this.state.activeAccordionItemId > 1
                       ? "finish"
                       : "wait"
                   }
                 />
                 <Step
                   title="tags"
-                  description="select tag(s) for your document"
+                  description="select tag(s) for your article"
                 />
                 <Step
                   title="header image"
-                  description="set document header image"
+                  description="set article header image"
                   status={
                     this.state.headerImageUrlError
-                      ? "error"
-                      : this.state.activeAccordionItemId > 2
-                      ? "finish"
-                      : "wait"
-                  }
-                />
-                <Step
-                  title="index description"
-                  description="create document index description"
-                  status={
-                    this.state.indexDescriptionError
                       ? "error"
                       : this.state.activeAccordionItemId > 3
                       ? "finish"
@@ -536,12 +559,23 @@ class Upload extends Component {
                   }
                 />
                 <Step
+                  title="index description"
+                  description="create article index description"
+                  status={
+                    this.state.indexDescriptionError
+                      ? "error"
+                      : this.state.activeAccordionItemId > 4
+                      ? "finish"
+                      : "wait"
+                  }
+                />
+                <Step
                   title="content"
-                  description="create document content"
+                  description="create article content"
                   status={
                     this.state.contentHtmlError
                       ? "error"
-                      : this.state.activeAccordionItemId === 4 &&
+                      : this.state.activeAccordionItemId === 5 &&
                       this.props.contentHtml
                       ? "finish"
                       : "wait"
