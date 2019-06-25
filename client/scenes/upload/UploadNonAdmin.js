@@ -434,12 +434,12 @@ class Upload extends Component {
             <AccordionItem expanded={this.state.activeAccordionItemId === 4}>
               <AccordionItemTitle>
                 <p className="upload-accordion__item-header">
-                  Index Description
+                  Summary
                 </p>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <p style={{ marginBottom: "0px" }}>This description will appear on the index feed if article is featured</p>
+                  <p style={{ marginBottom: "0px" }}>This will appear at the top of your article.</p>
                 </div>
                 <CKEditor
                   name="document-summary"
@@ -559,8 +559,8 @@ class Upload extends Component {
                   }
                 />
                 <Step
-                  title="index description"
-                  description="create article index description"
+                  title="summary"
+                  description="create article summary"
                   status={
                     this.state.indexDescriptionError
                       ? "error"
