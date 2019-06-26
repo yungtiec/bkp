@@ -6,6 +6,7 @@ import { SquareLoader } from "halogenium";
 import { batchActions } from "redux-batched-actions";
 import { toggleSidebar } from "./reducer";
 import { getUploadMetadata } from "./data/upload/reducer";
+import history from "../../history";
 import {
   uploadHtmlToServer,
   updateCollaborators,
@@ -32,6 +33,7 @@ import {
   hideModal
 } from "../../data/reducer";
 import { notify } from "reapop";
+import { meAsync } from './../../data/user/actions'
 
 const LoadableDocumentUpload = Loadable({
   loader: () => import("./Upload"),
@@ -72,8 +74,19 @@ class MyComponent extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log('mounted');
+  getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+  }
+
+  async componentDidMount() {
+    console.log('logged in', this.props.isLoggedIn);
+    await this.props.meAsync();
+    if (!this.props.isLoggedIn) {
+      history.push({
+        pathname: '/login',
+        state: { lastPath: this.props.location.pathname, showNotification: true }
+      });
+    }
   }
 
   render() {
@@ -133,6 +146,7 @@ const mapState = state => {
 };
 
 const actions = {
+  meAsync,
   loadModal,
   hideModal,
   fetchManagedProjects,

@@ -108,13 +108,11 @@ class Routes extends Component {
             path="/edit/:slug"
             component={Wizard}
           />
-          {isLoggedIn && (
-            <RouteWithLayout
-              layout={LayoutWithNav}
-              path="/submit"
-              component={Upload}
-            />
-          )}
+          <RouteWithLayout
+            layout={LayoutWithNav}
+            path="/submit"
+            component={Upload}
+          />
           <RouteWithLayout
             layout={LayoutWithNav}
             path="/activity-board"

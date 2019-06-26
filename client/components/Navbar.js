@@ -74,15 +74,9 @@ class Navbar extends Component {
               {/*""*/}
             {/*)}*/}
             {width > 1060 ? (
-              <PunditContainer policies={policies} user={user}>
-                <PunditTypeSet type="Disclosure">
-                  <VisibleIf action="Create" model={{}}>
-                    <Link to="/submit" className="navbar__nav-item">
-                      submit article
-                    </Link>
-                  </VisibleIf>
-                </PunditTypeSet>
-              </PunditContainer>
+            <Link to="/submit" className="navbar__nav-item">
+              submit article
+            </Link>
             ) : (
               ""
             )}

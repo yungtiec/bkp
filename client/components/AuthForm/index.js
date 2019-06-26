@@ -31,6 +31,8 @@ class AuthForm extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.location.state);
+
     if (
       this.props.location.state &&
       this.props.location.state.lastPath &&
@@ -91,6 +93,10 @@ class AuthForm extends Component {
       error,
       signinWithUport
     } = this.props;
+    const shouldShowSubmitAlert =
+            this.props.location.state &&
+            this.props.location.state.lastPath &&
+            this.props.location.state.lastPath === '/submit';
 
     return (
       <Formsy
@@ -100,6 +106,14 @@ class AuthForm extends Component {
         onValid={this.enableButton}
         onInvalid={this.disableButton}
       >
+        { shouldShowSubmitAlert ?
+          <div className="d-flex justify-content-center">
+            <div className="alert alert-info alert-dismissible">
+              <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Hey!</strong> You must be logged in to submit an article.
+            </div>
+          </div> : null
+        }
         <div className="d-flex oauth-btns flex-md-row flex-column">
           <a
             href={`/auth/google?state=${encodeURI(

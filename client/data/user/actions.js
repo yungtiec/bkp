@@ -24,6 +24,12 @@ export const me = () => dispatch =>
     .then(res => dispatch(getUser(res.data || {})))
     .catch(err => console.log(err));
 
+export const meAsync = () => dispatch =>
+  axios
+    .get("/auth/me")
+    .then(res => dispatch(getUser(res.data || {})))
+    .catch(err => console.log(err));
+
 export const auth = (userInfo, method) => dispatch => {
   userInfo =
     method === "login" ? pick(userInfo, ["email", "password"]) : userInfo;
