@@ -348,14 +348,16 @@ class Upload extends Component {
                     <p>The submission process for articles is simple:
                       <ol>
                         <li>Follow the next steps in the upload interface. When you’re ready, click submit.</li>
-                        <li>Someone at The Brooklyn Project will review your submission and get back to you with a response (accepted, accepted subject to edits, declined).</li>
+                        <li>Someone at The Brooklyn Project will review your submission and get back to you.</li>
                       </ol>
                     </p>
-                    <p>Accepted articles will appear on the landing page of theBKP.com.</p>
-                    <p>While we  aspire to make this as open an initiative as possible, we have created a set of guidelines to ensure the content on our site is relevant to our community. We reserve the right to decline the publication of any article for whatever reason.</p>
-                    <p>On-topic: anything that is related to blockchain law, regulation and policy. That includes more topics than just the law.</p>
-                    <p>Off-topic: descriptions of events (with the exception of events relevant to our community), ad-hominem attacks, an investment pitch for your startup, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it’s probably also blocked on theBKP.com.</p>
-                    <p>If you have any questions, send us an email at info@thebkp.com.</p>
+                    <p>Accepted articles will appear on the landing page of <a href="www,thebkp.com">theBKP.com</a>.</p>
+                    <p>While we aspire to make this as open an initiative as possible, we have created a set of guidelines to ensure the content on our site is relevant to our community. We reserve the right to decline the publication of any article for whatever reason.</p>
+                    <p><strong>On-topic</strong>: anything related to blockchain law, regulation and policy. This includes more topics than laws and regulations.</p>
+                    <p><strong>Off-topic</strong>: links to events (except those relevant to members of our community), ad-hominem attacks, an pitch for your startup, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it will probably also be blocked on <a href="www,thebkp.com">theBKP.com</a>.</p>
+                    <p>By submitting an article, you agree with our terms of use and privacy policy. If you have any questions, send us an email at info@thebkp.com.</p>
+                    <p><strong><a href="https://drive.google.com/file/d/1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV/view" style={{color:'blue'}}>Terms of use</a></strong></p>
+                    <p><strong><a href="https://drive.google.com/file/d/1n_O-nF74sDkONplSrmcpZczAov30cMug/view" style={{color:'blue'}}>Privacy Policy</a></strong></p>
                   </div>
                   <button
                     onClick={this.next}
