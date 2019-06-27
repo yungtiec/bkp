@@ -154,6 +154,15 @@ class DocumentToolbar extends Component {
       }
     };
 
+    const featured = documentMetadata.reviewed && documentMetadata.submitted;
+
+    const shouldShowEditBtn =
+            (!displayEditor &&
+            isLoggedIn &&
+            isOwnDocument &&
+            !featured) ||
+            isUserAdmin;
+
     return (
       <div className="mb-2">
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
@@ -232,7 +241,7 @@ class DocumentToolbar extends Component {
             {/*onClick={() => this.generatePDF()}>*/}
               {/*View pdf*/}
           {/*</button>*/}
-          {!displayEditor && isLoggedIn && isOwnDocument ? (
+          {shouldShowEditBtn ? (
             <button className="btn btn-outline-primary" onClick={showEditor}>
               edit
             </button>
