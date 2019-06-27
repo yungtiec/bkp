@@ -23,6 +23,7 @@ class PublishedDocuments extends Component {
       <MyDocumentsList
         documents={this.props.publishedDocuments}
         canLoadMore={this.props.canLoadMore}
+        type='draft'
       />
     );
   }

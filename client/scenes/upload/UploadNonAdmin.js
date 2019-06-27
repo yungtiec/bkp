@@ -356,8 +356,8 @@ class Upload extends Component {
                     <p><strong>On-topic</strong>: anything related to blockchain law, regulation and policy. This includes more topics than laws and regulations.</p>
                     <p><strong>Off-topic</strong>: links to events (except those relevant to members of our community), ad-hominem attacks, an pitch for your startup, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it will probably also be blocked on <a href="www,thebkp.com">theBKP.com</a>.</p>
                     <p>By submitting an article, you agree with our terms of use and privacy policy. If you have any questions, send us an email at info@thebkp.com.</p>
-                    <p><strong><a href="https://drive.google.com/file/d/1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV/view" style={{color:'blue'}}>Terms of use</a></strong></p>
-                    <p><strong><a href="https://drive.google.com/file/d/1n_O-nF74sDkONplSrmcpZczAov30cMug/view" style={{color:'blue'}}>Privacy Policy</a></strong></p>
+                    <p><strong><a href="https://drive.google.com/file/d/1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV/view" style={{color:'blue'}} target="_blank" >Terms of use</a></strong></p>
+                    <p><strong><a href="https://drive.google.com/file/d/1n_O-nF74sDkONplSrmcpZczAov30cMug/view" style={{color:'blue'}} target="_blank" >Privacy Policy</a></strong></p>
                   </div>
                   <button
                     onClick={this.next}

@@ -94,9 +94,9 @@ class AuthForm extends Component {
       signinWithUport
     } = this.props;
     const shouldShowSubmitAlert =
-            this.props.location.state &&
-            this.props.location.state.lastPath &&
-            this.props.location.state.lastPath === '/submit';
+      this.props.location.state &&
+      this.props.location.state.lastPath &&
+      this.props.location.state.lastPath === '/submit';
 
     return (
       <Formsy

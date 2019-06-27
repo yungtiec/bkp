@@ -23,6 +23,7 @@ class Drafts extends Component {
         documents={this.props.draftDocuments}
         canLoadMore={this.props.canLoadMore}
         fetchOwnDrafts={this.props.fetchOwnDrafts}
+        type='draft'
       />
     );
   }

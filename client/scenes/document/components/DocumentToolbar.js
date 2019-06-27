@@ -13,11 +13,100 @@ import ReactTooltip from "react-tooltip";
 import { animateScroll as scroll} from "react-scroll";
 import { currentUserIsAdmin } from '../../../data/user/reducer';
 import animateScrollTo from 'animated-scroll-to';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfMake from "html-to-pdfmake";
+import moment from 'moment';
 
 class DocumentToolbar extends Component {
   constructor(props) {
     super(props);
     autoBind(this);
+  }
+
+  generatePDF = function (){
+    const documentMetadata = this.props.documentMetadata;
+    var content = document.getElementsByClassName('markdown-body');
+    let summary = document.getElementsByClassName('document-summary');
+    let title = document.getElementsByClassName('document__title');
+    let authorHeader = `<p>By ${documentMetadata.creator.displayName} | ${moment(documentMetadata.createdAt).format("LL")}`;
+    let definitionContent = [
+      htmlToPdfMake(title[0].innerHTML),
+      htmlToPdfMake(authorHeader)
+    ];
+    let contentBody;
+
+    if (content.length > 1) {
+      summary = summary[0].outerHTML;
+      contentBody = content[1].innerHTML;
+      definitionContent = definitionContent.concat([
+        htmlToPdfMake(summary),
+        htmlToPdfMake(contentBody)
+      ]);
+    } else {
+      contentBody = content[0].innerHTML;
+      definitionContent = definitionContent.concat([
+        htmlToPdfMake(contentBody)
+      ]);
+    }
+    console.log(definitionContent);
+    definitionContent[0] = {
+      text: definitionContent[0],
+      style: ['title']
+    };
+
+    definitionContent[1] = {
+      text: definitionContent[1],
+      style: ['author-header']
+    };
+
+
+    var docDefinition = {
+      content: definitionContent,
+      styles:{
+        'html-div' : {
+          background: '#ecece8',
+          padding: 10
+        },
+        'title' : {
+          fontSize: 20,
+          lineHeight: 1,
+          marginBottom: 10,
+          bold: true
+        },
+        'author-header': {
+          marginBottom: 10
+        },
+        'html-b': {
+          bold:true,
+          fontSize: 18,
+        },
+        'html-strong': {bold:true},
+        'html-u': {decoration:'underline'},
+        'html-em': {italics:true},
+        'html-i': {italics:true},
+        'html-h1': {fontSize:24, bold:true, marginBottom:5},
+        'html-h2': {fontSize:15, bold:true, marginBottom:5},
+        'html-h3': {fontSize:15, bold:true, marginBottom:5, marginTop:10},
+        'html-h4': {fontSize:15, bold:true, marginBottom:5},
+        'html-h5': {fontSize:15, bold:true, marginBottom:5},
+        'html-h6': {fontSize:14, bold:true, marginBottom:5},
+        'html-a': {color:'blue', decoration:'underline'},
+        'html-strike': {decoration: 'lineThrough'},
+        'html-p': {margin:[0, 5, 0, 10]},
+        'html-ul': {marginBottom:5},
+        'html-li': {marginLeft:5},
+        'html-table': {marginBottom:5},
+        'html-th': {bold:true, fillColor:'#EEEEEE'}
+      },
+      defaultStyle: {
+        lineHeight: 1.78,
+        fontSize: 12
+      }
+    };
+    console.log(docDefinition);
+    pdfMake.createPdf(docDefinition).open();
   }
 
   render() {
@@ -137,19 +226,12 @@ class DocumentToolbar extends Component {
               ? documentMetadata.comments.length
               : 0}
           </button>
-          {doc.pdf_link ? (
-            <button type="button" className="btn document-toolbar__btn btn-outline-primary">
-              <a
-                href={
-                  doc.pdf_link
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View pdf
-              </a>
-            </button>
-          ) : null}
+          {/*<button*/}
+            {/*type="button"*/}
+            {/*className="btn document-toolbar__btn btn-outline-primary"*/}
+            {/*onClick={() => this.generatePDF()}>*/}
+              {/*View pdf*/}
+          {/*</button>*/}
           {!displayEditor && isLoggedIn && isOwnDocument ? (
             <button className="btn btn-outline-primary" onClick={showEditor}>
               edit

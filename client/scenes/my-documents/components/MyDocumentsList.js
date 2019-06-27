@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { ListItem } from "../../../components";
 import { ScaleLoader } from "halogenium";
 import moment from "moment";
+import { withRouter, Link } from "react-router-dom";
 
 const ListMyDocuments = ({ documents }) =>
   documents.length ? (
@@ -19,7 +20,7 @@ const ListMyDocuments = ({ documents }) =>
     </Fragment>
   ) : null;
 
-export default ({ documents, canLoadMore, fetchOwnDrafts }) => (
+export default ({ documents, canLoadMore, fetchOwnDrafts, type }) => (
   <div class="dashboard__recent-my-documents">
     {!documents ? (
       <div className="component__loader-container d-flex">
@@ -32,7 +33,11 @@ export default ({ documents, canLoadMore, fetchOwnDrafts }) => (
       </div>
     ) : documents && !documents.length ? (
       <div className="component__loader-container d-flex">
-        currently has no myDocument available
+        {
+          type === 'draft' ?
+            <span>This is where your documents will appear. Want to submit an article? <Link to="/submit" style={{color: 'blue'}}>click here</Link></span> :
+            <span>This is where your documents that are featured on <Link to="/" style={{color: 'blue'}}>theBKP.com</Link> will appear.</span>
+        }
       </div>
     ) : (
       <ListMyDocuments

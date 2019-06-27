@@ -23,6 +23,7 @@ class FeaturedDocuments extends Component {
       <MyDocumentsList
         documents={this.props.featuredDocuments}
         canLoadMore={this.props.canLoadMore}
+        type='featured'
       />
     );
   }

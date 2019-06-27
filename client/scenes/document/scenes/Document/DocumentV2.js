@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import autoBind from "react-autobind";
-import { batchActions } from "redux-batched-actions";
 import { SquareLoader } from "halogenium";
-import { Link, Switch, Route, matchPath } from "react-router-dom";
-import { connect } from "react-redux";
+import { matchPath } from "react-router-dom";
 import {
   DocumentContent,
   SidebarComments,
@@ -12,12 +10,9 @@ import {
 } from "./components";
 import { DocumentHeader, VersionToolbar } from "../../components";
 import { findCommentsInQnaByText } from "../../utils";
-import { SidebarLayout, CustomScrollbar } from "../../../../components";
 import Joyride from "react-joyride";
 import { Conversation } from '../../../requests-for-comment/scenes/Question/components';
 import { Comments } from '../../../requests-for-comment/scenes/Question/components';
-import { loadModal, hideModal} from '../../../../data/modal/actions';
-import {sortCommentBy} from '../../reducer';
 
 class Document extends Component {
   constructor(props) {
@@ -277,7 +272,7 @@ class Document extends Component {
             continuous
             showProgress
             steps={this.state.steps}
-            run={this.state.run}
+            run={false}
             callback={this.handleJoyrideCallback}
             styles={{
               options: {

@@ -265,7 +265,7 @@ class Document extends Component {
             continuous
             showProgress
             steps={this.state.steps}
-            run={this.state.run}
+            run={false}
             callback={this.handleJoyrideCallback}
             styles={{
               options: {
