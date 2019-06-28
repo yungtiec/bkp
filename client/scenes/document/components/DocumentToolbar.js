@@ -235,12 +235,12 @@ class DocumentToolbar extends Component {
               ? documentMetadata.comments.length
               : 0}
           </button>
-          {/*<button*/}
-            {/*type="button"*/}
-            {/*className="btn document-toolbar__btn btn-outline-primary"*/}
-            {/*onClick={() => this.generatePDF()}>*/}
-              {/*View pdf*/}
-          {/*</button>*/}
+          <button
+            type="button"
+            className="btn document-toolbar__btn btn-outline-primary"
+            onClick={() => this.generatePDF()}>
+              View pdf
+          </button>
           {shouldShowEditBtn ? (
             <button className="btn btn-outline-primary" onClick={showEditor}>
               edit
