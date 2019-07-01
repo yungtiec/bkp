@@ -21,6 +21,7 @@ const {
 const {
   getEngagedUsers,
   createSlug,
+  cacheUrl,
   getAddedAndRemovedTags,
   generateNoSearchOrder,
   generateOrder,
@@ -34,6 +35,7 @@ const {
 const moment = require("moment");
 const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
+const isProduction = process.env.NODE_ENV === 'production';
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -316,8 +318,6 @@ const addHistory = versionQuestionOrAnswer => {
 };
 
 const updateDocumentStatus = async (req, res, next) => {
-  console.log(req.body.status.submitted);
-  console.log(req.body.status.reviewed);
   try {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug },
@@ -332,6 +332,10 @@ const updateDocumentStatus = async (req, res, next) => {
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
+
+    if (isProduction) {
+      await cacheUrl(`https://thebkp.com/s/${document.slug}`);
+    }
     res.send(document);
   } catch (err) {
     next(err);
@@ -339,16 +343,11 @@ const updateDocumentStatus = async (req, res, next) => {
 };
 
 const putDocumentContentHTMLBySlug = async (req, res, next) => {
-  console.log(req.body.status.submitted);
-  console.log(req.body.status.reviewed);
   try {
     const documentToUpdate = await Document.findOne({
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
-
-    console.log({documentToUpdate});
-    console.log('req.body', req.body);
 
     if (req.body.newTitle) {
       const slug = await createSlug(
@@ -391,6 +390,10 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
+
+    if (isProduction) {
+      await cacheUrl(`https://thebkp.com/s/${document.slug}`);
+    }
     res.send(document);
   } catch (err) {
     next(err);
