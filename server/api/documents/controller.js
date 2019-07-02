@@ -345,7 +345,7 @@ const updateDocumentStatus = async (req, res, next) => {
       await sendEmail({
         emailType: 'PUBLISHED',
         user: documentToUpdate.creator,
-        subject: `${documentToUpdate.creator.first_name} ${documentToUpdate.creator.last_name}, your article has been published - (article_id: ${documentToUpdate.id})`,
+        subject: `${documentToUpdate.creator.first_name} ${documentToUpdate.creator.last_name}, your article has been published - document id: ${documentToUpdate.id}`,
         message: generatedDocumentPublishedHtml(
           urlPrefix,
           documentToUpdate.slug,
@@ -680,7 +680,7 @@ const createDocumentFromHtml = async (req, res, next) => {
     await sendEmail({
       user: req.user,
       emailType: 'PUBLISHED',
-      subject: `${user.first_name} ${user.last_name}, your article has been submitted - (article_id: ${document.id})`,
+      subject: `${user.first_name} ${user.last_name}, your article has been submitted - document id: ${document.id}`,
       message: generateDocumentSubmittedHtml(
         urlPrefix,
         document.slug,
