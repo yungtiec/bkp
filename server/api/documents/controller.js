@@ -39,6 +39,7 @@ const _ = require("lodash");
 const MarkdownParsor = require("../../../script/markdown-parser");
 const generatedNewDocumentHtml = require('./../generateNewDocumentHtml');
 const generatedDocumentPublishedHtml = require('./../generateDocumentPublishedHtml');
+const generateDocumentSubmittedHtml = require('./../generateDocumentSubmittedHtml');
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -344,7 +345,7 @@ const updateDocumentStatus = async (req, res, next) => {
       await sendEmail({
         emailType: 'PUBLISHED',
         user: documentToUpdate.creator,
-        subject: `${documentToUpdate.title} has been published!`,
+        subject: `${documentToUpdate.creator.first_name} ${documentToUpdate.creator.last_name}, your article has been published - (article_id: ${documentToUpdate.id})`,
         message: generatedDocumentPublishedHtml(
           urlPrefix,
           documentToUpdate.slug,
@@ -679,6 +680,18 @@ const createDocumentFromHtml = async (req, res, next) => {
       user: req.user,
       subject: `New Document Submitted by ${user.first_name} ${user.last_name}`,
       message: generatedNewDocumentHtml(
+        urlPrefix,
+        document.slug,
+        user.first_name,
+        user.last_name
+      )
+    });
+
+    await sendEmail({
+      user: req.user,
+      emailType: 'PUBLISHED',
+      subject: `${user.first_name} ${user.last_name}, your article has been submitted - (article_id: ${document.id})`,
+      message: generateDocumentSubmittedHtml(
         urlPrefix,
         document.slug,
         user.first_name,

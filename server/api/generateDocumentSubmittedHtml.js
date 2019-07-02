@@ -412,8 +412,8 @@ module.exports = (urlPrefix, slug, firstName, lastName) => `<!DOCTYPE html>
 
                           <td>
 
-                            <h3 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">Your Document Has Been Published!
-                            </h3>
+                            <h4 style="font-size: 25px;font-weight: 700;margin-top: 30px;margin-bottom: 15px;">Your Article Has Been Submitted For Review!
+                            </h4>
                             
                             <table border="0"
                               cellpadding="0"
@@ -437,14 +437,30 @@ module.exports = (urlPrefix, slug, firstName, lastName) => `<!DOCTYPE html>
 
                                           <td>
 
-                                            <a href="${urlPrefix}/s/${slug}" target="_blank">View Published Article</a>
+                                            <a href="${urlPrefix}/s/${slug}" target="_blank">View your draft article</a>
                                           </td>
                                         </tr>
+                                        
                                       </tbody>
                                     </table>
                                   </td>
                                 </tr>
                               </tbody>
+                              <tr>
+
+                                  <td>
+
+                                    <span">You can make changes to the article until it is published.</span>
+                                  </td>
+                                </tr>
+                                
+                                <tr>
+
+                                  <td>
+
+                                    <span>If you have any questions, please reply to this email.</span>
+                                  </td>
+                                </tr>
                             </table>
                           </td>
                         </tr>
