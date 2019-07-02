@@ -39,6 +39,8 @@ class App extends Component {
               ReactGA.initialize("UA-119328185-1", {
                 titleCase: false
               });
+              ReactGA.set({ page: window.location.pathname });
+              ReactGA.pageview(window.location.pathname);
               history.listen((location, action) => {
                 ReactGA.set({ page: location.pathname });
                 ReactGA.pageview(location.pathname);
@@ -52,6 +54,8 @@ class App extends Component {
               ReactGA.initialize("UA-119328185-1", {
                 titleCase: false
               });
+              ReactGA.set({ page: window.location.pathname });
+              ReactGA.pageview(window.location.pathname);
               history.listen((location, action) => {
                 ReactGA.set({ page: location.pathname });
                 ReactGA.pageview(location.pathname);

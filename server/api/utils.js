@@ -3,6 +3,7 @@ const _ = require("lodash");
 const crypto = require("crypto");
 const sgMail = require("@sendgrid/mail");
 const Sequelize = require("sequelize");
+const axios = require("axios");
 
 const getUrlPrefix = () => {
   if (process.env.NODE_ENV === 'production') {
@@ -361,8 +362,22 @@ const generateDocTagsQuery = (doc) => {
   `
 };
 
+const cacheUrl = (url) => {
+  return axios.post('https://api.prerender.io/recache', {
+      "prerenderToken": process.env.PRERENDER_TOKEN,
+      "url": url
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
 module.exports = {
   isAdmin,
+  cacheUrl,
   ensureAuthentication,
   ensureAdminRole,
   ensureAdminRoleOrCommentOwnership,

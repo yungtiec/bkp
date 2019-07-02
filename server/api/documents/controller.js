@@ -22,6 +22,7 @@ const {
   getUrlPrefix,
   getEngagedUsers,
   createSlug,
+  cacheUrl,
   getAddedAndRemovedTags,
   generateNoSearchOrder,
   generateOrder,
@@ -40,6 +41,7 @@ const MarkdownParsor = require("../../../script/markdown-parser");
 const generatedNewDocumentHtml = require('./../generateNewDocumentHtml');
 const generatedDocumentPublishedHtml = require('./../generateDocumentPublishedHtml');
 const generateDocumentSubmittedHtml = require('./../generateDocumentSubmittedHtml');
+const isProduction = process.env.NODE_ENV === 'production';
 Promise = require("bluebird");
 
 const getComments = async (req, res, next) => {
@@ -359,6 +361,10 @@ const updateDocumentStatus = async (req, res, next) => {
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
+
+    if (isProduction) {
+      await cacheUrl(`https://thebkp.com/s/${document.slug}`);
+    }
     res.send(document);
   } catch (err) {
     next(err);
@@ -413,6 +419,10 @@ const putDocumentContentHTMLBySlug = async (req, res, next) => {
       where: { slug: req.params.slug },
       include: [{ model: Tag }]
     });
+
+    if (isProduction) {
+      await cacheUrl(`https://thebkp.com/s/${document.slug}`);
+    }
     res.send(document);
   } catch (err) {
     next(err);
