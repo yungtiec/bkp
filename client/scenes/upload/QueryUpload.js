@@ -79,7 +79,6 @@ class MyComponent extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('logged in', this.props.isLoggedIn);
     await this.props.meAsync();
     if (!this.props.isLoggedIn) {
       history.push({

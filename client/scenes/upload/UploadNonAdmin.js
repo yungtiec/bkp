@@ -26,6 +26,7 @@ import HeaderImageSelector from "../document/scenes/Document/components/HeaderIm
 import history from "./../../history";
 import {hideModal, loadModal} from '../../data/reducer';
 import * as types from './data/upload/actionTypes';
+import {Helmet} from 'react-helmet';
 
 class Upload extends Component {
   constructor(props) {
@@ -329,6 +330,29 @@ class Upload extends Component {
 
     return (
       <div className="main-container">
+        <Helmet>
+          <title>Submit Article</title>
+          <meta
+            name="description"
+            itemProp="description"
+            content={`Thank you for your interest in submitting an article to the Brooklyn Project. We aspire to be the home for open collaboration on blockchain law, regulation, and policy.`}
+          />
+          <meta property="fb:app_id" content="312700812765621" />
+          <meta property="og:type" content="article" />
+          <meta property="og:title" content={`Submit Article`} />
+          <meta
+            property="og:url"
+            content={`https://thebkp.com/submit`}
+          />
+          <meta property="og:description" content={`Thank you for your interest in submitting an article to the Brooklyn Project. We aspire to be the home for open collaboration on blockchain law, regulation, and policy.`} />
+          <meta
+            name="twitter:url"
+            content={`https://thebkp.com/submit`}
+          />
+          <meta name="twitter:title" content={`Submit Article`} />
+          <meta name="twitter:description" content={`Thank you for your interest in submitting an article to the Brooklyn Project. We aspire to be the home for open collaboration on blockchain law, regulation, and policy.`} />
+          <meta name="twitter:card" content="summary" />
+        </Helmet>
         <div
           style={{
             maxWidth: "740px",
