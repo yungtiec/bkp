@@ -8,11 +8,11 @@ var RSS = require('rss');
 
 /* lets create an rss feed */
 var feed = new RSS({
-  title: 'The Brooklyn Project Podcast',
-  description: 'Conversations about blockchain technology and its applications to society, policy and more.',
+  title: 'New Territories',
+  description: 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.',
   feed_url: 'https://thebkp.com/api/podcasts',
   site_url: 'https://thebkp.com',
-  image_url: 'https://s3.us-east-2.amazonaws.com/the-bkp-header-images/thebkp-logo.png',
+  image_url: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-logo.jpg',
   managingEditor: 'The Brooklyn Project',
   webMaster: 'The Brooklyn Project',
   copyright: '2019 ConsenSys AG',
@@ -26,16 +26,16 @@ var feed = new RSS({
   custom_elements: [
     {'itunes:keywords': 'Blockchain, Infrastructure Investing, Ethereum, Finance'},
     {'itunes:explicit': 'no'},
-    {'itunes:subtitle': 'Join the collaboration on blockchain law, regulation, and policy.'},
+    {'itunes:subtitle': 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.'},
     {'itunes:author': 'The Brooklyn Project'},
-    {'itunes:summary': 'Join the collaboration on blockchain law, regulation, and policy.'},
+    {'itunes:summary': 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.'},
     {'itunes:owner': [
-      {'itunes:name': 'The Brooklyn Project Podcast'},
+      {'itunes:name': 'New Territories'},
       {'itunes:email': 'joyce.lai@consensys.net'} ]
     },
   {'itunes:image': {
     _attr: {
-      href: 'https://s3.us-east-2.amazonaws.com/the-bkp-header-images/thebkp-logo.png'
+      href: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-logo.jpg'
         }
   }},
   {'itunes:category': [
