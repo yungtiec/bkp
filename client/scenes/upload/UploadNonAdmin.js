@@ -354,9 +354,9 @@ class Upload extends Component {
                     <p>Accepted articles will appear on the landing page of <a href="www,thebkp.com">theBKP.com</a>.</p>
                     <p>While we aspire to make this as open an initiative as possible, we have created a set of guidelines to ensure the content on our site is relevant to our community. We reserve the right to decline the publication of any article for whatever reason.</p>
                     <p><strong>On-topic</strong>: anything related to blockchain law, regulation and policy. This includes more topics than laws and regulations.</p>
-                    <p><strong>Off-topic</strong>: links to events (except those relevant to members of our community), ad-hominem attacks, an pitch for your startup, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it will probably also be blocked on <a href="www,thebkp.com">theBKP.com</a>.</p>
+                    <p><strong>Off-topic</strong>: links to events (except those relevant to members of our community), ad-hominem attacks, an pitch, trading strategies, promotions, and pictures of cats. If it’s blocked on our Telegram Channel, it will probably also be blocked on <a href="www,thebkp.com">theBKP.com</a>.</p>
                     <p>By submitting an article, you agree with our terms of use and privacy policy. If you have any questions, send us an email at info@thebkp.com.</p>
-                    <p><strong><a href="https://drive.google.com/file/d/1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV/view" style={{color:'blue'}} target="_blank" >Terms of use</a></strong></p>
+                    <p><strong><a href="https://drive.google.com/file/d/1p4F4UVhCohifqb0R5WzfJ8R1nKJOahIV/view" style={{color:'blue'}} target="_blank" >Terms of Use</a></strong></p>
                     <p><strong><a href="https://drive.google.com/file/d/1n_O-nF74sDkONplSrmcpZczAov30cMug/view" style={{color:'blue'}} target="_blank" >Privacy Policy</a></strong></p>
                   </div>
                   <button
