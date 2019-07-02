@@ -72,6 +72,10 @@ class App extends Component {
       <div>
         <Helmet>
           <title>The Brooklyn Project</title>
+          <meta
+            name="description"
+            content="Join the collaboration on blockchain law, regulation, and policy."
+          />
         </Helmet>
         <Routes />
         <ModalContainer />
