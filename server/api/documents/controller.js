@@ -676,16 +676,6 @@ const createDocumentFromHtml = async (req, res, next) => {
 
     const user = req.user;
     const urlPrefix = getUrlPrefix();
-    await sendAdminEmail({
-      user: req.user,
-      subject: `New Document Submitted by ${user.first_name} ${user.last_name}`,
-      message: generatedNewDocumentHtml(
-        urlPrefix,
-        document.slug,
-        user.first_name,
-        user.last_name
-      )
-    });
 
     await sendEmail({
       user: req.user,
