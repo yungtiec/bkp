@@ -148,6 +148,7 @@ class DocumentContainer extends Component {
                 displayEditor={displayEditor}
                 documentMetadata={documentMetadata}
                 hideEditor={hideEditor}
+                {...this.props}
               />
             )}
           />

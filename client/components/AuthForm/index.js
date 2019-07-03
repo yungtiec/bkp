@@ -31,8 +31,6 @@ class AuthForm extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location.state);
-
     if (
       this.props.location.state &&
       this.props.location.state.lastPath &&
