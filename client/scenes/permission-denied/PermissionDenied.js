@@ -6,7 +6,7 @@ import { logout } from "../../data/reducer";
 import $ from "jquery";
 import {Helmet} from 'react-helmet';
 
-const NotFound = ({ isLoggedIn}) => (
+const NotFound = ({ user, logout }) => (
   <div className="landing">
     <Helmet>
       <title>Login Required | The Brooklyn Project</title>
@@ -19,10 +19,9 @@ const NotFound = ({ isLoggedIn}) => (
           <div className="col-12">
             <div className="row">
               <div className="col-12">
-                  { isLoggedIn ?
-                    <p>You don’t have permission to view this article. If you believe this is an error, send us a message at info@thebkp.com.</p> :
-                    <p>You need to be logged in to view this article.</p>
-                  }
+                <p>
+                  You need to be logged in to view this article.
+                </p>
               </div>
             </div>
           </div>
@@ -52,7 +51,7 @@ const NotFound = ({ isLoggedIn}) => (
   </div>
 );
 
-const mapState = state => ({ isLoggedIn: !!state.data.user.id });
+const mapState = state => ({ user: state.data.user });
 
 const actions = { logout };
 
