@@ -23,23 +23,23 @@ const ensureDocumentSubmissionOrOwnership = async (req, res, next) => {
     if (req.params.doc_id) {
       document = await Document.findOne({ where: { id: req.params.doc_id } });
     }
-    const isNotCreator =
-      document && req.user && req.user.id !== document.creator_id;
-    const isNotCollaborator =
+    const isCreator =
+      document && req.user && req.user.id === document.creator_id;
+    const isCollaborator =
       document &&
       req.user &&
       document.collaborators &&
-      !document.collaborators.filter(c => req.user.id !== c.id).length;
+      document.collaborators.filter(c => req.user.id !== c.id).length;
 
-    if (
-      !document ||
-      (document &&
-        !document.submitted &&
-        //!isAdmin(req.user) &&
-        (!req.user || (isNotCreator && isNotCollaborator)))
-    )
+    const documentSubmitted = document && document.submitted;
+    const hasPermission = isCreator || isCollaborator;
+    const isUserAdmin = !!isAdmin(req.user);
+
+    if (documentSubmitted || hasPermission || isUserAdmin) {
+      next();
+    } else {
       res.sendStatus(404);
-    else next();
+    }
   } catch (err) {
     next(err);
   }

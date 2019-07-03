@@ -232,6 +232,7 @@ const getDocumentBySlug = async (req, res, next) => {
     }).findOne();
     res.send(document);
   } catch (err) {
+    console.log('error');
     next(err);
   }
 };
