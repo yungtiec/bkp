@@ -9,7 +9,7 @@ import {Helmet} from 'react-helmet';
 const NotFound = ({ user, logout }) => (
   <div className="landing">
     <Helmet>
-      <title>Permission Denied | The Brooklyn Project</title>
+      <title>Login Required | The Brooklyn Project</title>
       <meta name="description"
             content="You need to be logged in to view this article." />
     </Helmet>
