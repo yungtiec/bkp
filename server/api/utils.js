@@ -16,7 +16,7 @@ const getUrlPrefix = () => {
 };
 
 const isAdmin = user => {
-  return user.roles.filter(r => r.name === "admin").length;
+  return user && user.roles && user.roles.filter(r => r.name === "admin").length;
 };
 
 const ensureAuthentication = async (req, res, next) => {
