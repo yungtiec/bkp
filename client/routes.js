@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
+  PermissionDenied,
   NotFound,
   Projects,
   Collaborations,
@@ -152,6 +153,11 @@ class Routes extends Component {
             path="/not-found"
             layout={LayoutWithNav}
             component={NotFound}
+          />
+          <RouteWithLayout
+            path="/permission-denied"
+            layout={LayoutWithNav}
+            component={PermissionDenied}
           />
           {/* Displays our feed component as a fallback */}
           <RouteWithLayout

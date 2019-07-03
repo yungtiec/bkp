@@ -17,6 +17,7 @@ export { default as Wizard } from "./wizard/QueryWizard";
 export { default as MyDocuments } from "./my-documents/QueryMyDocuments";
 export { default as Feed } from "./feed/Feed";
 export { default as NotFound } from "./notFound/NotFound";
+export { default as PermissionDenied } from "./permission-denied/PermissionDenied";
 export {
   default as RequestsForComment
 } from "./requests-for-comment/RequestsForComment";

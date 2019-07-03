@@ -17,7 +17,7 @@ const DocumentAuthorName = ({ reviewed, submitted, name, userHandle, delegate, c
       {
         reviewed && submitted ?
           `Published ${moment(createdAt).format("MM.DD.YYYY")}` :
-          `Pending Approval`
+          `Not yet published`
       }
     </span>
   </p>

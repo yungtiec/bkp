@@ -39,7 +39,7 @@ export function fetchMetadataBySlug(slug, versionId) {
         documentMetadata
       });
     } catch (error) {
-      history.push(`/not-found`);
+      history.push(`/permission-denied`);
       console.error(error);
     }
   };

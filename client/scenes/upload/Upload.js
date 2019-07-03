@@ -286,7 +286,7 @@ class Upload extends Component {
       this.props.loadModal("CONFIRMATION_MODAL", {
         title: "Thank You For Your Submission",
         message:
-          "You have successfully submitted your article for review!",
+          "Your article has been shared with BKP admins. Someone will get in touch with you.",
         hideModal: this.props.hideModal,
         submit: {
           label: "Go To Article",
