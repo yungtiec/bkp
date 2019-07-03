@@ -108,21 +108,11 @@ class AuthWidget extends Component {
                 <div className={`${className}__dropdown-item`}>twitter</div>
               </a>
               {width < 1060 ? (
-                <Link
-                  to="/requests-for-comment"
-                  className={`${className}__dropdown-item`}
-                >
-                  requests for comment
-                </Link>
-              ) : (
-                ""
-              )}
-              {width < 1060 ? (
                 <PunditContainer policies={policies} user={user}>
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
                       <Link
-                        to="/upload"
+                        to="/submit"
                         style={{ display: "block", margin: "0px" }}
                       >
                         <div className={`${className}__dropdown-item`}>
@@ -140,6 +130,24 @@ class AuthWidget extends Component {
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
                       <Link
+                        to="me/documents"
+                        style={{ display: "block", margin: "0px" }}
+                      >
+                        <div className={`${className}__dropdown-item`}>
+                          my documents
+                        </div>
+                      </Link>
+                    </VisibleIf>
+                  </PunditTypeSet>
+                </PunditContainer>
+              ) : (
+                ""
+              )}
+              {width < 1060 && isAdmin ? (
+                <PunditContainer policies={policies} user={user}>
+                  <PunditTypeSet type="Disclosure">
+                    <VisibleIf action="Create" model={{}}>
+                      <Link
                         to="/recent-comments"
                         style={{ display: "block", margin: "0px" }}
                       >
@@ -153,6 +161,7 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
+
               <Link
                 to={{
                   pathname: "/about"
