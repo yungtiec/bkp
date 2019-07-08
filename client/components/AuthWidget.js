@@ -83,11 +83,12 @@ class AuthWidget extends Component {
               <Link
                 to={`/profile/@${user.user_handle}`}
                 style={{ display: "block", margin: "0px" }}
+                onClick={() => this.toggleDropdown()}
               >
                 <div className={`${className}__dropdown-item`}>profile</div>
               </Link>
               {width < 600 && isAdmin ? (
-                <Link to="/admin" style={{ display: "block", margin: "0px" }}>
+                <Link to="/admin" style={{ display: "block", margin: "0px" }} onClick={() => this.toggleDropdown()}>
                   <div className={`${className}__dropdown-item`}>admin</div>
                 </Link>
               ) : (
@@ -108,22 +109,13 @@ class AuthWidget extends Component {
                 <div className={`${className}__dropdown-item`}>twitter</div>
               </a>
               {width < 1060 ? (
-                <Link
-                  to="/requests-for-comment"
-                  className={`${className}__dropdown-item`}
-                >
-                  requests for comment
-                </Link>
-              ) : (
-                ""
-              )}
-              {width < 1060 ? (
                 <PunditContainer policies={policies} user={user}>
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
                       <Link
-                        to="/upload"
+                        to="/submit"
                         style={{ display: "block", margin: "0px" }}
+                        onClick={() => this.toggleDropdown()}
                       >
                         <div className={`${className}__dropdown-item`}>
                           create
@@ -140,8 +132,28 @@ class AuthWidget extends Component {
                   <PunditTypeSet type="Disclosure">
                     <VisibleIf action="Create" model={{}}>
                       <Link
+                        to="me/documents"
+                        style={{ display: "block", margin: "0px" }}
+                        onClick={() => this.toggleDropdown()}
+                      >
+                        <div className={`${className}__dropdown-item`}>
+                          my documents
+                        </div>
+                      </Link>
+                    </VisibleIf>
+                  </PunditTypeSet>
+                </PunditContainer>
+              ) : (
+                ""
+              )}
+              {width < 1060 && isAdmin ? (
+                <PunditContainer policies={policies} user={user}>
+                  <PunditTypeSet type="Disclosure">
+                    <VisibleIf action="Create" model={{}}>
+                      <Link
                         to="/recent-comments"
                         style={{ display: "block", margin: "0px" }}
+                        onClick={() => this.toggleDropdown()}
                       >
                         <div className={`${className}__dropdown-item`}>
                           recent comments
@@ -153,11 +165,13 @@ class AuthWidget extends Component {
               ) : (
                 ""
               )}
+
               <Link
                 to={{
                   pathname: "/about"
                 }}
                 style={{ display: "block", margin: "0px" }}
+                onClick={() => this.toggleDropdown()}
               >
                 <div className={`${className}__dropdown-item`}>about</div>
               </Link>

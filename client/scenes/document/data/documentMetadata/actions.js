@@ -30,7 +30,7 @@ export function resetDocumentMetadata() {
   };
 }
 
-export function fetchMetadataBySlug(slug, versionId) {
+export function fetchMetadataBySlug(slug, path) {
   return async (dispatch, getState) => {
     try {
       var documentMetadata = await getMetadataBySlug(slug);
@@ -39,7 +39,12 @@ export function fetchMetadataBySlug(slug, versionId) {
         documentMetadata
       });
     } catch (error) {
-      history.push(`/permission-denied`);
+      history.push({
+        pathname: '/permission-denied',
+        state: {
+          lastPath: path
+        }
+      });
       console.error(error);
     }
   };

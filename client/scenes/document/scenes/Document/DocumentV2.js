@@ -250,7 +250,8 @@ class Document extends Component {
             replyToComment,
             upvoteComment,
             editComment,
-            notify
+            notify,
+            location
           } = this.props;
 
     const selectedComments = this.getSelectedComments();
@@ -295,7 +296,7 @@ class Document extends Component {
             showEditor={showEditor}
             hideEditor={hideEditor}
           />
-          <Conversation me={me} addNewComment={addNewComment} id={documentMetadata.id}/>
+          <Conversation me={me} addNewComment={addNewComment} id={documentMetadata.id} location={location}/>
           <Comments
             commentIds={commentIds}
             commentsById={commentsById}

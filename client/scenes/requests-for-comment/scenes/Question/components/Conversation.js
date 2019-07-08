@@ -5,7 +5,7 @@ import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
 import { CommentBoxWithTagField } from "../../../../../components";
 
-export default ({ question, addNewComment, me, id }) => {
+export default ({ question, addNewComment, me, id, location }) => {
   return (
     <div className="conversation-container my-5">
       <p className="conversation-title">Join the conversation</p>
@@ -32,11 +32,11 @@ export default ({ question, addNewComment, me, id }) => {
           />
           {isEmpty(me) ? (
             <p className="conversation-auth-link">
-              <Link className="text-primary" to="/login">
+              <Link className="text-primary" to={{pathname: "/login", state: { lastPath: location.pathname}}}>
                 Log in
               </Link>{" "}
               or{" "}
-              <Link className="text-primary" to="/signup">
+              <Link className="text-primary" to={{pathname: "/signup", state: { lastPath: location.pathname}}}>
                 Sign up
               </Link>
             </p>
