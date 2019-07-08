@@ -130,6 +130,10 @@
 .SocialMediaShareButton {
   margin-left: 10px;
   margin-right: 0;
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
   @include breakpoint(xs) {
     margin-left: 0;
     margin-right: 10px;
