@@ -4,7 +4,7 @@ import autoBind from "react-autobind";
 import history from "../../../history";
 import { DocumentToolbar } from './index';
 import { Link } from "react-router-dom";
-import moment from "moment";
+import moment from "moment"
 
 const DocumentAuthorName = ({ reviewed, submitted, name, userHandle, delegate, createdAt }) => (
   <p className="document-author__header">

@@ -18,6 +18,16 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfMake from "html-to-pdfmake";
 import moment from 'moment';
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  EmailShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  EmailIcon
+} from 'react-share';
 
 class DocumentToolbar extends Component {
   constructor(props) {
@@ -163,8 +173,11 @@ class DocumentToolbar extends Component {
             !featured) ||
             isUserAdmin;
 
+    const isProduction = process.env.NODE_ENV === "production";
+    const urlToLinkTo = (isProduction ? 'https://www.thebkp.com/s/' : 'https://bkp-staging.herokuapp.com/s/') + documentMetadata.slug;
+
     return (
-      <div className="mb-2">
+      <div className="mb-2 d-flex" style={{justifyContent: 'space-between'}}>
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
           <button
             type="button"
@@ -246,6 +259,20 @@ class DocumentToolbar extends Component {
               edit
             </button>
           ) : null}
+        </div>
+        <div className="d-flex">
+          <FacebookShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
+            <FacebookIcon size={36} round />
+          </FacebookShareButton>
+          <LinkedinShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
+            <LinkedinIcon size={36} round />
+          </LinkedinShareButton>
+          <TwitterShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
+            <TwitterIcon size={36} round />
+          </TwitterShareButton>
+          <EmailShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
+            <EmailIcon size={36} round />
+          </EmailShareButton>
         </div>
       </div>
     );
