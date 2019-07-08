@@ -127,12 +127,37 @@
   }
 }
 
-@media (max-width: 767px) {
-  .document_tags-container {
-    padding: 0px 25px 0 15px;
+.SocialMediaShareButton {
+  margin-left: 10px;
+  margin-right: 0;
+  @include breakpoint(xs) {
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  @include breakpoint(sm) {
+    margin-left: 0;
+    margin-right: 10px;
   }
 }
 
 .SocialMediaShareButton:focus {
   outline: none;
+}
+
+.btn-group-toolbar-container {
+  display: flex;
+  @include breakpoint(xs) {
+    display: block;
+    margin-bottom: 1rem !important;
+  }
+  @include breakpoint(sm) {
+    display: block;
+    margin-bottom: 1rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .document_tags-container {
+    padding: 0px 25px 0 15px;
+  }
 }

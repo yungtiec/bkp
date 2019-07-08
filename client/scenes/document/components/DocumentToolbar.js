@@ -177,7 +177,7 @@ class DocumentToolbar extends Component {
     const urlToLinkTo = (isProduction ? 'https://www.thebkp.com/s/' : 'https://bkp-staging.herokuapp.com/s/') + documentMetadata.slug;
 
     return (
-      <div className="mb-2 d-flex" style={{justifyContent: 'space-between'}}>
+      <div className="mb-2 btn-group-toolbar-container" style={{justifyContent: 'space-between'}}>
         <div className="btn-group mb-3" role="group" aria-label="Basic example">
           <button
             type="button"
@@ -260,20 +260,23 @@ class DocumentToolbar extends Component {
             </button>
           ) : null}
         </div>
-        <div className="d-flex">
-          <FacebookShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
-            <FacebookIcon size={36} round />
-          </FacebookShareButton>
-          <LinkedinShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
-            <LinkedinIcon size={36} round />
-          </LinkedinShareButton>
-          <TwitterShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
-            <TwitterIcon size={36} round />
-          </TwitterShareButton>
-          <EmailShareButton url={urlToLinkTo} style={{marginLeft: '10px'}}>
-            <EmailIcon size={36} round />
-          </EmailShareButton>
-        </div>
+        {
+          documentMetadata.submitted && documentMetadata.reviewed ?
+            <div className="d-flex">
+              <FacebookShareButton url={urlToLinkTo}>
+                <FacebookIcon size={38} round />
+              </FacebookShareButton>
+              <LinkedinShareButton url={urlToLinkTo}>
+                <LinkedinIcon size={38} round />
+              </LinkedinShareButton>
+              <TwitterShareButton url={urlToLinkTo}>
+                <TwitterIcon size={38} round />
+              </TwitterShareButton>
+              <EmailShareButton url={urlToLinkTo}>
+                <EmailIcon size={38} round />
+              </EmailShareButton>
+            </div> : null
+        }
       </div>
     );
   }
