@@ -1,4 +1,4 @@
-.landing {
+.about {
   .navbar {
     height: initial;
   }
@@ -226,27 +226,27 @@
     height: auto;
   }
 
-  .bg-landing {
+  .bg-about {
     background: #2744cb;
     background: -webkit-linear-gradient(#2744cb, #233db6);
     background: linear-gradient(#2744cb, #233db6);
   }
 
-  .btn-landing {
+  .btn-about {
     border-color: #2744cb;
     background: #2744cb;
   }
 
-  .btn-landing:hover,
-  .btn-landing:focus,
-  .btn-landing:active,
-  .btn-landing.active {
+  .btn-about:hover,
+  .btn-about:focus,
+  .btn-about:active,
+  .btn-about.active {
     color: white;
     border-color: #1b2f8b;
     background-color: #1b2f8b;
   }
 
-  .text-landing {
+  .text-about {
     color: #2744cb;
   }
 
@@ -408,7 +408,7 @@
 
   .get-involved {
     background-color: transparent;
-    background-image: url("/assets/landing__get-involved-background.png");
+    background-image: url("/assets/about__get-involved-background.png");
     background-position: 50% 50% !important;
     background-position: center !important;
     background-origin: border-box !important;

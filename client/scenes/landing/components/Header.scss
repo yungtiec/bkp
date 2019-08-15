@@ -1,0 +1,117 @@
+.landing__header {
+  margin: 70px 35px 0 35px;
+}
+
+.landing__header-bkp {
+  text-align: center;
+}
+
+.landing__header-bkp img {
+  width: 150px;
+  height: auto;
+}
+
+.landing-header__title {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.58;
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+  font-family: Merriweather, Helvetica, serif;
+  color: black;
+  text-align: center;
+  margin: 45px auto 1rem auto;
+}
+
+.landing-header__title--line-one {
+  margin-bottom: 0.3rem;
+  font-size: inherit;
+}
+
+.landing-header__title--line-two {
+  margin-bottom: 0rem;
+  font-size: inherit;
+}
+
+.landing-header__description {
+  margin: 10px auto 0 auto;
+  text-align: center;
+  line-height: 25px;
+  color: #929292;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  max-width: 600px;
+}
+
+.landing-header__call-to-action {
+  text-align: center;
+  margin: 45px auto 0 auto;
+}
+
+.landing-header__call-to-action button {
+  background: #2744cb;
+  color: white;
+  width: 160px;
+  height: 50px;
+  font-size: 17px;
+
+  box-shadow: 0 0 0 0 rgb(23, 91, 237);
+  -webkit-animation: pulse 2s infinite 3s cubic-bezier(0.3, 0, 0, 1);
+  -moz-animation: pulse 2s infinite 3s cubic-bezier(0.3, 0, 0, 1);
+  -ms-animation: pulse 2s infinite 3s cubic-bezier(0.3, 0, 0, 1);
+  animation: pulse 2s infinite 3s cubic-bezier(0.3, 0, 0, 1);
+
+  &:hover {
+    color: white;
+    -webkit-animation: none;
+    -moz-animation: none;
+    -ms-animation: none;
+    animation: none;
+  }
+}
+
+@-webkit-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(23, 91, 237, 0);
+  }
+}
+@-moz-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(23, 91, 237, 0);
+  }
+}
+@-ms-keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(23, 91, 237, 0);
+  }
+}
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 45px rgba(23, 91, 237, 0);
+  }
+}
+
+.landing-header__background img {
+  margin-top: 60px;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 300px) and (max-width: 767px) {
+  .landing__header {
+    margin: 40px auto 0 auto;
+  }
+  .landing__header-bkp img {
+    width: 100px;
+    height: auto;
+  }
+  .landing-header__title {
+    font-size: 19px;
+    margin: 45px 5px 1rem 5px;
+  }
+  .landing-header__call-to-action button {
+    width: 120px;
+    height: 45px;
+    font-size: 12px;
+  }
+}
