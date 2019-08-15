@@ -102,10 +102,10 @@ module.exports = {
           }
         }),
         new HardSourceWebpackPlugin(),
-        //new webpack.DllReferencePlugin({
-        //  context: __dirname,
-        //  manifest: require("./public/build/library/library.json")
-        //})
+        new webpack.DllReferencePlugin({
+         context: __dirname,
+         manifest: require("./public/build/library/library.json")
+        })
       ]
     : [
         new webpack.ProvidePlugin({

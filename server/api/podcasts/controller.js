@@ -13,7 +13,7 @@ const getXML = async (req, res, next) => {
     description: 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.',
     feed_url: 'https://thebkp.com/api/podcasts',
     site_url: 'https://thebkp.com',
-    image_url: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-logo.jpg',
+    image_url: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-1400x1400.jpg',
     managingEditor: 'The Brooklyn Project',
     webMaster: 'The Brooklyn Project',
     copyright: '2019 ConsenSys AG',
@@ -36,7 +36,7 @@ const getXML = async (req, res, next) => {
       },
       {'itunes:image': {
           _attr: {
-            href: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-logo.jpg'
+            href: 'https://thebkp-podcasts.s3.amazonaws.com/new-territories-1400x1400.jpg'
           }
         }},
       {'itunes:category': [

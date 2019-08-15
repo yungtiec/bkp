@@ -14,6 +14,7 @@ import {
   Upload,
   ActivityBoard,
   Dashboard,
+  About,
   Landing,
   Document,
   DocumentBySlug,
@@ -127,6 +128,10 @@ class Routes extends Component {
           <RouteWithLayout
             layout={LayoutWithNav}
             path="/about"
+            component={About}
+          />
+          <Route
+            path="/landing"
             component={Landing}
           />
           <RouteWithLayout
