@@ -1,10 +1,13 @@
 import React from "react";
-import { Header, Section1, Footer } from "./components";
+import { Header, Newsletter, UseCases, Cards, Footer } from "./components";
+import "./Landing.scss";
 
 const Landing = ({ me }) => (
   <div className="landing">
     <Header />
-    <Section1 />
+    <Newsletter />
+    <UseCases />
+    <Cards />
     <Footer />
   </div>
 );
