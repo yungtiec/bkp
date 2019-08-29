@@ -9,8 +9,8 @@ require("image-webpack-loader");
 module.exports = {
   entry: [
     "@babel/polyfill", // enables async-await
-    'react', // Include this to enforce order
-    'react-dom',
+    "react", // Include this to enforce order
+    "react-dom",
     "./client/index.js"
   ],
   output: {
@@ -36,16 +36,23 @@ module.exports = {
           loader: "babel-loader",
           options: {
             babelrc: false,
-            presets: ["@babel/preset-react", [
-              "@babel/preset-env",
-              {
-                "targets": {
-                  "ie": "9"
-                },
-                "useBuiltIns": "usage"
-              }
-            ]],
-            plugins: ["react-loadable/babel", "syntax-dynamic-import", "@babel/plugin-proposal-class-properties"]
+            presets: [
+              "@babel/preset-react",
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    ie: "9"
+                  },
+                  useBuiltIns: "usage"
+                }
+              ]
+            ],
+            plugins: [
+              "react-loadable/babel",
+              "syntax-dynamic-import",
+              "@babel/plugin-proposal-class-properties"
+            ]
           }
         }
       },
@@ -103,8 +110,8 @@ module.exports = {
         }),
         new HardSourceWebpackPlugin(),
         new webpack.DllReferencePlugin({
-         context: __dirname,
-         manifest: require("./public/build/library/library.json")
+          context: __dirname,
+          manifest: require("./public/build/library/library.json")
         })
       ]
     : [
