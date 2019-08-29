@@ -3,13 +3,13 @@ import React from "react";
 
 const Cards = () => (
   <div className="landing__cards">
-    <div className="landing__title">
-      <p>From our contributors</p>
-    </div>
+    <div className="landing__title">From our contributors</div>
     <div className="card-grid">
       <div className="card-wrap">
-        <h2 className="title title--preview">The Crypto Travel Rule: Challenges and Solutions</h2>
-        <div className="divider" />
+        <h2 className="title title--preview">
+          The Crypto Travel Rule: Challenges and Solutions
+        </h2>
+        <div className="divider" />{" "}
         <span className="author">by Malcolm Wright</span>
         <div className="meta meta--preview">
           <img
@@ -21,8 +21,8 @@ const Cards = () => (
       </div>
       <div className="card-wrap">
         <h2 className="title title--preview">
-          Podcast Ep 002: Hong Kong University Professor Brian Tang On Hong Kong's Token Regulatory
-          Landscape
+          Podcast Ep 002: Hong Kong University Professor Brian Tang On Hong
+          Kong's Token Regulatory Landscape
         </h2>
         <div className="divider" />
         <span className="author">by Joyce Lai</span>
@@ -36,12 +36,17 @@ const Cards = () => (
       </div>
       <div className="card-wrap">
         <h2 className="title title--preview">
-          Consortium blockchain governance: a key issue for enterprise blockchain projects
+          Consortium blockchain governance: a key issue for enterprise
+          blockchain projects
         </h2>
         <div className="divider" />
         <span className="author">by Mark Radcliffe</span>
         <div className="meta meta--preview">
-          <img className="meta__avatar" src="/assets/blank-avatar.png" alt="author04" />
+          <img
+            className="meta__avatar"
+            src="/assets/blank-avatar.png"
+            alt="author04"
+          />
         </div>
       </div>
       <div className="card-wrap">
