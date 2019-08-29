@@ -1,0 +1,26 @@
+.landing__newsletter {
+  background: #459df9;
+  color: white;
+  padding: 10vw 7vw;
+  text-align: center;
+}
+
+.landing__newsletter .landing__description {
+  text-align: left;
+}
+
+.landing-newsletter__signup {
+  .form-control {
+    width: 250px;
+    height: 48px;
+    @media (min-width: 300px) and (max-width: 767px) {
+      width: 170px;
+    }
+  }
+  .btn {
+    height: 48px;
+    border-radius: 0.25rem;
+    background: #2744cb;
+    color: white;
+  }
+}

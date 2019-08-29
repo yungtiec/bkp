@@ -6,11 +6,11 @@ const Header = () => (
     <div className="landing__header-bkp">
       <img src="/assets/the-brooklyn-project-logo-border.png" />
     </div>
-    <div className="landing-header__title">
+    <div className="landing__title">
       <p className="landing-header__title--line-one">Get connected to the right people.</p>
       <p className="landing-header__title--line-two">Just ask Olmo.</p>
     </div>
-    <div className="landing-header__description">
+    <div className="landing__description">
       Access to opportunities for career advancement and professional growth relies heavily on
       connections.
     </div>
@@ -19,9 +19,9 @@ const Header = () => (
         Call to action
       </button>
     </div>
-    <div className="landing-header__background">
+    {/*<div className="landing-header__background">
       <img src="/assets/bkp-landing.png" />
-    </div>
+    </div>*/}
   </div>
 );
 

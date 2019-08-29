@@ -1,0 +1,138 @@
+.landing__use-cases {
+  display: flex;
+}
+
+.landing__use-cases .landing__title {
+  text-align: left;
+  @media (min-width: 300px) and (max-width: 767px) {
+    text-align: center;
+  }
+}
+
+.landing__use-cases .landing__description {
+  text-align: left;
+  margin: 0;
+}
+
+.bounty-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+}
+
+.bounty-box,
+.bounty-box--inner {
+  background: #cee6ff;
+  padding: calc(40px + 20 * (100vw - 1024px) / 456) calc(40px + 20 * (100vw - 1024px) / 456);
+}
+
+.bounty__inner-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.bounty__inner-grid .bounty-box--inner {
+  min-height: 25vw;
+  cursor: pointer;
+}
+
+.bounty__inner-grid .bounty-box--inner .box-content {
+  width: 95%;
+  height: 95%;
+}
+
+.bounty__inner-grid .bounty-box--inner .box-content:hover {
+  transform: scale(1.05);
+  transition-duration: 0.24s;
+}
+
+.box--a {
+  background: #e1f0ff;
+}
+
+.box--b {
+  background: #7bbbff;
+}
+
+.box--c {
+  background: #459df9;
+  color: white;
+}
+
+.box--d {
+  background: #cee6ff;
+}
+
+.bounty-project {
+  font-size: 25px;
+  text-transform: lowercase;
+  margin-bottom: 2.6rem;
+  letter-spacing: 0.1rem;
+  font-weight: 300;
+}
+
+.bounty-description {
+  font-size: 22px;
+  margin-bottom: 5rem;
+  font-weight: 400;
+}
+
+.bounty-action {
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-bottom: 2.6rem;
+  letter-spacing: 0.1rem;
+  font-weight: 300;
+}
+
+.section-listing .bounty-action {
+  position: absolute;
+  bottom: 0px;
+}
+
+@media all and (max-width: 970px) {
+  .bounty-project {
+    font-size: 16px;
+    text-transform: lowercase;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.1rem;
+    font-weight: 300;
+  }
+  .landing__use-cases .bounty-description {
+    font-size: 18px;
+    margin-bottom: 45%;
+    height: 90px;
+    font-weight: 400;
+  }
+  .section-listing .bounty-description {
+    font-size: 18px;
+    margin-bottom: 0%;
+    height: 90px;
+    font-weight: 400;
+  }
+  .bounty-action {
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    letter-spacing: 0.1rem;
+    font-weight: 300;
+  }
+  .section-listing .bounty-action {
+    position: absolute;
+    bottom: 13%;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .bounty-grid {
+    display: block;
+  }
+  .bounty-box,
+  .bounty-box--inner {
+    padding: 35px;
+  }
+
+  .section-listing .bounty-action {
+    position: absolute;
+    bottom: 13%;
+  }
+}

@@ -1,0 +1,31 @@
+.landing__title {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.58;
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+  font-family: Merriweather, Helvetica, serif;
+  text-align: center;
+  margin: 0px auto 2.5rem auto;
+}
+
+.landing__description {
+  margin: 0 auto 3.5rem auto;
+  text-align: center;
+  line-height: 32px;
+  font-size: 18px;
+  font-family: Roboto, sans-serif;
+  max-width: 600px;
+  font-weight: 300;
+}
+
+@media (min-width: 300px) and (max-width: 767px) {
+  .landing__title {
+    font-size: 17px;
+    margin: 0 20px 1rem 20px;
+  }
+  .landing__description {
+    font-size: 14px;
+    margin: 0 20px 3.5rem 20px;
+  }
+}
