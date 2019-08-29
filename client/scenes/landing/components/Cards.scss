@@ -83,13 +83,13 @@
     }
   }
 
+  @media (min-width: 500px) {
+    width: calc(50% - 20px);
+  }
+
   @media (min-width: 300px) {
     width: calc(100% - 20px);
     height: auto;
-  }
-
-  @media (min-width: 500px) {
-    width: calc(50% - 20px);
   }
 
   .title--preview {
