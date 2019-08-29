@@ -43,6 +43,7 @@
     "aws-sdk": "^2.388.0",
     "axios": "^0.15.3",
     "babel-plugin-import-inspector": "^2.0.0",
+    "bignumber.js": "^9.0.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0",
     "cheerio": "^1.0.0-rc.2",
