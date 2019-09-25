@@ -32,7 +32,7 @@ const getXML = async (req, res, next) => {
       {'itunes:summary': 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.'},
       {'itunes:owner': [
           {'itunes:name': 'New Territories'},
-          {'itunes:email': 'joyce.lai@consensys.net'} ]
+          {'itunes:email': 'joycelylai@gmail.com'} ]
       },
       {'itunes:image': {
           _attr: {
