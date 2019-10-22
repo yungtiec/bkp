@@ -25,6 +25,7 @@ const getXML = async (req, res, next) => {
       'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'
     },
     custom_elements: [
+      {'itunes:new-feed-url': 'https://newterritories.libsyn.com/rss'},
       {'itunes:keywords': 'Blockchain, Infrastructure Investing, Ethereum, Finance'},
       {'itunes:explicit': 'no'},
       {'itunes:subtitle': 'New Territories Podcast, a Brooklyn Project initiative for conversations about blockchain, its applications to policy, society and more.'},
