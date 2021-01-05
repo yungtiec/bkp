@@ -41,7 +41,7 @@
     "animated-scroll-to": "^1.2.2",
     "annotator": "git+https://github.com/yungtiec/bkp-annotator.git",
     "aws-sdk": "^2.388.0",
-    "axios": "^0.15.3",
+    "axios": "^0.21.1",
     "babel-plugin-import-inspector": "^2.0.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0",
